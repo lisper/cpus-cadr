@@ -575,14 +575,10 @@ parse_body_def(int p)
 		p = grab_7bit_ascii(p, bd->name_of_body_def);
 		if (debug) printf("after name, p %d\n", p);
 
-#if 0
-		p += 2; /* ? */
-#else
 		{
 			char name2[256];
 			p = grab_7bit_ascii(p, name2);
 		}
-#endif
 
 		bd->bits = up[p];
 		p += 2;
@@ -853,6 +849,10 @@ parse_pins(int p)
 		pnt->id[0] = up[p++];
 		pnt->id[1] = up[p++];
 
+		if (pnt->id[0] == 0 && pnt->id[1] == 0) {
+			//printf("id 0!\n");
+		}
+
 		pnt->d[0] = up[p++];
 		pnt->d[1] = up[p++];
 
@@ -877,13 +877,9 @@ parse_pins(int p)
 		case 0:
 			if (debug) printf("bits 0\n");
 			if (pnt->text_size[1]) {
-#if 0
-				p = grab_7bit_ascii(p, pnt->name_of_pin);
-#else
 				pnt->xy_const_offset[0] = up[p++];
 				pnt->xy_const_offset[1] = up[p++];
 				p = grab_7bit_ascii(p, pnt->name_of_pin);
-#endif
 			}
 			break;
 		case 011000:
@@ -963,7 +959,11 @@ parse_pins(int p)
 			add_signal(pnt->name_of_pin, pnt->id[0], pnt->id[1]);
 		} else {
 			struct signal_s *s;
-			s = find_signal_at(pnt->id[0], pnt->id[1]);
+			if (pnt->id[0] == 0 && pnt->id[1] == 0)
+				s = 0;
+			else
+				s = find_signal_at(pnt->id[0], pnt->id[1]);
+
 			if (s) {
 				if (s->pin == 0) {
 					s->pin = pnt->pinname;
@@ -978,6 +978,8 @@ parse_pins(int p)
 					}
 				} else {
 					printf("pin already set\n");
+					printf("id (%d, %d)\n",
+					       pnt->id[0], pnt->id[1]);
 					printf("pin %d, body %s, signal %s\n",
 					       s->pin,
 					       s->body->name_of_body,
@@ -1153,24 +1155,6 @@ clear_visits(void)
 	}
 }
 
-#if 0
-struct point_s *
-find_pin(int body_id, int pinname)
-{
-	int i;
-
-	for (i = 0; i < MAX_POINTS; i++) {
-		if (points[i].id[0] &&
-		    points[i].id[1] == body_id &&
-		    points[i].pinname == pinname &&
-		    points[i].named_pin_index)
-			return &points[i];
-	}
-
-	return 0;
-}
-#endif
-
 int
 pick_next(struct point_s *p)
 {
@@ -1236,44 +1220,13 @@ follow_points(void)
 			continue;
 		if (points[i].name_of_pin[0] == 0)
 			continue;
-//		if (points[i].id[0] != 0)
-//			continue;
 
-//		clear_visits();
+		clear_visits();
 
 		if (follow_one(i, i, 1)) {
 			if (show_follow) printf("\n");
 		}
 	}
-
-#if 0
-	if (show_follow) printf("PASS 1.5\n");
-
-	for (i = 0; i < MAX_POINTS; i++) {
-		struct point_s *pp;
-
-		if (points[i].id[0] == 0 || points[i].id[1] == 0)
-			continue;
-		if (points[i].visited)
-			continue;
-
-		if (show_follow) {
-			printf("\nfix ");
-			show_point(&points[i]);
-		}
-
-//		pp = find_pin(points[i].id[1], points[i].pinname);
-//xxx this is a hack - fix it
-		pp = find_pin(points[i].l[1], points[i].pinname);
-		if (pp) {
-			if (show_follow) {
-				printf("found one %d; ", pp->id[1]);
-				show_point(pp);
-			}
-			points[i].named_pin_index = pp->named_pin_index;
-		}
-	}
-#endif
 
 	/* follow unvisited unnamed */
 	if (show_follow) printf("PASS 2\n");
@@ -1333,7 +1286,7 @@ follow_points(void)
 			continue;
 		if (points[i].name_of_pin[0])
 			continue;
-		if (points[i].visited)
+		if (points[i].named_pin_index)
 			continue;
 
 		if (show_follow) {
@@ -1580,6 +1533,9 @@ main(int argc, char *argv[])
 	}
 
 	parse_suds();
+
+	if (body_count == 0 && point_count == 0)
+		do_netlist = 0;
 
 	if (do_netlist) {
 		follow_points();
