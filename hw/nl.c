@@ -348,7 +348,7 @@ add_pin_forward_part(struct part_s *obj, int pin, char *word, int fpin)
 {
 	struct signal_s *s;
 
-	if (debug) printf("add_pin_forward_part() %s pin %d to %s pin %d\n",
+	if (debug) printf("//add_pin_forward_part() %s pin %d to %s pin %d\n",
 		      obj->refdes, pin, word, fpin);
 
 	if (pin > obj->pin_max)
@@ -424,58 +424,73 @@ fix_forward_pins(void)
 	struct part_s *p;
 	int i, ret;
 	
-	if (debug) printf("fixing forward references\n");
+	if (debug) printf("//fixing forward references\n");
 
 	ret = 0;
 	for (p = parts; p; p = p->next) {
 		for (i = 1; i <= p->pin_max; i++) {
-			if (debug) printf("%s %d %s\n",
-					  p->refdes, i, p->pin[i].forw_name);
 
-			if (p->pin[i].forw_name) {
-				struct part_s *op;
-				struct signal_s *s;
-				char *name;
+			struct part_s *op;
+			struct signal_s *s;
+			char *name;
 
-				op = find_part(p->pin[i].forw_name,
-					       p->page);
-				if (op == 0) {
-					printf("can't find forward reference to %s\n",
-					       p->pin[i].forw_name);
-					ret = -1;
+			if (p->pin[i].forw_name == 0)
+				continue;
+
+			if (p->pin[i].signal) {
+				continue;
+			}
+
+			if (debug) printf("//part: %s,p%d forward to %s,p%d\n",
+					  p->refdes, i,
+					  p->pin[i].forw_name,
+					  p->pin[i].forw_pin);
+
+			op = find_part(p->pin[i].forw_name,
+				       p->page);
+			if (op == 0) {
+				printf("can't find forward reference to %s\n",
+				       p->pin[i].forw_name);
+				ret = -1;
+				continue;
+			}
+
+			/* if otherpart already has a signal, use it */
+			s = op->pin[ p->pin[i].forw_pin ].signal;
+
+			if (s == NULL) {
+				/* make an interal signal */
+				name = new_internal();
+				s = add_signal(name);
+				if (debug)
+					printf("//new %s, signal %p\n",
+					       name, s);
+
+				/* add to other part */
+				if (add_pin_part(op, p->pin[i].forw_pin, name, "")) {
+					printf("// signal %s, page %s\n",
+					       s, p->page);
 					continue;
 				}
 
-				/* if otherpart already has a signal, use it */
-				s = op->pin[ p->pin[i].forw_pin ].signal;
-
-				if (s == NULL) {
-					/* make an interal signal */
-					name = new_internal();
-					s = add_signal(name);
-
-					/* add to other part */
-					if (add_pin_part(op, p->pin[i].forw_pin, name, "")) {
-						printf("// signal %s, page %s\n",
-						       s, p->page);
-						continue;
-					}
-				}
-
-				if (debug) {
-					printf("other: %s %s %d\n",
-					       name, op->refdes, p->pin[i].forw_pin);
-					printf("this: %s %s %d\n",
-					       name, p->refdes, i);
-				}
-
-				/* fixup this part */
-				add_ref(s, p, i);
-				p->pin[i].signal = s;
-
-				p->pin[i].forw_name = 0;
-				p->pin[i].forw_pin = 0;
+				if (debug)
+					printf("//now %p\n",
+					       op->pin[ p->pin[i].forw_pin ].signal);
 			}
+
+			if (debug) {
+				printf("other: %s %s %d\n",
+				       name, op->refdes, p->pin[i].forw_pin);
+				printf("this: %s %s %d\n",
+				       name, p->refdes, i);
+			}
+
+			/* fixup this part */
+			add_ref(s, p, i);
+			p->pin[i].signal = s;
+
+			p->pin[i].forw_name = 0;
+			p->pin[i].forw_pin = 0;
 		}
 	}
 
@@ -618,9 +633,11 @@ parse(char *filename)
 
 					s = op->pin[ opin ].signal;
 
+					name = "";
 					if (s == NULL) {
 						/* make an interal signal */
 						name = new_internal();
+printf("//new2 %s\n", name);
 						add_signal(name);
 						if (add_pin_part(op, opin, name, p)) {
 							printf("// page %s\n",
@@ -634,9 +651,9 @@ parse(char *filename)
 
 					if (debug) {
 						printf("other: %s %s %d\n",
-						       name, op->refdes, opin);
+						       word, op->refdes, opin);
 						printf("this: %s %s %d\n",
-						       name, ((struct part_s *)obj)->refdes, pin);
+						       word, ((struct part_s *)obj)->refdes, pin);
 					}
 
 				}
@@ -869,17 +886,16 @@ cleanup_name(char *n)
 }
 
 char *
-fix_name(char *n)
+fix_name(char *n, char *buf)
 {
-	static char fn[256];
 	char *p;
 
 	if (strchr(n, ' ')) {
-		sprintf(fn, "\\%s ", n);
-		for (p = fn; *p; p++) {
+		sprintf(buf, "\\%s ", n);
+		for (p = buf; *p; p++) {
 			if (p[1] && *p == ' ') *p = '_';
 		}
-		return fn;
+		return buf;
 	}
 
 	if (strchr(n, '-') ||
@@ -887,32 +903,34 @@ fix_name(char *n)
 	    strchr(n, '=') ||
 	    strchr(n, '.'))
 	{
-		sprintf(fn, "\\%s ", n);
-		return fn;
+		sprintf(buf, "\\%s ", n);
+		return buf;
 	}
 
 	return n;
 }
 
 char *
-signame(struct part_s *p, int pin)
+signame(struct part_s *p, int pin, char *buf)
 {
 	if (p->pin[pin].signal == 0) {
 		return "\\lost<?> ";
 	}
 
-	return fix_name(p->pin[pin].signal->name);
+	return fix_name(p->pin[pin].signal->name, buf);
 }
 
 char *
 simplelogic(struct part_s *p, char *func, int p1, int p2, int p3)
 {
 	static char b[256];
+	char b1[256], b2[256], b3[256];
 
 	if (p->pin[p1].signal == 0) return "";
 
 	sprintf(b, "assign %s = %s %s %s;",
-		signame(p, p1), signame(p, p2), func, signame(p, p3));
+		signame(p, p1, b1),
+		signame(p, p2, b2), func, signame(p, p3, b3));
 
 	return b;
 }
@@ -921,11 +939,13 @@ char *
 simplelogic_inv(struct part_s *p, char *func, int p1, int p2, int p3)
 {
 	static char b[256];
+	char b1[256], b2[256], b3[256];
 
 	if (p->pin[p1].signal == 0) return "";
 
 	sprintf(b, "assign %s = ! (%s %s %s);",
-		signame(p, p1), signame(p, p2), func, signame(p, p3));
+		signame(p, p1, b1),
+		signame(p, p2, b2), func, signame(p, p3, b3));
 
 	return b;
 }
@@ -934,12 +954,14 @@ char *
 simplelogic3(struct part_s *p, char *func, int p1, int p2, int p3, int p4)
 {
 	static char b[256];
+	char b1[256], b2[256], b3[256], b4[256];
 
 	if (p->pin[p1].signal == 0) return "";
 
 	sprintf(b, "assign %s = %s %s %s %s %s;",
-		signame(p, p1),
-		signame(p, p2), func, signame(p, p3), func, signame(p, p4));
+		signame(p, p1, b1),
+		signame(p, p2, b2), func, signame(p, p3, b3), func, 
+		signame(p, p4, b4));
 
 	return b;
 }
@@ -948,12 +970,14 @@ char *
 simplelogic3_inv(struct part_s *p, char *func, int p1, int p2, int p3, int p4)
 {
 	static char b[256];
+	char b1[256], b2[256], b3[256], b4[256];
 
 	if (p->pin[p1].signal == 0) return "";
 
 	sprintf(b, "assign %s = ! (%s %s %s %s %s);",
-		signame(p, p1),
-		signame(p, p2), func, signame(p, p3), func, signame(p, p4));
+		signame(p, p1, b1),
+		signame(p, p2, b2), func, signame(p, p3, b3), func, 
+		signame(p, p4, b4));
 
 	return b;
 }
@@ -962,13 +986,15 @@ char *
 simplelogic4_inv(struct part_s *p, char *func, int p1, int p2, int p3, int p4, int p5)
 {
 	static char b[256];
+	char b1[256], b2[256], b3[256], b4[256], b5[256];
 
 	if (p->pin[p1].signal == 0) return "";
 
 	sprintf(b, "assign %s = ! (%s %s %s %s %s %s %s);",
-		signame(p, p1),
-		signame(p, p2), func, signame(p, p3), func, signame(p, p4),
-		func, signame(p, p5));
+		signame(p, p1, b1),
+		signame(p, p2, b2), func, signame(p, p3, b3),
+		func, signame(p, p4, b4),
+		func, signame(p, p5, b5));
 
 	return b;
 }
@@ -977,11 +1003,12 @@ char *
 simple_uinary(struct part_s *p, char *func, int p1, int p2)
 {
 	static char b[256];
+	char b1[256], b2[256];
 
 	if (p->pin[p1].signal == 0) return "";
 
 	sprintf(b, "assign %s = %s %s;",
-		signame(p, p1), func, signame(p, p2));
+		signame(p, p1, b2), func, signame(p, p2, b2));
 
 	return b;
 }
@@ -999,13 +1026,14 @@ fflogic(struct part_s *p, int inst,
 	int p1, int p2, int p3, int p4)
 {
 	static char b[256];
+	char b1[256], b2[256], b3[256], b4[256];
 
 	sprintf(b,
 		"ff %s_%d "
 		"(.q(%s), .d(%s), .clk(%s), .enb_n(%s) );",
 		iname(p), inst,
-		signame(p, p1), signame(p, p2), signame(p, p3),
-		signame(p, p4));
+		signame(p, p1, b1), signame(p, p2, b2), signame(p, p3, b3),
+		signame(p, p4, b4));
 
 	return b;
 }
@@ -1015,13 +1043,14 @@ fflogic_dsel(struct part_s *p, int inst,
 	     int p1, int p2, int p3, int p4, int p5)
 {
 	static char b[256];
+	char b1[256], b2[256], b3[256], b4[256], b5[256];
 
 	sprintf(b,
 		"ff_dsel %s_%d "
 		"(.q(%s), .a(%s), .b(%s), .sel(%s), .clk(%s) );",
 		iname(p), inst,
-		signame(p, p1), signame(p, p2), signame(p, p3),
-		signame(p, p4), signame(p, p5));
+		signame(p, p1, b1), signame(p, p2, b2), signame(p, p3, b3),
+		signame(p, p4, b4), signame(p, p5, b5));
 
 	return b;
 }
@@ -1037,6 +1066,8 @@ dump_model(struct part_s *p)
 
 	c = 0;
 	for (i = 1; i < m->pin_max; i++) {
+		char buf[256];
+
 		if (m->pin[i].name == 0)
 			continue;
 		if (p->pin[i].name == 0)
@@ -1045,12 +1076,9 @@ dump_model(struct part_s *p)
 		if (c++ > 0)
 			printf(",\n");
 
-		printf("  .%s(%s)", m->pin[i].name, fix_name(p->pin[i].name));
-
-//		if (i < m->pin_max - 1)
-//			printf(",\n");
-//		else
-//			printf(");\n");
+		printf("  .%s(%s)",
+		       m->pin[i].name,
+		       fix_name(p->pin[i].name, buf));
 	}
 
 	printf("\n);\n\n");
@@ -1070,6 +1098,7 @@ dump_wires(void)
 	ss = sorted_signals;
 	for (n = 0; n < signal_count; n++) {
 		char *sname;
+		char buf[256];
 
 		if (c == 0) {
 			printf("  wire ");
@@ -1077,7 +1106,7 @@ dump_wires(void)
 			printf(", ");
 		}
 
-		sname = fix_name(ss[n]->name);
+		sname = fix_name(ss[n]->name, buf);
 		printf("%s", sname);
 		c++;
 		wid += strlen(sname) + 2;
@@ -1102,7 +1131,7 @@ dump_logic(void)
 	struct model_s *m;
 	int count;
 
-	printf("module top;\n");
+	printf("module cpu;\n");
 
 	dump_wires();
 
@@ -1136,9 +1165,9 @@ dump_logic(void)
 			printf("%s\n", simple_uinary(p, "!", 2, 1));
 			printf("%s\n", simple_uinary(p, "!", 4, 3));
 			printf("%s\n", simple_uinary(p, "!", 6, 5));
-			printf("%s\n", simple_uinary(p, "!", 9, 8));
-			printf("%s\n", simple_uinary(p, "!", 11, 10));
-			printf("%s\n", simple_uinary(p, "!", 13, 12));
+			printf("%s\n", simple_uinary(p, "!", 8, 9));
+			printf("%s\n", simple_uinary(p, "!", 10, 11));
+			printf("%s\n", simple_uinary(p, "!", 12, 13));
 			hit = 1;
 		}
 		if (strcmp(p->model->name, "74S08") == 0 ||
@@ -1224,6 +1253,8 @@ dump_logic(void)
 		}
 	}
 
+	printf("\n");
+	printf("`include \"extra.v\"\n\n");
 	printf("endmodule\n\n");
 
 	return 0;

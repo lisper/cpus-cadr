@@ -10,6 +10,9 @@ nl: nl.c
 cadr.v: models.txt ../suds/netlist-new.txt nl
 	./nl models.txt ../suds/netlist-new.txt >cadr.v
 
+debug.v: models.txt ../suds/netlist-new.txt nl
+	./nl -d models.txt ../suds/netlist-new.txt >debug.v
+
 PARTS = 2147.v 7451.v 7464.v 7474.v \
 	74109.v 74133.v 74138.v 74139.v \
 	74151.v 74153.v 74157.v 74169.v 74174.v 74175.v \
@@ -23,5 +26,9 @@ PARTS = 2147.v 7451.v 7464.v 7474.v \
 parts.o: $(PARTS)
 	iverilog -o parts.o $(PARTS)
 
-go: $(PARTS) cadr.v nl
-	iverilog $(PARTS) cadr.v
+run: $(PARTS) cadr.v run.v extra.v nl
+	iverilog -o run $(PARTS) cadr.v run.v
+
+go: run
+	./run
+

@@ -85,18 +85,36 @@ alias 74S08 74S08O
 
 model 74S10
 (
-p6=G2Q_N,O
-p3=G3Q,O
-p12=G1Q_N,O
+p1=G1A
+p2=G1B
+p3=G2A
+p4=G2B
+p5=G2C
+p6=G2Y_N,O
+p8=G3Y_N,O
+p9=G3A
+p10=G3B
+p11=G3C
+p12=G1Y_N,O
+p13=G1C
 )
 
 alias 74S10 74S10O
 
 model 74S11
 (
-p6=G2Q_N,O
-p8=G3Q_N,O
-p12=G1A_N,O
+p1=G1A
+p2=G1B
+p3=G2A
+p4=G2B
+p5=G2C
+p6=G2Y_N,O
+p8=G3Y_N,O
+p9=G3A
+p10=G3B
+p11=G3C
+p12=G1Y_N,O
+p13=G1C
 )
 
 alias 74S11 74S11O
@@ -117,27 +135,51 @@ p12=G6Q_N,O
 p13=G6A,I
 )
 
-model 74S28
-(
-p1=G1Q_N,O
-p4=G2Q_N,O
-p10=G3Q_N,O
-p13=G4Q_N,O
-)
-
 model 74S20
 (
-p6=G1Q_N,O
-p8=G2Q_N,O
+p1=G1A
+p2=G1B
+p4=G1C
+p5=G1D
+p6=G1Y_N,O
+p8=G2Y_N,O
+p9=G2A
+p10=G2B
+p12=G2C
+P13=G2D
 )
 
 alias 74S20 74S20O
 
+model 74S28
+(
+p1=G1Y_N,O
+p2=G1A
+p3=G1B
+p4=G2Y_N,O
+p5=G2A
+p6=G3B
+p8=G3A
+p9=G3B
+p10=G3Y_N,O
+p11=G4A
+p12=G4B
+p13=G4Y_N,O
+)
+
 model 7428
 (
 p1=G1Q_N,O
+p2=G1A
+p3=G1B
 p4=G2Q_N,O
+p5=G2A
+p6=G3B
+p8=G3A
+p9=G3B
 p10=G3Q_N,O
+p11=G4A
+p12=G4B
 p13=G4Q_N,O
 )
 
@@ -145,14 +187,14 @@ model 74S32
 (
 p1=G1A
 p2=G1B
-p3=G1Q,O
+p3=G1Y,O
 p4=G2A
 p5=G2B
-p6=G2Q,O
-p8=G3Q,O
+p6=G2Y,O
+p8=G3Y,O
 p9=G3A
 p10=G3B
-p11=G4Q,O
+p11=G4Y,O
 p12=G4A
 p13=G4B
 )
@@ -160,20 +202,36 @@ p13=G4B
 alias 74S32 74S32O
 alias 74S32 74S32W
 
-model 74S86
-(
-p3=G1Q,O
-p6=G2Q,O
-p8=G3Q,O
-p11=G4Q,O
-)
-
 model 74S37
 (
+p1=G1A
+p2=G1B
 p3=G1Y,O
+p4=G2A
+p5=G2B
 p6=G2Y,O
 p8=G3Y,O
+p9=G3A
+p10=G3B
 p11=G4Y,O
+p12=G4A
+p13=G4B
+)
+
+model 74S86
+(
+p1=G1A
+p2=G1B
+p3=G1Y,O
+p4=G2A
+p5=G2B
+p6=G2Y,O
+p8=G3Y,O
+p9=G3A
+p10=G3B
+p11=G4Y,O
+p12=G4A
+p13=G4B
 )
 
 # ----------------
@@ -226,24 +284,21 @@ p13=G2R_N,I
 
 model 74LS109
 (
-p1=R
-p2=J
-p3=K_N
-p4=CLK
-p5=S
-p6=Q,O
-p7=Q_N,O
-)
+p1=R1
+p2=J1
+p3=K1_N
+p4=CLK1
+p5=S1
+p6=Q1,O
+p7=Q1_N,O
 
-model 74S110
-(
-p1=R
-p2=J
-p3=K_N
-p4=CLK
-p5=S
-p6=Q,O
-p7=Q_N,O
+p15=R2
+p14=J2
+p13=K2_N
+p12=CLK2
+p11=S2
+p10=Q2,O
+p9=Q2_N,O
 )
 
 model 74S133
@@ -324,16 +379,16 @@ model 74S153
 (
 p1=ENB1_N,I
 p2=SEL1
-p3=G1D3
-p4=G1D2
-p5=G1D1
-p6=G1D0
+p3=G1C3
+p4=G1C2
+p5=G1C1
+p6=G1C0
 p7=G1Q,O
 p9=G2Q,O
-p10=G2D0
-p11=G2D1
-p12=G2D2
-p13=G2D3
+p10=G2C0
+p11=G2C1
+p12=G2C2
+p13=G2C3
 p14=SEL0
 p15=ENB2_N,I
 )
@@ -358,7 +413,7 @@ p15=ENB_N
 
 model 74S169
 (
-p15=CO_N
+p15=CO_N,O
 p6=I3,I
 p5=I2,I
 p4=I1,I

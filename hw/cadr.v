@@ -34,28 +34,28 @@
 // page BCTERM
 // part pin already in use, 1B25, pin 7
 // page BCTERM
-// models: 76
+// models: 75
 // pages: 96
-// signals (nets): 3638
+// signals (nets): 2931
 // signals with only one node:
-// ST20 -DBWRITE DPE BUS.POWER.RESET L -BUSINT.LM.RESET -BUS.RESET 
-// PROG.BUS.RESET -HALT -MACHRUNA -MACHRUN -RUN -LPC.HOLD -OPCCLK 
-// OPCINH -STEP NOP11 LDSTAT RAMDISABLE MCLK7 -TPR15 -TPR20A -TPR10 
-// -TPW55 -TPW65 -TPW75 -TPW60 -TPW50 -TPW25 -TPW35 -TPW40A -TPW30A 
-// -TPW10 -TPW40 TPREND -TPR65 -TPR80A -TPR70 -TPR105 -TPR120A -TPR110 
-// -TPR120 -TPR200 -TPR180 -TPR20 -TPDONE -ADRPAR VM1PARI -MEMRQ 
-// VMASELB -MBUSY.SYNC IWRITED L DESTIMOD0 L -FUNCT0 -FUNCT1 -FUNCT3 
-// -IMODD PWIDX -PDLWRITED MEMPAR IN MPASSL PC12B PC13B -NEEDFETCH 
-// NEWLC LPARL -LPARITY INOP SRCPDLPTR MCLK1 MPARODD AMEM16 AMEM17 
-// AMEM18 AMEM19 AMEM20 AMEM21 AMEM22 AMEM23 AMEM24 AMEM25 AMEM26 
-// AMEM27 AMEM28 AMEM29 AMEM30 AMEMPARITY -APASSENB -AWPA -AADR3B 
-// -AADR2B -AADR1B -AADR0B -AADR7B -AADR6B -AADR5B -AADR4B -AADR9B 
-// -AADR8B 
-// signals with only one node: 98
+// ST20 -DBWRITE EADR2 EADR1 EADR0 DPE BUS.POWER.RESET L -BUSINT.LM.RESET 
+// -BUS.RESET PROG.BUS.RESET -HALT -MACHRUNA -MACHRUN -RUN -LPC.HOLD 
+// -OPCCLK OPCINH -STEP NOP11 LDSTAT RAMDISABLE MCLK7 -TPR15 -TPR20A 
+// -TPR10 -TPW55 -TPW65 -TPW75 -TPW60 -TPW50 -TPW25 -TPW35 -TPW40A 
+// -TPW30A -TPW10 -TPW40 TPREND -TPR65 -TPR80A -TPR70 -TPR105 -TPR120A 
+// -TPR110 -TPR120 -TPR200 -TPR180 -TPR20 -TPR80 -TPDONE -ADRPAR 
+// VM1PARI -MEMRQ VMASELB -MBUSY.SYNC IWRITED L DESTIMOD0 L -FUNCT0 
+// -FUNCT1 -FUNCT3 -ALU31 -IMODD PWIDX -PDLWRITED -PWPC MEMPAR IN 
+// MPASSL PC12B PC13B -NEEDFETCH NEWLC LPARL -LPARITY SPCDRIVE INOP 
+// SRCPDLPTR MCLK1 MPARODD AMEM16 AMEM17 AMEM18 AMEM19 AMEM20 AMEM21 
+// AMEM22 AMEM23 AMEM24 AMEM25 AMEM26 AMEM27 AMEM28 AMEM29 AMEM30 
+// AMEMPARITY -APASSENB -AWPA -AADR3B -AADR2B -AADR1B -AADR0B -AADR7B 
+// -AADR6B -AADR5B -AADR4B -AADR9B -AADR8B 
+// signals with only one node: 105
 // nets without models: 0
 // signals without drivers:
-// signals without drivers: 1502
-module top;
+// signals without drivers: 777
+module cpu;
   wire \-A31 , \-AADR0A , \-AADR0B , \-AADR1A , \-AADR1B , \-AADR2A ;
   wire \-AADR2B , \-AADR3A , \-AADR3B , \-AADR4A , \-AADR4B , \-AADR5A ;
   wire \-AADR5B , \-AADR6A , \-AADR6B , \-AADR7A , \-AADR7B , \-AADR8A ;
@@ -193,385 +193,243 @@ module top;
   wire I43, I44, I45, I46, I47, I48, I5, I6, I7;
   wire I8, I9, IDEBUG, IMOD, IMODD, INOP, \INST_IN_2ND_OR_4TH_QUARTER ;
   wire \INST_IN_LEFT_HALF , INT, \INT.ENABLE , internal1, internal10;
-  wire internal100, internal1000, internal1001, internal1002, internal1003;
-  wire internal1004, internal1005, internal1006, internal1007, internal1008;
-  wire internal1009, internal101, internal1010, internal1011, internal1012;
-  wire internal1013, internal1014, internal1015, internal1016, internal1017;
-  wire internal1018, internal1019, internal102, internal1020, internal1021;
-  wire internal1022, internal1023, internal1024, internal1025, internal1026;
-  wire internal1027, internal1028, internal1029, internal103, internal1030;
-  wire internal1031, internal1032, internal1033, internal1034, internal1035;
-  wire internal1036, internal1037, internal1038, internal1039, internal104;
-  wire internal1040, internal1041, internal1042, internal1043, internal1044;
-  wire internal1045, internal1046, internal1047, internal1048, internal1049;
-  wire internal105, internal1050, internal1051, internal1052, internal1053;
-  wire internal1054, internal1055, internal1056, internal1057, internal1058;
-  wire internal1059, internal106, internal1060, internal1061, internal1062;
-  wire internal1063, internal1064, internal1065, internal1066, internal1067;
-  wire internal1068, internal1069, internal107, internal1070, internal1071;
-  wire internal1072, internal1073, internal1074, internal1075, internal1076;
-  wire internal1077, internal1078, internal1079, internal108, internal1080;
-  wire internal1081, internal1082, internal1083, internal1084, internal1085;
-  wire internal1086, internal1087, internal1088, internal1089, internal109;
-  wire internal1090, internal1091, internal1092, internal1093, internal1094;
-  wire internal1095, internal1096, internal1097, internal1098, internal1099;
-  wire internal11, internal110, internal1100, internal1101, internal1102;
-  wire internal1103, internal1104, internal1105, internal1106, internal1107;
-  wire internal1108, internal1109, internal111, internal1110, internal1111;
-  wire internal1112, internal1113, internal1114, internal1115, internal1116;
-  wire internal1117, internal1118, internal1119, internal112, internal1120;
-  wire internal1121, internal1122, internal1123, internal1124, internal1125;
-  wire internal1126, internal1127, internal1128, internal1129, internal113;
-  wire internal1130, internal1131, internal1132, internal1133, internal1134;
-  wire internal1135, internal1136, internal1137, internal1138, internal1139;
-  wire internal114, internal1140, internal1141, internal1142, internal1143;
-  wire internal1144, internal1145, internal1146, internal1147, internal1148;
-  wire internal1149, internal115, internal1150, internal1151, internal1152;
-  wire internal1153, internal1154, internal1155, internal1156, internal1157;
-  wire internal1158, internal1159, internal116, internal1160, internal1161;
-  wire internal1162, internal1163, internal1164, internal1165, internal1166;
-  wire internal1167, internal1168, internal1169, internal117, internal1170;
-  wire internal1171, internal1172, internal1173, internal1174, internal1175;
-  wire internal1176, internal1177, internal1178, internal1179, internal118;
-  wire internal1180, internal1181, internal1182, internal1183, internal1184;
-  wire internal1185, internal1186, internal1187, internal1188, internal1189;
-  wire internal119, internal1190, internal1191, internal1192, internal1193;
-  wire internal1194, internal1195, internal1196, internal1197, internal1198;
-  wire internal1199, internal12, internal120, internal1200, internal1201;
-  wire internal1202, internal1203, internal1204, internal1205, internal1206;
-  wire internal1207, internal1208, internal1209, internal121, internal1210;
-  wire internal1211, internal1212, internal1213, internal1214, internal1215;
-  wire internal1216, internal1217, internal1218, internal1219, internal122;
-  wire internal1220, internal1221, internal1222, internal1223, internal1224;
-  wire internal1225, internal1226, internal1227, internal1228, internal1229;
-  wire internal123, internal1230, internal1231, internal1232, internal1233;
-  wire internal1234, internal1235, internal1236, internal1237, internal1238;
-  wire internal1239, internal124, internal1240, internal1241, internal1242;
-  wire internal1243, internal1244, internal1245, internal1246, internal1247;
-  wire internal1248, internal1249, internal125, internal1250, internal1251;
-  wire internal1252, internal1253, internal1254, internal1255, internal1256;
-  wire internal1257, internal1258, internal1259, internal126, internal1260;
-  wire internal1261, internal1262, internal1263, internal1264, internal1265;
-  wire internal1266, internal1267, internal1268, internal1269, internal127;
-  wire internal1270, internal1271, internal1272, internal1273, internal1274;
-  wire internal1275, internal1276, internal1277, internal1278, internal1279;
-  wire internal128, internal1280, internal1281, internal1282, internal1283;
-  wire internal1284, internal1285, internal1286, internal1287, internal1288;
-  wire internal1289, internal129, internal1290, internal1291, internal1292;
-  wire internal1293, internal1294, internal1295, internal1296, internal1297;
-  wire internal1298, internal1299, internal13, internal130, internal1300;
-  wire internal1301, internal1302, internal1303, internal1304, internal1305;
-  wire internal1306, internal1307, internal1308, internal1309, internal131;
-  wire internal1310, internal1311, internal1312, internal1313, internal1314;
-  wire internal1315, internal1316, internal1317, internal1318, internal1319;
-  wire internal132, internal1320, internal1321, internal1322, internal1323;
-  wire internal1324, internal1325, internal1326, internal1327, internal1328;
-  wire internal1329, internal133, internal1330, internal1331, internal1332;
-  wire internal1333, internal1334, internal1335, internal1336, internal1337;
-  wire internal1338, internal1339, internal134, internal1340, internal1341;
-  wire internal1342, internal1343, internal1344, internal1345, internal1346;
-  wire internal1347, internal1348, internal1349, internal135, internal1350;
-  wire internal1351, internal1352, internal1353, internal1354, internal1355;
-  wire internal1356, internal1357, internal1358, internal1359, internal136;
-  wire internal1360, internal1361, internal1362, internal1363, internal1364;
-  wire internal1365, internal1366, internal1367, internal1368, internal1369;
-  wire internal137, internal1370, internal1371, internal1372, internal1373;
-  wire internal1374, internal1375, internal1376, internal1377, internal1378;
-  wire internal1379, internal138, internal1380, internal1381, internal1382;
-  wire internal1383, internal1384, internal1385, internal1386, internal1387;
-  wire internal1388, internal1389, internal139, internal1390, internal1391;
-  wire internal1392, internal1393, internal1394, internal1395, internal1396;
-  wire internal1397, internal1398, internal1399, internal14, internal140;
-  wire internal1400, internal1401, internal1402, internal1403, internal1404;
-  wire internal1405, internal1406, internal1407, internal1408, internal1409;
-  wire internal141, internal1410, internal1411, internal1412, internal1413;
-  wire internal1414, internal1415, internal1416, internal1417, internal1418;
-  wire internal1419, internal142, internal1420, internal1421, internal1422;
-  wire internal1423, internal1424, internal1425, internal1426, internal143;
-  wire internal144, internal145, internal146, internal147, internal148;
-  wire internal149, internal15, internal150, internal151, internal152;
-  wire internal153, internal154, internal155, internal156, internal157;
-  wire internal158, internal159, internal16, internal160, internal161;
-  wire internal162, internal163, internal164, internal165, internal166;
-  wire internal167, internal168, internal169, internal17, internal170;
-  wire internal171, internal172, internal173, internal174, internal175;
-  wire internal176, internal177, internal178, internal179, internal18;
-  wire internal180, internal181, internal182, internal183, internal184;
-  wire internal185, internal186, internal187, internal188, internal189;
-  wire internal19, internal190, internal191, internal192, internal193;
-  wire internal194, internal195, internal196, internal197, internal198;
-  wire internal199, internal2, internal20, internal200, internal201, internal202;
-  wire internal203, internal204, internal205, internal206, internal207;
-  wire internal208, internal209, internal21, internal210, internal211;
-  wire internal212, internal213, internal214, internal215, internal216;
-  wire internal217, internal218, internal219, internal22, internal220;
-  wire internal221, internal222, internal223, internal224, internal225;
-  wire internal226, internal227, internal228, internal229, internal23;
-  wire internal230, internal231, internal232, internal233, internal234;
-  wire internal235, internal236, internal237, internal238, internal239;
-  wire internal24, internal240, internal241, internal242, internal243;
-  wire internal244, internal245, internal246, internal247, internal248;
-  wire internal249, internal25, internal250, internal251, internal252;
-  wire internal253, internal254, internal255, internal256, internal257;
-  wire internal258, internal259, internal26, internal260, internal261;
-  wire internal262, internal263, internal264, internal265, internal266;
-  wire internal267, internal268, internal269, internal27, internal270;
-  wire internal271, internal272, internal273, internal274, internal275;
-  wire internal276, internal277, internal278, internal279, internal28;
-  wire internal280, internal281, internal282, internal283, internal284;
-  wire internal285, internal286, internal287, internal288, internal289;
-  wire internal29, internal290, internal291, internal292, internal293;
-  wire internal294, internal295, internal296, internal297, internal298;
-  wire internal299, internal3, internal30, internal300, internal301, internal302;
-  wire internal303, internal304, internal305, internal306, internal307;
-  wire internal308, internal309, internal31, internal310, internal311;
-  wire internal312, internal313, internal314, internal315, internal316;
-  wire internal317, internal318, internal319, internal32, internal320;
-  wire internal321, internal322, internal323, internal324, internal325;
-  wire internal326, internal327, internal328, internal329, internal33;
-  wire internal330, internal331, internal332, internal333, internal334;
-  wire internal335, internal336, internal337, internal338, internal339;
-  wire internal34, internal340, internal341, internal342, internal343;
-  wire internal344, internal345, internal346, internal347, internal348;
-  wire internal349, internal35, internal350, internal351, internal352;
-  wire internal353, internal354, internal355, internal356, internal357;
-  wire internal358, internal359, internal36, internal360, internal361;
-  wire internal362, internal363, internal364, internal365, internal366;
-  wire internal367, internal368, internal369, internal37, internal370;
-  wire internal371, internal372, internal373, internal374, internal375;
-  wire internal376, internal377, internal378, internal379, internal38;
-  wire internal380, internal381, internal382, internal383, internal384;
-  wire internal385, internal386, internal387, internal388, internal389;
-  wire internal39, internal390, internal391, internal392, internal393;
-  wire internal394, internal395, internal396, internal397, internal398;
-  wire internal399, internal4, internal40, internal400, internal401, internal402;
-  wire internal403, internal404, internal405, internal406, internal407;
-  wire internal408, internal409, internal41, internal410, internal411;
-  wire internal412, internal413, internal414, internal415, internal416;
-  wire internal417, internal418, internal419, internal42, internal420;
-  wire internal421, internal422, internal423, internal424, internal425;
-  wire internal426, internal427, internal428, internal429, internal43;
-  wire internal430, internal431, internal432, internal433, internal434;
-  wire internal435, internal436, internal437, internal438, internal439;
-  wire internal44, internal440, internal441, internal442, internal443;
-  wire internal444, internal445, internal446, internal447, internal448;
-  wire internal449, internal45, internal450, internal451, internal452;
-  wire internal453, internal454, internal455, internal456, internal457;
-  wire internal458, internal459, internal46, internal460, internal461;
-  wire internal462, internal463, internal464, internal465, internal466;
-  wire internal467, internal468, internal469, internal47, internal470;
-  wire internal471, internal472, internal473, internal474, internal475;
-  wire internal476, internal477, internal478, internal479, internal48;
-  wire internal480, internal481, internal482, internal483, internal484;
-  wire internal485, internal486, internal487, internal488, internal489;
-  wire internal49, internal490, internal491, internal492, internal493;
-  wire internal494, internal495, internal496, internal497, internal498;
-  wire internal499, internal5, internal50, internal500, internal501, internal502;
-  wire internal503, internal504, internal505, internal506, internal507;
-  wire internal508, internal509, internal51, internal510, internal511;
-  wire internal512, internal513, internal514, internal515, internal516;
-  wire internal517, internal518, internal519, internal52, internal520;
-  wire internal521, internal522, internal523, internal524, internal525;
-  wire internal526, internal527, internal528, internal529, internal53;
-  wire internal530, internal531, internal532, internal533, internal534;
-  wire internal535, internal536, internal537, internal538, internal539;
-  wire internal54, internal540, internal541, internal542, internal543;
-  wire internal544, internal545, internal546, internal547, internal548;
-  wire internal549, internal55, internal550, internal551, internal552;
-  wire internal553, internal554, internal555, internal556, internal557;
-  wire internal558, internal559, internal56, internal560, internal561;
-  wire internal562, internal563, internal564, internal565, internal566;
-  wire internal567, internal568, internal569, internal57, internal570;
-  wire internal571, internal572, internal573, internal574, internal575;
-  wire internal576, internal577, internal578, internal579, internal58;
-  wire internal580, internal581, internal582, internal583, internal584;
-  wire internal585, internal586, internal587, internal588, internal589;
-  wire internal59, internal590, internal591, internal592, internal593;
-  wire internal594, internal595, internal596, internal597, internal598;
-  wire internal599, internal6, internal60, internal600, internal601, internal602;
-  wire internal603, internal604, internal605, internal606, internal607;
-  wire internal608, internal609, internal61, internal610, internal611;
-  wire internal612, internal613, internal614, internal615, internal616;
-  wire internal617, internal618, internal619, internal62, internal620;
-  wire internal621, internal622, internal623, internal624, internal625;
-  wire internal626, internal627, internal628, internal629, internal63;
-  wire internal630, internal631, internal632, internal633, internal634;
-  wire internal635, internal636, internal637, internal638, internal639;
-  wire internal64, internal640, internal641, internal642, internal643;
-  wire internal644, internal645, internal646, internal647, internal648;
-  wire internal649, internal65, internal650, internal651, internal652;
-  wire internal653, internal654, internal655, internal656, internal657;
-  wire internal658, internal659, internal66, internal660, internal661;
-  wire internal662, internal663, internal664, internal665, internal666;
-  wire internal667, internal668, internal669, internal67, internal670;
-  wire internal671, internal672, internal673, internal674, internal675;
-  wire internal676, internal677, internal678, internal679, internal68;
-  wire internal680, internal681, internal682, internal683, internal684;
-  wire internal685, internal686, internal687, internal688, internal689;
-  wire internal69, internal690, internal691, internal692, internal693;
-  wire internal694, internal695, internal696, internal697, internal698;
-  wire internal699, internal7, internal70, internal700, internal701, internal702;
-  wire internal703, internal704, internal705, internal706, internal707;
-  wire internal708, internal709, internal71, internal710, internal711;
-  wire internal712, internal713, internal714, internal715, internal716;
-  wire internal717, internal718, internal719, internal72, internal720;
-  wire internal721, internal722, internal723, internal724, internal725;
-  wire internal726, internal727, internal728, internal729, internal73;
-  wire internal730, internal731, internal732, internal733, internal734;
-  wire internal735, internal736, internal737, internal738, internal739;
-  wire internal74, internal740, internal741, internal742, internal743;
-  wire internal744, internal745, internal746, internal747, internal748;
-  wire internal749, internal75, internal750, internal751, internal752;
-  wire internal753, internal754, internal755, internal756, internal757;
-  wire internal758, internal759, internal76, internal760, internal761;
-  wire internal762, internal763, internal764, internal765, internal766;
-  wire internal767, internal768, internal769, internal77, internal770;
-  wire internal771, internal772, internal773, internal774, internal775;
-  wire internal776, internal777, internal778, internal779, internal78;
-  wire internal780, internal781, internal782, internal783, internal784;
-  wire internal785, internal786, internal787, internal788, internal789;
-  wire internal79, internal790, internal791, internal792, internal793;
-  wire internal794, internal795, internal796, internal797, internal798;
-  wire internal799, internal8, internal80, internal800, internal801, internal802;
-  wire internal803, internal804, internal805, internal806, internal807;
-  wire internal808, internal809, internal81, internal810, internal811;
-  wire internal812, internal813, internal814, internal815, internal816;
-  wire internal817, internal818, internal819, internal82, internal820;
-  wire internal821, internal822, internal823, internal824, internal825;
-  wire internal826, internal827, internal828, internal829, internal83;
-  wire internal830, internal831, internal832, internal833, internal834;
-  wire internal835, internal836, internal837, internal838, internal839;
-  wire internal84, internal840, internal841, internal842, internal843;
-  wire internal844, internal845, internal846, internal847, internal848;
-  wire internal849, internal85, internal850, internal851, internal852;
-  wire internal853, internal854, internal855, internal856, internal857;
-  wire internal858, internal859, internal86, internal860, internal861;
-  wire internal862, internal863, internal864, internal865, internal866;
-  wire internal867, internal868, internal869, internal87, internal870;
-  wire internal871, internal872, internal873, internal874, internal875;
-  wire internal876, internal877, internal878, internal879, internal88;
-  wire internal880, internal881, internal882, internal883, internal884;
-  wire internal885, internal886, internal887, internal888, internal889;
-  wire internal89, internal890, internal891, internal892, internal893;
-  wire internal894, internal895, internal896, internal897, internal898;
-  wire internal899, internal9, internal90, internal900, internal901, internal902;
-  wire internal903, internal904, internal905, internal906, internal907;
-  wire internal908, internal909, internal91, internal910, internal911;
-  wire internal912, internal913, internal914, internal915, internal916;
-  wire internal917, internal918, internal919, internal92, internal920;
-  wire internal921, internal922, internal923, internal924, internal925;
-  wire internal926, internal927, internal928, internal929, internal93;
-  wire internal930, internal931, internal932, internal933, internal934;
-  wire internal935, internal936, internal937, internal938, internal939;
-  wire internal94, internal940, internal941, internal942, internal943;
-  wire internal944, internal945, internal946, internal947, internal948;
-  wire internal949, internal95, internal950, internal951, internal952;
-  wire internal953, internal954, internal955, internal956, internal957;
-  wire internal958, internal959, internal96, internal960, internal961;
-  wire internal962, internal963, internal964, internal965, internal966;
-  wire internal967, internal968, internal969, internal97, internal970;
-  wire internal971, internal972, internal973, internal974, internal975;
-  wire internal976, internal977, internal978, internal979, internal98;
-  wire internal980, internal981, internal982, internal983, internal984;
-  wire internal985, internal986, internal987, internal988, internal989;
-  wire internal99, internal990, internal991, internal992, internal993;
-  wire internal994, internal995, internal996, internal997, internal998;
-  wire internal999, IOB0, IOB1, IOB10, IOB11, IOB12, IOB13, IOB14, IOB15;
-  wire IOB16, IOB17, IOB18, IOB19, IOB2, IOB20, IOB21, IOB22, IOB23;
-  wire IOB24, IOB25, IOB26, IOB27, IOB28, IOB29, IOB3, IOB30, IOB31;
-  wire IOB32, IOB33, IOB34, IOB35, IOB36, IOB37, IOB38, IOB39, IOB4;
-  wire IOB40, IOB41, IOB42, IOB43, IOB44, IOB45, IOB46, IOB47, IOB5;
-  wire IOB6, IOB7, IOB8, IOB9, IPAR0, IPAR1, IPAR2, IPAR3, IPARITY;
-  wire IPAROK, IPC0, IPC1, IPC10, IPC11, IPC12, IPC13, IPC2, IPC3;
-  wire IPC4, IPC5, IPC6, IPC7, IPC8, IPC9, IPE, IR0, IR1;
-  wire IR10, IR11, IR12, IR12B, IR13, IR13B, IR14, IR14B, IR15;
-  wire IR15B, IR16, IR16B, IR17, IR17B, IR18, IR18B, IR19, IR19B;
-  wire IR2, IR20, IR20B, IR21, IR21B, IR22, IR22B, IR23, IR24;
-  wire IR25, IR26, IR27, IR28, IR29, IR3, IR30, IR31, IR32;
-  wire IR33, IR34, IR35, IR36, IR37, IR38, IR39, IR4, IR40;
-  wire IR41, IR42, IR43, IR44, IR45, IR46, IR47, IR48, IR5;
-  wire IR6, IR7, IR8, IR8B, IR9, IR9B, IRALU, IRDISP, IRJUMP;
-  wire IWR0, IWR1, IWR10, IWR11, IWR12, IWR13, IWR14, IWR15, IWR16;
-  wire IWR17, IWR18, IWR19, IWR2, IWR20, IWR21, IWR22, IWR23, IWR24;
-  wire IWR25, IWR26, IWR27, IWR28, IWR29, IWR3, IWR30, IWR31, IWR32;
-  wire IWR33, IWR34, IWR35, IWR36, IWR37, IWR38, IWR39, IWR4, IWR40;
-  wire IWR41, IWR42, IWR43, IWR44, IWR45, IWR46, IWR47, IWR48, IWR5;
-  wire IWR6, IWR7, IWR8, IWR9, IWRITE, IWRITED, \IWRITED_L , IWRITEDA;
-  wire IWRITEDB, IWRITEDC, IWRITEDD, IWRP1, IWRP2, IWRP3, IWRP4, JCALF;
-  wire JCOND, JFALSE, JRET, JRETF, L0, L1, L10, L11, L12;
-  wire L13, L14, L15, L16, L17, L18, L19, L2, L20;
-  wire L21, L22, L23, L24, L25, L26, L27, L28, L29;
-  wire L3, L30, L31, L4, L5, L6, L7, L8, L9;
-  wire \LAST_BYTE_IN_WORD , \LC_BYTE_MODE , LC0, LC0B, LC1, LC10, LC11;
-  wire LC12, LC13, LC14, LC15, LC16, LC17, LC18, LC19, LC2;
-  wire LC20, LC21, LC22, LC23, LC24, LC25, LC3, LC4, LC5;
-  wire LC6, LC7, LC8, LC9, LCA0, LCA1, LCA2, LCA3, LCDRIVE;
-  wire LCINC, LCRY3, LDMODE, LDSTAT, \LM_DRIVE_ENB , LOADMD, LPARITY;
-  wire LPARL, \LPC.HOLD , LPC0, LPC1, LPC10, LPC11, LPC12, LPC13, LPC2;
-  wire LPC3, LPC4, LPC5, LPC6, LPC7, LPC8, LPC9, M0, M1;
-  wire M10, M11, M12, M13, M14, M15, M16, M17, M18;
-  wire M19, M2, M20, M21, M22, M23, M24, M25, M26;
-  wire M27, M28, M29, M3, M30, M31, M31B, M4, M5;
-  wire M6, M7, M8, M9, MACHRUN, \MACHRUNA_L , MAPI10, MAPI11, MAPI12;
-  wire MAPI13, MAPI14, MAPI15, MAPI16, MAPI17, MAPI18, MAPI19, MAPI20;
-  wire MAPI21, MAPI22, MAPI23, MAPI8, MAPI9, MAPWR0D, MAPWR1D, MBUSY;
-  wire \MBUSY.SYNC , MCLK1, MCLK1A, MCLK5, MCLK5A, MCLK7, MDCLK, MDGETSPAR;
-  wire MDHASPAR, MDPAR, MDPARERR, MDPAREVEN, MDPARL, MDPARM, MDPARODD;
-  wire MDSELA, MDSELB, MEM0, MEM1, MEM10, MEM11, MEM12, MEM13, MEM14;
-  wire MEM15, MEM16, MEM17, MEM18, MEM19, MEM2, MEM20, MEM21, MEM22;
-  wire MEM23, MEM24, MEM25, MEM26, MEM27, MEM28, MEM29, MEM3, MEM30;
-  wire MEM31, MEM4, MEM5, MEM6, MEM7, MEM8, MEM9, \MEMPAR_IN , MEMPAROK;
-  wire MEMPREPARE, MEMRQ, MEMSTART, MF0, MF1, MF10, MF11, MF12, MF13;
-  wire MF14, MF15, MF16, MF17, MF18, MF19, MF2, MF20, MF21;
-  wire MF22, MF23, MF24, MF25, MF26, MF27, MF28, MF29, MF3;
-  wire MF30, MF31, MF4, MF5, MF6, MF7, MF8, MF9, MFDRIVE;
-  wire MFENB, MMEM0, MMEM1, MMEM10, MMEM11, MMEM12, MMEM13, MMEM14, MMEM15;
-  wire MMEM16, MMEM17, MMEM18, MMEM19, MMEM2, MMEM20, MMEM21, MMEM22;
-  wire MMEM23, MMEM24, MMEM25, MMEM26, MMEM27, MMEM28, MMEM29, MMEM3;
-  wire MMEM30, MMEM31, MMEM4, MMEM5, MMEM6, MMEM7, MMEM8, MMEM9, MMEMPARITY;
-  wire MMEMPAROK, MPAREVEN, MPARITY, MPARL, MPARM, MPARODD, MPASS, MPASSL;
-  wire MSK0, MSK1, MSK10, MSK11, MSK12, MSK13, MSK14, MSK15, MSK16;
-  wire MSK17, MSK18, MSK19, MSK2, MSK20, MSK21, MSK22, MSK23, MSK24;
-  wire MSK25, MSK26, MSK27, MSK28, MSK29, MSK3, MSK30, MSK31, MSK4;
-  wire MSK5, MSK6, MSK7, MSK8, MSK9, MSKL0, MSKL1, MSKL2, MSKL3;
-  wire MSKL3CRY, MSKL4, MSKR0, MSKR1, MSKR2, MSKR3, MSKR4, N, NC;
-  wire NEEDFETCH, NEWLC, \NEXT.INSTR , \NEXT.INSTRD , NOP, NOP11, NOPA;
-  wire NPC0, NPC1, NPC10, NPC11, NPC12, NPC13, NPC2, NPC3, NPC4;
-  wire NPC5, NPC6, NPC7, NPC8, NPC9, OB0, OB1, OB10, OB11;
-  wire OB12, OB13, OB14, OB15, OB16, OB17, OB18, OB19, OB2;
-  wire OB20, OB21, OB22, OB23, OB24, OB25, OB26, OB27, OB28;
-  wire OB29, OB3, OB30, OB31, OB4, OB5, OB6, OB7, OB8;
-  wire OB9, OPC0, OPC1, OPC10, OPC11, OPC12, OPC13, OPC2, OPC3;
-  wire OPC4, OPC5, OPC6, OPC7, OPC8, OPC9, OPCCLK, OPCCLKA, OPCCLKB;
-  wire OPCCLKC, OPCINH, OPCINHA, OPCINHB, OSEL0A, OSEL0B, OSEL1A, OSEL1B;
-  wire PC0, PC0A, PC0B, PC0C, PC0D, PC0E, PC0F, PC0G, PC0H;
-  wire PC0I, PC0J, PC0K, PC0L, PC0M, PC0N, PC0O, PC0P, PC1;
-  wire PC10, PC10A, PC10B, PC10C, PC10D, PC10E, PC10F, PC10G, PC10H;
-  wire PC10I, PC10J, PC10K, PC10L, PC10M, PC10N, PC10O, PC10P, PC11;
-  wire PC11A, PC11B, PC11C, PC11D, PC11E, PC11F, PC11G, PC11H, PC11I;
-  wire PC11J, PC11K, PC11L, PC11M, PC11N, PC11O, PC11P, PC12, PC12B;
-  wire PC13, PC13B, PC1A, PC1B, PC1C, PC1D, PC1E, PC1F, PC1G;
-  wire PC1H, PC1I, PC1J, PC1K, PC1L, PC1M, PC1N, PC1O, PC1P;
-  wire PC2, PC2A, PC2B, PC2C, PC2D, PC2E, PC2F, PC2G, PC2H;
-  wire PC2I, PC2J, PC2K, PC2L, PC2M, PC2N, PC2O, PC2P, PC3;
-  wire PC3A, PC3B, PC3C, PC3D, PC3E, PC3F, PC3G, PC3H, PC3I;
-  wire PC3J, PC3K, PC3L, PC3M, PC3N, PC3O, PC3P, PC4, PC4A;
-  wire PC4B, PC4C, PC4D, PC4E, PC4F, PC4G, PC4H, PC4I, PC4J;
-  wire PC4K, PC4L, PC4M, PC4N, PC4O, PC4P, PC5, PC5A, PC5B;
-  wire PC5C, PC5D, PC5E, PC5F, PC5G, PC5H, PC5I, PC5J, PC5K;
-  wire PC5L, PC5M, PC5N, PC5O, PC5P, PC6, PC6A, PC6B, PC6C;
-  wire PC6D, PC6E, PC6F, PC6G, PC6H, PC6I, PC6J, PC6K, PC6L;
-  wire PC6M, PC6N, PC6O, PC6P, PC7, PC7A, PC7B, PC7C, PC7D;
-  wire PC7E, PC7F, PC7G, PC7H, PC7I, PC7J, PC7K, PC7L, PC7M;
-  wire PC7N, PC7O, PC7P, PC8, PC8A, PC8B, PC8C, PC8D, PC8E;
-  wire PC8F, PC8G, PC8H, PC8I, PC8J, PC8K, PC8L, PC8M, PC8N;
-  wire PC8O, PC8P, PC9, PC9A, PC9B, PC9C, PC9D, PC9E, PC9F;
-  wire PC9G, PC9H, PC9I, PC9J, PC9K, PC9L, PC9M, PC9N, PC9O;
-  wire PC9P, PCCRY11, PCCRY3, PCCRY7, PCS0, PCS1, PDL0, PDL1, PDL10;
-  wire PDL11, PDL12, PDL13, PDL14, PDL15, PDL16, PDL17, PDL18, PDL19;
-  wire PDL2, PDL20, PDL21, PDL22, PDL23, PDL24, PDL25, PDL26, PDL27;
-  wire PDL28, PDL29, PDL3, PDL30, PDL31, PDL4, PDL5, PDL6, PDL7;
-  wire PDL8, PDL9, PDLENB, PDLIDX0, PDLIDX1, PDLIDX2, PDLIDX3, PDLIDX4;
+  wire internal100, internal101, internal102, internal103, internal104;
+  wire internal105, internal106, internal107, internal108, internal109;
+  wire internal11, internal110, internal111, internal112, internal113;
+  wire internal114, internal115, internal116, internal117, internal118;
+  wire internal119, internal12, internal120, internal121, internal122;
+  wire internal123, internal124, internal125, internal126, internal127;
+  wire internal128, internal129, internal13, internal130, internal131;
+  wire internal132, internal133, internal134, internal135, internal136;
+  wire internal137, internal138, internal139, internal14, internal140;
+  wire internal141, internal142, internal143, internal144, internal145;
+  wire internal146, internal147, internal148, internal149, internal15;
+  wire internal150, internal151, internal152, internal153, internal154;
+  wire internal155, internal156, internal157, internal158, internal159;
+  wire internal16, internal160, internal161, internal162, internal163;
+  wire internal164, internal165, internal166, internal167, internal168;
+  wire internal169, internal17, internal170, internal171, internal172;
+  wire internal173, internal174, internal175, internal176, internal177;
+  wire internal178, internal179, internal18, internal180, internal181;
+  wire internal182, internal183, internal184, internal185, internal186;
+  wire internal187, internal188, internal189, internal19, internal190;
+  wire internal191, internal192, internal193, internal194, internal195;
+  wire internal196, internal197, internal198, internal199, internal2;
+  wire internal20, internal200, internal201, internal202, internal203;
+  wire internal204, internal205, internal206, internal207, internal208;
+  wire internal209, internal21, internal210, internal211, internal212;
+  wire internal213, internal214, internal215, internal216, internal217;
+  wire internal218, internal219, internal22, internal220, internal221;
+  wire internal222, internal223, internal224, internal225, internal226;
+  wire internal227, internal228, internal229, internal23, internal230;
+  wire internal231, internal232, internal233, internal234, internal235;
+  wire internal236, internal237, internal238, internal239, internal24;
+  wire internal240, internal241, internal242, internal243, internal244;
+  wire internal245, internal246, internal247, internal248, internal249;
+  wire internal25, internal250, internal251, internal252, internal253;
+  wire internal254, internal255, internal256, internal257, internal258;
+  wire internal259, internal26, internal260, internal261, internal262;
+  wire internal263, internal264, internal265, internal266, internal267;
+  wire internal268, internal269, internal27, internal270, internal271;
+  wire internal272, internal273, internal274, internal275, internal276;
+  wire internal277, internal278, internal279, internal28, internal280;
+  wire internal281, internal282, internal283, internal284, internal285;
+  wire internal286, internal287, internal288, internal289, internal29;
+  wire internal290, internal291, internal292, internal293, internal294;
+  wire internal295, internal296, internal297, internal298, internal299;
+  wire internal3, internal30, internal300, internal301, internal302, internal303;
+  wire internal304, internal305, internal306, internal307, internal308;
+  wire internal309, internal31, internal310, internal311, internal312;
+  wire internal313, internal314, internal315, internal316, internal317;
+  wire internal318, internal319, internal32, internal320, internal321;
+  wire internal322, internal323, internal324, internal325, internal326;
+  wire internal327, internal328, internal329, internal33, internal330;
+  wire internal331, internal332, internal333, internal334, internal335;
+  wire internal336, internal337, internal338, internal339, internal34;
+  wire internal340, internal341, internal342, internal343, internal344;
+  wire internal345, internal346, internal347, internal348, internal349;
+  wire internal35, internal350, internal351, internal352, internal353;
+  wire internal354, internal355, internal356, internal357, internal358;
+  wire internal359, internal36, internal360, internal361, internal362;
+  wire internal363, internal364, internal365, internal366, internal367;
+  wire internal368, internal369, internal37, internal370, internal371;
+  wire internal372, internal373, internal374, internal375, internal376;
+  wire internal377, internal378, internal379, internal38, internal380;
+  wire internal381, internal382, internal383, internal384, internal385;
+  wire internal386, internal387, internal388, internal389, internal39;
+  wire internal390, internal391, internal392, internal393, internal394;
+  wire internal395, internal396, internal397, internal398, internal399;
+  wire internal4, internal40, internal400, internal401, internal402, internal403;
+  wire internal404, internal405, internal406, internal407, internal408;
+  wire internal409, internal41, internal410, internal411, internal412;
+  wire internal413, internal414, internal415, internal416, internal417;
+  wire internal418, internal419, internal42, internal420, internal421;
+  wire internal422, internal423, internal424, internal425, internal426;
+  wire internal427, internal428, internal429, internal43, internal430;
+  wire internal431, internal432, internal433, internal434, internal435;
+  wire internal436, internal437, internal438, internal439, internal44;
+  wire internal440, internal441, internal442, internal443, internal444;
+  wire internal445, internal446, internal447, internal448, internal449;
+  wire internal45, internal450, internal451, internal452, internal453;
+  wire internal454, internal455, internal456, internal457, internal458;
+  wire internal459, internal46, internal460, internal461, internal462;
+  wire internal463, internal464, internal465, internal466, internal467;
+  wire internal468, internal469, internal47, internal470, internal471;
+  wire internal472, internal473, internal474, internal475, internal476;
+  wire internal477, internal478, internal479, internal48, internal480;
+  wire internal481, internal482, internal483, internal484, internal485;
+  wire internal486, internal487, internal488, internal489, internal49;
+  wire internal490, internal491, internal492, internal493, internal494;
+  wire internal495, internal496, internal497, internal498, internal499;
+  wire internal5, internal50, internal500, internal501, internal502, internal503;
+  wire internal504, internal505, internal506, internal507, internal508;
+  wire internal509, internal51, internal510, internal511, internal512;
+  wire internal513, internal514, internal515, internal516, internal517;
+  wire internal518, internal519, internal52, internal520, internal521;
+  wire internal522, internal523, internal524, internal525, internal526;
+  wire internal527, internal528, internal529, internal53, internal530;
+  wire internal531, internal532, internal533, internal534, internal535;
+  wire internal536, internal537, internal538, internal539, internal54;
+  wire internal540, internal541, internal542, internal543, internal544;
+  wire internal545, internal546, internal547, internal548, internal549;
+  wire internal55, internal550, internal551, internal552, internal553;
+  wire internal554, internal555, internal556, internal557, internal558;
+  wire internal559, internal56, internal560, internal561, internal562;
+  wire internal563, internal564, internal565, internal566, internal567;
+  wire internal568, internal569, internal57, internal570, internal571;
+  wire internal572, internal573, internal574, internal575, internal576;
+  wire internal577, internal578, internal579, internal58, internal580;
+  wire internal581, internal582, internal583, internal584, internal585;
+  wire internal586, internal587, internal588, internal589, internal59;
+  wire internal590, internal591, internal592, internal593, internal594;
+  wire internal595, internal596, internal597, internal598, internal599;
+  wire internal6, internal60, internal600, internal601, internal602, internal603;
+  wire internal604, internal605, internal606, internal607, internal608;
+  wire internal609, internal61, internal610, internal611, internal612;
+  wire internal613, internal614, internal615, internal616, internal617;
+  wire internal618, internal619, internal62, internal620, internal621;
+  wire internal622, internal623, internal624, internal625, internal626;
+  wire internal627, internal628, internal629, internal63, internal630;
+  wire internal631, internal632, internal633, internal634, internal635;
+  wire internal636, internal637, internal638, internal639, internal64;
+  wire internal640, internal641, internal642, internal643, internal644;
+  wire internal645, internal646, internal647, internal648, internal649;
+  wire internal65, internal650, internal651, internal652, internal653;
+  wire internal654, internal655, internal656, internal657, internal658;
+  wire internal659, internal66, internal660, internal661, internal662;
+  wire internal663, internal664, internal665, internal666, internal667;
+  wire internal668, internal669, internal67, internal670, internal671;
+  wire internal672, internal673, internal674, internal675, internal676;
+  wire internal677, internal678, internal679, internal68, internal680;
+  wire internal681, internal682, internal683, internal684, internal685;
+  wire internal686, internal687, internal688, internal689, internal69;
+  wire internal690, internal691, internal692, internal693, internal694;
+  wire internal695, internal696, internal697, internal698, internal699;
+  wire internal7, internal70, internal700, internal701, internal702, internal703;
+  wire internal704, internal705, internal706, internal707, internal708;
+  wire internal709, internal71, internal710, internal711, internal712;
+  wire internal713, internal714, internal715, internal716, internal717;
+  wire internal718, internal719, internal72, internal73, internal74, internal75;
+  wire internal76, internal77, internal78, internal79, internal8, internal80;
+  wire internal81, internal82, internal83, internal84, internal85, internal86;
+  wire internal87, internal88, internal89, internal9, internal90, internal91;
+  wire internal92, internal93, internal94, internal95, internal96, internal97;
+  wire internal98, internal99, IOB0, IOB1, IOB10, IOB11, IOB12, IOB13;
+  wire IOB14, IOB15, IOB16, IOB17, IOB18, IOB19, IOB2, IOB20, IOB21;
+  wire IOB22, IOB23, IOB24, IOB25, IOB26, IOB27, IOB28, IOB29, IOB3;
+  wire IOB30, IOB31, IOB32, IOB33, IOB34, IOB35, IOB36, IOB37, IOB38;
+  wire IOB39, IOB4, IOB40, IOB41, IOB42, IOB43, IOB44, IOB45, IOB46;
+  wire IOB47, IOB5, IOB6, IOB7, IOB8, IOB9, IPAR0, IPAR1, IPAR2;
+  wire IPAR3, IPARITY, IPAROK, IPC0, IPC1, IPC10, IPC11, IPC12, IPC13;
+  wire IPC2, IPC3, IPC4, IPC5, IPC6, IPC7, IPC8, IPC9, IPE;
+  wire IR0, IR1, IR10, IR11, IR12, IR12B, IR13, IR13B, IR14;
+  wire IR14B, IR15, IR15B, IR16, IR16B, IR17, IR17B, IR18, IR18B;
+  wire IR19, IR19B, IR2, IR20, IR20B, IR21, IR21B, IR22, IR22B;
+  wire IR23, IR24, IR25, IR26, IR27, IR28, IR29, IR3, IR30;
+  wire IR31, IR32, IR33, IR34, IR35, IR36, IR37, IR38, IR39;
+  wire IR4, IR40, IR41, IR42, IR43, IR44, IR45, IR46, IR47;
+  wire IR48, IR5, IR6, IR7, IR8, IR8B, IR9, IR9B, IRALU;
+  wire IRDISP, IRJUMP, IWR0, IWR1, IWR10, IWR11, IWR12, IWR13, IWR14;
+  wire IWR15, IWR16, IWR17, IWR18, IWR19, IWR2, IWR20, IWR21, IWR22;
+  wire IWR23, IWR24, IWR25, IWR26, IWR27, IWR28, IWR29, IWR3, IWR30;
+  wire IWR31, IWR32, IWR33, IWR34, IWR35, IWR36, IWR37, IWR38, IWR39;
+  wire IWR4, IWR40, IWR41, IWR42, IWR43, IWR44, IWR45, IWR46, IWR47;
+  wire IWR48, IWR5, IWR6, IWR7, IWR8, IWR9, IWRITE, IWRITED, \IWRITED_L ;
+  wire IWRITEDA, IWRITEDB, IWRITEDC, IWRITEDD, IWRP1, IWRP2, IWRP3, IWRP4;
+  wire JCALF, JCOND, JFALSE, JRET, JRETF, L0, L1, L10, L11;
+  wire L12, L13, L14, L15, L16, L17, L18, L19, L2;
+  wire L20, L21, L22, L23, L24, L25, L26, L27, L28;
+  wire L29, L3, L30, L31, L4, L5, L6, L7, L8;
+  wire L9, \LAST_BYTE_IN_WORD , \LC_BYTE_MODE , LC0, LC0B, LC1, LC10;
+  wire LC11, LC12, LC13, LC14, LC15, LC16, LC17, LC18, LC19;
+  wire LC2, LC20, LC21, LC22, LC23, LC24, LC25, LC3, LC4;
+  wire LC5, LC6, LC7, LC8, LC9, LCA0, LCA1, LCA2, LCA3;
+  wire LCDRIVE, LCINC, LCRY3, LDMODE, LDSTAT, \LM_DRIVE_ENB , LOADMD;
+  wire LPARITY, LPARL, \LPC.HOLD , LPC0, LPC1, LPC10, LPC11, LPC12, LPC13;
+  wire LPC2, LPC3, LPC4, LPC5, LPC6, LPC7, LPC8, LPC9, M0;
+  wire M1, M10, M11, M12, M13, M14, M15, M16, M17;
+  wire M18, M19, M2, M20, M21, M22, M23, M24, M25;
+  wire M26, M27, M28, M29, M3, M30, M31, M31B, M4;
+  wire M5, M6, M7, M8, M9, MACHRUN, \MACHRUNA_L , MAPI10, MAPI11;
+  wire MAPI12, MAPI13, MAPI14, MAPI15, MAPI16, MAPI17, MAPI18, MAPI19;
+  wire MAPI20, MAPI21, MAPI22, MAPI23, MAPI8, MAPI9, MAPWR0D, MAPWR1D;
+  wire MBUSY, \MBUSY.SYNC , MCLK1, MCLK1A, MCLK5, MCLK5A, MCLK7, MDCLK;
+  wire MDGETSPAR, MDHASPAR, MDPAR, MDPARERR, MDPAREVEN, MDPARL, MDPARM;
+  wire MDPARODD, MDSELA, MDSELB, MEM0, MEM1, MEM10, MEM11, MEM12, MEM13;
+  wire MEM14, MEM15, MEM16, MEM17, MEM18, MEM19, MEM2, MEM20, MEM21;
+  wire MEM22, MEM23, MEM24, MEM25, MEM26, MEM27, MEM28, MEM29, MEM3;
+  wire MEM30, MEM31, MEM4, MEM5, MEM6, MEM7, MEM8, MEM9, \MEMPAR_IN ;
+  wire MEMPAROK, MEMPREPARE, MEMRQ, MEMSTART, MF0, MF1, MF10, MF11, MF12;
+  wire MF13, MF14, MF15, MF16, MF17, MF18, MF19, MF2, MF20;
+  wire MF21, MF22, MF23, MF24, MF25, MF26, MF27, MF28, MF29;
+  wire MF3, MF30, MF31, MF4, MF5, MF6, MF7, MF8, MF9;
+  wire MFDRIVE, MFENB, MMEM0, MMEM1, MMEM10, MMEM11, MMEM12, MMEM13, MMEM14;
+  wire MMEM15, MMEM16, MMEM17, MMEM18, MMEM19, MMEM2, MMEM20, MMEM21;
+  wire MMEM22, MMEM23, MMEM24, MMEM25, MMEM26, MMEM27, MMEM28, MMEM29;
+  wire MMEM3, MMEM30, MMEM31, MMEM4, MMEM5, MMEM6, MMEM7, MMEM8, MMEM9;
+  wire MMEMPARITY, MMEMPAROK, MPAREVEN, MPARITY, MPARL, MPARM, MPARODD;
+  wire MPASS, MPASSL, MSK0, MSK1, MSK10, MSK11, MSK12, MSK13, MSK14;
+  wire MSK15, MSK16, MSK17, MSK18, MSK19, MSK2, MSK20, MSK21, MSK22;
+  wire MSK23, MSK24, MSK25, MSK26, MSK27, MSK28, MSK29, MSK3, MSK30;
+  wire MSK31, MSK4, MSK5, MSK6, MSK7, MSK8, MSK9, MSKL0, MSKL1;
+  wire MSKL2, MSKL3, MSKL3CRY, MSKL4, MSKR0, MSKR1, MSKR2, MSKR3, MSKR4;
+  wire N, NC, NEEDFETCH, NEWLC, \NEXT.INSTR , \NEXT.INSTRD , NOP, NOP11;
+  wire NOPA, NPC0, NPC1, NPC10, NPC11, NPC12, NPC13, NPC2, NPC3;
+  wire NPC4, NPC5, NPC6, NPC7, NPC8, NPC9, OB0, OB1, OB10;
+  wire OB11, OB12, OB13, OB14, OB15, OB16, OB17, OB18, OB19;
+  wire OB2, OB20, OB21, OB22, OB23, OB24, OB25, OB26, OB27;
+  wire OB28, OB29, OB3, OB30, OB31, OB4, OB5, OB6, OB7;
+  wire OB8, OB9, OPC0, OPC1, OPC10, OPC11, OPC12, OPC13, OPC2;
+  wire OPC3, OPC4, OPC5, OPC6, OPC7, OPC8, OPC9, OPCCLK, OPCCLKA;
+  wire OPCCLKB, OPCCLKC, OPCINH, OPCINHA, OPCINHB, OSEL0A, OSEL0B, OSEL1A;
+  wire OSEL1B, PC0, PC0A, PC0B, PC0C, PC0D, PC0E, PC0F, PC0G;
+  wire PC0H, PC0I, PC0J, PC0K, PC0L, PC0M, PC0N, PC0O, PC0P;
+  wire PC1, PC10, PC10A, PC10B, PC10C, PC10D, PC10E, PC10F, PC10G;
+  wire PC10H, PC10I, PC10J, PC10K, PC10L, PC10M, PC10N, PC10O, PC10P;
+  wire PC11, PC11A, PC11B, PC11C, PC11D, PC11E, PC11F, PC11G, PC11H;
+  wire PC11I, PC11J, PC11K, PC11L, PC11M, PC11N, PC11O, PC11P, PC12;
+  wire PC12B, PC13, PC13B, PC1A, PC1B, PC1C, PC1D, PC1E, PC1F;
+  wire PC1G, PC1H, PC1I, PC1J, PC1K, PC1L, PC1M, PC1N, PC1O;
+  wire PC1P, PC2, PC2A, PC2B, PC2C, PC2D, PC2E, PC2F, PC2G;
+  wire PC2H, PC2I, PC2J, PC2K, PC2L, PC2M, PC2N, PC2O, PC2P;
+  wire PC3, PC3A, PC3B, PC3C, PC3D, PC3E, PC3F, PC3G, PC3H;
+  wire PC3I, PC3J, PC3K, PC3L, PC3M, PC3N, PC3O, PC3P, PC4;
+  wire PC4A, PC4B, PC4C, PC4D, PC4E, PC4F, PC4G, PC4H, PC4I;
+  wire PC4J, PC4K, PC4L, PC4M, PC4N, PC4O, PC4P, PC5, PC5A;
+  wire PC5B, PC5C, PC5D, PC5E, PC5F, PC5G, PC5H, PC5I, PC5J;
+  wire PC5K, PC5L, PC5M, PC5N, PC5O, PC5P, PC6, PC6A, PC6B;
+  wire PC6C, PC6D, PC6E, PC6F, PC6G, PC6H, PC6I, PC6J, PC6K;
+  wire PC6L, PC6M, PC6N, PC6O, PC6P, PC7, PC7A, PC7B, PC7C;
+  wire PC7D, PC7E, PC7F, PC7G, PC7H, PC7I, PC7J, PC7K, PC7L;
+  wire PC7M, PC7N, PC7O, PC7P, PC8, PC8A, PC8B, PC8C, PC8D;
+  wire PC8E, PC8F, PC8G, PC8H, PC8I, PC8J, PC8K, PC8L, PC8M;
+  wire PC8N, PC8O, PC8P, PC9, PC9A, PC9B, PC9C, PC9D, PC9E;
+  wire PC9F, PC9G, PC9H, PC9I, PC9J, PC9K, PC9L, PC9M, PC9N;
+  wire PC9O, PC9P, PCCRY11, PCCRY3, PCCRY7, PCS0, PCS1, PDL0, PDL1;
+  wire PDL10, PDL11, PDL12, PDL13, PDL14, PDL15, PDL16, PDL17, PDL18;
+  wire PDL19, PDL2, PDL20, PDL21, PDL22, PDL23, PDL24, PDL25, PDL26;
+  wire PDL27, PDL28, PDL29, PDL3, PDL30, PDL31, PDL4, PDL5, PDL6;
+  wire PDL7, PDL8, PDL9, PDLENB, PDLIDX0, PDLIDX1, PDLIDX2, PDLIDX3, PDLIDX4;
   wire PDLIDX5, PDLIDX6, PDLIDX7, PDLIDX8, PDLIDX9, PDLPARITY, PDLPAROK;
   wire PDLPTR0, PDLPTR1, PDLPTR2, PDLPTR3, PDLPTR4, PDLPTR5, PDLPTR6;
   wire PDLPTR7, PDLPTR8, PDLPTR9, PDLWRITE, PDLWRITED, \PGF.OR.INT , \PGF.OR.INT.OR.SB ;
@@ -626,7 +484,6 @@ module top;
 // 1B09:
 // (no code to express 74LS244)
 part_74LS244  i_STAT_1B09 (
-  .EN1_N(\-SPY.STL ),
   .D0(ST7),
   .Q7(SPY0),
   .D1(ST6),
@@ -672,7 +529,6 @@ part_74LS244  i_STAT_1B08 (
 // 1B07:
 // (no code to express 74LS244)
 part_74LS244  i_STAT_1B07 (
-  .EN1_N(\-SPY.STH ),
   .D0(ST23),
   .Q7(SPY0),
   .D1(ST22),
@@ -718,14 +574,10 @@ part_74LS244  i_STAT_1B06 (
 // 1B05:
 // (no code to express 74S169)
 part_74S169  i_STAT_1B05 (
-  .UP_DN(HI1),
-  .CLK(CLK5A),
   .I0(IWR28),
   .I1(IWR29),
   .I2(IWR30),
   .I3(IWR31),
-  .ENB_P_N(GND),
-  .LOAD_N(\-LDSTAT ),
   .ENB_T_N(\-STC28 ),
   .O3(ST31),
   .O2(ST30),
@@ -819,14 +671,10 @@ part_74S169  i_STAT_1C05 (
 // 1C04:
 // (no code to express 74S169)
 part_74S169  i_STAT_1C04 (
-  .UP_DN(HI1),
-  .CLK(CLK5A),
   .I0(IWR4),
   .I1(IWR5),
   .I2(IWR6),
   .I3(IWR7),
-  .ENB_P_N(GND),
-  .LOAD_N(\-LDSTAT ),
   .ENB_T_N(\-STC4 ),
   .O3(ST7),
   .O2(ST6),
@@ -857,7 +705,6 @@ part_74S169  i_STAT_1C03 (
 // 1D07:
 // (no code to express 74LS244)
 part_74LS244  i_SPY4_1D07 (
-  .EN1_N(\-SPY.PC ),
   .D0(PC7),
   .Q7(SPY0),
   .D1(PC6),
@@ -881,7 +728,6 @@ part_74LS244  i_SPY4_1D07 (
 // (no code to express 74LS244)
 part_74LS244  i_SPY4_1D06 (
   .EN1_N(\-SPY.PC ),
-  .D0(GND),
   .Q7(SPY8),
   .D1(GND),
   .Q6(SPY9),
@@ -903,7 +749,6 @@ part_74LS244  i_SPY4_1D06 (
 // 1A13:
 // (no code to express 74LS240)
 part_74S240  i_SPY4_1A13 (
-  .AENB_N(\-SPY.FLAG1 ),
   .AIN0(\-HIGHERR ),
   .BOUT3(SPY0),
   .AIN1(\-MEMPE ),
@@ -949,7 +794,6 @@ part_74LS244  i_SPY4_1A12 (
 // 1E07:
 // (no code to express 74LS244)
 part_74LS244  i_SPY4_1E07 (
-  .EN1_N(\-SPY.OPC ),
   .D0(OPC7),
   .Q7(SPY0),
   .D1(OPC6),
@@ -995,9 +839,6 @@ part_74LS244  i_SPY4_1E06 (
 // 1F03:
 // (no code to express 74S138)
 part_74S138  i_SPY0_1F03 (
-  .A(EADR0),
-  .B(EADR1),
-  .C(EADR2),
   .G2A(\-DBWRITE ),
   .G2B(GND),
   .G1(HI1),
@@ -1013,6 +854,9 @@ part_74S138  i_SPY0_1F03 (
 // 1F02:
 // (no code to express 74S138)
 part_74S138  i_SPY0_1F02 (
+  .A(internal5),
+  .B(internal6),
+  .C(internal7),
   .G2A(\-DBREAD ),
   .G2B(GND),
   .G1(EADR3),
@@ -1057,17 +901,17 @@ part_2147  i_IRAM33_2B29 (
 assign PC6P = ! \-PCC6 ;
 assign PC7P = ! \-PCC7 ;
 assign PC8P = ! \-PCC8 ;
-assign \-PCC9  = ! PC9P;
-assign \-PCC10  = ! PC10P;
-assign \-PCC11  = ! PC11P;
+assign PC9P = ! \-PCC9 ;
+assign PC10P = ! \-PCC10 ;
+assign PC11P = ! \-PCC11 ;
 
 // 2C27:
 assign PC0P = ! \-PCC0 ;
 assign PC1P = ! \-PCC1 ;
 assign PC2P = ! \-PCC2 ;
-assign \-PCC3  = ! PC3P;
-assign \-PCC4  = ! PC4P;
-assign \-PCC5  = ! PC5P;
+assign PC3P = ! \-PCC3 ;
+assign PC4P = ! \-PCC4 ;
+assign PC5P = ! \-PCC5 ;
 
 // 2B28:
 // (no code to express 2147)
@@ -1100,84 +944,32 @@ part_2147  i_IRAM33_2B27 (
 // 2B26:
 // (no code to express 2147)
 part_2147  i_IRAM33_2B26 (
-  .A0(internal19),
-  .A1(internal20),
-  .A2(internal21),
-  .A3(internal22),
-  .A4(internal23),
-  .A5(internal24),
   .DO(I39),
-  .WE_N(internal25),
-  .CE_N(internal26),
-  .DI(IWR39),
-  .A11(internal27),
-  .A10(internal28),
-  .A9(internal29),
-  .A8(internal30),
-  .A7(internal31)
+  .DI(IWR39)
 );
 
 
 // 2C30:
 // (no code to express 2147)
 part_2147  i_IRAM33_2C30 (
-  .A0(internal33),
-  .A1(internal34),
-  .A2(internal35),
-  .A3(internal36),
-  .A4(internal37),
-  .A5(internal38),
   .DO(I38),
-  .WE_N(internal39),
-  .CE_N(internal40),
-  .DI(IWR38),
-  .A11(internal41),
-  .A10(internal42),
-  .A9(internal43),
-  .A8(internal44),
-  .A7(internal45)
+  .DI(IWR38)
 );
 
 
 // 2C29:
 // (no code to express 2147)
 part_2147  i_IRAM33_2C29 (
-  .A0(internal47),
-  .A1(internal48),
-  .A2(internal49),
-  .A3(internal50),
-  .A4(internal51),
-  .A5(internal52),
   .DO(I37),
-  .WE_N(internal53),
-  .CE_N(internal54),
-  .DI(IWR37),
-  .A11(internal55),
-  .A10(internal56),
-  .A9(internal57),
-  .A8(internal58),
-  .A7(internal59)
+  .DI(IWR37)
 );
 
 
 // 2C28:
 // (no code to express 2147)
 part_2147  i_IRAM33_2C28 (
-  .A0(PC0P),
-  .A1(PC1P),
-  .A2(PC2P),
-  .A3(PC3P),
-  .A4(PC4P),
-  .A5(PC5P),
   .DO(I36),
-  .WE_N(internal61),
-  .CE_N(\-ICE3D ),
-  .DI(IWR36),
-  .A11(PC11P),
-  .A10(PC10P),
-  .A9(PC9P),
-  .A8(PC8P),
-  .A7(PC7P)
+  .DI(IWR36)
 );
 
 
@@ -1213,21 +1005,8 @@ part_2147  i_IRAM33_2A29 (
 // 2A28:
 // (no code to express 2147)
 part_2147  i_IRAM33_2A28 (
-  .A0(internal62),
-  .A1(internal63),
-  .A2(internal64),
-  .A3(internal65),
-  .A4(internal66),
-  .A5(internal67),
   .DO(I46),
-  .WE_N(internal68),
-  .CE_N(internal69),
-  .DI(IWR46),
-  .A11(internal70),
-  .A10(internal71),
-  .A9(internal72),
-  .A8(internal73),
-  .A7(internal74)
+  .DI(IWR46)
 );
 
 
@@ -1250,42 +1029,29 @@ part_2147  i_IRAM33_2A26 (
 // 2B30:
 // (no code to express 2147)
 part_2147  i_IRAM33_2B30 (
-  .A0(internal5),
-  .A1(internal6),
-  .A2(internal7),
-  .A3(internal8),
-  .A4(internal9),
-  .A5(internal10),
+  .A0(internal8),
+  .A1(internal9),
+  .A2(internal10),
+  .A3(internal11),
+  .A4(internal12),
+  .A5(internal13),
   .DO(I43),
-  .WE_N(internal11),
-  .CE_N(internal12),
+  .WE_N(internal14),
+  .CE_N(internal15),
   .DI(IWR43),
-  .A11(internal13),
-  .A10(internal14),
-  .A9(internal15),
-  .A8(internal16),
-  .A7(internal17)
+  .A11(internal16),
+  .A10(internal17),
+  .A9(internal18),
+  .A8(internal19),
+  .A7(internal20)
 );
 
 
 // 2B24:
 // (no code to express 2147)
 part_2147  i_IRAM32_2B24 (
-  .A0(PC0O),
-  .A1(PC1O),
-  .A2(PC2O),
-  .A3(PC3O),
-  .A4(PC4O),
-  .A5(PC5O),
   .DO(I42),
-  .WE_N(\-IWEO ),
-  .CE_N(\-ICE2D ),
-  .DI(IWR42),
-  .A11(PC11O),
-  .A10(PC10O),
-  .A9(PC9O),
-  .A8(PC8O),
-  .A7(PC7O)
+  .DI(IWR42)
 );
 
 
@@ -1293,17 +1059,17 @@ part_2147  i_IRAM32_2B24 (
 assign PC6O = ! \-PCC6 ;
 assign PC7O = ! \-PCC7 ;
 assign PC8O = ! \-PCC8 ;
-assign \-PCC9  = ! PC9O;
-assign \-PCC10  = ! PC10O;
-assign \-PCC11  = ! PC11O;
+assign PC9O = ! \-PCC9 ;
+assign PC10O = ! \-PCC10 ;
+assign PC11O = ! \-PCC11 ;
 
 // 2C22:
 assign PC0O = ! \-PCC0 ;
 assign PC1O = ! \-PCC1 ;
 assign PC2O = ! \-PCC2 ;
-assign \-PCC3  = ! PC3O;
-assign \-PCC4  = ! PC4O;
-assign \-PCC5  = ! PC5O;
+assign PC3O = ! \-PCC3 ;
+assign PC4O = ! \-PCC4 ;
+assign PC5O = ! \-PCC5 ;
 
 // 2B23:
 // (no code to express 2147)
@@ -1336,21 +1102,8 @@ part_2147  i_IRAM32_2B22 (
 // 2B21:
 // (no code to express 2147)
 part_2147  i_IRAM32_2B21 (
-  .A0(internal77),
-  .A1(internal78),
-  .A2(internal79),
-  .A3(internal80),
-  .A4(internal81),
-  .A5(internal82),
   .DO(I39),
-  .WE_N(internal83),
-  .CE_N(internal84),
-  .DI(IWR39),
-  .A11(internal85),
-  .A10(internal86),
-  .A9(internal87),
-  .A8(internal88),
-  .A7(internal89)
+  .DI(IWR39)
 );
 
 
@@ -1367,7 +1120,7 @@ part_2147  i_IRAM32_2C25 (
 part_2147  i_IRAM32_2C24 (
   .DO(I37),
   .DI(IWR37),
-  .A11(internal76)
+  .A11(internal36)
 );
 
 
@@ -1411,84 +1164,45 @@ part_2147  i_IRAM32_2A24 (
 // 2A23:
 // (no code to express 2147)
 part_2147  i_IRAM32_2A23 (
-  .A0(internal91),
-  .A1(internal92),
-  .A2(internal93),
-  .A3(internal94),
-  .A4(internal95),
-  .A5(internal96),
   .DO(I46),
-  .WE_N(internal97),
-  .CE_N(internal98),
-  .DI(IWR46),
-  .A11(internal99),
-  .A10(internal100),
-  .A9(internal101),
-  .A8(internal102),
-  .A7(internal103)
+  .DI(IWR46)
 );
 
 
 // 2A22:
 // (no code to express 2147)
 part_2147  i_IRAM32_2A22 (
-  .A0(internal105),
-  .A1(internal106),
-  .A2(internal107),
-  .A3(internal108),
-  .A4(internal109),
-  .A5(internal110),
   .DO(I45),
-  .WE_N(internal111),
-  .CE_N(internal112),
-  .DI(IWR45),
-  .A11(internal113),
-  .A10(internal114),
-  .A9(internal115),
-  .A8(internal116),
-  .A7(internal117)
+  .DI(IWR45)
 );
 
 
 // 2A21:
 // (no code to express 2147)
 part_2147  i_IRAM32_2A21 (
-  .A0(internal119),
-  .A1(internal120),
-  .A2(internal121),
-  .A3(internal122),
-  .A4(internal123),
-  .A5(internal124),
   .DO(I44),
-  .WE_N(internal125),
-  .CE_N(internal126),
-  .DI(IWR44),
-  .A11(internal127),
-  .A10(internal128),
-  .A9(internal129),
-  .A8(internal130),
-  .A7(internal131)
+  .DI(IWR44)
 );
 
 
 // 2B25:
 // (no code to express 2147)
 part_2147  i_IRAM32_2B25 (
-  .A0(internal133),
-  .A1(internal134),
-  .A2(internal135),
-  .A3(internal136),
-  .A4(internal137),
-  .A5(internal138),
+  .A0(internal22),
+  .A1(internal23),
+  .A2(internal24),
+  .A3(internal25),
+  .A4(internal26),
+  .A5(internal27),
   .DO(I43),
-  .WE_N(internal139),
-  .CE_N(internal140),
+  .WE_N(internal28),
+  .CE_N(internal29),
   .DI(IWR43),
-  .A11(internal141),
-  .A10(internal142),
-  .A9(internal143),
-  .A8(internal144),
-  .A7(internal145)
+  .A11(internal30),
+  .A10(internal31),
+  .A9(internal32),
+  .A8(internal33),
+  .A7(internal34)
 );
 
 
@@ -1504,17 +1218,17 @@ part_2147  i_IRAM31_2B19 (
 assign PC6N = ! \-PCC6 ;
 assign PC7N = ! \-PCC7 ;
 assign PC8N = ! \-PCC8 ;
-assign \-PCC9  = ! PC9N;
-assign \-PCC10  = ! PC10N;
-assign \-PCC11  = ! PC11N;
+assign PC9N = ! \-PCC9 ;
+assign PC10N = ! \-PCC10 ;
+assign PC11N = ! \-PCC11 ;
 
 // 2C17:
 assign PC0N = ! \-PCC0 ;
 assign PC1N = ! \-PCC1 ;
 assign PC2N = ! \-PCC2 ;
-assign \-PCC3  = ! PC3N;
-assign \-PCC4  = ! PC4N;
-assign \-PCC5  = ! PC5N;
+assign PC3N = ! \-PCC3 ;
+assign PC4N = ! \-PCC4 ;
+assign PC5N = ! \-PCC5 ;
 
 // 2B18:
 // (no code to express 2147)
@@ -1547,84 +1261,32 @@ part_2147  i_IRAM31_2B17 (
 // 2B16:
 // (no code to express 2147)
 part_2147  i_IRAM31_2B16 (
-  .A0(internal161),
-  .A1(internal162),
-  .A2(internal163),
-  .A3(internal164),
-  .A4(internal165),
-  .A5(internal166),
   .DO(I39),
-  .WE_N(internal167),
-  .CE_N(internal168),
-  .DI(IWR39),
-  .A11(internal169),
-  .A10(internal170),
-  .A9(internal171),
-  .A8(internal172),
-  .A7(internal173)
+  .DI(IWR39)
 );
 
 
 // 2C20:
 // (no code to express 2147)
 part_2147  i_IRAM31_2C20 (
-  .A0(internal175),
-  .A1(internal176),
-  .A2(internal177),
-  .A3(internal178),
-  .A4(internal179),
-  .A5(internal180),
   .DO(I38),
-  .WE_N(internal181),
-  .CE_N(internal182),
-  .DI(IWR38),
-  .A11(internal183),
-  .A10(internal184),
-  .A9(internal185),
-  .A8(internal186),
-  .A7(internal187)
+  .DI(IWR38)
 );
 
 
 // 2C19:
 // (no code to express 2147)
 part_2147  i_IRAM31_2C19 (
-  .A0(internal189),
-  .A1(internal190),
-  .A2(internal191),
-  .A3(internal192),
-  .A4(internal193),
-  .A5(internal194),
   .DO(I37),
-  .WE_N(internal195),
-  .CE_N(internal196),
-  .DI(IWR37),
-  .A11(internal197),
-  .A10(internal198),
-  .A9(internal199),
-  .A8(internal200),
-  .A7(internal201)
+  .DI(IWR37)
 );
 
 
 // 2C18:
 // (no code to express 2147)
 part_2147  i_IRAM31_2C18 (
-  .A0(PC0N),
-  .A1(PC1N),
-  .A2(PC2N),
-  .A3(PC3N),
-  .A4(PC4N),
-  .A5(PC5N),
   .DO(I36),
-  .WE_N(internal203),
-  .CE_N(\-ICE1D ),
-  .DI(IWR36),
-  .A11(PC11N),
-  .A10(PC10N),
-  .A9(PC9N),
-  .A8(PC8N),
-  .A7(PC7N)
+  .DI(IWR36)
 );
 
 
@@ -1660,21 +1322,8 @@ part_2147  i_IRAM31_2A19 (
 // 2A18:
 // (no code to express 2147)
 part_2147  i_IRAM31_2A18 (
-  .A0(internal204),
-  .A1(internal205),
-  .A2(internal206),
-  .A3(internal207),
-  .A4(internal208),
-  .A5(internal209),
   .DO(I46),
-  .WE_N(internal210),
-  .CE_N(internal211),
-  .DI(IWR46),
-  .A11(internal212),
-  .A10(internal213),
-  .A9(internal214),
-  .A8(internal215),
-  .A7(internal216)
+  .DI(IWR46)
 );
 
 
@@ -1697,21 +1346,21 @@ part_2147  i_IRAM31_2A16 (
 // 2B20:
 // (no code to express 2147)
 part_2147  i_IRAM31_2B20 (
-  .A0(internal147),
-  .A1(internal148),
-  .A2(internal149),
-  .A3(internal150),
-  .A4(internal151),
-  .A5(internal152),
+  .A0(internal37),
+  .A1(internal38),
+  .A2(internal39),
+  .A3(internal40),
+  .A4(internal41),
+  .A5(internal42),
   .DO(I43),
-  .WE_N(internal153),
-  .CE_N(internal154),
+  .WE_N(internal43),
+  .CE_N(internal44),
   .DI(IWR43),
-  .A11(internal155),
-  .A10(internal156),
-  .A9(internal157),
-  .A8(internal158),
-  .A7(internal159)
+  .A11(internal45),
+  .A10(internal46),
+  .A9(internal47),
+  .A8(internal48),
+  .A7(internal49)
 );
 
 
@@ -1727,17 +1376,17 @@ part_2147  i_IRAM30_2B14 (
 assign PC6M = ! \-PCC6 ;
 assign PC7M = ! \-PCC7 ;
 assign PC8M = ! \-PCC8 ;
-assign \-PCC9  = ! PC9M;
-assign \-PCC10  = ! PC10M;
-assign \-PCC11  = ! PC11M;
+assign PC9M = ! \-PCC9 ;
+assign PC10M = ! \-PCC10 ;
+assign PC11M = ! \-PCC11 ;
 
 // 2C12:
 assign PC0M = ! \-PCC0 ;
 assign PC1M = ! \-PCC1 ;
 assign PC2M = ! \-PCC2 ;
-assign \-PCC3  = ! PC3M;
-assign \-PCC4  = ! PC4M;
-assign \-PCC5  = ! PC5M;
+assign PC3M = ! \-PCC3 ;
+assign PC4M = ! \-PCC4 ;
+assign PC5M = ! \-PCC5 ;
 
 // 2B13:
 // (no code to express 2147)
@@ -1770,84 +1419,32 @@ part_2147  i_IRAM30_2B12 (
 // 2B11:
 // (no code to express 2147)
 part_2147  i_IRAM30_2B11 (
-  .A0(internal232),
-  .A1(internal233),
-  .A2(internal234),
-  .A3(internal235),
-  .A4(internal236),
-  .A5(internal237),
   .DO(I39),
-  .WE_N(internal238),
-  .CE_N(internal239),
-  .DI(IWR39),
-  .A11(internal240),
-  .A10(internal241),
-  .A9(internal242),
-  .A8(internal243),
-  .A7(internal244)
+  .DI(IWR39)
 );
 
 
 // 2C15:
 // (no code to express 2147)
 part_2147  i_IRAM30_2C15 (
-  .A0(internal246),
-  .A1(internal247),
-  .A2(internal248),
-  .A3(internal249),
-  .A4(internal250),
-  .A5(internal251),
   .DO(I38),
-  .WE_N(internal252),
-  .CE_N(internal253),
-  .DI(IWR38),
-  .A11(internal254),
-  .A10(internal255),
-  .A9(internal256),
-  .A8(internal257),
-  .A7(internal258)
+  .DI(IWR38)
 );
 
 
 // 2C14:
 // (no code to express 2147)
 part_2147  i_IRAM30_2C14 (
-  .A0(internal260),
-  .A1(internal261),
-  .A2(internal262),
-  .A3(internal263),
-  .A4(internal264),
-  .A5(internal265),
   .DO(I37),
-  .WE_N(internal266),
-  .CE_N(internal267),
-  .DI(IWR37),
-  .A11(internal268),
-  .A10(internal269),
-  .A9(internal270),
-  .A8(internal271),
-  .A7(internal272)
+  .DI(IWR37)
 );
 
 
 // 2C13:
 // (no code to express 2147)
 part_2147  i_IRAM30_2C13 (
-  .A0(PC0M),
-  .A1(PC1M),
-  .A2(PC2M),
-  .A3(PC3M),
-  .A4(PC4M),
-  .A5(PC5M),
   .DO(I36),
-  .WE_N(internal274),
-  .CE_N(\-ICE0D ),
-  .DI(IWR36),
-  .A11(PC11M),
-  .A10(PC10M),
-  .A9(PC9M),
-  .A8(PC8M),
-  .A7(PC7M)
+  .DI(IWR36)
 );
 
 
@@ -1883,21 +1480,8 @@ part_2147  i_IRAM30_2A14 (
 // 2A13:
 // (no code to express 2147)
 part_2147  i_IRAM30_2A13 (
-  .A0(internal275),
-  .A1(internal276),
-  .A2(internal277),
-  .A3(internal278),
-  .A4(internal279),
-  .A5(internal280),
   .DO(I46),
-  .WE_N(internal281),
-  .CE_N(internal282),
-  .DI(IWR46),
-  .A11(internal283),
-  .A10(internal284),
-  .A9(internal285),
-  .A8(internal286),
-  .A7(internal287)
+  .DI(IWR46)
 );
 
 
@@ -1920,21 +1504,21 @@ part_2147  i_IRAM30_2A11 (
 // 2B15:
 // (no code to express 2147)
 part_2147  i_IRAM30_2B15 (
-  .A0(internal218),
-  .A1(internal219),
-  .A2(internal220),
-  .A3(internal221),
-  .A4(internal222),
-  .A5(internal223),
+  .A0(internal51),
+  .A1(internal52),
+  .A2(internal53),
+  .A3(internal54),
+  .A4(internal55),
+  .A5(internal56),
   .DO(I43),
-  .WE_N(internal224),
-  .CE_N(internal225),
+  .WE_N(internal57),
+  .CE_N(internal58),
   .DI(IWR43),
-  .A11(internal226),
-  .A10(internal227),
-  .A9(internal228),
-  .A8(internal229),
-  .A7(internal230)
+  .A11(internal59),
+  .A10(internal60),
+  .A9(internal61),
+  .A8(internal62),
+  .A7(internal63)
 );
 
 
@@ -1942,17 +1526,17 @@ part_2147  i_IRAM30_2B15 (
 assign PC6L = ! \-PCC6 ;
 assign PC7L = ! \-PCC7 ;
 assign PC8L = ! \-PCC8 ;
-assign \-PCC9  = ! PC9L;
-assign \-PCC10  = ! PC10L;
-assign \-PCC11  = ! PC11L;
+assign PC9L = ! \-PCC9 ;
+assign PC10L = ! \-PCC10 ;
+assign PC11L = ! \-PCC11 ;
 
 // 2C08:
 assign PC0L = ! \-PCC0 ;
 assign PC1L = ! \-PCC1 ;
 assign PC2L = ! \-PCC2 ;
-assign \-PCC3  = ! PC3L;
-assign \-PCC4  = ! PC4L;
-assign \-PCC5  = ! PC5L;
+assign PC3L = ! \-PCC3 ;
+assign PC4L = ! \-PCC4 ;
+assign PC5L = ! \-PCC5 ;
 
 // 2B09:
 // (no code to express 2147)
@@ -1985,84 +1569,32 @@ part_2147  i_IRAM23_2B08 (
 // 2B07:
 // (no code to express 2147)
 part_2147  i_IRAM23_2B07 (
-  .A0(internal290),
-  .A1(internal291),
-  .A2(internal292),
-  .A3(internal293),
-  .A4(internal294),
-  .A5(internal295),
   .DO(I27),
-  .WE_N(internal296),
-  .CE_N(internal297),
-  .DI(IWR27),
-  .A11(internal298),
-  .A10(internal299),
-  .A9(internal300),
-  .A8(internal301),
-  .A7(internal302)
+  .DI(IWR27)
 );
 
 
 // 2B06:
 // (no code to express 2147)
 part_2147  i_IRAM23_2B06 (
-  .A0(internal304),
-  .A1(internal305),
-  .A2(internal306),
-  .A3(internal307),
-  .A4(internal308),
-  .A5(internal309),
   .DO(I26),
-  .WE_N(internal310),
-  .CE_N(internal311),
-  .DI(IWR26),
-  .A11(internal312),
-  .A10(internal313),
-  .A9(internal314),
-  .A8(internal315),
-  .A7(internal316)
+  .DI(IWR26)
 );
 
 
 // 2C10:
 // (no code to express 2147)
 part_2147  i_IRAM23_2C10 (
-  .A0(internal318),
-  .A1(internal319),
-  .A2(internal320),
-  .A3(internal321),
-  .A4(internal322),
-  .A5(internal323),
   .DO(I25),
-  .WE_N(internal324),
-  .CE_N(internal325),
-  .DI(IWR25),
-  .A11(internal326),
-  .A10(internal327),
-  .A9(internal328),
-  .A8(internal329),
-  .A7(internal330)
+  .DI(IWR25)
 );
 
 
 // 2C09:
 // (no code to express 2147)
 part_2147  i_IRAM23_2C09 (
-  .A0(PC0L),
-  .A1(PC1L),
-  .A2(PC2L),
-  .A3(PC3L),
-  .A4(PC4L),
-  .A5(PC5L),
   .DO(I24),
-  .WE_N(internal332),
-  .CE_N(\-ICE3C ),
-  .DI(IWR24),
-  .A11(PC11L),
-  .A10(PC10L),
-  .A9(PC9L),
-  .A8(PC8L),
-  .A7(PC7L)
+  .DI(IWR24)
 );
 
 
@@ -2098,21 +1630,8 @@ part_2147  i_IRAM23_2A09 (
 // 2A08:
 // (no code to express 2147)
 part_2147  i_IRAM23_2A08 (
-  .A0(internal333),
-  .A1(internal334),
-  .A2(internal335),
-  .A3(internal336),
-  .A4(internal337),
-  .A5(internal338),
   .DO(I33),
-  .WE_N(internal339),
-  .CE_N(internal340),
-  .DI(IWR33),
-  .A11(internal341),
-  .A10(internal342),
-  .A9(internal343),
-  .A8(internal344),
-  .A7(internal345)
+  .DI(IWR33)
 );
 
 
@@ -2129,7 +1648,7 @@ part_2147  i_IRAM23_2A07 (
 part_2147  i_IRAM23_2A06 (
   .DO(I31),
   .DI(IWR31),
-  .A11(internal289)
+  .A11(internal65)
 );
 
 
@@ -2145,17 +1664,17 @@ part_2147  i_IRAM23_2B10 (
 assign PC6K = ! \-PCC6 ;
 assign PC7K = ! \-PCC7 ;
 assign PC8K = ! \-PCC8 ;
-assign \-PCC9  = ! PC9K;
-assign \-PCC10  = ! PC10K;
-assign \-PCC11  = ! PC11K;
+assign PC9K = ! \-PCC9 ;
+assign PC10K = ! \-PCC10 ;
+assign PC11K = ! \-PCC11 ;
 
 // 2C03:
 assign PC0K = ! \-PCC0 ;
 assign PC1K = ! \-PCC1 ;
 assign PC2K = ! \-PCC2 ;
-assign \-PCC3  = ! PC3K;
-assign \-PCC4  = ! PC4K;
-assign \-PCC5  = ! PC5K;
+assign PC3K = ! \-PCC3 ;
+assign PC4K = ! \-PCC4 ;
+assign PC5K = ! \-PCC5 ;
 
 // 2B04:
 // (no code to express 2147)
@@ -2188,84 +1707,32 @@ part_2147  i_IRAM22_2B03 (
 // 2B02:
 // (no code to express 2147)
 part_2147  i_IRAM22_2B02 (
-  .A0(internal348),
-  .A1(internal349),
-  .A2(internal350),
-  .A3(internal351),
-  .A4(internal352),
-  .A5(internal353),
   .DO(I27),
-  .WE_N(internal354),
-  .CE_N(internal355),
-  .DI(IWR27),
-  .A11(internal356),
-  .A10(internal357),
-  .A9(internal358),
-  .A8(internal359),
-  .A7(internal360)
+  .DI(IWR27)
 );
 
 
 // 2B01:
 // (no code to express 2147)
 part_2147  i_IRAM22_2B01 (
-  .A0(internal362),
-  .A1(internal363),
-  .A2(internal364),
-  .A3(internal365),
-  .A4(internal366),
-  .A5(internal367),
   .DO(I26),
-  .WE_N(internal368),
-  .CE_N(internal369),
-  .DI(IWR26),
-  .A11(internal370),
-  .A10(internal371),
-  .A9(internal372),
-  .A8(internal373),
-  .A7(internal374)
+  .DI(IWR26)
 );
 
 
 // 2C05:
 // (no code to express 2147)
 part_2147  i_IRAM22_2C05 (
-  .A0(internal376),
-  .A1(internal377),
-  .A2(internal378),
-  .A3(internal379),
-  .A4(internal380),
-  .A5(internal381),
   .DO(I25),
-  .WE_N(internal382),
-  .CE_N(internal383),
-  .DI(IWR25),
-  .A11(internal384),
-  .A10(internal385),
-  .A9(internal386),
-  .A8(internal387),
-  .A7(internal388)
+  .DI(IWR25)
 );
 
 
 // 2C04:
 // (no code to express 2147)
 part_2147  i_IRAM22_2C04 (
-  .A0(PC0K),
-  .A1(PC1K),
-  .A2(PC2K),
-  .A3(PC3K),
-  .A4(PC4K),
-  .A5(PC5K),
   .DO(I24),
-  .WE_N(internal390),
-  .CE_N(\-ICE2C ),
-  .DI(IWR24),
-  .A11(PC11K),
-  .A10(PC10K),
-  .A9(PC9K),
-  .A8(PC8K),
-  .A7(PC7K)
+  .DI(IWR24)
 );
 
 
@@ -2301,21 +1768,8 @@ part_2147  i_IRAM22_2A04 (
 // 2A03:
 // (no code to express 2147)
 part_2147  i_IRAM22_2A03 (
-  .A0(internal391),
-  .A1(internal392),
-  .A2(internal393),
-  .A3(internal394),
-  .A4(internal395),
-  .A5(internal396),
   .DO(I33),
-  .WE_N(internal397),
-  .CE_N(internal398),
-  .DI(IWR33),
-  .A11(internal399),
-  .A10(internal400),
-  .A9(internal401),
-  .A8(internal402),
-  .A7(internal403)
+  .DI(IWR33)
 );
 
 
@@ -2332,7 +1786,7 @@ part_2147  i_IRAM22_2A02 (
 part_2147  i_IRAM22_2A01 (
   .DO(I31),
   .DI(IWR31),
-  .A11(internal347)
+  .A11(internal66)
 );
 
 
@@ -2348,17 +1802,17 @@ part_2147  i_IRAM22_2B05 (
 assign PC6J = ! \-PCC6 ;
 assign PC7J = ! \-PCC7 ;
 assign PC8J = ! \-PCC8 ;
-assign \-PCC9  = ! PC9J;
-assign \-PCC10  = ! PC10J;
-assign \-PCC11  = ! PC11J;
+assign PC9J = ! \-PCC9 ;
+assign PC10J = ! \-PCC10 ;
+assign PC11J = ! \-PCC11 ;
 
 // 1C28:
 assign PC0J = ! \-PCC0 ;
 assign PC1J = ! \-PCC1 ;
 assign PC2J = ! \-PCC2 ;
-assign \-PCC3  = ! PC3J;
-assign \-PCC4  = ! PC4J;
-assign \-PCC5  = ! PC5J;
+assign PC3J = ! \-PCC3 ;
+assign PC4J = ! \-PCC4 ;
+assign PC5J = ! \-PCC5 ;
 
 // 1B29:
 // (no code to express 2147)
@@ -2391,21 +1845,8 @@ part_2147  i_IRAM21_1B28 (
 // 1B27:
 // (no code to express 2147)
 part_2147  i_IRAM21_1B27 (
-  .A0(internal406),
-  .A1(internal407),
-  .A2(internal408),
-  .A3(internal409),
-  .A4(internal410),
-  .A5(internal411),
   .DO(I27),
-  .WE_N(internal412),
-  .CE_N(internal413),
-  .DI(IWR27),
-  .A11(internal414),
-  .A10(internal415),
-  .A9(internal416),
-  .A8(internal417),
-  .A7(internal418)
+  .DI(IWR27)
 );
 
 
@@ -2422,7 +1863,7 @@ part_2147  i_IRAM21_1B26 (
 part_2147  i_IRAM21_1C30 (
   .DO(I25),
   .DI(IWR25),
-  .A11(internal405)
+  .A11(internal67)
 );
 
 
@@ -2466,84 +1907,32 @@ part_2147  i_IRAM21_1A29 (
 // 1A28:
 // (no code to express 2147)
 part_2147  i_IRAM21_1A28 (
-  .A0(internal420),
-  .A1(internal421),
-  .A2(internal422),
-  .A3(internal423),
-  .A4(internal424),
-  .A5(internal425),
   .DO(I33),
-  .WE_N(internal426),
-  .CE_N(internal427),
-  .DI(IWR33),
-  .A11(internal428),
-  .A10(internal429),
-  .A9(internal430),
-  .A8(internal431),
-  .A7(internal432)
+  .DI(IWR33)
 );
 
 
 // 1A27:
 // (no code to express 2147)
 part_2147  i_IRAM21_1A27 (
-  .A0(internal434),
-  .A1(internal435),
-  .A2(internal436),
-  .A3(internal437),
-  .A4(internal438),
-  .A5(internal439),
   .DO(I32),
-  .WE_N(internal440),
-  .CE_N(internal441),
-  .DI(IWR32),
-  .A11(internal442),
-  .A10(internal443),
-  .A9(internal444),
-  .A8(internal445),
-  .A7(internal446)
+  .DI(IWR32)
 );
 
 
 // 1A26:
 // (no code to express 2147)
 part_2147  i_IRAM21_1A26 (
-  .A0(internal448),
-  .A1(internal449),
-  .A2(internal450),
-  .A3(internal451),
-  .A4(internal452),
-  .A5(internal453),
   .DO(I31),
-  .WE_N(internal454),
-  .CE_N(internal455),
-  .DI(IWR31),
-  .A11(internal456),
-  .A10(internal457),
-  .A9(internal458),
-  .A8(internal459),
-  .A7(internal460)
+  .DI(IWR31)
 );
 
 
 // 1B30:
 // (no code to express 2147)
 part_2147  i_IRAM21_1B30 (
-  .A0(PC0J),
-  .A1(PC1J),
-  .A2(PC2J),
-  .A3(PC3J),
-  .A4(PC4J),
-  .A5(PC5J),
   .DO(I30),
-  .WE_N(\-IWEJ ),
-  .CE_N(\-ICE1C ),
-  .DI(IWR30),
-  .A11(PC11J),
-  .A10(PC10J),
-  .A9(PC9J),
-  .A8(PC8J),
-  .A7(PC7J)
+  .DI(IWR30)
 );
 
 
@@ -2551,17 +1940,17 @@ part_2147  i_IRAM21_1B30 (
 assign PC6I = ! \-PCC6 ;
 assign PC7I = ! \-PCC7 ;
 assign PC8I = ! \-PCC8 ;
-assign \-PCC9  = ! PC9I;
-assign \-PCC10  = ! PC10I;
-assign \-PCC11  = ! PC11I;
+assign PC9I = ! \-PCC9 ;
+assign PC10I = ! \-PCC10 ;
+assign PC11I = ! \-PCC11 ;
 
 // 1C23:
 assign PC0I = ! \-PCC0 ;
 assign PC1I = ! \-PCC1 ;
 assign PC2I = ! \-PCC2 ;
-assign \-PCC3  = ! PC3I;
-assign \-PCC4  = ! PC4I;
-assign \-PCC5  = ! PC5I;
+assign PC3I = ! \-PCC3 ;
+assign PC4I = ! \-PCC4 ;
+assign PC5I = ! \-PCC5 ;
 
 // 1B24:
 // (no code to express 2147)
@@ -2594,21 +1983,8 @@ part_2147  i_IRAM20_1B23 (
 // 1B22:
 // (no code to express 2147)
 part_2147  i_IRAM20_1B22 (
-  .A0(internal463),
-  .A1(internal464),
-  .A2(internal465),
-  .A3(internal466),
-  .A4(internal467),
-  .A5(internal468),
   .DO(I27),
-  .WE_N(internal469),
-  .CE_N(internal470),
-  .DI(IWR27),
-  .A11(internal471),
-  .A10(internal472),
-  .A9(internal473),
-  .A8(internal474),
-  .A7(internal475)
+  .DI(IWR27)
 );
 
 
@@ -2625,7 +2001,7 @@ part_2147  i_IRAM20_1B21 (
 part_2147  i_IRAM20_1C25 (
   .DO(I25),
   .DI(IWR25),
-  .A11(internal462)
+  .A11(internal68)
 );
 
 
@@ -2669,84 +2045,32 @@ part_2147  i_IRAM20_1A24 (
 // 1A23:
 // (no code to express 2147)
 part_2147  i_IRAM20_1A23 (
-  .A0(internal477),
-  .A1(internal478),
-  .A2(internal479),
-  .A3(internal480),
-  .A4(internal481),
-  .A5(internal482),
   .DO(I33),
-  .WE_N(internal483),
-  .CE_N(internal484),
-  .DI(IWR33),
-  .A11(internal485),
-  .A10(internal486),
-  .A9(internal487),
-  .A8(internal488),
-  .A7(internal489)
+  .DI(IWR33)
 );
 
 
 // 1A22:
 // (no code to express 2147)
 part_2147  i_IRAM20_1A22 (
-  .A0(internal491),
-  .A1(internal492),
-  .A2(internal493),
-  .A3(internal494),
-  .A4(internal495),
-  .A5(internal496),
   .DO(I32),
-  .WE_N(internal497),
-  .CE_N(internal498),
-  .DI(IWR32),
-  .A11(internal499),
-  .A10(internal500),
-  .A9(internal501),
-  .A8(internal502),
-  .A7(internal503)
+  .DI(IWR32)
 );
 
 
 // 1A21:
 // (no code to express 2147)
 part_2147  i_IRAM20_1A21 (
-  .A0(internal505),
-  .A1(internal506),
-  .A2(internal507),
-  .A3(internal508),
-  .A4(internal509),
-  .A5(internal510),
   .DO(I31),
-  .WE_N(internal511),
-  .CE_N(internal512),
-  .DI(IWR31),
-  .A11(internal513),
-  .A10(internal514),
-  .A9(internal515),
-  .A8(internal516),
-  .A7(internal517)
+  .DI(IWR31)
 );
 
 
 // 1B25:
 // (no code to express 2147)
 part_2147  i_IRAM20_1B25 (
-  .A0(PC0I),
-  .A1(PC1I),
-  .A2(PC2I),
-  .A3(PC3I),
-  .A4(PC4I),
-  .A5(PC5I),
   .DO(I30),
-  .WE_N(\-IWEI ),
-  .CE_N(\-ICE0C ),
-  .DI(IWR30),
-  .A11(PC11I),
-  .A10(PC10I),
-  .A9(PC9I),
-  .A8(PC8I),
-  .A7(PC7I)
+  .DI(IWR30)
 );
 
 
@@ -2754,17 +2078,17 @@ part_2147  i_IRAM20_1B25 (
 assign PC6H = ! \-PCB6 ;
 assign PC7H = ! \-PCB7 ;
 assign PC8H = ! \-PCB8 ;
-assign \-PCB9  = ! PC9H;
-assign \-PCB10  = ! PC10H;
-assign \-PCB11  = ! PC11H;
+assign PC9H = ! \-PCB9 ;
+assign PC10H = ! \-PCB10 ;
+assign PC11H = ! \-PCB11 ;
 
 // 2D29:
 assign PC0H = ! \-PCB0 ;
 assign PC1H = ! \-PCB1 ;
 assign PC2H = ! \-PCB2 ;
-assign \-PCB3  = ! PC3H;
-assign \-PCB4  = ! PC4H;
-assign \-PCB5  = ! PC5H;
+assign PC3H = ! \-PCB3 ;
+assign PC4H = ! \-PCB4 ;
+assign PC5H = ! \-PCB5 ;
 
 // 2E26:
 // (no code to express 2147)
@@ -2797,21 +2121,8 @@ part_2147  i_IRAM13_2F30 (
 // 2F29:
 // (no code to express 2147)
 part_2147  i_IRAM13_2F29 (
-  .A0(internal520),
-  .A1(internal521),
-  .A2(internal522),
-  .A3(internal523),
-  .A4(internal524),
-  .A5(internal525),
   .DO(I15),
-  .WE_N(internal526),
-  .CE_N(internal527),
-  .DI(IWR15),
-  .A11(internal528),
-  .A10(internal529),
-  .A9(internal530),
-  .A8(internal531),
-  .A7(internal532)
+  .DI(IWR15)
 );
 
 
@@ -2828,7 +2139,7 @@ part_2147  i_IRAM13_2F28 (
 part_2147  i_IRAM13_2F27 (
   .DO(I13),
   .DI(IWR13),
-  .A11(internal519)
+  .A11(internal69)
 );
 
 
@@ -2872,84 +2183,32 @@ part_2147  i_IRAM13_2D26 (
 // 2E30:
 // (no code to express 2147)
 part_2147  i_IRAM13_2E30 (
-  .A0(internal534),
-  .A1(internal535),
-  .A2(internal536),
-  .A3(internal537),
-  .A4(internal538),
-  .A5(internal539),
   .DO(I21),
-  .WE_N(internal540),
-  .CE_N(internal541),
-  .DI(IWR21),
-  .A11(internal542),
-  .A10(internal543),
-  .A9(internal544),
-  .A8(internal545),
-  .A7(internal546)
+  .DI(IWR21)
 );
 
 
 // 2E29:
 // (no code to express 2147)
 part_2147  i_IRAM13_2E29 (
-  .A0(internal548),
-  .A1(internal549),
-  .A2(internal550),
-  .A3(internal551),
-  .A4(internal552),
-  .A5(internal553),
   .DO(I20),
-  .WE_N(internal554),
-  .CE_N(internal555),
-  .DI(IWR20),
-  .A11(internal556),
-  .A10(internal557),
-  .A9(internal558),
-  .A8(internal559),
-  .A7(internal560)
+  .DI(IWR20)
 );
 
 
 // 2E28:
 // (no code to express 2147)
 part_2147  i_IRAM13_2E28 (
-  .A0(internal562),
-  .A1(internal563),
-  .A2(internal564),
-  .A3(internal565),
-  .A4(internal566),
-  .A5(internal567),
   .DO(I19),
-  .WE_N(internal568),
-  .CE_N(internal569),
-  .DI(IWR19),
-  .A11(internal570),
-  .A10(internal571),
-  .A9(internal572),
-  .A8(internal573),
-  .A7(internal574)
+  .DI(IWR19)
 );
 
 
 // 2E27:
 // (no code to express 2147)
 part_2147  i_IRAM13_2E27 (
-  .A0(PC0H),
-  .A1(PC1H),
-  .A2(PC2H),
-  .A3(PC3H),
-  .A4(PC4H),
-  .A5(PC5H),
   .DO(I18),
-  .WE_N(\-IWEH ),
-  .CE_N(\-ICE3B ),
-  .DI(IWR18),
-  .A11(PC11H),
-  .A10(PC10H),
-  .A9(PC9H),
-  .A8(PC8H),
-  .A7(PC7H)
+  .DI(IWR18)
 );
 
 
@@ -2957,17 +2216,17 @@ part_2147  i_IRAM13_2E27 (
 assign PC6G = ! \-PCB6 ;
 assign PC7G = ! \-PCB7 ;
 assign PC8G = ! \-PCB8 ;
-assign \-PCB9  = ! PC9G;
-assign \-PCB10  = ! PC10G;
-assign \-PCB11  = ! PC11G;
+assign PC9G = ! \-PCB9 ;
+assign PC10G = ! \-PCB10 ;
+assign PC11G = ! \-PCB11 ;
 
 // 2D24:
 assign PC0G = ! \-PCB0 ;
 assign PC1G = ! \-PCB1 ;
 assign PC2G = ! \-PCB2 ;
-assign \-PCB3  = ! PC3G;
-assign \-PCB4  = ! PC4G;
-assign \-PCB5  = ! PC5G;
+assign PC3G = ! \-PCB3 ;
+assign PC4G = ! \-PCB4 ;
+assign PC5G = ! \-PCB5 ;
 
 // 2E21:
 // (no code to express 2147)
@@ -3000,84 +2259,32 @@ part_2147  i_IRAM12_2F25 (
 // 2F24:
 // (no code to express 2147)
 part_2147  i_IRAM12_2F24 (
-  .A0(internal577),
-  .A1(internal578),
-  .A2(internal579),
-  .A3(internal580),
-  .A4(internal581),
-  .A5(internal582),
   .DO(I15),
-  .WE_N(internal583),
-  .CE_N(internal584),
-  .DI(IWR15),
-  .A11(internal585),
-  .A10(internal586),
-  .A9(internal587),
-  .A8(internal588),
-  .A7(internal589)
+  .DI(IWR15)
 );
 
 
 // 2F23:
 // (no code to express 2147)
 part_2147  i_IRAM12_2F23 (
-  .A0(internal591),
-  .A1(internal592),
-  .A2(internal593),
-  .A3(internal594),
-  .A4(internal595),
-  .A5(internal596),
   .DO(I14),
-  .WE_N(internal597),
-  .CE_N(internal598),
-  .DI(IWR14),
-  .A11(internal599),
-  .A10(internal600),
-  .A9(internal601),
-  .A8(internal602),
-  .A7(internal603)
+  .DI(IWR14)
 );
 
 
 // 2F22:
 // (no code to express 2147)
 part_2147  i_IRAM12_2F22 (
-  .A0(internal605),
-  .A1(internal606),
-  .A2(internal607),
-  .A3(internal608),
-  .A4(internal609),
-  .A5(internal610),
   .DO(I13),
-  .WE_N(internal611),
-  .CE_N(internal612),
-  .DI(IWR13),
-  .A11(internal613),
-  .A10(internal614),
-  .A9(internal615),
-  .A8(internal616),
-  .A7(internal617)
+  .DI(IWR13)
 );
 
 
 // 2F21:
 // (no code to express 2147)
 part_2147  i_IRAM12_2F21 (
-  .A0(PC0G),
-  .A1(PC1G),
-  .A2(PC2G),
-  .A3(PC3G),
-  .A4(PC4G),
-  .A5(PC5G),
   .DO(I12),
-  .WE_N(internal619),
-  .CE_N(\-ICE2B ),
-  .DI(IWR12),
-  .A11(PC11G),
-  .A10(PC10G),
-  .A9(PC9G),
-  .A8(PC8G),
-  .A7(PC7G)
+  .DI(IWR12)
 );
 
 
@@ -3113,21 +2320,8 @@ part_2147  i_IRAM12_2D21 (
 // 2E25:
 // (no code to express 2147)
 part_2147  i_IRAM12_2E25 (
-  .A0(internal620),
-  .A1(internal621),
-  .A2(internal622),
-  .A3(internal623),
-  .A4(internal624),
-  .A5(internal625),
   .DO(I21),
-  .WE_N(internal626),
-  .CE_N(internal627),
-  .DI(IWR21),
-  .A11(internal628),
-  .A10(internal629),
-  .A9(internal630),
-  .A8(internal631),
-  .A7(internal632)
+  .DI(IWR21)
 );
 
 
@@ -3144,7 +2338,7 @@ part_2147  i_IRAM12_2E24 (
 part_2147  i_IRAM12_2E23 (
   .DO(I19),
   .DI(IWR19),
-  .A11(internal576)
+  .A11(internal70)
 );
 
 
@@ -3160,17 +2354,17 @@ part_2147  i_IRAM12_2E22 (
 assign PC6F = ! \-PCB6 ;
 assign PC7F = ! \-PCB7 ;
 assign PC8F = ! \-PCB8 ;
-assign \-PCB9  = ! PC9F;
-assign \-PCB10  = ! PC10F;
-assign \-PCB11  = ! PC11F;
+assign PC9F = ! \-PCB9 ;
+assign PC10F = ! \-PCB10 ;
+assign PC11F = ! \-PCB11 ;
 
 // 2D19:
 assign PC0F = ! \-PCB0 ;
 assign PC1F = ! \-PCB1 ;
 assign PC2F = ! \-PCB2 ;
-assign \-PCB3  = ! PC3F;
-assign \-PCB4  = ! PC4F;
-assign \-PCB5  = ! PC5F;
+assign PC3F = ! \-PCB3 ;
+assign PC4F = ! \-PCB4 ;
+assign PC5F = ! \-PCB5 ;
 
 // 2E16:
 // (no code to express 2147)
@@ -3203,84 +2397,32 @@ part_2147  i_IRAM11_2F20 (
 // 2F19:
 // (no code to express 2147)
 part_2147  i_IRAM11_2F19 (
-  .A0(internal635),
-  .A1(internal636),
-  .A2(internal637),
-  .A3(internal638),
-  .A4(internal639),
-  .A5(internal640),
   .DO(I15),
-  .WE_N(internal641),
-  .CE_N(internal642),
-  .DI(IWR15),
-  .A11(internal643),
-  .A10(internal644),
-  .A9(internal645),
-  .A8(internal646),
-  .A7(internal647)
+  .DI(IWR15)
 );
 
 
 // 2F18:
 // (no code to express 2147)
 part_2147  i_IRAM11_2F18 (
-  .A0(internal649),
-  .A1(internal650),
-  .A2(internal651),
-  .A3(internal652),
-  .A4(internal653),
-  .A5(internal654),
   .DO(I14),
-  .WE_N(internal655),
-  .CE_N(internal656),
-  .DI(IWR14),
-  .A11(internal657),
-  .A10(internal658),
-  .A9(internal659),
-  .A8(internal660),
-  .A7(internal661)
+  .DI(IWR14)
 );
 
 
 // 2F17:
 // (no code to express 2147)
 part_2147  i_IRAM11_2F17 (
-  .A0(internal663),
-  .A1(internal664),
-  .A2(internal665),
-  .A3(internal666),
-  .A4(internal667),
-  .A5(internal668),
   .DO(I13),
-  .WE_N(internal669),
-  .CE_N(internal670),
-  .DI(IWR13),
-  .A11(internal671),
-  .A10(internal672),
-  .A9(internal673),
-  .A8(internal674),
-  .A7(internal675)
+  .DI(IWR13)
 );
 
 
 // 2F16:
 // (no code to express 2147)
 part_2147  i_IRAM11_2F16 (
-  .A0(PC0F),
-  .A1(PC1F),
-  .A2(PC2F),
-  .A3(PC3F),
-  .A4(PC4F),
-  .A5(PC5F),
   .DO(I12),
-  .WE_N(internal677),
-  .CE_N(\-ICE1B ),
-  .DI(IWR12),
-  .A11(PC11F),
-  .A10(PC10F),
-  .A9(PC9F),
-  .A8(PC8F),
-  .A7(PC7F)
+  .DI(IWR12)
 );
 
 
@@ -3316,21 +2458,8 @@ part_2147  i_IRAM11_2D16 (
 // 2E20:
 // (no code to express 2147)
 part_2147  i_IRAM11_2E20 (
-  .A0(internal678),
-  .A1(internal679),
-  .A2(internal680),
-  .A3(internal681),
-  .A4(internal682),
-  .A5(internal683),
   .DO(I21),
-  .WE_N(internal684),
-  .CE_N(internal685),
-  .DI(IWR21),
-  .A11(internal686),
-  .A10(internal687),
-  .A9(internal688),
-  .A8(internal689),
-  .A7(internal690)
+  .DI(IWR21)
 );
 
 
@@ -3347,7 +2476,7 @@ part_2147  i_IRAM11_2E19 (
 part_2147  i_IRAM11_2E18 (
   .DO(I19),
   .DI(IWR19),
-  .A11(internal634)
+  .A11(internal71)
 );
 
 
@@ -3363,17 +2492,17 @@ part_2147  i_IRAM11_2E17 (
 assign PC6E = ! \-PCB6 ;
 assign PC7E = ! \-PCB7 ;
 assign PC8E = ! \-PCB8 ;
-assign \-PCB9  = ! PC9E;
-assign \-PCB10  = ! PC10E;
-assign \-PCB11  = ! PC11E;
+assign PC9E = ! \-PCB9 ;
+assign PC10E = ! \-PCB10 ;
+assign PC11E = ! \-PCB11 ;
 
 // 2D14:
 assign PC0E = ! \-PCB0 ;
 assign PC1E = ! \-PCB1 ;
 assign PC2E = ! \-PCB2 ;
-assign \-PCB3  = ! PC3E;
-assign \-PCB4  = ! PC4E;
-assign \-PCB5  = ! PC5E;
+assign PC3E = ! \-PCB3 ;
+assign PC4E = ! \-PCB4 ;
+assign PC5E = ! \-PCB5 ;
 
 // 2E11:
 // (no code to express 2147)
@@ -3406,84 +2535,32 @@ part_2147  i_IRAM10_2F15 (
 // 2F14:
 // (no code to express 2147)
 part_2147  i_IRAM10_2F14 (
-  .A0(internal693),
-  .A1(internal694),
-  .A2(internal695),
-  .A3(internal696),
-  .A4(internal697),
-  .A5(internal698),
   .DO(I15),
-  .WE_N(internal699),
-  .CE_N(internal700),
-  .DI(IWR15),
-  .A11(internal701),
-  .A10(internal702),
-  .A9(internal703),
-  .A8(internal704),
-  .A7(internal705)
+  .DI(IWR15)
 );
 
 
 // 2F13:
 // (no code to express 2147)
 part_2147  i_IRAM10_2F13 (
-  .A0(internal707),
-  .A1(internal708),
-  .A2(internal709),
-  .A3(internal710),
-  .A4(internal711),
-  .A5(internal712),
   .DO(I14),
-  .WE_N(internal713),
-  .CE_N(internal714),
-  .DI(IWR14),
-  .A11(internal715),
-  .A10(internal716),
-  .A9(internal717),
-  .A8(internal718),
-  .A7(internal719)
+  .DI(IWR14)
 );
 
 
 // 2F12:
 // (no code to express 2147)
 part_2147  i_IRAM10_2F12 (
-  .A0(internal721),
-  .A1(internal722),
-  .A2(internal723),
-  .A3(internal724),
-  .A4(internal725),
-  .A5(internal726),
   .DO(I13),
-  .WE_N(internal727),
-  .CE_N(internal728),
-  .DI(IWR13),
-  .A11(internal729),
-  .A10(internal730),
-  .A9(internal731),
-  .A8(internal732),
-  .A7(internal733)
+  .DI(IWR13)
 );
 
 
 // 2F11:
 // (no code to express 2147)
 part_2147  i_IRAM10_2F11 (
-  .A0(PC0E),
-  .A1(PC1E),
-  .A2(PC2E),
-  .A3(PC3E),
-  .A4(PC4E),
-  .A5(PC5E),
   .DO(I12),
-  .WE_N(internal735),
-  .CE_N(\-ICE0B ),
-  .DI(IWR12),
-  .A11(PC11E),
-  .A10(PC10E),
-  .A9(PC9E),
-  .A8(PC8E),
-  .A7(PC7E)
+  .DI(IWR12)
 );
 
 
@@ -3519,21 +2596,8 @@ part_2147  i_IRAM10_2D11 (
 // 2E15:
 // (no code to express 2147)
 part_2147  i_IRAM10_2E15 (
-  .A0(internal736),
-  .A1(internal737),
-  .A2(internal738),
-  .A3(internal739),
-  .A4(internal740),
-  .A5(internal741),
   .DO(I21),
-  .WE_N(internal742),
-  .CE_N(internal743),
-  .DI(IWR21),
-  .A11(internal744),
-  .A10(internal745),
-  .A9(internal746),
-  .A8(internal747),
-  .A7(internal748)
+  .DI(IWR21)
 );
 
 
@@ -3550,7 +2614,7 @@ part_2147  i_IRAM10_2E14 (
 part_2147  i_IRAM10_2E13 (
   .DO(I19),
   .DI(IWR19),
-  .A11(internal692)
+  .A11(internal72)
 );
 
 
@@ -3566,17 +2630,17 @@ part_2147  i_IRAM10_2E12 (
 assign PC6D = ! \-PCB6 ;
 assign PC7D = ! \-PCB7 ;
 assign PC8D = ! \-PCB8 ;
-assign \-PCB9  = ! PC9D;
-assign \-PCB10  = ! PC10D;
-assign \-PCB11  = ! PC11D;
+assign PC9D = ! \-PCB9 ;
+assign PC10D = ! \-PCB10 ;
+assign PC11D = ! \-PCB11 ;
 
 // 2D09:
 assign PC0D = ! \-PCB0 ;
 assign PC1D = ! \-PCB1 ;
 assign PC2D = ! \-PCB2 ;
-assign \-PCB3  = ! PC3D;
-assign \-PCB4  = ! PC4D;
-assign \-PCB5  = ! PC5D;
+assign PC3D = ! \-PCB3 ;
+assign PC4D = ! \-PCB4 ;
+assign PC5D = ! \-PCB5 ;
 
 // 2E06:
 // (no code to express 2147)
@@ -3609,21 +2673,8 @@ part_2147  i_IRAM03_2F10 (
 // 2F09:
 // (no code to express 2147)
 part_2147  i_IRAM03_2F09 (
-  .A0(internal751),
-  .A1(internal752),
-  .A2(internal753),
-  .A3(internal754),
-  .A4(internal755),
-  .A5(internal756),
   .DO(I3),
-  .WE_N(internal757),
-  .CE_N(internal758),
-  .DI(IWR3),
-  .A11(internal759),
-  .A10(internal760),
-  .A9(internal761),
-  .A8(internal762),
-  .A7(internal763)
+  .DI(IWR3)
 );
 
 
@@ -3640,7 +2691,7 @@ part_2147  i_IRAM03_2F08 (
 part_2147  i_IRAM03_2F07 (
   .DO(I1),
   .DI(IWR1),
-  .A11(internal750)
+  .A11(internal73)
 );
 
 
@@ -3684,84 +2735,32 @@ part_2147  i_IRAM03_2D06 (
 // 2E10:
 // (no code to express 2147)
 part_2147  i_IRAM03_2E10 (
-  .A0(internal765),
-  .A1(internal766),
-  .A2(internal767),
-  .A3(internal768),
-  .A4(internal769),
-  .A5(internal770),
   .DO(I9),
-  .WE_N(internal771),
-  .CE_N(internal772),
-  .DI(IWR9),
-  .A11(internal773),
-  .A10(internal774),
-  .A9(internal775),
-  .A8(internal776),
-  .A7(internal777)
+  .DI(IWR9)
 );
 
 
 // 2E09:
 // (no code to express 2147)
 part_2147  i_IRAM03_2E09 (
-  .A0(internal779),
-  .A1(internal780),
-  .A2(internal781),
-  .A3(internal782),
-  .A4(internal783),
-  .A5(internal784),
   .DO(I8),
-  .WE_N(internal785),
-  .CE_N(internal786),
-  .DI(IWR8),
-  .A11(internal787),
-  .A10(internal788),
-  .A9(internal789),
-  .A8(internal790),
-  .A7(internal791)
+  .DI(IWR8)
 );
 
 
 // 2E08:
 // (no code to express 2147)
 part_2147  i_IRAM03_2E08 (
-  .A0(internal793),
-  .A1(internal794),
-  .A2(internal795),
-  .A3(internal796),
-  .A4(internal797),
-  .A5(internal798),
   .DO(I7),
-  .WE_N(internal799),
-  .CE_N(internal800),
-  .DI(IWR7),
-  .A11(internal801),
-  .A10(internal802),
-  .A9(internal803),
-  .A8(internal804),
-  .A7(internal805)
+  .DI(IWR7)
 );
 
 
 // 2E07:
 // (no code to express 2147)
 part_2147  i_IRAM03_2E07 (
-  .A0(PC0D),
-  .A1(PC1D),
-  .A2(PC2D),
-  .A3(PC3D),
-  .A4(PC4D),
-  .A5(PC5D),
   .DO(I6),
-  .WE_N(\-IWED ),
-  .CE_N(\-ICE3A ),
-  .DI(IWR6),
-  .A11(PC11D),
-  .A10(PC10D),
-  .A9(PC9D),
-  .A8(PC8D),
-  .A7(PC7D)
+  .DI(IWR6)
 );
 
 
@@ -3769,17 +2768,17 @@ part_2147  i_IRAM03_2E07 (
 assign PC6C = ! \-PCB6 ;
 assign PC7C = ! \-PCB7 ;
 assign PC8C = ! \-PCB8 ;
-assign \-PCB9  = ! PC9C;
-assign \-PCB10  = ! PC10C;
-assign \-PCB11  = ! PC11C;
+assign PC9C = ! \-PCB9 ;
+assign PC10C = ! \-PCB10 ;
+assign PC11C = ! \-PCB11 ;
 
 // 2D04:
 assign PC0C = ! \-PCB0 ;
 assign PC1C = ! \-PCB1 ;
 assign PC2C = ! \-PCB2 ;
-assign \-PCB3  = ! PC3C;
-assign \-PCB4  = ! PC4C;
-assign \-PCB5  = ! PC5C;
+assign PC3C = ! \-PCB3 ;
+assign PC4C = ! \-PCB4 ;
+assign PC5C = ! \-PCB5 ;
 
 // 2E01:
 // (no code to express 2147)
@@ -3812,84 +2811,32 @@ part_2147  i_IRAM02_2F05 (
 // 2F04:
 // (no code to express 2147)
 part_2147  i_IRAM02_2F04 (
-  .A0(internal808),
-  .A1(internal809),
-  .A2(internal810),
-  .A3(internal811),
-  .A4(internal812),
-  .A5(internal813),
   .DO(I3),
-  .WE_N(internal814),
-  .CE_N(internal815),
-  .DI(IWR3),
-  .A11(internal816),
-  .A10(internal817),
-  .A9(internal818),
-  .A8(internal819),
-  .A7(internal820)
+  .DI(IWR3)
 );
 
 
 // 2F03:
 // (no code to express 2147)
 part_2147  i_IRAM02_2F03 (
-  .A0(internal822),
-  .A1(internal823),
-  .A2(internal824),
-  .A3(internal825),
-  .A4(internal826),
-  .A5(internal827),
   .DO(I2),
-  .WE_N(internal828),
-  .CE_N(internal829),
-  .DI(IWR2),
-  .A11(internal830),
-  .A10(internal831),
-  .A9(internal832),
-  .A8(internal833),
-  .A7(internal834)
+  .DI(IWR2)
 );
 
 
 // 2F02:
 // (no code to express 2147)
 part_2147  i_IRAM02_2F02 (
-  .A0(internal836),
-  .A1(internal837),
-  .A2(internal838),
-  .A3(internal839),
-  .A4(internal840),
-  .A5(internal841),
   .DO(I1),
-  .WE_N(internal842),
-  .CE_N(internal843),
-  .DI(IWR1),
-  .A11(internal844),
-  .A10(internal845),
-  .A9(internal846),
-  .A8(internal847),
-  .A7(internal848)
+  .DI(IWR1)
 );
 
 
 // 2F01:
 // (no code to express 2147)
 part_2147  i_IRAM02_2F01 (
-  .A0(PC0C),
-  .A1(PC1C),
-  .A2(PC2C),
-  .A3(PC3C),
-  .A4(PC4C),
-  .A5(PC5C),
   .DO(I0),
-  .WE_N(internal850),
-  .CE_N(\-ICE2A ),
-  .DI(IWR0),
-  .A11(PC11C),
-  .A10(PC10C),
-  .A9(PC9C),
-  .A8(PC8C),
-  .A7(PC7C)
+  .DI(IWR0)
 );
 
 
@@ -3925,21 +2872,8 @@ part_2147  i_IRAM02_2D01 (
 // 2E05:
 // (no code to express 2147)
 part_2147  i_IRAM02_2E05 (
-  .A0(internal851),
-  .A1(internal852),
-  .A2(internal853),
-  .A3(internal854),
-  .A4(internal855),
-  .A5(internal856),
   .DO(I9),
-  .WE_N(internal857),
-  .CE_N(internal858),
-  .DI(IWR9),
-  .A11(internal859),
-  .A10(internal860),
-  .A9(internal861),
-  .A8(internal862),
-  .A7(internal863)
+  .DI(IWR9)
 );
 
 
@@ -3956,7 +2890,7 @@ part_2147  i_IRAM02_2E04 (
 part_2147  i_IRAM02_2E03 (
   .DO(I7),
   .DI(IWR7),
-  .A11(internal807)
+  .A11(internal74)
 );
 
 
@@ -3972,17 +2906,17 @@ part_2147  i_IRAM02_2E02 (
 assign PC6B = ! \-PCB6 ;
 assign PC7B = ! \-PCB7 ;
 assign PC8B = ! \-PCB8 ;
-assign \-PCB9  = ! PC9B;
-assign \-PCB10  = ! PC10B;
-assign \-PCB11  = ! PC11B;
+assign PC9B = ! \-PCB9 ;
+assign PC10B = ! \-PCB10 ;
+assign PC11B = ! \-PCB11 ;
 
 // 1D29:
 assign PC0B = ! \-PCB0 ;
 assign PC1B = ! \-PCB1 ;
 assign PC2B = ! \-PCB2 ;
-assign \-PCB3  = ! PC3B;
-assign \-PCB4  = ! PC4B;
-assign \-PCB5  = ! PC5B;
+assign PC3B = ! \-PCB3 ;
+assign PC4B = ! \-PCB4 ;
+assign PC5B = ! \-PCB5 ;
 
 // 1E26:
 // (no code to express 2147)
@@ -4015,84 +2949,32 @@ part_2147  i_IRAM01_1F30 (
 // 1F29:
 // (no code to express 2147)
 part_2147  i_IRAM01_1F29 (
-  .A0(internal866),
-  .A1(internal867),
-  .A2(internal868),
-  .A3(internal869),
-  .A4(internal870),
-  .A5(internal871),
   .DO(I3),
-  .WE_N(internal872),
-  .CE_N(internal873),
-  .DI(IWR3),
-  .A11(internal874),
-  .A10(internal875),
-  .A9(internal876),
-  .A8(internal877),
-  .A7(internal878)
+  .DI(IWR3)
 );
 
 
 // 1F28:
 // (no code to express 2147)
 part_2147  i_IRAM01_1F28 (
-  .A0(internal880),
-  .A1(internal881),
-  .A2(internal882),
-  .A3(internal883),
-  .A4(internal884),
-  .A5(internal885),
   .DO(I2),
-  .WE_N(internal886),
-  .CE_N(internal887),
-  .DI(IWR2),
-  .A11(internal888),
-  .A10(internal889),
-  .A9(internal890),
-  .A8(internal891),
-  .A7(internal892)
+  .DI(IWR2)
 );
 
 
 // 1F27:
 // (no code to express 2147)
 part_2147  i_IRAM01_1F27 (
-  .A0(internal894),
-  .A1(internal895),
-  .A2(internal896),
-  .A3(internal897),
-  .A4(internal898),
-  .A5(internal899),
   .DO(I1),
-  .WE_N(internal900),
-  .CE_N(internal901),
-  .DI(IWR1),
-  .A11(internal902),
-  .A10(internal903),
-  .A9(internal904),
-  .A8(internal905),
-  .A7(internal906)
+  .DI(IWR1)
 );
 
 
 // 1F26:
 // (no code to express 2147)
 part_2147  i_IRAM01_1F26 (
-  .A0(PC0B),
-  .A1(PC1B),
-  .A2(PC2B),
-  .A3(PC3B),
-  .A4(PC4B),
-  .A5(PC5B),
   .DO(I0),
-  .WE_N(internal908),
-  .CE_N(\-ICE1A ),
-  .DI(IWR0),
-  .A11(PC11B),
-  .A10(PC10B),
-  .A9(PC9B),
-  .A8(PC8B),
-  .A7(PC7B)
+  .DI(IWR0)
 );
 
 
@@ -4128,21 +3010,8 @@ part_2147  i_IRAM01_1D26 (
 // 1E30:
 // (no code to express 2147)
 part_2147  i_IRAM01_1E30 (
-  .A0(internal909),
-  .A1(internal910),
-  .A2(internal911),
-  .A3(internal912),
-  .A4(internal913),
-  .A5(internal914),
   .DO(I9),
-  .WE_N(internal915),
-  .CE_N(internal916),
-  .DI(IWR9),
-  .A11(internal917),
-  .A10(internal918),
-  .A9(internal919),
-  .A8(internal920),
-  .A7(internal921)
+  .DI(IWR9)
 );
 
 
@@ -4159,7 +3028,7 @@ part_2147  i_IRAM01_1E29 (
 part_2147  i_IRAM01_1E28 (
   .DO(I7),
   .DI(IWR7),
-  .A11(internal865)
+  .A11(internal75)
 );
 
 
@@ -4175,17 +3044,17 @@ part_2147  i_IRAM01_1E27 (
 assign PC6A = ! \-PCB6 ;
 assign PC7A = ! \-PCB7 ;
 assign PC8A = ! \-PCB8 ;
-assign \-PCB9  = ! PC9A;
-assign \-PCB10  = ! PC10A;
-assign \-PCB11  = ! PC11A;
+assign PC9A = ! \-PCB9 ;
+assign PC10A = ! \-PCB10 ;
+assign PC11A = ! \-PCB11 ;
 
 // 1D24:
 assign PC0A = ! \-PCB0 ;
 assign PC1A = ! \-PCB1 ;
 assign PC2A = ! \-PCB2 ;
-assign \-PCB3  = ! PC3A;
-assign \-PCB4  = ! PC4A;
-assign \-PCB5  = ! PC5A;
+assign PC3A = ! \-PCB3 ;
+assign PC4A = ! \-PCB4 ;
+assign PC5A = ! \-PCB5 ;
 
 // 1E21:
 // (no code to express 2147)
@@ -4218,84 +3087,32 @@ part_2147  i_IRAM00_1F25 (
 // 1F24:
 // (no code to express 2147)
 part_2147  i_IRAM00_1F24 (
-  .A0(internal924),
-  .A1(internal925),
-  .A2(internal926),
-  .A3(internal927),
-  .A4(internal928),
-  .A5(internal929),
   .DO(I3),
-  .WE_N(internal930),
-  .CE_N(internal931),
-  .DI(IWR3),
-  .A11(internal932),
-  .A10(internal933),
-  .A9(internal934),
-  .A8(internal935),
-  .A7(internal936)
+  .DI(IWR3)
 );
 
 
 // 1F23:
 // (no code to express 2147)
 part_2147  i_IRAM00_1F23 (
-  .A0(internal938),
-  .A1(internal939),
-  .A2(internal940),
-  .A3(internal941),
-  .A4(internal942),
-  .A5(internal943),
   .DO(I2),
-  .WE_N(internal944),
-  .CE_N(internal945),
-  .DI(IWR2),
-  .A11(internal946),
-  .A10(internal947),
-  .A9(internal948),
-  .A8(internal949),
-  .A7(internal950)
+  .DI(IWR2)
 );
 
 
 // 1F22:
 // (no code to express 2147)
 part_2147  i_IRAM00_1F22 (
-  .A0(internal952),
-  .A1(internal953),
-  .A2(internal954),
-  .A3(internal955),
-  .A4(internal956),
-  .A5(internal957),
   .DO(I1),
-  .WE_N(internal958),
-  .CE_N(internal959),
-  .DI(IWR1),
-  .A11(internal960),
-  .A10(internal961),
-  .A9(internal962),
-  .A8(internal963),
-  .A7(internal964)
+  .DI(IWR1)
 );
 
 
 // 1F21:
 // (no code to express 2147)
 part_2147  i_IRAM00_1F21 (
-  .A0(PC0A),
-  .A1(PC1A),
-  .A2(PC2A),
-  .A3(PC3A),
-  .A4(PC4A),
-  .A5(PC5A),
   .DO(I0),
-  .WE_N(internal966),
-  .CE_N(\-ICE0A ),
-  .DI(IWR0),
-  .A11(PC11A),
-  .A10(PC10A),
-  .A9(PC9A),
-  .A8(PC8A),
-  .A7(PC7A)
+  .DI(IWR0)
 );
 
 
@@ -4331,21 +3148,8 @@ part_2147  i_IRAM00_1D21 (
 // 1E25:
 // (no code to express 2147)
 part_2147  i_IRAM00_1E25 (
-  .A0(internal967),
-  .A1(internal968),
-  .A2(internal969),
-  .A3(internal970),
-  .A4(internal971),
-  .A5(internal972),
   .DO(I9),
-  .WE_N(internal973),
-  .CE_N(internal974),
-  .DI(IWR9),
-  .A11(internal975),
-  .A10(internal976),
-  .A9(internal977),
-  .A8(internal978),
-  .A7(internal979)
+  .DI(IWR9)
 );
 
 
@@ -4362,7 +3166,7 @@ part_2147  i_IRAM00_1E24 (
 part_2147  i_IRAM00_1E23 (
   .DO(I7),
   .DI(IWR7),
-  .A11(internal923)
+  .A11(internal76)
 );
 
 
@@ -4389,7 +3193,6 @@ part_74S472  i_PROM1_1B20 (
   .D4(I44),
   .D5(I45),
   .D6(I47),
-  .D7(I48),
   .CE_N(\-PROMCE1 ),
   .A5(\-PROMPC5 ),
   .A6(\-PROMPC6 ),
@@ -4400,11 +3203,6 @@ part_74S472  i_PROM1_1B20 (
 // 1B18:
 // (no code to express 74S472)
 part_74S472  i_PROM1_1B18 (
-  .A0(\-PROMPC0 ),
-  .A1(\-PROMPC1 ),
-  .A2(\-PROMPC2 ),
-  .A3(\-PROMPC3 ),
-  .A4(\-PROMPC4 ),
   .D0(I32),
   .D1(I33),
   .D2(I34),
@@ -4412,22 +3210,18 @@ part_74S472  i_PROM1_1B18 (
   .D4(I36),
   .D5(I37),
   .D6(I38),
-  .D7(I39),
-  .CE_N(\-PROMCE1 ),
-  .A5(\-PROMPC5 ),
-  .A6(\-PROMPC6 ),
-  .A7(\-PROMPC7 )
+  .D7(I39)
 );
 
 
 // 1B16:
 // (no code to express 74S472)
 part_74S472  i_PROM1_1B16 (
-  .A0(\-PROMPC0 ),
-  .A1(\-PROMPC1 ),
-  .A2(\-PROMPC2 ),
-  .A3(\-PROMPC3 ),
-  .A4(\-PROMPC4 ),
+  .A0(internal77),
+  .A1(internal78),
+  .A2(internal79),
+  .A3(internal80),
+  .A4(internal81),
   .D0(I24),
   .D1(I25),
   .D2(I26),
@@ -4436,21 +3230,16 @@ part_74S472  i_PROM1_1B16 (
   .D5(I29),
   .D6(I30),
   .D7(I31),
-  .CE_N(\-PROMCE1 ),
-  .A5(\-PROMPC5 ),
-  .A6(\-PROMPC6 ),
-  .A7(\-PROMPC7 )
+  .CE_N(internal82),
+  .A5(internal83),
+  .A6(internal84),
+  .A7(internal85)
 );
 
 
 // 1D17:
 // (no code to express 74S472)
 part_74S472  i_PROM1_1D17 (
-  .A0(\-PROMPC0 ),
-  .A1(\-PROMPC1 ),
-  .A2(\-PROMPC2 ),
-  .A3(\-PROMPC3 ),
-  .A4(\-PROMPC4 ),
   .D0(I16),
   .D1(I17),
   .D2(I18),
@@ -4458,22 +3247,18 @@ part_74S472  i_PROM1_1D17 (
   .D4(I20),
   .D5(I21),
   .D6(I22),
-  .D7(I23),
-  .CE_N(\-PROMCE1 ),
-  .A5(\-PROMPC5 ),
-  .A6(\-PROMPC6 ),
-  .A7(\-PROMPC7 )
+  .D7(I23)
 );
 
 
 // 1E20:
 // (no code to express 74S472)
 part_74S472  i_PROM1_1E20 (
-  .A0(\-PROMPC0 ),
-  .A1(\-PROMPC1 ),
-  .A2(\-PROMPC2 ),
-  .A3(\-PROMPC3 ),
-  .A4(\-PROMPC4 ),
+  .A0(internal87),
+  .A1(internal88),
+  .A2(internal89),
+  .A3(internal90),
+  .A4(internal91),
   .D0(I8),
   .D1(I9),
   .D2(I10),
@@ -4482,21 +3267,16 @@ part_74S472  i_PROM1_1E20 (
   .D5(I13),
   .D6(I14),
   .D7(I15),
-  .CE_N(\-PROMCE1 ),
-  .A5(\-PROMPC5 ),
-  .A6(\-PROMPC6 ),
-  .A7(\-PROMPC7 )
+  .CE_N(internal92),
+  .A5(internal93),
+  .A6(internal94),
+  .A7(internal95)
 );
 
 
 // 1E18:
 // (no code to express 74S472)
 part_74S472  i_PROM1_1E18 (
-  .A0(\-PROMPC0 ),
-  .A1(\-PROMPC1 ),
-  .A2(\-PROMPC2 ),
-  .A3(\-PROMPC3 ),
-  .A4(\-PROMPC4 ),
   .D0(I0),
   .D1(I1),
   .D2(I2),
@@ -4504,11 +3284,7 @@ part_74S472  i_PROM1_1E18 (
   .D4(I4),
   .D5(I5),
   .D6(I6),
-  .D7(I7),
-  .CE_N(\-PROMCE1 ),
-  .A5(\-PROMPC5 ),
-  .A6(\-PROMPC6 ),
-  .A7(\-PROMPC7 )
+  .D7(I7)
 );
 
 
@@ -4527,7 +3303,6 @@ part_74S472  i_PROM0_1B19 (
   .D4(I44),
   .D5(I45),
   .D6(I47),
-  .D7(I48),
   .CE_N(\-PROMCE0 ),
   .A5(\-PROMPC5 ),
   .A6(\-PROMPC6 ),
@@ -4538,11 +3313,6 @@ part_74S472  i_PROM0_1B19 (
 // 1B17:
 // (no code to express 74S472)
 part_74S472  i_PROM0_1B17 (
-  .A0(\-PROMPC0 ),
-  .A1(\-PROMPC1 ),
-  .A2(\-PROMPC2 ),
-  .A3(\-PROMPC3 ),
-  .A4(\-PROMPC4 ),
   .D0(I32),
   .D1(I33),
   .D2(I34),
@@ -4550,22 +3320,18 @@ part_74S472  i_PROM0_1B17 (
   .D4(I36),
   .D5(I37),
   .D6(I38),
-  .D7(I39),
-  .CE_N(\-PROMCE0 ),
-  .A5(\-PROMPC5 ),
-  .A6(\-PROMPC6 ),
-  .A7(\-PROMPC7 )
+  .D7(I39)
 );
 
 
 // 1C20:
 // (no code to express 74S472)
 part_74S472  i_PROM0_1C20 (
-  .A0(\-PROMPC0 ),
-  .A1(\-PROMPC1 ),
-  .A2(\-PROMPC2 ),
-  .A3(\-PROMPC3 ),
-  .A4(\-PROMPC4 ),
+  .A0(internal97),
+  .A1(internal98),
+  .A2(internal99),
+  .A3(internal100),
+  .A4(internal101),
   .D0(I24),
   .D1(I25),
   .D2(I26),
@@ -4574,21 +3340,16 @@ part_74S472  i_PROM0_1C20 (
   .D5(I29),
   .D6(I30),
   .D7(I31),
-  .CE_N(\-PROMCE0 ),
-  .A5(\-PROMPC5 ),
-  .A6(\-PROMPC6 ),
-  .A7(\-PROMPC7 )
+  .CE_N(internal102),
+  .A5(internal103),
+  .A6(internal104),
+  .A7(internal105)
 );
 
 
 // 1D16:
 // (no code to express 74S472)
 part_74S472  i_PROM0_1D16 (
-  .A0(\-PROMPC0 ),
-  .A1(\-PROMPC1 ),
-  .A2(\-PROMPC2 ),
-  .A3(\-PROMPC3 ),
-  .A4(\-PROMPC4 ),
   .D0(I16),
   .D1(I17),
   .D2(I18),
@@ -4596,22 +3357,18 @@ part_74S472  i_PROM0_1D16 (
   .D4(I20),
   .D5(I21),
   .D6(I22),
-  .D7(I23),
-  .CE_N(\-PROMCE0 ),
-  .A5(\-PROMPC5 ),
-  .A6(\-PROMPC6 ),
-  .A7(\-PROMPC7 )
+  .D7(I23)
 );
 
 
 // 1E19:
 // (no code to express 74S472)
 part_74S472  i_PROM0_1E19 (
-  .A0(\-PROMPC0 ),
-  .A1(\-PROMPC1 ),
-  .A2(\-PROMPC2 ),
-  .A3(\-PROMPC3 ),
-  .A4(\-PROMPC4 ),
+  .A0(internal107),
+  .A1(internal108),
+  .A2(internal109),
+  .A3(internal110),
+  .A4(internal111),
   .D0(I8),
   .D1(I9),
   .D2(I10),
@@ -4620,21 +3377,16 @@ part_74S472  i_PROM0_1E19 (
   .D5(I13),
   .D6(I14),
   .D7(I15),
-  .CE_N(\-PROMCE0 ),
-  .A5(\-PROMPC5 ),
-  .A6(\-PROMPC6 ),
-  .A7(\-PROMPC7 )
+  .CE_N(internal112),
+  .A5(internal113),
+  .A6(internal114),
+  .A7(internal115)
 );
 
 
 // 1E17:
 // (no code to express 74S472)
 part_74S472  i_PROM0_1E17 (
-  .A0(\-PROMPC0 ),
-  .A1(\-PROMPC1 ),
-  .A2(\-PROMPC2 ),
-  .A3(\-PROMPC3 ),
-  .A4(\-PROMPC4 ),
   .D0(I0),
   .D1(I1),
   .D2(I2),
@@ -4642,25 +3394,21 @@ part_74S472  i_PROM0_1E17 (
   .D4(I4),
   .D5(I5),
   .D6(I6),
-  .D7(I7),
-  .CE_N(\-PROMCE0 ),
-  .A5(\-PROMPC5 ),
-  .A6(\-PROMPC6 ),
-  .A7(\-PROMPC7 )
+  .D7(I7)
 );
 
 
 // 1E16:
-assign TILT1 = ! (\-APE  & \-APE  & \-APE  & \-APE );
-assign TILT0 = ! (HI2 & \-MEMPE  & \-MEMPE  & \-MEMPE );
+assign TILT1 = ! (\-APE  & \-PDLPE  & \-SPE  & \-MPE );
+assign TILT0 = ! (HI2 & \-MEMPE  & \-V1PE  & \-V0PE );
 
 // 1F10:
 
 
 assign PROMENABLE = ! \-PROMENABLE ;
 
-assign \-DPE  = ! internal981;
-assign \-IPE  = ! IPE;
+assign internal117 = ! \-DPE ;
+assign IPE = ! \-IPE ;
 
 // 1F16:
 // (no code to express TIL309)
@@ -4684,13 +3432,13 @@ part_TIL309  i_PCTL_1F17 (
   .L4(NC),
   .L8(NC),
   .L1(NC),
-  .LATCH(internal982),
+  .LATCH(internal118),
   .I4(PC5),
   .I8(GND),
   .I2(PC4),
-  .BLANK_N(internal983),
+  .BLANK_N(internal119),
   .DP(TILT0),
-  .TEST_N(internal981),
+  .TEST_N(internal117),
   .LDP(NC)
 );
 
@@ -4717,13 +3465,10 @@ part_TIL309  i_PCTL_1F19 (
   .L4(NC),
   .L8(NC),
   .L1(NC),
-  .LATCH(GND),
   .I4(PC11),
   .I8(GND),
   .I2(PC10),
-  .BLANK_N(HI2),
   .DP(IPE),
-  .TEST_N(HI2),
   .LDP(NC)
 );
 
@@ -4770,13 +3515,13 @@ part_74LS244  i_PCTL_1A16 (
 
 
 // 1C18:
-assign \-PROMCE0  = \-PROMCE0  | PC9;
-assign \-PROMCE1  = \-PROMCE1  | \-PROMCE1 ;
+assign \-PROMCE0  = \-PROMENABLE  | PC9;
+assign \-PROMCE1  = \-PROMPC9  | \-PROMENABLE ;
 
 
 
 // 1C19:
-assign \-PROMENABLE  = ! (\-PROMENABLE  & \-PROMENABLE  & \-PROMENABLE  & \-PROMENABLE );
+assign \-PROMENABLE  = ! (\BOTTOM.1K  & \-IDEBUG  & \-PROMDISABLED  & \-IWRITEDA );
 
 
 // 1D18:
@@ -4794,22 +3539,22 @@ part_74S260  i_PCTL_1D18 (
 assign \-PROMPC5  = ! PC5;
 assign \-PROMPC6  = ! PC6;
 assign \-PROMPC7  = ! PC7;
-assign PC8 = ! \-PROMPC8 ;
-assign PC9 = ! \-PROMPC9 ;
+assign \-PROMPC8  = ! PC8;
+assign \-PROMPC9  = ! PC9;
 assign NC = ! NC;
 
 // 1C17:
 assign \-PROMPC0  = ! PC0;
 assign \-PROMPC1  = ! PC1;
 assign \-PROMPC2  = ! PC2;
-assign PC3 = ! \-PROMPC3 ;
-assign PC4 = ! \-PROMPC4 ;
+assign \-PROMPC3  = ! PC3;
+assign \-PROMPC4  = ! PC4;
 assign NC = ! NC;
 
 // 1F14:
 assign OPCCLKA = ! (\-CLK5  | OPCCLK);
 assign OPCCLKB = ! (\-CLK5  | OPCCLK);
-assign internal984 = ! (\-CLK5  | OPCCLK);
+assign internal120 = ! (\-CLK5  | OPCCLK);
 
 
 // 1F10:
@@ -4836,18 +3581,18 @@ part_9328  i_OPCS_1F13 (
 // 1F12:
 // (no code to express 9328)
 part_9328  i_OPCS_1F12 (
-  .CLR_N(internal985),
+  .CLR_N(internal121),
   .AQ_N(NC),
   .AQ(OPC3),
-  .ASEL(internal984),
+  .ASEL(internal120),
   .AI1(NC),
   .AI0(PC3),
-  .ACLK(internal986),
-  .COMCLK(internal987),
-  .BCLK(internal988),
+  .ACLK(internal122),
+  .COMCLK(internal123),
+  .BCLK(internal124),
   .BI0(PC2),
   .BI1(NC),
-  .BSEL(internal989),
+  .BSEL(internal125),
   .BQ(OPC2)
 );
 
@@ -4878,7 +3623,6 @@ part_9328  i_OPCS_1F09 (
   .AQ(OPC7),
   .AI1(NC),
   .AI0(PC7),
-  .COMCLK(OPCCLKC),
   .BI0(PC6),
   .BI1(NC),
   .BQ(OPC6)
@@ -4888,18 +3632,18 @@ part_9328  i_OPCS_1F09 (
 // 1F08:
 // (no code to express 9328)
 part_9328  i_OPCS_1F08 (
-  .CLR_N(internal990),
+  .CLR_N(internal126),
   .AQ_N(NC),
   .AQ(OPC9),
-  .ASEL(internal991),
+  .ASEL(internal127),
   .AI1(NC),
   .AI0(PC9),
-  .ACLK(internal992),
+  .ACLK(internal128),
   .COMCLK(OPCCLKC),
-  .BCLK(internal993),
+  .BCLK(internal129),
   .BI0(PC8),
   .BI1(NC),
-  .BSEL(internal994),
+  .BSEL(internal130),
   .BQ(OPC8)
 );
 
@@ -4907,18 +3651,12 @@ part_9328  i_OPCS_1F08 (
 // 1F07:
 // (no code to express 9328)
 part_9328  i_OPCS_1F07 (
-  .CLR_N(internal995),
   .AQ_N(NC),
   .AQ(OPC11),
-  .ASEL(internal996),
   .AI1(NC),
   .AI0(PC11),
-  .ACLK(internal997),
-  .COMCLK(OPCCLKA),
-  .BCLK(internal998),
   .BI0(PC10),
   .BI1(NC),
-  .BSEL(internal999),
   .BQ(OPC10)
 );
 
@@ -4943,27 +3681,28 @@ part_9328  i_OPCS_1F06 (
 
 
 // 1A11:
-assign \-CLOCK_RESET_B  = ! (\-CLOCK_RESET_B  | internal1000);
-assign \-CLOCK_RESET_A  = ! (\-CLOCK_RESET_A  | internal1001);
-assign \POWER_RESET_A  = ! (\POWER_RESET_A  | GND);
+assign \-CLOCK_RESET_B  = ! (\POWER_RESET_A  | internal131);
+assign \-CLOCK_RESET_A  = ! (\POWER_RESET_A  | internal131);
+assign \POWER_RESET_A  = ! (\-POWER_RESET  | GND);
 
 
 // 1A18:
 // (no code to express 74LS109)
 part_74LS109  i_OLORD2_1A18 (
-  .R(\-BOOT ),
-  .J(SRUN),
-  .K_N(HI1),
-  .CLK(MCLK5A),
-  .S(\-CLOCK_RESET_A ),
-  .Q(NC)
+  .R1(\-BOOT ),
+  .J1(SRUN),
+  .K1_N(HI1),
+  .CLK1(MCLK5A),
+  .S1(\-CLOCK_RESET_A ),
+  .Q1(NC),
+  .Q1_N(\BOOT.TRAP )
 );
 
 
 // 1C18:
 
 
-assign internal1002 = internal1003 | \PROG.BOOT ;
+assign internal132 = internal133 | \PROG.BOOT ;
 
 
 // 1D10:
@@ -4981,13 +3720,13 @@ assign \-LOWERHIGHOK  = ! (HI2 & HI1);
 // 1C08:
 
 
-assign RESET = ! (\-BOOT  & \-BOOT  & \-BOOT );
+assign RESET = ! (\-BOOT  & \-CLOCK_RESET_B  & \-PROG.RESET );
 
 // 1A20:
-assign internal1004 = ! \lost<?> ;
-assign internal1005 = ! \-BOOT1 ;
-assign internal1003 = ! \-BOOT2 ;
-assign internal1004 = ! \-POWER_RESET ;
+assign internal134 = ! \lost<?> ;
+assign internal135 = ! \-BOOT1 ;
+assign internal133 = ! \-BOOT2 ;
+assign \-POWER_RESET  = ! internal134;
 
 
 
@@ -4999,18 +3738,18 @@ part_16DUMMY  i_OLORD2_1A19 (
 
 
 // 1A07:
-assign HIGHOK = ! (\-UPPERHIGHOK  | \-UPPERHIGHOK );
-assign \-BOOT  = ! (internal1005 | internal1002);
-assign \-BUS.RESET  = ! (\-BUS.RESET  | \-BUS.RESET );
+assign HIGHOK = ! (\-UPPERHIGHOK  | \-LOWERHIGHOK );
+assign \-BOOT  = ! (internal135 | internal132);
+assign \-BUS.RESET  = ! (\PROG.BUS.RESET  | \POWER_RESET_A );
 
 
 // 1B10:
 assign LDMODE = ! \-LDMODE ;
 
 assign \-MCLK5  = ! MCLK5;
-assign CLK5 = ! \-CLK5 ;
+assign \-CLK5  = ! CLK5;
 
-assign \-BUSINT.LM.RESET  = ! internal1001;
+assign internal131 = ! \-BUSINT.LM.RESET ;
 
 // 1A05:
 // (no code to express 74S374)
@@ -5039,7 +3778,7 @@ part_74S374  i_OLORD2_1A05 (
 assign MCLK5A = ! (\-MCLK5  & \-MCLK5 );
 assign CLK5A = ! (\-CLK5  & \-CLK5 );
 assign \-RESET  = ! (HI1 & RESET);
-assign \BUS.POWER.RESET_L  = ! (\BUS.POWER.RESET_L  & \BUS.POWER.RESET_L );
+assign \BUS.POWER.RESET_L  = ! (\POWER_RESET_A  & \POWER_RESET_A );
 
 // 1C09:
 
@@ -5124,7 +3863,7 @@ part_74S174  i_OLORD1_1A01 (
 
 
 
-assign MACHRUN = ! \-MACHRUN ;
+assign \-MACHRUN  = ! MACHRUN;
 
 
 
@@ -5177,7 +3916,7 @@ assign \-STATHALT  = ! (STATSTOP & STATHENB);
 assign \-SSDONE  = ! SSDONE;
 
 
-assign \-STC32  = ! \-STC32 ;
+assign \STAT.OVF  = ! \STAT.OVF ;
 
 
 // 1A14:
@@ -5352,7 +4091,7 @@ part_9S42_1  i_ICTL_1A15 (
 // 2D25:
 // (no code to express 74S139)
 part_74S139  i_ICTL_2D25 (
-  .G1(internal1007),
+  .G1(internal137),
   .G1Y0(\-ICE3C ),
   .G1Y1(\-ICE2C ),
   .G1Y2(\-ICE1C ),
@@ -5361,8 +4100,8 @@ part_74S139  i_ICTL_2D25 (
   .G2Y2(\-ICE1D ),
   .G2Y1(\-ICE2D ),
   .G2Y0(\-ICE3D ),
-  .B2(internal1010),
-  .A2(internal1009)
+  .B2(internal139),
+  .A2(internal138)
 );
 
 
@@ -5370,17 +4109,17 @@ part_74S139  i_ICTL_2D25 (
 assign \-IWRITEDA  = ! IWRITEDA;
 assign \-PROMDISABLED  = ! PROMDISABLED;
 assign WP5D = ! \-WP5 ;
-assign \-WP5  = ! WP5C;
-assign \-WP5  = ! WP5B;
-assign \-WP5  = ! WP5A;
+assign WP5C = ! \-WP5 ;
+assign WP5B = ! \-WP5 ;
+assign WP5A = ! \-WP5 ;
 
 // 1D20:
 assign \-PC13B  = ! PC13;
 assign \-PC12B  = ! PC12;
 assign IWRITEDD = ! \-IWRITED ;
-assign \-IWRITED  = ! IWRITEDC;
-assign \-IWRITED  = ! IWRITEDB;
-assign \-IWRITED  = ! IWRITEDA;
+assign IWRITEDC = ! \-IWRITED ;
+assign IWRITEDB = ! \-IWRITED ;
+assign IWRITEDA = ! \-IWRITED ;
 
 // 2D30:
 assign \-IWEG  = ! (WP5D & IWRITEDD);
@@ -5410,33 +4149,33 @@ assign \-IWEJ  = ! (IWRITEDA & WP5A);
 assign \-PCC0  = ! PC0;
 assign \-PCC1  = ! PC1;
 assign \-PCC2  = ! PC2;
-assign PC3 = ! \-PCC3 ;
-assign PC4 = ! \-PCC4 ;
-assign PC5 = ! \-PCC5 ;
+assign \-PCC3  = ! PC3;
+assign \-PCC4  = ! PC4;
+assign \-PCC5  = ! PC5;
 
 // 2D10:
 assign \-PCC6  = ! PC6;
 assign \-PCC7  = ! PC7;
 assign \-PCC8  = ! PC8;
-assign PC9 = ! \-PCC9 ;
-assign PC10 = ! \-PCC10 ;
-assign PC11 = ! \-PCC11 ;
+assign \-PCC9  = ! PC9;
+assign \-PCC10  = ! PC10;
+assign \-PCC11  = ! PC11;
 
 // 1C21:
 assign \-PCB0  = ! PC0;
 assign \-PCB1  = ! PC1;
 assign \-PCB2  = ! PC2;
-assign PC3 = ! \-PCB3 ;
-assign PC4 = ! \-PCB4 ;
-assign PC5 = ! \-PCB5 ;
+assign \-PCB3  = ! PC3;
+assign \-PCB4  = ! PC4;
+assign \-PCB5  = ! PC5;
 
 // 1D25:
 assign \-PCB6  = ! PC6;
 assign \-PCB7  = ! PC7;
 assign \-PCB8  = ! PC8;
-assign PC9 = ! \-PCB9 ;
-assign PC10 = ! \-PCB10 ;
-assign PC11 = ! \-PCB11 ;
+assign \-PCB9  = ! PC9;
+assign \-PCB10  = ! PC10;
+assign \-PCB11  = ! PC11;
 
 // 1D30:
 // (no code to express 74S139)
@@ -5481,7 +4220,6 @@ part_74S374  i_DEBUG_1F15 (
 // 1E11:
 // (no code to express 74S374)
 part_74S374  i_DEBUG_1E11 (
-  .OENB_N(\-IDEBUG ),
   .O0(I39),
   .I0(SPY7),
   .I1(SPY6),
@@ -5490,7 +4228,6 @@ part_74S374  i_DEBUG_1E11 (
   .I2(SPY5),
   .I3(SPY4),
   .O3(I36),
-  .CLK(\-LDDBIRH ),
   .O4(I35),
   .I4(SPY3),
   .I5(SPY2),
@@ -5505,7 +4242,6 @@ part_74S374  i_DEBUG_1E11 (
 // (no code to express 74S374)
 part_74S374  i_DEBUG_1E14 (
   .OENB_N(\-IDEBUG ),
-  .O0(I15),
   .I0(SPY15),
   .I1(SPY14),
   .O1(I14),
@@ -5527,7 +4263,6 @@ part_74S374  i_DEBUG_1E14 (
 // 1E15:
 // (no code to express 74S374)
 part_74S374  i_DEBUG_1E15 (
-  .OENB_N(\-IDEBUG ),
   .O0(I7),
   .I0(SPY7),
   .I1(SPY6),
@@ -5536,7 +4271,6 @@ part_74S374  i_DEBUG_1E15 (
   .I2(SPY5),
   .I3(SPY4),
   .O3(I4),
-  .CLK(\-LDDBIRL ),
   .O4(I3),
   .I4(SPY3),
   .I5(SPY2),
@@ -5550,7 +4284,6 @@ part_74S374  i_DEBUG_1E15 (
 // 1E13:
 // (no code to express 74S374)
 part_74S374  i_DEBUG_1E13 (
-  .OENB_N(\-IDEBUG ),
   .O0(I23),
   .I0(SPY7),
   .I1(SPY6),
@@ -5559,7 +4292,6 @@ part_74S374  i_DEBUG_1E13 (
   .I2(SPY5),
   .I3(SPY4),
   .O3(I20),
-  .CLK(\-LDDBIRM ),
   .O4(I19),
   .I4(SPY3),
   .I5(SPY2),
@@ -5595,14 +4327,14 @@ part_74S374  i_DEBUG_1E12 (
 
 // 1C10:
 
-assign TPWP = ! (internal1011 | \MACHRUNA_L );
-assign TPWPIRAM = ! (internal1012 | \MACHRUNA_L );
+assign TPWP = ! (internal140 | \MACHRUNA_L );
+assign TPWPIRAM = ! (internal141 | \MACHRUNA_L );
 
 
 // 1C13:
 
-assign internal1014 = ! (\-TPREND  & internal1012 & internal1013);
-assign internal1013 = ! (\-TPW45  & \-TPW45  & internal1014);
+assign internal142 = ! (\-TPREND  & internal141 & internal141);
+assign internal141 = ! (\-TPW45  & \-CLOCK_RESET_B  & internal142);
 
 // 1D04:
 assign \-TSE1  = ! (TPTSE | GND);
@@ -5632,30 +4364,30 @@ assign MCLK7 = ! (\-MCLK0  | GND);
 assign CLK1 = ! (\-CLK0  | GND);
 assign CLK2 = ! (\-CLK0  | GND);
 assign CLK3 = ! (\-CLK0  | GND);
-assign internal1011 = ! (\-MCLK0  | GND);
+assign internal140 = ! (\-MCLK0  | GND);
 
 // 1D10:
-assign \-CLK0  = \-CLK0  & MACHRUN;
+assign \-CLK0  = \-TPCLK  & MACHRUN;
 
-assign \-MCLK0  = \-MCLK0  & HI1;
+assign \-MCLK0  = \-TPCLK  & HI1;
 
 
 // 1C07:
-assign TPCLK = ! (\-TPR0  & \-TPR0 );
-assign \-TPTSE  = ! (\-TPTSE  & TPTSE);
-assign internal1015 = ! (\-TPW30  & internal1016);
+assign TPCLK = ! (\-TPR0  & \-TPCLK );
+assign \-TPTSE  = ! (\-TPR5  & TPTSE);
+assign internal143 = ! (\-TPW30  & internal140);
 
 
 // 1C06:
-assign \-TPCLK  = ! (\-TPCLK  & TPCLK & \-TPCLK );
-assign TPTSE = ! (\-TPTSE  & \-TPTSE  & \-TPTSE );
-assign internal1016 = ! (\-CLOCK_RESET_B  & \-CLOCK_RESET_B  & internal1015);
+assign \-TPCLK  = ! (\-TPREND  & TPCLK & \-CLOCK_RESET_B );
+assign TPTSE = ! (\-TPTSE  & \-TPR25  & \-CLOCK_RESET_B );
+assign internal140 = ! (\-CLOCK_RESET_B  & \-TPW70  & internal143);
 
 // 1C10:
 
 
 
-assign CYCLECOMPLETED = ! (GND | internal1017);
+assign CYCLECOMPLETED = ! (GND | internal144);
 
 // 1D11:
 // (no code to express TD25)
@@ -5762,14 +4494,14 @@ part_TD100  i_CLOCK1_1D12 (
 
 
 // 1C09:
-assign internal1017 = ! (\-CLOCK_RESET_B  & \-CLOCK_RESET_B );
+assign internal144 = ! (internal145 & \-TPR40 );
 
 
 
 
 // 1C08:
-assign \-CLOCK_RESET_B  = ! (\-CLOCK_RESET_B  & \-CLOCK_RESET_B  & internal1017);
-assign \-TPR80  = ! (\-TPR80  & \-TPR80  & CYCLECOMPLETED);
+assign internal145 = ! (\-CLOCK_RESET_B  & \-TPDONE  & internal144);
+assign \-TPR0  = ! (\-HANG  & \-CLOCK_RESET_B  & CYCLECOMPLETED);
 
 
 // 1E18:
@@ -5800,7 +4532,7 @@ part_93S48  i_VMEMDR_1E17 (
   .I2(\-VMA2 ),
   .I1(\-VMA1 ),
   .I0(\-VMA0 ),
-  .PO(internal1018),
+  .PO(internal146),
   .PE(NC),
   .I11(\-PMA11 ),
   .I10(\-PMA10 ),
@@ -5812,7 +4544,6 @@ part_93S48  i_VMEMDR_1E17 (
 // 1D15:
 // (no code to express 74S373)
 part_74S373  i_VMEMDR_1D15 (
-  .OENB_N(GND),
   .O0(\-PMA15 ),
   .I0(\-VMO7 ),
   .I1(\-VMO6 ),
@@ -5821,7 +4552,6 @@ part_74S373  i_VMEMDR_1D15 (
   .I2(\-VMO5 ),
   .I3(\-VMO4 ),
   .O3(\-PMA12 ),
-  .HOLD_N(MEMSTART),
   .O4(\-PMA11 ),
   .I4(\-VMO3 ),
   .I5(\-VMO2 ),
@@ -5859,7 +4589,7 @@ part_74S373  i_VMEMDR_1D14 (
 
 
 
-assign \-SRCMAP  = ! SRCMAP;
+assign SRCMAP = ! \-SRCMAP ;
 
 
 
@@ -5895,7 +4625,6 @@ part_74S240  i_VMEMDR_1A01 (
 // 1A07:
 // (no code to express 74S240)
 part_74S240  i_VMEMDR_1A07 (
-  .AENB_N(\-MAPDRIVE ),
   .AIN0(\-VMO23 ),
   .BOUT3(MF16),
   .AIN1(\-VMO22 ),
@@ -5918,6 +4647,7 @@ part_74S240  i_VMEMDR_1A07 (
 // 1A03:
 // (no code to express 74S240)
 part_74S240  i_VMEMDR_1A03 (
+  .AENB_N(internal147),
   .AIN0(\-VMO15 ),
   .BOUT3(MF8),
   .AIN1(\-VMO14 ),
@@ -5940,7 +4670,6 @@ part_74S240  i_VMEMDR_1A03 (
 // 1A13:
 // (no code to express 74S240)
 part_74S240  i_VMEMDR_1A13 (
-  .AENB_N(internal1019),
   .AIN0(\-VMO7 ),
   .BOUT3(MF0),
   .AIN1(\-VMO6 ),
@@ -6069,19 +4798,7 @@ part_93425A  i_VMEM2_1B14 (
 // 1B06:
 // (no code to express 93425A)
 part_93425A  i_VMEM2_1B06 (
-  .CE_N(GND),
-  .A0(VMAP4B),
-  .A1(VMAP3B),
-  .A2(VMAP2B),
-  .A3(VMAP1B),
-  .A4(VMAP0B),
-  .D0(\-VMO16 ),
-  .A5(\-MAPI12B ),
-  .A6(\-MAPI11B ),
-  .A7(\-MAPI10B ),
-  .A8(\-MAPI9B ),
-  .A9(\-MAPI8B ),
-  .WE_N(\-VM1WPB )
+  .D0(\-VMO16 )
 );
 
 
@@ -6107,19 +4824,19 @@ part_93425A  i_VMEM2_1B07 (
 // 1B11:
 // (no code to express 93425A)
 part_93425A  i_VMEM2_1B11 (
-  .CE_N(internal1022),
-  .A0(internal1023),
-  .A1(internal1024),
-  .A2(internal1025),
-  .A3(internal1026),
-  .A4(internal1027),
+  .CE_N(internal150),
+  .A0(internal151),
+  .A1(internal152),
+  .A2(internal153),
+  .A3(internal154),
+  .A4(internal155),
   .D0(\-VMO12 ),
-  .A5(internal1028),
-  .A6(internal1029),
-  .A7(internal1030),
-  .A8(internal1031),
-  .A9(internal1032),
-  .WE_N(internal1033)
+  .A5(internal156),
+  .A6(internal157),
+  .A7(internal158),
+  .A8(internal159),
+  .A9(internal160),
+  .WE_N(internal161)
 );
 
 
@@ -6133,19 +4850,19 @@ part_93425A  i_VMEM2_1B08 (
 // 1B09:
 // (no code to express 93425A)
 part_93425A  i_VMEM2_1B09 (
-  .CE_N(internal1034),
-  .A0(internal1035),
-  .A1(internal1036),
-  .A2(internal1037),
-  .A3(internal1038),
-  .A4(internal1039),
+  .CE_N(internal162),
+  .A0(internal163),
+  .A1(internal164),
+  .A2(internal165),
+  .A3(internal166),
+  .A4(internal167),
   .D0(\-VMO19 ),
-  .A5(internal1040),
-  .A6(internal1041),
-  .A7(internal1042),
-  .A8(internal1043),
-  .A9(internal1044),
-  .WE_N(internal1021)
+  .A5(internal168),
+  .A6(internal169),
+  .A7(internal170),
+  .A8(internal171),
+  .A9(internal172),
+  .WE_N(internal149)
 );
 
 
@@ -6173,24 +4890,12 @@ part_93425A  i_VMEM2_1B03 (
 // 1B04:
 // (no code to express 93425A)
 part_93425A  i_VMEM2_1B04 (
-  .CE_N(GND),
-  .A0(VMAP4B),
-  .A1(VMAP3B),
-  .A2(VMAP2B),
-  .A3(VMAP1B),
-  .A4(VMAP0B),
-  .D0(\-VMO23 ),
-  .A5(\-MAPI12B ),
-  .A6(\-MAPI11B ),
-  .A7(\-MAPI10B ),
-  .A8(\-MAPI9B ),
-  .A9(\-MAPI8B ),
-  .WE_N(\-VM1WPB )
+  .D0(\-VMO23 )
 );
 
 
 // 1D12:
-assign internal1045 = VM1MPAR ^ \-VM1LPAR ;
+assign internal173 = VM1MPAR ^ \-VM1LPAR ;
 
 
 
@@ -6303,19 +5008,7 @@ part_93425A  i_VMEM1_1E09 (
 // 1D02:
 // (no code to express 93425A)
 part_93425A  i_VMEM1_1D02 (
-  .CE_N(GND),
-  .A0(VMAP4A),
-  .A1(VMAP3A),
-  .A2(VMAP2A),
-  .A3(VMAP1A),
-  .A4(VMAP0A),
-  .D0(\-VMO4 ),
-  .A5(\-MAPI12A ),
-  .A6(\-MAPI11A ),
-  .A7(\-MAPI10A ),
-  .A8(\-MAPI9A ),
-  .A9(\-MAPI8A ),
-  .WE_N(\-VM1WPA )
+  .D0(\-VMO4 )
 );
 
 
@@ -6341,19 +5034,19 @@ part_93425A  i_VMEM1_1E05 (
 // 1D11:
 // (no code to express 93425A)
 part_93425A  i_VMEM1_1D11 (
-  .CE_N(internal1046),
-  .A0(internal1047),
-  .A1(internal1048),
-  .A2(internal1049),
-  .A3(internal1050),
-  .A4(internal1051),
+  .CE_N(internal174),
+  .A0(internal175),
+  .A1(internal176),
+  .A2(internal177),
+  .A3(internal178),
+  .A4(internal179),
   .D0(\-VMO0 ),
-  .A5(internal1052),
-  .A6(internal1053),
-  .A7(internal1054),
-  .A8(internal1055),
-  .A9(internal1056),
-  .WE_N(internal1057)
+  .A5(internal180),
+  .A6(internal181),
+  .A7(internal182),
+  .A8(internal183),
+  .A9(internal184),
+  .WE_N(internal185)
 );
 
 
@@ -6367,19 +5060,19 @@ part_93425A  i_VMEM1_1E15 (
 // 1E13:
 // (no code to express 93425A)
 part_93425A  i_VMEM1_1E13 (
-  .CE_N(internal1058),
-  .A0(internal1059),
-  .A1(internal1060),
-  .A2(internal1061),
-  .A3(internal1062),
-  .A4(internal1063),
+  .CE_N(internal186),
+  .A0(internal187),
+  .A1(internal188),
+  .A2(internal189),
+  .A3(internal190),
+  .A4(internal191),
   .D0(\-VMO7 ),
-  .A5(internal1064),
-  .A6(internal1065),
-  .A7(internal1066),
-  .A8(internal1067),
-  .A9(internal1068),
-  .WE_N(internal1045)
+  .A5(internal192),
+  .A6(internal193),
+  .A7(internal194),
+  .A8(internal195),
+  .A9(internal196),
+  .WE_N(internal173)
 );
 
 
@@ -6400,19 +5093,7 @@ part_93425A  i_VMEM1_1E08 (
 // 1D01:
 // (no code to express 93425A)
 part_93425A  i_VMEM1_1D01 (
-  .CE_N(GND),
-  .A0(VMAP4A),
-  .A1(VMAP3A),
-  .A2(VMAP2A),
-  .A3(VMAP1A),
-  .A4(VMAP0A),
-  .D0(\-VMO10 ),
-  .A5(\-MAPI12A ),
-  .A6(\-MAPI11A ),
-  .A7(\-MAPI10A ),
-  .A8(\-MAPI9A ),
-  .A9(\-MAPI8A ),
-  .WE_N(\-VM1WPA )
+  .D0(\-VMO10 )
 );
 
 
@@ -6436,7 +5117,7 @@ part_93425A  i_VMEM1_1E04 (
 
 
 // 1E26:
-assign V0PAROK = \-USE.MAP  | internal1069;
+assign V0PAROK = \-USE.MAP  | internal197;
 assign VMOPAROK = \-USE.MAP  | VMOPARODD;
 
 
@@ -6462,7 +5143,7 @@ part_74S280  i_VMEM0_1C01 (
   .I1(\-VMAP1 ),
   .I2(\-VMAP2 ),
   .EVEN(NC),
-  .ODD(internal1069),
+  .ODD(internal197),
   .I3(\-VMAP3 ),
   .I4(\-VMAP4 ),
   .I5(VPARI),
@@ -6511,19 +5192,7 @@ part_93425A  i_VMEM0_1C06 (
 // 1C11:
 // (no code to express 93425A)
 part_93425A  i_VMEM0_1C11 (
-  .CE_N(\-MAPI23 ),
-  .A0(MAPI22),
-  .A1(MAPI21),
-  .A2(MAPI20),
-  .A3(MAPI19),
-  .A4(MAPI18),
-  .D0(\-VMAP3 ),
-  .A5(MAPI17),
-  .A6(MAPI16),
-  .A7(MAPI15),
-  .A8(MAPI14),
-  .A9(MAPI13),
-  .WE_N(\-VM0WPB )
+  .D0(\-VMAP3 )
 );
 
 
@@ -6549,19 +5218,19 @@ part_93425A  i_VMEM0_1C12 (
 // 1D04:
 // (no code to express 93425A)
 part_93425A  i_VMEM0_1D04 (
-  .CE_N(internal1070),
-  .A0(internal1071),
-  .A1(internal1072),
-  .A2(internal1073),
-  .A3(internal1074),
-  .A4(internal1075),
+  .CE_N(internal198),
+  .A0(internal199),
+  .A1(internal200),
+  .A2(internal201),
+  .A3(internal202),
+  .A4(internal203),
   .D0(VPARI),
-  .A5(internal1076),
-  .A6(internal1077),
-  .A7(internal1078),
-  .A8(internal1079),
-  .A9(internal1080),
-  .WE_N(internal1081)
+  .A5(internal204),
+  .A6(internal205),
+  .A7(internal206),
+  .A8(internal207),
+  .A9(internal208),
+  .WE_N(internal209)
 );
 
 
@@ -6575,19 +5244,19 @@ part_93425A  i_VMEM0_1D05 (
 // 1C07:
 // (no code to express 93425A)
 part_93425A  i_VMEM0_1C07 (
-  .CE_N(internal1082),
-  .A0(internal1083),
-  .A1(internal1084),
-  .A2(internal1085),
-  .A3(internal1086),
-  .A4(internal1087),
+  .CE_N(internal210),
+  .A0(internal211),
+  .A1(internal212),
+  .A2(internal213),
+  .A3(internal214),
+  .A4(internal215),
   .D0(\-VMAP0 ),
-  .A5(internal1088),
-  .A6(internal1089),
-  .A7(internal1090),
-  .A8(internal1091),
-  .A9(internal1092),
-  .WE_N(internal1093)
+  .A5(internal216),
+  .A6(internal217),
+  .A7(internal218),
+  .A8(internal219),
+  .A9(internal220),
+  .WE_N(internal221)
 );
 
 
@@ -6608,19 +5277,7 @@ part_93425A  i_VMEM0_1C09 (
 // 1C13:
 // (no code to express 93425A)
 part_93425A  i_VMEM0_1C13 (
-  .CE_N(MAPI23),
-  .A0(MAPI22),
-  .A1(MAPI21),
-  .A2(MAPI20),
-  .A3(MAPI19),
-  .A4(MAPI18),
-  .D0(\-VMAP3 ),
-  .A5(MAPI17),
-  .A6(MAPI16),
-  .A7(MAPI15),
-  .A8(MAPI14),
-  .A9(MAPI13),
-  .WE_N(\-VM0WPA )
+  .D0(\-VMAP3 )
 );
 
 
@@ -6664,7 +5321,7 @@ part_74S258  i_VMAS_1C28 (
 // 2B01:
 // (no code to express 74S258)
 part_74S258  i_VMAS_2B01 (
-  .SEL(internal1094),
+  .SEL(internal222),
   .D0(LC6),
   .D1(OB4),
   .DY(\-VMAS4 ),
@@ -6737,7 +5394,7 @@ part_74S258  i_VMAS_1B29 (
 // 1A27:
 // (no code to express 74S258)
 part_74S258  i_VMAS_1A27 (
-  .SEL(internal1097),
+  .SEL(internal225),
   .D0(LC22),
   .D1(OB20),
   .DY(\-VMAS20 ),
@@ -6756,7 +5413,6 @@ part_74S258  i_VMAS_1A27 (
 // 2B04:
 // (no code to express 74S258)
 part_74S258  i_VMAS_2B04 (
-  .SEL(VMASELA),
   .D0(GND),
   .D1(OB24),
   .DY(\-VMAS24 ),
@@ -6812,7 +5468,7 @@ part_74S258  i_VMAS_1D19 (
 // 1C16:
 // (no code to express 74S258)
 part_74S258  i_VMAS_1C16 (
-  .SEL(internal1098),
+  .SEL(internal226),
   .D0(\-VMA12 ),
   .D1(\-MD12 ),
   .DY(MAPI12),
@@ -6831,7 +5487,6 @@ part_74S258  i_VMAS_1C16 (
 // 1C18:
 // (no code to express 74S258)
 part_74S258  i_VMAS_1C18 (
-  .SEL(\-MEMSTART ),
   .D0(\-VMA16 ),
   .D1(\-MD16 ),
   .DY(MAPI16),
@@ -6906,7 +5561,6 @@ part_74S240  i_VMA_1A06 (
 // 1A12:
 // (no code to express 74S240)
 part_74S240  i_VMA_1A12 (
-  .AENB_N(\-VMADRIVE ),
   .AIN0(\-VMA23 ),
   .BOUT3(MF16),
   .AIN1(\-VMA22 ),
@@ -6929,7 +5583,7 @@ part_74S240  i_VMA_1A12 (
 // 1A14:
 // (no code to express 74S240)
 part_74S240  i_VMA_1A14 (
-  .AENB_N(\-VMADRIVE ),
+  .AENB_N(internal227),
   .AIN0(\-VMA15 ),
   .BOUT3(MF8),
   .AIN1(\-VMA14 ),
@@ -6952,7 +5606,6 @@ part_74S240  i_VMA_1A14 (
 // 1A10:
 // (no code to express 74S240)
 part_74S240  i_VMA_1A10 (
-  .AENB_N(\-VMADRIVE ),
   .AIN0(\-VMA7 ),
   .BOUT3(MF0),
   .AIN1(\-VMA6 ),
@@ -6973,48 +5626,48 @@ part_74S240  i_VMA_1A10 (
 
 
 // 1C22:
-ff i_VMA_1C22_1 (.q(\-VMA0 ), .d(\-VMA0 ), .clk(CLK2A), .enb_n(\-VMA0 ) );
-ff i_VMA_1C22_2 (.q(\-VMA1 ), .d(\-VMA1 ), .clk(CLK2A), .enb_n(\-VMA1 ) );
-ff i_VMA_1C22_3 (.q(\-VMA2 ), .d(\-VMA2 ), .clk(CLK2A), .enb_n(\-VMA2 ) );
-ff i_VMA_1C22_4 (.q(\-VMA3 ), .d(\-VMA3 ), .clk(CLK2A), .enb_n(\-VMA3 ) );
-ff i_VMA_1C22_5 (.q(\-VMA4 ), .d(\-VMA4 ), .clk(CLK2A), .enb_n(\-VMA4 ) );
-ff i_VMA_1C22_6 (.q(\-VMA5 ), .d(\-VMA5 ), .clk(CLK2A), .enb_n(\-VMA5 ) );
+ff i_VMA_1C22_1 (.q(\-VMA0 ), .d(\-VMAS0 ), .clk(\-VMAENB ), .enb_n(internal229) );
+ff i_VMA_1C22_2 (.q(\-VMA1 ), .d(\-VMAS1 ), .clk(\-VMAENB ), .enb_n(internal229) );
+ff i_VMA_1C22_3 (.q(\-VMA2 ), .d(\-VMAS2 ), .clk(\-VMAENB ), .enb_n(internal229) );
+ff i_VMA_1C22_4 (.q(\-VMA3 ), .d(\-VMAS3 ), .clk(\-VMAENB ), .enb_n(internal229) );
+ff i_VMA_1C22_5 (.q(\-VMA4 ), .d(\-VMAS4 ), .clk(\-VMAENB ), .enb_n(internal229) );
+ff i_VMA_1C22_6 (.q(\-VMA5 ), .d(\-VMAS5 ), .clk(\-VMAENB ), .enb_n(internal229) );
 
 // 1D25:
-ff i_VMA_1D25_1 (.q(\-VMA6 ), .d(\-VMA6 ), .clk(CLK2C), .enb_n(\-VMA6 ) );
-ff i_VMA_1D25_2 (.q(\-VMA7 ), .d(\-VMA7 ), .clk(CLK2C), .enb_n(\-VMA7 ) );
-ff i_VMA_1D25_3 (.q(\-VMA8 ), .d(\-VMA8 ), .clk(CLK2C), .enb_n(\-VMA8 ) );
-ff i_VMA_1D25_4 (.q(\-VMA9 ), .d(\-VMA9 ), .clk(CLK2C), .enb_n(\-VMA9 ) );
-ff i_VMA_1D25_5 (.q(\-VMA10 ), .d(\-VMA10 ), .clk(CLK2C), .enb_n(\-VMA10 ) );
-ff i_VMA_1D25_6 (.q(\-VMA11 ), .d(\-VMA11 ), .clk(CLK2C), .enb_n(\-VMA11 ) );
+ff i_VMA_1D25_1 (.q(\-VMA6 ), .d(\-VMAS6 ), .clk(CLK2C), .enb_n(internal229) );
+ff i_VMA_1D25_2 (.q(\-VMA7 ), .d(\-VMAS7 ), .clk(CLK2C), .enb_n(internal229) );
+ff i_VMA_1D25_3 (.q(\-VMA8 ), .d(\-VMAS8 ), .clk(CLK2C), .enb_n(internal229) );
+ff i_VMA_1D25_4 (.q(\-VMA9 ), .d(\-VMAS9 ), .clk(CLK2C), .enb_n(internal229) );
+ff i_VMA_1D25_5 (.q(\-VMA10 ), .d(\-VMAS10 ), .clk(CLK2C), .enb_n(internal229) );
+ff i_VMA_1D25_6 (.q(\-VMA11 ), .d(\-VMAS11 ), .clk(CLK2C), .enb_n(internal229) );
 
 // 1C24:
-ff i_VMA_1C24_1 (.q(\-VMA12 ), .d(\-VMA12 ), .clk(CLK2A), .enb_n(\-VMA12 ) );
-ff i_VMA_1C24_2 (.q(\-VMA13 ), .d(\-VMA13 ), .clk(CLK2A), .enb_n(\-VMA13 ) );
-ff i_VMA_1C24_3 (.q(\-VMA14 ), .d(\-VMA14 ), .clk(CLK2A), .enb_n(\-VMA14 ) );
-ff i_VMA_1C24_4 (.q(\-VMA15 ), .d(\-VMA15 ), .clk(CLK2A), .enb_n(\-VMA15 ) );
-ff i_VMA_1C24_5 (.q(\-VMA16 ), .d(\-VMA16 ), .clk(CLK2A), .enb_n(\-VMA16 ) );
-ff i_VMA_1C24_6 (.q(\-VMA17 ), .d(\-VMA17 ), .clk(CLK2A), .enb_n(\-VMA17 ) );
+ff i_VMA_1C24_1 (.q(\-VMA12 ), .d(\-VMAS12 ), .clk(CLK2A), .enb_n(internal229) );
+ff i_VMA_1C24_2 (.q(\-VMA13 ), .d(\-VMAS13 ), .clk(CLK2A), .enb_n(internal229) );
+ff i_VMA_1C24_3 (.q(\-VMA14 ), .d(\-VMAS14 ), .clk(CLK2A), .enb_n(internal229) );
+ff i_VMA_1C24_4 (.q(\-VMA15 ), .d(\-VMAS15 ), .clk(CLK2A), .enb_n(internal229) );
+ff i_VMA_1C24_5 (.q(\-VMA16 ), .d(\-VMAS16 ), .clk(CLK2A), .enb_n(internal229) );
+ff i_VMA_1C24_6 (.q(\-VMA17 ), .d(\-VMAS17 ), .clk(CLK2A), .enb_n(internal229) );
 
 // 1C25:
-ff i_VMA_1C25_1 (.q(\-VMA18 ), .d(\-VMA18 ), .clk(CLK2A), .enb_n(\-VMA18 ) );
-ff i_VMA_1C25_2 (.q(\-VMA19 ), .d(\-VMA19 ), .clk(CLK2A), .enb_n(\-VMA19 ) );
-ff i_VMA_1C25_3 (.q(\-VMA20 ), .d(\-VMA20 ), .clk(CLK2A), .enb_n(\-VMA20 ) );
-ff i_VMA_1C25_4 (.q(\-VMA21 ), .d(\-VMA21 ), .clk(CLK2A), .enb_n(\-VMA21 ) );
-ff i_VMA_1C25_5 (.q(\-VMA22 ), .d(\-VMA22 ), .clk(CLK2A), .enb_n(\-VMA22 ) );
-ff i_VMA_1C25_6 (.q(\-VMA23 ), .d(\-VMA23 ), .clk(CLK2A), .enb_n(\-VMA23 ) );
+ff i_VMA_1C25_1 (.q(\-VMA18 ), .d(\-VMAS18 ), .clk(CLK2A), .enb_n(internal229) );
+ff i_VMA_1C25_2 (.q(\-VMA19 ), .d(\-VMAS19 ), .clk(CLK2A), .enb_n(internal229) );
+ff i_VMA_1C25_3 (.q(\-VMA20 ), .d(\-VMAS20 ), .clk(CLK2A), .enb_n(internal229) );
+ff i_VMA_1C25_4 (.q(\-VMA21 ), .d(\-VMAS21 ), .clk(CLK2A), .enb_n(internal229) );
+ff i_VMA_1C25_5 (.q(\-VMA22 ), .d(\-VMAS22 ), .clk(CLK2A), .enb_n(internal229) );
+ff i_VMA_1C25_6 (.q(\-VMA23 ), .d(\-VMAS23 ), .clk(CLK2A), .enb_n(internal229) );
 
 // 1B22:
-ff i_VMA_1B22_1 (.q(\-VMA24 ), .d(\-VMA24 ), .clk(CLK1A), .enb_n(\-VMA24 ) );
-ff i_VMA_1B22_2 (.q(\-VMA25 ), .d(\-VMA25 ), .clk(CLK1A), .enb_n(\-VMA25 ) );
-ff i_VMA_1B22_3 (.q(\-VMA26 ), .d(\-VMA26 ), .clk(CLK1A), .enb_n(\-VMA26 ) );
-ff i_VMA_1B22_4 (.q(\-VMA27 ), .d(\-VMA27 ), .clk(CLK1A), .enb_n(\-VMA27 ) );
-ff i_VMA_1B22_5 (.q(\-VMA28 ), .d(\-VMA28 ), .clk(CLK1A), .enb_n(\-VMA28 ) );
-ff i_VMA_1B22_6 (.q(\-VMA29 ), .d(\-VMA29 ), .clk(CLK1A), .enb_n(\-VMA29 ) );
+ff i_VMA_1B22_1 (.q(\-VMA24 ), .d(\-VMAS24 ), .clk(CLK1A), .enb_n(internal229) );
+ff i_VMA_1B22_2 (.q(\-VMA25 ), .d(\-VMAS25 ), .clk(CLK1A), .enb_n(internal229) );
+ff i_VMA_1B22_3 (.q(\-VMA26 ), .d(\-VMAS26 ), .clk(CLK1A), .enb_n(internal229) );
+ff i_VMA_1B22_4 (.q(\-VMA27 ), .d(\-VMAS27 ), .clk(CLK1A), .enb_n(internal229) );
+ff i_VMA_1B22_5 (.q(\-VMA28 ), .d(\-VMAS28 ), .clk(CLK1A), .enb_n(internal229) );
+ff i_VMA_1B22_6 (.q(\-VMA29 ), .d(\-VMAS29 ), .clk(CLK1A), .enb_n(internal229) );
 
 // 1B23:
-ff i_VMA_1B23_1 (.q(\-VMA30 ), .d(\-VMA30 ), .clk(CLK1A), .enb_n(\-VMA30 ) );
-ff i_VMA_1B23_2 (.q(\-VMA31 ), .d(\-VMA31 ), .clk(CLK1A), .enb_n(\-VMA31 ) );
+ff i_VMA_1B23_1 (.q(\-VMA30 ), .d(\-VMAS30 ), .clk(CLK1A), .enb_n(\-VMAENB ) );
+ff i_VMA_1B23_2 (.q(\-VMA31 ), .d(\-VMAS31 ), .clk(CLK1A), .enb_n(\-VMAENB ) );
 ff i_VMA_1B23_3 (.q(NC), .d(NC), .clk(CLK1A), .enb_n(\-VMAENB ) );
 ff i_VMA_1B23_4 (.q(NC), .d(NC), .clk(CLK1A), .enb_n(\-VMAENB ) );
 ff i_VMA_1B23_5 (.q(NC), .d(NC), .clk(CLK1A), .enb_n(\-VMAENB ) );
@@ -7025,7 +5678,7 @@ ff i_VMA_1B23_6 (.q(NC), .d(NC), .clk(CLK1A), .enb_n(\-VMAENB ) );
 
 
 
-assign \-NOPA  = ! NOPA;
+assign NOPA = ! \-NOPA ;
 
 
 // 1D27:
@@ -7035,7 +5688,7 @@ assign MDSELB = ! (\-DESTMDR  | CLK2C);
 
 
 // 3F18:
-assign \USE.MD  = ! (\USE.MD  | NOPA);
+assign \USE.MD  = ! (\-SRCMD  | NOPA);
 
 
 
@@ -7044,18 +5697,18 @@ assign \USE.MD  = ! (\USE.MD  | NOPA);
 assign NC = ! NC;
 assign \-PFR  = ! \-PFR ;
 assign WMAP = ! \-WMAP ;
-assign MEMRQ = ! \-MEMRQ ;
-assign MEMPREPARE = ! \-MEMPREPARE ;
-assign \-DESTMEM  = ! DESTMEM;
+assign \-MEMRQ  = ! MEMRQ;
+assign \-MEMPREPARE  = ! MEMPREPARE;
+assign DESTMEM = ! \-DESTMEM ;
 
 // 1E06:
-assign \-MEMDRIVE.A  = ! (WRCYC & \-MEMDRIVE.A );
-assign \-MEMDRIVE.B  = ! (WRCYC & \-MEMDRIVE.B );
+assign \-MEMDRIVE.A  = ! (WRCYC & \LM_DRIVE_ENB );
+assign \-MEMDRIVE.B  = ! (WRCYC & \LM_DRIVE_ENB );
 
 
 
 // 1D28:
-assign \-VMAENB  = \-VMAENB  & \-VMAENB ;
+assign \-VMAENB  = \-DESTVMA  & \-IFETCH ;
 assign VMASELA = \-IFETCH  & HI11;
 assign VMASELB = \-IFETCH  & HI11;
 
@@ -7067,8 +5720,8 @@ assign \-VM1WPA  = ! (WP1B & MAPWR1D);
 assign \-VM1WPB  = ! (WP1B & MAPWR1D);
 
 // 1C15:
-assign MAPWR0D = ! (\-WMAPD  | \-WMAPD );
-assign MAPWR1D = ! (\-WMAPD  | \-WMAPD );
+assign MAPWR0D = ! (\-WMAPD  | \-VMA26 );
+assign MAPWR1D = ! (\-WMAPD  | \-VMA25 );
 
 
 
@@ -7104,7 +5757,7 @@ part_74S175  i_VCTL1_1C23 (
 
 // 1E16:
 
-assign \-MEMOP  = \-MEMOP  & \-MEMOP  & \-MEMOP ;
+assign \-MEMOP  = \-MEMRD  & \-MEMWR  & \-IFETCH ;
 
 
 // 3F16:
@@ -7125,7 +5778,7 @@ part_74S64  i_VCTL1_3F16 (
 
 
 // 3F17:
-assign \-HANG  = ! (\-HANG  & \-HANG  & \-HANG );
+assign \-HANG  = ! (\RD.IN.PROGRESS  & \USE.MD  & \-CLK3G );
 
 
 
@@ -7133,15 +5786,15 @@ assign \-HANG  = ! (\-HANG  & \-HANG  & \-HANG );
 // (no code to express 74S51)
 part_74S51  i_VCTL1_1D16 (
   .G1A(RDCYC),
-  .G1Y(internal1099),
+  .G1Y(internal230),
   .G1C(MEMPREPARE),
   .G1D(\-MEMWR )
 );
 
 
 // 1D17:
-assign \-PFW  = ! (\-PFW  & WRCYC);
-assign \-VMAOK  = ! (\-VMAOK  & \-VMAOK );
+assign \-PFW  = ! (\-LVMO22  & WRCYC);
+assign \-VMAOK  = ! (\-PFR  & \-PFW );
 
 
 
@@ -7158,7 +5811,7 @@ part_TD250  i_VCTL1_1D22 (
 
 
 
-assign \-MFINISH  = \-MFINISH  & \-MFINISH ;
+assign \-MFINISH  = \-MEMACK  & \-RESET ;
 
 // 1D23:
 // (no code to express TD50)
@@ -7232,22 +5885,22 @@ part_74S175  i_VCTL1_1E20 (
 
 
 // 3E30:
-assign internal1101 = ! (MDPARERR & MDHASPAR & \USE.MD  & \USE.MD );
+assign internal232 = ! (MDPARERR & MDHASPAR & \USE.MD  & \-WAIT );
 
 
 // 3F19:
 assign TRAPB = ! \-TRAP ;
 assign TRAPA = ! \-TRAP ;
 assign MEMPAROK = ! \-MEMPAROK ;
-assign TRAPENB = ! \-TRAPENB ;
+assign \-TRAPENB  = ! TRAPENB;
 
 
 
 // 3F18:
 
-assign \-TRAP  = ! (internal1102 | \-TRAP );
-assign internal1102 = ! (\-PARERR  | \-PARERR );
-assign \-MEMPAROK  = ! (\-MEMPAROK  | TRAPENB);
+assign \-TRAP  = ! (internal232 | \BOOT.TRAP );
+assign internal232 = ! (\-PARERR  | \-TRAPENB );
+assign \-MEMPAROK  = ! (\-PARERR  | TRAPENB);
 
 // 1D12:
 
@@ -7315,8 +5968,6 @@ part_93S48  i_TRAP_1E28 (
 // 3E16:
 // (no code to express 74LS244)
 part_74LS244  i_SPY2_3E16 (
-  .EN1_N(\-SPY.FLAG2 ),
-  .D0(NC),
   .Q7(SPY0),
   .D1(NC),
   .Q6(SPY1),
@@ -7361,7 +6012,6 @@ part_74LS244  i_SPY2_3F15 (
 // 4A15:
 // (no code to express 74LS244)
 part_74LS244  i_SPY2_4A15 (
-  .EN1_N(\-SPY.ML ),
   .D0(M7),
   .Q7(SPY0),
   .D1(M6),
@@ -7407,7 +6057,6 @@ part_74LS244  i_SPY2_4A13 (
 // 4B13:
 // (no code to express 74LS244)
 part_74LS244  i_SPY2_4B13 (
-  .EN1_N(\-SPY.MH ),
   .D0(M23),
   .Q7(SPY0),
   .D1(M22),
@@ -7453,7 +6102,6 @@ part_74LS244  i_SPY2_4B17 (
 // 1F13:
 // (no code to express 74LS244)
 part_74LS244  i_SPY2_1F13 (
-  .EN1_N(\-SPY.AL ),
   .D0(AA7),
   .Q7(SPY0),
   .D1(AA6),
@@ -7499,7 +6147,6 @@ part_74LS244  i_SPY2_1F11 (
 // 3A27:
 // (no code to express 74LS244)
 part_74LS244  i_SPY2_3A27 (
-  .EN1_N(\-SPY.AH ),
   .D0(A23),
   .Q7(SPY0),
   .D1(A22),
@@ -7545,7 +6192,6 @@ part_74LS244  i_SPY2_3A26 (
 // 2C17:
 // (no code to express 74LS244)
 part_74LS244  i_SPY1_2C17 (
-  .EN1_N(\-SPY.OBL ),
   .D0(OB7),
   .Q7(SPY0),
   .D1(OB6),
@@ -7568,7 +6214,7 @@ part_74LS244  i_SPY1_2C17 (
 // 2C18:
 // (no code to express 74LS244)
 part_74LS244  i_SPY1_2C18 (
-  .EN1_N(\-SPY.OBL ),
+  .EN1_N(internal233),
   .D0(OB15),
   .Q7(SPY8),
   .D1(OB14),
@@ -7591,7 +6237,6 @@ part_74LS244  i_SPY1_2C18 (
 // 3C23:
 // (no code to express 74LS244)
 part_74LS244  i_SPY1_3C23 (
-  .EN1_N(\-SPY.OBH ),
   .D0(OB23),
   .Q7(SPY0),
   .D1(OB22),
@@ -7637,7 +6282,6 @@ part_74LS244  i_SPY1_3C24 (
 // 3E01:
 // (no code to express 74LS244)
 part_74LS244  i_SPY1_3E01 (
-  .EN1_N(\-SPY.IRL ),
   .D0(IR7),
   .Q7(SPY0),
   .D1(IR6),
@@ -7683,7 +6327,6 @@ part_74LS244  i_SPY1_3E03 (
 // 3F25:
 // (no code to express 74LS244)
 part_74LS244  i_SPY1_3F25 (
-  .EN1_N(\-SPY.IRM ),
   .D0(IR23),
   .Q7(SPY0),
   .D1(IR22),
@@ -7729,7 +6372,6 @@ part_74LS244  i_SPY1_3F23 (
 // 3F21:
 // (no code to express 74LS244)
 part_74LS244  i_SPY1_3F21 (
-  .EN1_N(\-SPY.IRH ),
   .D0(IR39),
   .Q7(SPY0),
   .D1(IR38),
@@ -7779,22 +6421,22 @@ ff_dsel i_SPCW_4F11_3 (.q(NC), .a(NC), .b(NC), .sel(N), .clk(CLK4D) );
 ff_dsel i_SPCW_4F11_4 (.q(NC), .a(NC), .b(NC), .sel(N), .clk(CLK4D) );
 
 // 4F12:
-ff_dsel i_SPCW_4F12_1 (.q(RETA8), .a(IPC8), .b(WPC8), .sel(internal1103), .clk(internal1104) );
-ff_dsel i_SPCW_4F12_2 (.q(RETA9), .a(IPC9), .b(WPC9), .sel(internal1103), .clk(internal1104) );
-ff_dsel i_SPCW_4F12_3 (.q(IPC11), .a(IPC10), .b(WPC10), .sel(internal1103), .clk(internal1104) );
-ff_dsel i_SPCW_4F12_4 (.q(RETA11), .a(IPC11), .b(WPC11), .sel(internal1103), .clk(internal1104) );
+ff_dsel i_SPCW_4F12_1 (.q(RETA8), .a(IPC8), .b(WPC8), .sel(N), .clk(CLK4D) );
+ff_dsel i_SPCW_4F12_2 (.q(RETA9), .a(IPC9), .b(WPC9), .sel(N), .clk(CLK4D) );
+ff_dsel i_SPCW_4F12_3 (.q(IPC11), .a(IPC10), .b(WPC10), .sel(N), .clk(CLK4D) );
+ff_dsel i_SPCW_4F12_4 (.q(RETA11), .a(IPC11), .b(WPC11), .sel(N), .clk(CLK4D) );
 
 // 4F13:
-ff_dsel i_SPCW_4F13_1 (.q(RETA4), .a(IPC4), .b(WPC4), .sel(internal1103), .clk(internal1104) );
-ff_dsel i_SPCW_4F13_2 (.q(RETA5), .a(IPC5), .b(WPC5), .sel(internal1103), .clk(internal1104) );
-ff_dsel i_SPCW_4F13_3 (.q(IPC7), .a(IPC6), .b(WPC6), .sel(internal1103), .clk(internal1104) );
-ff_dsel i_SPCW_4F13_4 (.q(RETA7), .a(IPC7), .b(WPC7), .sel(internal1103), .clk(internal1104) );
+ff_dsel i_SPCW_4F13_1 (.q(RETA4), .a(IPC4), .b(WPC4), .sel(N), .clk(CLK4D) );
+ff_dsel i_SPCW_4F13_2 (.q(RETA5), .a(IPC5), .b(WPC5), .sel(N), .clk(CLK4D) );
+ff_dsel i_SPCW_4F13_3 (.q(IPC7), .a(IPC6), .b(WPC6), .sel(N), .clk(CLK4D) );
+ff_dsel i_SPCW_4F13_4 (.q(RETA7), .a(IPC7), .b(WPC7), .sel(N), .clk(CLK4D) );
 
 // 4F14:
-ff_dsel i_SPCW_4F14_1 (.q(RETA0), .a(IPC0), .b(WPC0), .sel(internal1103), .clk(internal1104) );
-ff_dsel i_SPCW_4F14_2 (.q(RETA1), .a(IPC1), .b(WPC1), .sel(internal1103), .clk(internal1104) );
-ff_dsel i_SPCW_4F14_3 (.q(IPC3), .a(IPC2), .b(WPC2), .sel(internal1103), .clk(internal1104) );
-ff_dsel i_SPCW_4F14_4 (.q(RETA3), .a(IPC3), .b(WPC3), .sel(internal1103), .clk(internal1104) );
+ff_dsel i_SPCW_4F14_1 (.q(RETA0), .a(IPC0), .b(WPC0), .sel(N), .clk(CLK4D) );
+ff_dsel i_SPCW_4F14_2 (.q(RETA1), .a(IPC1), .b(WPC1), .sel(N), .clk(CLK4D) );
+ff_dsel i_SPCW_4F14_3 (.q(IPC3), .a(IPC2), .b(WPC2), .sel(N), .clk(CLK4D) );
+ff_dsel i_SPCW_4F14_4 (.q(RETA3), .a(IPC3), .b(WPC3), .sel(N), .clk(CLK4D) );
 
 // 4F15:
 // (no code to express 74S157)
@@ -7835,6 +6477,7 @@ part_74S157  i_SPCW_4E11 (
 // 4E12:
 // (no code to express 74S157)
 part_74S157  i_SPCW_4E12 (
+  .SEL(internal235),
   .A4(RETA8),
   .B4(L8),
   .Y4(SPCW8),
@@ -7853,7 +6496,6 @@ part_74S157  i_SPCW_4E12 (
 // 4E13:
 // (no code to express 74S157)
 part_74S157  i_SPCW_4E13 (
-  .SEL(internal1106),
   .A4(RETA4),
   .B4(L4),
   .Y4(SPCW4),
@@ -7872,7 +6514,7 @@ part_74S157  i_SPCW_4E13 (
 // 4E14:
 // (no code to express 74S157)
 part_74S157  i_SPCW_4E14 (
-  .SEL(internal1107),
+  .SEL(internal237),
   .A4(RETA0),
   .B4(L0),
   .Y4(SPCW0),
@@ -7988,7 +6630,6 @@ part_74S241  i_SPCLCH_4B10 (
 // 4A10:
 // (no code to express 74S373)
 part_74S373  i_SPCLCH_4A10 (
-  .OENB_N(\-SPCDRIVE ),
   .O0(M7),
   .I0(SPCO7),
   .I1(SPCO6),
@@ -7997,7 +6638,6 @@ part_74S373  i_SPCLCH_4A10 (
   .I2(SPCO5),
   .I3(SPCO4),
   .O3(M4),
-  .HOLD_N(CLK4C),
   .O4(M3),
   .I4(SPCO3),
   .I5(SPCO2),
@@ -8011,7 +6651,7 @@ part_74S373  i_SPCLCH_4A10 (
 // 4A09:
 // (no code to express 74S373)
 part_74S373  i_SPCLCH_4A09 (
-  .OENB_N(\-SPCDRIVE ),
+  .OENB_N(internal238),
   .O0(M15),
   .I0(SPCO15),
   .I1(SPCO14),
@@ -8020,7 +6660,7 @@ part_74S373  i_SPCLCH_4A09 (
   .I2(SPCO13),
   .I3(SPCO12),
   .O3(M12),
-  .HOLD_N(CLK4C),
+  .HOLD_N(internal239),
   .O4(M11),
   .I4(SPCO11),
   .I5(SPCO10),
@@ -8095,7 +6735,6 @@ part_74S373  i_SPCLCH_4F18 (
 // 4F19:
 // (no code to express 74S373)
 part_74S373  i_SPCLCH_4F19 (
-  .OENB_N(\-SPCPASS ),
   .O0(SPC15),
   .I0(SPCO15),
   .I1(SPCO14),
@@ -8104,7 +6743,6 @@ part_74S373  i_SPCLCH_4F19 (
   .I2(SPCO13),
   .I3(SPCO12),
   .O3(SPC12),
-  .HOLD_N(CLK4D),
   .O4(SPC11),
   .I4(SPCO11),
   .I5(SPCO10),
@@ -8133,7 +6771,6 @@ part_74S241  i_SPCLCH_4E17 (
 // 4E18:
 // (no code to express 74S241)
 part_74S241  i_SPCLCH_4E18 (
-  .AENB_N(\-SPCWPASS ),
   .Q7(SPC0),
   .Q6(SPC1),
   .Q5(SPC2),
@@ -8148,7 +6785,7 @@ part_74S241  i_SPCLCH_4E18 (
 // 4F20:
 // (no code to express 74S373)
 part_74S373  i_SPCLCH_4F20 (
-  .OENB_N(\-SPCPASS ),
+  .OENB_N(internal240),
   .O0(SPC7),
   .I0(SPCO7),
   .I1(SPCO6),
@@ -8157,7 +6794,7 @@ part_74S373  i_SPCLCH_4F20 (
   .I2(SPCO5),
   .I3(SPCO4),
   .O3(SPC4),
-  .HOLD_N(CLK4D),
+  .HOLD_N(internal241),
   .O4(SPC3),
   .I4(SPCO3),
   .I5(SPCO2),
@@ -8225,17 +6862,17 @@ part_82S21  i_SPC_4E28 (
 // 4E27:
 // (no code to express 82S21)
 part_82S21  i_SPC_4E27 (
-  .WCLK_N(internal1109),
-  .WE0_N(internal1110),
+  .WCLK_N(internal243),
+  .WE0_N(internal244),
   .I0(SPCW2),
-  .A4(internal1111),
-  .CE(internal1112),
+  .A4(internal245),
+  .CE(internal246),
   .D0(SPCO2),
   .D1(SPCO3),
-  .A3(internal1114),
-  .A2(internal1115),
-  .A1(internal1116),
-  .A0(internal1117),
+  .A3(internal248),
+  .A2(internal249),
+  .A1(internal250),
+  .A0(internal251),
   .I1(SPCW3)
 );
 
@@ -8253,17 +6890,9 @@ part_82S21  i_SPC_4E26 (
 // 4F30:
 // (no code to express 82S21)
 part_82S21  i_SPC_4F30 (
-  .WCLK_N(\-SWPB ),
-  .WE0_N(GND),
   .I0(SPCW6),
-  .A4(SPCPTR4),
-  .CE(HI1),
   .D0(SPCO6),
   .D1(SPCO7),
-  .A3(SPCPTR3),
-  .A2(SPCPTR2),
-  .A1(SPCPTR1),
-  .A0(SPCPTR0),
   .I1(SPCW7)
 );
 
@@ -8307,17 +6936,9 @@ part_82S21  i_SPC_4F24 (
 // 4F25:
 // (no code to express 82S21)
 part_82S21  i_SPC_4F25 (
-  .WCLK_N(\-SWPA ),
-  .WE0_N(GND),
   .I0(SPCW16),
-  .A4(SPCPTR4),
-  .CE(HI1),
   .D0(SPCO16),
   .D1(SPCO17),
-  .A3(SPCPTR3),
-  .A2(SPCPTR2),
-  .A1(SPCPTR1),
-  .A0(SPCPTR0),
   .I1(SPCW17)
 );
 
@@ -8325,9 +6946,17 @@ part_82S21  i_SPC_4F25 (
 // 4E21:
 // (no code to express 82S21)
 part_82S21  i_SPC_4E21 (
+  .WCLK_N(internal253),
+  .WE0_N(internal254),
   .I0(SPCW14),
+  .A4(internal255),
+  .CE(internal256),
   .D0(SPCO14),
   .D1(SPCO15),
+  .A3(internal258),
+  .A2(internal259),
+  .A1(internal260),
+  .A0(internal261),
   .I1(SPCW15)
 );
 
@@ -8335,17 +6964,9 @@ part_82S21  i_SPC_4E21 (
 // 4E22:
 // (no code to express 82S21)
 part_82S21  i_SPC_4E22 (
-  .WCLK_N(internal1119),
-  .WE0_N(internal1120),
   .I0(SPCW12),
-  .A4(internal1121),
-  .CE(internal1122),
   .D0(SPCO12),
   .D1(SPCO13),
-  .A3(internal1124),
-  .A2(internal1125),
-  .A1(internal1126),
-  .A0(internal1127),
   .I1(SPCW13)
 );
 
@@ -8353,17 +6974,17 @@ part_82S21  i_SPC_4E22 (
 // 4E23:
 // (no code to express 82S21)
 part_82S21  i_SPC_4E23 (
-  .WCLK_N(internal1129),
-  .WE0_N(internal1130),
+  .WCLK_N(internal263),
+  .WE0_N(internal264),
   .I0(SPCW10),
-  .A4(internal1131),
-  .CE(internal1132),
+  .A4(internal265),
+  .CE(internal266),
   .D0(SPCO10),
   .D1(SPCO11),
-  .A3(internal1134),
-  .A2(internal1135),
-  .A1(internal1136),
-  .A0(internal1137),
+  .A3(internal268),
+  .A2(internal269),
+  .A1(internal270),
+  .A0(internal271),
   .I1(SPCW11)
 );
 
@@ -8371,13 +6992,10 @@ part_82S21  i_SPC_4E23 (
 // 4F28:
 // (no code to express 74S169)
 part_74S169  i_SPC_4F28 (
-  .UP_DN(SPUSH),
-  .CLK(CLK4F),
   .I1(NC),
   .I2(NC),
   .I3(NC),
   .ENB_P_N(GND),
-  .LOAD_N(HI1),
   .ENB_T_N(\-SPCCRY ),
   .O3(NC),
   .O2(NC),
@@ -8407,13 +7025,13 @@ part_74S169  i_SPC_4F23 (
 
 // 3E05:
 
-assign internal1139 = \DESTIMOD0_L  & \DESTIMOD0_L ;
+assign internal273 = \DESTIMOD0_L  & \IWRITED_L ;
 
 
 
 // 4D10:
 
-assign IMOD = ! (internal1139 & \-DESTIMOD1  & \-DESTIMOD1 );
+assign IMOD = ! (internal273 & \-DESTIMOD1  & \-IDEBUG );
 
 
 // 3D04:
@@ -8433,9 +7051,9 @@ part_74S139  i_SOURCE_3D04 (
 assign \-IR22  = ! IR22;
 assign \-IR25  = ! IR25;
 assign NC = ! NC;
-assign \-IRDISP  = ! IRDISP;
-assign \-IRJUMP  = ! IRJUMP;
-assign \-IRALU  = ! IRALU;
+assign IRDISP = ! \-IRDISP ;
+assign IRJUMP = ! \-IRJUMP ;
+assign IRALU = ! \-IRALU ;
 
 // 3D05:
 // (no code to express 74S139)
@@ -8464,25 +7082,20 @@ assign DESTM = DEST & \-IR25 ;
 
 // 3E09:
 
-assign \-DESTMDR  = \-DESTMDR  | \-DESTMDR ;
-assign \-DESTVMA  = IR22 | \-DESTVMA ;
+assign \-DESTMDR  = \-DESTMEM  | \-IR22 ;
+assign \-DESTVMA  = IR22 | \-DESTMEM ;
 
 
 // 3D02:
 
-assign DEST = ! (\-IRALU  & \-IRALU );
+assign DEST = ! (\-IRALU  & \-IRBYTE );
 assign \-DESTMEM  = ! (DESTM & IR23);
 assign \-SPECALU  = ! (IR8 & IRALU);
 
 // 3D12:
 // (no code to express 74S138)
 part_74S138  i_SOURCE_3D12 (
-  .A(IR19),
-  .B(IR20),
-  .C(IR21),
   .G2A(\-IR22 ),
-  .G2B(IR23),
-  .G1(DESTM),
   .Y7(\-DESTIMOD1 ),
   .Y6(\-DESTIMOD0 ),
   .Y5(\-DESTSPC ),
@@ -8515,10 +7128,6 @@ part_74S138  i_SOURCE_3D11 (
 // 3D23:
 // (no code to express 74S138)
 part_74S138  i_SOURCE_3D23 (
-  .A(IR26),
-  .B(IR27),
-  .C(IR28),
-  .G2A(\-IR31 ),
   .G2B(GND),
   .G1(IR29),
   .Y7(NC),
@@ -8551,7 +7160,7 @@ part_74S138  i_SOURCE_3D22 (
 
 
 // 2D15:
-assign \-S4  = \-S4  | \-S4 ;
+assign \-S4  = \-SH4  | \-SR ;
 
 
 
@@ -8595,26 +7204,26 @@ part_74S283  i_SMCTL_2E25 (
 
 
 // 2E14:
-assign S3A = ! (\-SR  | \-SR );
-assign S3B = ! (\-SH3  | \-SH3 );
-assign S2A = ! (\-SR  | \-SR );
-assign S2B = ! (\-IR2  | \-IR2 );
+assign S3A = ! (\-SR  | \-SH3 );
+assign S3B = ! (\-SH3  | \-SR );
+assign S2A = ! (\-SR  | \-IR2 );
+assign S2B = ! (\-IR2  | \-SR );
 
 // 2D20:
-assign \-MR  = ! (\-MR  | IR13);
-assign \-SR  = ! (\-SR  | IR12);
-assign S0 = ! (\-SR  | \-SR );
-assign S1 = ! (\-SR  | \-SR );
+assign \-MR  = ! (\-IRBYTE  | IR13);
+assign \-SR  = ! (\-IRBYTE  | IR12);
+assign S0 = ! (\-SR  | \-IR0 );
+assign S1 = ! (\-SR  | \-IR1 );
 
 // 2E19:
-assign S4 = ! (\-SR  | \-SR );
-assign MSKR0 = ! (\-MR  | \-MR );
-assign MSKR1 = ! (\-MR  | \-MR );
-assign MSKR2 = ! (\-MR  | \-MR );
+assign S4 = ! (\-SR  | \-SH4 );
+assign MSKR0 = ! (\-MR  | \-IR0 );
+assign MSKR1 = ! (\-MR  | \-IR1 );
+assign MSKR2 = ! (\-MR  | \-IR2 );
 
 // 2E30:
-assign MSKR3 = ! (\-MR  | \-MR );
-assign MSKR4 = ! (\-MR  | \-MR );
+assign MSKR3 = ! (\-MR  | \-SH3 );
+assign MSKR4 = ! (\-MR  | \-SH4 );
 
 
 
@@ -8647,11 +7256,8 @@ part_25S10  i_SHIFT1_2D05 (
   .I1(M29),
   .I2(M30),
   .I3(M31),
-  .SEL1(S1),
-  .SEL0(S0),
   .O3(SA31),
   .O2(SA30),
-  .CE_N(GND),
   .O1(SA29)
 );
 
@@ -8685,11 +7291,8 @@ part_25S10  i_SHIFT1_2E09 (
   .I1(SA21),
   .I2(SA25),
   .I3(SA29),
-  .SEL1(S3B),
-  .SEL0(S2B),
   .O3(R29),
   .O2(R25),
-  .CE_N(S4),
   .O1(R21)
 );
 
@@ -8704,11 +7307,11 @@ part_25S10  i_SHIFT1_2E02 (
   .I1(SA22),
   .I2(SA26),
   .I3(SA30),
-  .SEL1(S3B),
-  .SEL0(S2B),
+  .SEL1(internal274),
+  .SEL0(internal275),
   .O3(R30),
   .O2(R26),
-  .CE_N(S4),
+  .CE_N(internal276),
   .O1(R22)
 );
 
@@ -8723,11 +7326,8 @@ part_25S10  i_SHIFT1_2E04 (
   .I1(SA23),
   .I2(SA27),
   .I3(SA31),
-  .SEL1(S3B),
-  .SEL0(S2B),
   .O3(R31),
   .O2(R27),
-  .CE_N(S4),
   .O1(R23)
 );
 
@@ -8758,11 +7358,11 @@ part_25S10  i_SHIFT1_2E01 (
   .I1(SA6),
   .I2(SA10),
   .I3(SA14),
-  .SEL1(internal1140),
-  .SEL0(internal1141),
+  .SEL1(internal277),
+  .SEL0(internal278),
   .O3(R30),
   .O2(R26),
-  .CE_N(internal1142),
+  .CE_N(internal279),
   .O1(R22)
 );
 
@@ -8777,11 +7377,8 @@ part_25S10  i_SHIFT1_2E08 (
   .I1(SA5),
   .I2(SA9),
   .I3(SA13),
-  .SEL1(S3B),
-  .SEL0(S2B),
   .O3(R29),
   .O2(R25),
-  .CE_N(\-S4 ),
   .O1(R21)
 );
 
@@ -8815,11 +7412,8 @@ part_25S10  i_SHIFT1_2D10 (
   .I1(M21),
   .I2(M22),
   .I3(M23),
-  .SEL1(S1),
-  .SEL0(S0),
   .O3(SA23),
   .O2(SA22),
-  .CE_N(GND),
   .O1(SA21)
 );
 
@@ -8872,11 +7466,8 @@ part_25S10  i_SHIFT0_2D25 (
   .I1(M13),
   .I2(M14),
   .I3(M15),
-  .SEL1(S1),
-  .SEL0(S0),
   .O3(SA15),
   .O2(SA14),
-  .CE_N(GND),
   .O1(SA13)
 );
 
@@ -8910,11 +7501,8 @@ part_25S10  i_SHIFT0_2E29 (
   .I1(SA5),
   .I2(SA9),
   .I3(SA13),
-  .SEL1(S3A),
-  .SEL0(S2A),
   .O3(R13),
   .O2(R9),
-  .CE_N(S4),
   .O1(R5)
 );
 
@@ -8929,11 +7517,11 @@ part_25S10  i_SHIFT0_2E22 (
   .I1(SA6),
   .I2(SA10),
   .I3(SA14),
-  .SEL1(S3A),
-  .SEL0(S2A),
+  .SEL1(internal280),
+  .SEL0(internal281),
   .O3(R14),
   .O2(R10),
-  .CE_N(S4),
+  .CE_N(internal282),
   .O1(R6)
 );
 
@@ -8948,11 +7536,8 @@ part_25S10  i_SHIFT0_2E24 (
   .I1(SA7),
   .I2(SA11),
   .I3(SA15),
-  .SEL1(S3A),
-  .SEL0(S2A),
   .O3(R15),
   .O2(R11),
-  .CE_N(S4),
   .O1(R7)
 );
 
@@ -8983,11 +7568,11 @@ part_25S10  i_SHIFT0_2E21 (
   .I1(SA22),
   .I2(SA26),
   .I3(SA30),
-  .SEL1(internal1143),
-  .SEL0(internal1144),
+  .SEL1(internal283),
+  .SEL0(internal284),
   .O3(R14),
   .O2(R10),
-  .CE_N(internal1145),
+  .CE_N(internal285),
   .O1(R6)
 );
 
@@ -9002,11 +7587,8 @@ part_25S10  i_SHIFT0_2E28 (
   .I1(SA21),
   .I2(SA25),
   .I3(SA29),
-  .SEL1(S3A),
-  .SEL0(S2A),
   .O3(R13),
   .O2(R9),
-  .CE_N(\-S4 ),
   .O1(R5)
 );
 
@@ -9040,11 +7622,8 @@ part_25S10  i_SHIFT0_2D30 (
   .I1(M5),
   .I2(M6),
   .I3(M7),
-  .SEL1(S1),
-  .SEL0(S0),
   .O3(SA7),
   .O2(SA6),
-  .CE_N(GND),
   .O1(SA5)
 );
 
@@ -9073,8 +7652,8 @@ part_25S10  i_SHIFT0_2C26 (
 
 
 
-assign \-SRCQ  = ! SRCQ;
-assign ALU31 = ! \-ALU31 ;
+assign SRCQ = ! \-SRCQ ;
+assign \-QDRIVE  = ! ALU31;
 
 // 2A04:
 
@@ -9091,8 +7670,8 @@ assign \-QDRIVE  = ! (SRCQ & TSE2);
 // 2B19:
 
 
-assign QS1 = ! (\-IR1  | \-IR1 );
-assign QS0 = ! (\-IR0  | \-IR0 );
+assign QS1 = ! (\-IR1  | \-IRALU );
+assign QS0 = ! (\-IR0  | \-IRALU );
 
 // 1F08:
 // (no code to express 74S241)
@@ -9112,7 +7691,6 @@ part_74S241  i_QCTL_1F08 (
 // 1F10:
 // (no code to express 74S241)
 part_74S241  i_QCTL_1F10 (
-  .AENB_N(\-QDRIVE ),
   .Q7(MF16),
   .Q6(MF17),
   .Q5(MF18),
@@ -9127,7 +7705,7 @@ part_74S241  i_QCTL_1F10 (
 // 1F15:
 // (no code to express 74S241)
 part_74S241  i_QCTL_1F15 (
-  .AENB_N(\-QDRIVE ),
+  .AENB_N(internal286),
   .Q7(MF8),
   .Q6(MF9),
   .Q5(MF10),
@@ -9142,7 +7720,6 @@ part_74S241  i_QCTL_1F15 (
 // 1E12:
 // (no code to express 74S241)
 part_74S241  i_QCTL_1E12 (
-  .AENB_N(\-QDRIVE ),
   .Q7(MF0),
   .Q6(MF1),
   .Q5(MF2),
@@ -9172,16 +7749,16 @@ part_74S194  i_Q_2C27 (
 // 2C28:
 // (no code to express 74S194)
 part_74S194  i_Q_2C28 (
-  .CLR_N(internal1146),
+  .CLR_N(internal288),
   .SIR(Q3),
   .I0(ALU4),
   .I1(ALU5),
   .I2(ALU6),
   .I3(ALU7),
   .SIL(Q8),
-  .S0(internal1147),
-  .S1(internal1148),
-  .CLK(internal1149),
+  .S0(internal289),
+  .S1(internal290),
+  .CLK(internal291),
   .Q3(Q7),
   .Q2(Q6),
   .Q1(Q5)
@@ -9191,16 +7768,12 @@ part_74S194  i_Q_2C28 (
 // 2C22:
 // (no code to express 74S194)
 part_74S194  i_Q_2C22 (
-  .CLR_N(HI7),
   .SIR(Q7),
   .I0(ALU8),
   .I1(ALU9),
   .I2(ALU10),
   .I3(ALU11),
   .SIL(Q12),
-  .S0(QS0),
-  .S1(QS1),
-  .CLK(CLK2B),
   .Q3(Q11),
   .Q2(Q10),
   .Q1(Q9)
@@ -9244,16 +7817,16 @@ part_74S194  i_Q_2C12 (
 // 2C13:
 // (no code to express 74S194)
 part_74S194  i_Q_2C13 (
-  .CLR_N(internal1150),
+  .CLR_N(internal292),
   .SIR(Q19),
   .I0(ALU20),
   .I1(ALU21),
   .I2(ALU22),
   .I3(ALU23),
   .SIL(Q24),
-  .S0(internal1151),
-  .S1(internal1152),
-  .CLK(internal1153),
+  .S0(internal293),
+  .S1(internal294),
+  .CLK(internal295),
   .Q3(Q23),
   .Q2(Q22),
   .Q1(Q21)
@@ -9263,15 +7836,12 @@ part_74S194  i_Q_2C13 (
 // 2C07:
 // (no code to express 74S194)
 part_74S194  i_Q_2C07 (
-  .CLR_N(HI7),
   .SIR(Q23),
   .I0(ALU24),
   .I1(ALU25),
   .I2(ALU26),
   .I3(ALU27),
   .SIL(Q28),
-  .S0(QS0),
-  .S1(QS1),
   .Q3(Q27),
   .Q2(Q26),
   .Q1(Q25)
@@ -9320,7 +7890,7 @@ part_74S373  i_PLATCH_4A04 (
 // 4A02:
 // (no code to express 74S373)
 part_74S373  i_PLATCH_4A02 (
-  .OENB_N(internal1154),
+  .OENB_N(internal296),
   .O0(M15),
   .I0(PDL15),
   .I1(PDL14),
@@ -9329,7 +7899,7 @@ part_74S373  i_PLATCH_4A02 (
   .I2(PDL13),
   .I3(PDL12),
   .O3(M12),
-  .HOLD_N(internal1155),
+  .HOLD_N(internal297),
   .O4(M11),
   .I4(PDL11),
   .I5(PDL10),
@@ -9364,7 +7934,6 @@ part_74S373  i_PLATCH_4B05 (
 // 4B03:
 // (no code to express 74S373)
 part_74S373  i_PLATCH_4B03 (
-  .OENB_N(\-PDLDRIVE ),
   .O0(M31),
   .I0(PDL31),
   .I1(PDL30),
@@ -9373,7 +7942,6 @@ part_74S373  i_PLATCH_4B03 (
   .I2(PDL29),
   .I3(PDL28),
   .O3(M28),
-  .HOLD_N(CLK4A),
   .O4(M27),
   .I4(PDL27),
   .I5(PDL26),
@@ -9409,7 +7977,7 @@ part_74S373  i_PLATCH_4B08 (
 // 4D08:
 
 
-assign \-PPDRIVE  = ! (TSE4B & CLK3F);
+assign \-PPDRIVE  = ! (TSE4B & \-DESTPDLX );
 
 
 // 4D06:
@@ -9436,7 +8004,6 @@ part_74S241  i_PDLPTR_4D04 (
 // 4C01:
 // (no code to express 74S241)
 part_74S241  i_PDLPTR_4C01 (
-  .AENB_N(\-PPDRIVE ),
   .Q7(MF0),
   .Q6(MF1),
   .Q5(MF2),
@@ -9451,7 +8018,7 @@ part_74S241  i_PDLPTR_4C01 (
 // 4D05:
 // (no code to express 74S241)
 part_74S241  i_PDLPTR_4D05 (
-  .AENB_N(\-PPDRIVE ),
+  .AENB_N(internal298),
   .Q7(MF4),
   .Q6(MF5),
   .Q5(MF6),
@@ -9497,14 +8064,14 @@ part_74S169  i_PDLPTR_3C21 (
 // 3D24:
 // (no code to express 74S169)
 part_74S169  i_PDLPTR_3D24 (
-  .UP_DN(\-SRCPDLPOP ),
-  .CLK(CLK3F),
+  .UP_DN(internal300),
+  .CLK(internal301),
   .I0(OB4),
   .I1(OB5),
   .I2(OB6),
   .I3(OB7),
-  .ENB_P_N(GND),
-  .LOAD_N(\-DESTPDLP ),
+  .ENB_P_N(internal302),
+  .LOAD_N(internal303),
   .ENB_T_N(\-PDLCRY3 ),
   .O3(PDLPTR7),
   .O2(PDLPTR6),
@@ -9552,7 +8119,7 @@ part_74S175  i_PDLCTL_4C11 (
 
 
 // 4D08:
-assign PDLENB = ! (\-SRCPDLPOP  & \-SRCPDLPOP );
+assign PDLENB = ! (\-SRCPDLPOP  & \-SRCPDLTOP );
 assign \-PDLDRIVE  = ! (PDLENB & TSE4B);
 
 
@@ -9560,23 +8127,23 @@ assign \-PDLDRIVE  = ! (PDLENB & TSE4B);
 // 4E03:
 
 
-assign internal1156 = \-SRCPDLPOP  | NOP;
+assign internal304 = \-SRCPDLPOP  | NOP;
 
 
 // 4D10:
-assign PDLWRITE = ! (\-DESTPDLTOP  & \-DESTPDLTOP  & \-DESTPDLTOP );
+assign PDLWRITE = ! (\-DESTPDLTOP  & \-DESTPDL  & \-DESTPDL );
 
 
 
 // 4D20:
 assign \-PWPA  = ! (PDLWRITED & WP4A);
 assign \-PWPB  = ! (PDLWRITED & WP4A);
-assign internal1156 = ! (WP4A & PDLWRITED);
+assign internal304 = ! (WP4A & PDLWRITED);
 
 
 // 4D06:
 
-assign \-PDLCNT  = internal1156 & \-PDLCNT ;
+assign \-PDLCNT  = internal304 & \-DESTPDL ;
 
 
 
@@ -9598,7 +8165,6 @@ part_74S51  i_PDLCTL_4D07 (
 // 4C12:
 // (no code to express 74S258)
 part_74S258  i_PDLCTL_4C12 (
-  .SEL(\-PDLPB ),
   .D0(PDLPTR0),
   .D1(PDLIDX0),
   .DY(\-PDLA0B ),
@@ -9636,7 +8202,6 @@ part_74S258  i_PDLCTL_4D14 (
 // 4C16:
 // (no code to express 74S258)
 part_74S258  i_PDLCTL_4C16 (
-  .SEL(\-PDLPA ),
   .D0(PDLPTR8),
   .D1(PDLIDX8),
   .DY(\-PDLA8B ),
@@ -9655,7 +8220,7 @@ part_74S258  i_PDLCTL_4C16 (
 // 4C22:
 // (no code to express 74S258)
 part_74S258  i_PDLCTL_4C22 (
-  .SEL(\-PDLPA ),
+  .SEL(internal306),
   .D0(PDLPTR2),
   .D1(PDLIDX2),
   .DY(\-PDLA2A ),
@@ -9693,133 +8258,61 @@ part_74S258  i_PDLCTL_4D24 (
 // 4C30:
 // (no code to express 93425A)
 part_93425A  i_PDL1_4C30 (
-  .CE_N(GND),
-  .A0(\-PDLA0A ),
-  .A1(\-PDLA1A ),
-  .A2(\-PDLA2A ),
-  .A3(\-PDLA3A ),
-  .A4(\-PDLA4A ),
-  .D0(PDL0),
-  .A5(\-PDLA5A ),
-  .A6(\-PDLA6A ),
-  .A7(\-PDLA7A ),
-  .A8(\-PDLA8A ),
-  .A9(\-PDLA9A ),
-  .WE_N(\-PWPC )
+  .D0(PDL0)
 );
 
 
 // 4C29:
 // (no code to express 93425A)
 part_93425A  i_PDL1_4C29 (
-  .CE_N(GND),
-  .A0(\-PDLA0A ),
-  .A1(\-PDLA1A ),
-  .A2(\-PDLA2A ),
-  .A3(\-PDLA3A ),
-  .A4(\-PDLA4A ),
+  .CE_N(internal307),
+  .A0(internal308),
+  .A1(internal309),
+  .A2(internal310),
+  .A3(internal311),
+  .A4(internal312),
   .D0(PDL1),
-  .A5(\-PDLA5A ),
-  .A6(\-PDLA6A ),
-  .A7(\-PDLA7A ),
-  .A8(\-PDLA8A ),
-  .A9(\-PDLA9A ),
-  .WE_N(\-PWPC )
+  .A5(internal313),
+  .A6(internal314),
+  .A7(internal315),
+  .A8(internal316),
+  .A9(internal317),
+  .WE_N(internal318)
 );
 
 
 // 4C28:
 // (no code to express 93425A)
 part_93425A  i_PDL1_4C28 (
-  .CE_N(GND),
-  .A0(\-PDLA0A ),
-  .A1(\-PDLA1A ),
-  .A2(\-PDLA2A ),
-  .A3(\-PDLA3A ),
-  .A4(\-PDLA4A ),
-  .D0(PDL2),
-  .A5(\-PDLA5A ),
-  .A6(\-PDLA6A ),
-  .A7(\-PDLA7A ),
-  .A8(\-PDLA8A ),
-  .A9(\-PDLA9A ),
-  .WE_N(\-PWPC )
+  .D0(PDL2)
 );
 
 
 // 4C27:
 // (no code to express 93425A)
 part_93425A  i_PDL1_4C27 (
-  .CE_N(GND),
-  .A0(\-PDLA0A ),
-  .A1(\-PDLA1A ),
-  .A2(\-PDLA2A ),
-  .A3(\-PDLA3A ),
-  .A4(\-PDLA4A ),
-  .D0(PDL3),
-  .A5(\-PDLA5A ),
-  .A6(\-PDLA6A ),
-  .A7(\-PDLA7A ),
-  .A8(\-PDLA8A ),
-  .A9(\-PDLA9A ),
-  .WE_N(\-PWPC )
+  .D0(PDL3)
 );
 
 
 // 4C26:
 // (no code to express 93425A)
 part_93425A  i_PDL1_4C26 (
-  .CE_N(GND),
-  .A0(\-PDLA0A ),
-  .A1(\-PDLA1A ),
-  .A2(\-PDLA2A ),
-  .A3(\-PDLA3A ),
-  .A4(\-PDLA4A ),
-  .D0(PDL4),
-  .A5(\-PDLA5A ),
-  .A6(\-PDLA6A ),
-  .A7(\-PDLA7A ),
-  .A8(\-PDLA8A ),
-  .A9(\-PDLA9A ),
-  .WE_N(\-PWPC )
+  .D0(PDL4)
 );
 
 
 // 4D30:
 // (no code to express 93425A)
 part_93425A  i_PDL1_4D30 (
-  .CE_N(GND),
-  .A0(\-PDLA0A ),
-  .A1(\-PDLA1A ),
-  .A2(\-PDLA2A ),
-  .A3(\-PDLA3A ),
-  .A4(\-PDLA4A ),
-  .D0(PDL5),
-  .A5(\-PDLA5A ),
-  .A6(\-PDLA6A ),
-  .A7(\-PDLA7A ),
-  .A8(\-PDLA8A ),
-  .A9(\-PDLA9A ),
-  .WE_N(\-PWPC )
+  .D0(PDL5)
 );
 
 
 // 4D29:
 // (no code to express 93425A)
 part_93425A  i_PDL1_4D29 (
-  .CE_N(GND),
-  .A0(\-PDLA0A ),
-  .A1(\-PDLA1A ),
-  .A2(\-PDLA2A ),
-  .A3(\-PDLA3A ),
-  .A4(\-PDLA4A ),
-  .D0(PDL6),
-  .A5(\-PDLA5A ),
-  .A6(\-PDLA6A ),
-  .A7(\-PDLA7A ),
-  .A8(\-PDLA8A ),
-  .A9(\-PDLA9A ),
-  .WE_N(\-PWPC )
+  .D0(PDL6)
 );
 
 
@@ -9845,133 +8338,62 @@ part_93425A  i_PDL1_4D28 (
 // 4D27:
 // (no code to express 93425A)
 part_93425A  i_PDL1_4D27 (
-  .CE_N(GND),
-  .A0(\-PDLA0A ),
-  .A1(\-PDLA1A ),
-  .A2(\-PDLA2A ),
-  .A3(\-PDLA3A ),
-  .A4(\-PDLA4A ),
-  .D0(PDL8),
-  .A5(\-PDLA5A ),
-  .A6(\-PDLA6A ),
-  .A7(\-PDLA7A ),
-  .A8(\-PDLA8A ),
-  .A9(\-PDLA9A ),
-  .WE_N(\-PWPC )
+  .D0(PDL8)
 );
 
 
 // 4D26:
 // (no code to express 93425A)
 part_93425A  i_PDL1_4D26 (
-  .CE_N(GND),
-  .A0(\-PDLA0A ),
-  .A1(\-PDLA1A ),
-  .A2(\-PDLA2A ),
-  .A3(\-PDLA3A ),
-  .A4(\-PDLA4A ),
+  .CE_N(internal319),
+  .A0(internal320),
+  .A1(internal321),
+  .A2(internal322),
+  .A3(internal323),
+  .A4(internal324),
   .D0(PDL9),
-  .A5(\-PDLA5A ),
-  .A6(\-PDLA6A ),
-  .A7(\-PDLA7A ),
-  .A8(\-PDLA8A ),
-  .A9(\-PDLA9A ),
-  .WE_N(\-PWPC )
+  .A5(internal325),
+  .A6(internal326),
+  .A7(internal327),
+  .A8(internal328),
+  .A9(internal329),
+  .WE_N(internal330)
 );
 
 
 // 4C25:
 // (no code to express 93425A)
 part_93425A  i_PDL1_4C25 (
-  .CE_N(GND),
-  .A0(\-PDLA0A ),
-  .A1(\-PDLA1A ),
-  .A2(\-PDLA2A ),
-  .A3(\-PDLA3A ),
-  .A4(\-PDLA4A ),
-  .D0(PDL10),
-  .A5(\-PDLA5A ),
-  .A6(\-PDLA6A ),
-  .A7(\-PDLA7A ),
-  .A8(\-PDLA8A ),
-  .A9(\-PDLA9A ),
-  .WE_N(\-PWPC )
+  .D0(PDL10)
 );
 
 
 // 4C24:
 // (no code to express 93425A)
 part_93425A  i_PDL1_4C24 (
-  .CE_N(GND),
-  .A0(\-PDLA0A ),
-  .A1(\-PDLA1A ),
-  .A2(\-PDLA2A ),
-  .A3(\-PDLA3A ),
-  .A4(\-PDLA4A ),
-  .D0(PDL11),
-  .A5(\-PDLA5A ),
-  .A6(\-PDLA6A ),
-  .A7(\-PDLA7A ),
-  .A8(\-PDLA8A ),
-  .A9(\-PDLA9A ),
-  .WE_N(\-PWPB )
+  .D0(PDL11)
 );
 
 
 // 4C23:
 // (no code to express 93425A)
 part_93425A  i_PDL1_4C23 (
-  .CE_N(GND),
-  .A0(\-PDLA0A ),
-  .A1(\-PDLA1A ),
-  .A2(\-PDLA2A ),
-  .A3(\-PDLA3A ),
-  .A4(\-PDLA4A ),
   .D0(PDL12),
-  .A5(\-PDLA5A ),
-  .A6(\-PDLA6A ),
-  .A7(\-PDLA7A ),
-  .A8(\-PDLA8A ),
-  .A9(\-PDLA9A ),
-  .WE_N(\-PWPB )
+  .WE_N(internal331)
 );
 
 
 // 4C21:
 // (no code to express 93425A)
 part_93425A  i_PDL1_4C21 (
-  .CE_N(GND),
-  .A0(\-PDLA0A ),
-  .A1(\-PDLA1A ),
-  .A2(\-PDLA2A ),
-  .A3(\-PDLA3A ),
-  .A4(\-PDLA4A ),
-  .D0(PDL13),
-  .A5(\-PDLA5A ),
-  .A6(\-PDLA6A ),
-  .A7(\-PDLA7A ),
-  .A8(\-PDLA8A ),
-  .A9(\-PDLA9A ),
-  .WE_N(\-PWPB )
+  .D0(PDL13)
 );
 
 
 // 4D25:
 // (no code to express 93425A)
 part_93425A  i_PDL1_4D25 (
-  .CE_N(GND),
-  .A0(\-PDLA0A ),
-  .A1(\-PDLA1A ),
-  .A2(\-PDLA2A ),
-  .A3(\-PDLA3A ),
-  .A4(\-PDLA4A ),
-  .D0(PDL14),
-  .A5(\-PDLA5A ),
-  .A6(\-PDLA6A ),
-  .A7(\-PDLA7A ),
-  .A8(\-PDLA8A ),
-  .A9(\-PDLA9A ),
-  .WE_N(\-PWPB )
+  .D0(PDL14)
 );
 
 
@@ -9997,133 +8419,61 @@ part_93425A  i_PDL1_4D23 (
 // 4D22:
 // (no code to express 93425A)
 part_93425A  i_PDL0_4D22 (
-  .CE_N(GND),
-  .A0(\-PDLA0B ),
-  .A1(\-PDLA1B ),
-  .A2(\-PDLA2B ),
-  .A3(\-PDLA3B ),
-  .A4(\-PDLA4B ),
-  .D0(PDL16),
-  .A5(\-PDLA5B ),
-  .A6(\-PDLA6B ),
-  .A7(\-PDLA7B ),
-  .A8(\-PDLA8B ),
-  .A9(\-PDLA9B ),
-  .WE_N(\-PWPB )
+  .D0(PDL16)
 );
 
 
 // 4D21:
 // (no code to express 93425A)
 part_93425A  i_PDL0_4D21 (
-  .CE_N(GND),
-  .A0(\-PDLA0B ),
-  .A1(\-PDLA1B ),
-  .A2(\-PDLA2B ),
-  .A3(\-PDLA3B ),
-  .A4(\-PDLA4B ),
+  .CE_N(internal332),
+  .A0(internal333),
+  .A1(internal334),
+  .A2(internal335),
+  .A3(internal336),
+  .A4(internal337),
   .D0(PDL17),
-  .A5(\-PDLA5B ),
-  .A6(\-PDLA6B ),
-  .A7(\-PDLA7B ),
-  .A8(\-PDLA8B ),
-  .A9(\-PDLA9B ),
-  .WE_N(\-PWPB )
+  .A5(internal338),
+  .A6(internal339),
+  .A7(internal340),
+  .A8(internal341),
+  .A9(internal342),
+  .WE_N(internal343)
 );
 
 
 // 4C20:
 // (no code to express 93425A)
 part_93425A  i_PDL0_4C20 (
-  .CE_N(GND),
-  .A0(\-PDLA0B ),
-  .A1(\-PDLA1B ),
-  .A2(\-PDLA2B ),
-  .A3(\-PDLA3B ),
-  .A4(\-PDLA4B ),
-  .D0(PDL18),
-  .A5(\-PDLA5B ),
-  .A6(\-PDLA6B ),
-  .A7(\-PDLA7B ),
-  .A8(\-PDLA8B ),
-  .A9(\-PDLA9B ),
-  .WE_N(\-PWPB )
+  .D0(PDL18)
 );
 
 
 // 4C19:
 // (no code to express 93425A)
 part_93425A  i_PDL0_4C19 (
-  .CE_N(GND),
-  .A0(\-PDLA0B ),
-  .A1(\-PDLA1B ),
-  .A2(\-PDLA2B ),
-  .A3(\-PDLA3B ),
-  .A4(\-PDLA4B ),
-  .D0(PDL19),
-  .A5(\-PDLA5B ),
-  .A6(\-PDLA6B ),
-  .A7(\-PDLA7B ),
-  .A8(\-PDLA8B ),
-  .A9(\-PDLA9B ),
-  .WE_N(\-PWPB )
+  .D0(PDL19)
 );
 
 
 // 4C18:
 // (no code to express 93425A)
 part_93425A  i_PDL0_4C18 (
-  .CE_N(GND),
-  .A0(\-PDLA0B ),
-  .A1(\-PDLA1B ),
-  .A2(\-PDLA2B ),
-  .A3(\-PDLA3B ),
-  .A4(\-PDLA4B ),
-  .D0(PDL20),
-  .A5(\-PDLA5B ),
-  .A6(\-PDLA6B ),
-  .A7(\-PDLA7B ),
-  .A8(\-PDLA8B ),
-  .A9(\-PDLA9B ),
-  .WE_N(\-PWPB )
+  .D0(PDL20)
 );
 
 
 // 4C17:
 // (no code to express 93425A)
 part_93425A  i_PDL0_4C17 (
-  .CE_N(GND),
-  .A0(\-PDLA0B ),
-  .A1(\-PDLA1B ),
-  .A2(\-PDLA2B ),
-  .A3(\-PDLA3B ),
-  .A4(\-PDLA4B ),
-  .D0(PDL21),
-  .A5(\-PDLA5B ),
-  .A6(\-PDLA6B ),
-  .A7(\-PDLA7B ),
-  .A8(\-PDLA8B ),
-  .A9(\-PDLA9B ),
-  .WE_N(\-PWPB )
+  .D0(PDL21)
 );
 
 
 // 4D19:
 // (no code to express 93425A)
 part_93425A  i_PDL0_4D19 (
-  .CE_N(GND),
-  .A0(\-PDLA0B ),
-  .A1(\-PDLA1B ),
-  .A2(\-PDLA2B ),
-  .A3(\-PDLA3B ),
-  .A4(\-PDLA4B ),
-  .D0(PDL22),
-  .A5(\-PDLA5B ),
-  .A6(\-PDLA6B ),
-  .A7(\-PDLA7B ),
-  .A8(\-PDLA8B ),
-  .A9(\-PDLA9B ),
-  .WE_N(\-PWPA )
+  .D0(PDL22)
 );
 
 
@@ -10149,152 +8499,68 @@ part_93425A  i_PDL0_4D18 (
 // 4D17:
 // (no code to express 93425A)
 part_93425A  i_PDL0_4D17 (
-  .CE_N(GND),
-  .A0(\-PDLA0B ),
-  .A1(\-PDLA1B ),
-  .A2(\-PDLA2B ),
-  .A3(\-PDLA3B ),
-  .A4(\-PDLA4B ),
-  .D0(PDL24),
-  .A5(\-PDLA5B ),
-  .A6(\-PDLA6B ),
-  .A7(\-PDLA7B ),
-  .A8(\-PDLA8B ),
-  .A9(\-PDLA9B ),
-  .WE_N(\-PWPA )
+  .D0(PDL24)
 );
 
 
 // 4D16:
 // (no code to express 93425A)
 part_93425A  i_PDL0_4D16 (
-  .CE_N(GND),
-  .A0(\-PDLA0B ),
-  .A1(\-PDLA1B ),
-  .A2(\-PDLA2B ),
-  .A3(\-PDLA3B ),
-  .A4(\-PDLA4B ),
+  .CE_N(internal344),
+  .A0(internal345),
+  .A1(internal346),
+  .A2(internal347),
+  .A3(internal348),
+  .A4(internal349),
   .D0(PDL25),
-  .A5(\-PDLA5B ),
-  .A6(\-PDLA6B ),
-  .A7(\-PDLA7B ),
-  .A8(\-PDLA8B ),
-  .A9(\-PDLA9B ),
-  .WE_N(\-PWPA )
+  .A5(internal350),
+  .A6(internal351),
+  .A7(internal352),
+  .A8(internal353),
+  .A9(internal354),
+  .WE_N(internal355)
 );
 
 
 // 4C15:
 // (no code to express 93425A)
 part_93425A  i_PDL0_4C15 (
-  .CE_N(GND),
-  .A0(\-PDLA0B ),
-  .A1(\-PDLA1B ),
-  .A2(\-PDLA2B ),
-  .A3(\-PDLA3B ),
-  .A4(\-PDLA4B ),
-  .D0(PDL26),
-  .A5(\-PDLA5B ),
-  .A6(\-PDLA6B ),
-  .A7(\-PDLA7B ),
-  .A8(\-PDLA8B ),
-  .A9(\-PDLA9B ),
-  .WE_N(\-PWPA )
+  .D0(PDL26)
 );
 
 
 // 4C14:
 // (no code to express 93425A)
 part_93425A  i_PDL0_4C14 (
-  .CE_N(GND),
-  .A0(\-PDLA0B ),
-  .A1(\-PDLA1B ),
-  .A2(\-PDLA2B ),
-  .A3(\-PDLA3B ),
-  .A4(\-PDLA4B ),
-  .D0(PDL27),
-  .A5(\-PDLA5B ),
-  .A6(\-PDLA6B ),
-  .A7(\-PDLA7B ),
-  .A8(\-PDLA8B ),
-  .A9(\-PDLA9B ),
-  .WE_N(\-PWPA )
+  .D0(PDL27)
 );
 
 
 // 4C13:
 // (no code to express 93425A)
 part_93425A  i_PDL0_4C13 (
-  .CE_N(GND),
-  .A0(\-PDLA0B ),
-  .A1(\-PDLA1B ),
-  .A2(\-PDLA2B ),
-  .A3(\-PDLA3B ),
-  .A4(\-PDLA4B ),
-  .D0(PDL28),
-  .A5(\-PDLA5B ),
-  .A6(\-PDLA6B ),
-  .A7(\-PDLA7B ),
-  .A8(\-PDLA8B ),
-  .A9(\-PDLA9B ),
-  .WE_N(\-PWPA )
+  .D0(PDL28)
 );
 
 
 // 4D13:
 // (no code to express 93425A)
 part_93425A  i_PDL0_4D13 (
-  .CE_N(GND),
-  .A0(\-PDLA0B ),
-  .A1(\-PDLA1B ),
-  .A2(\-PDLA2B ),
-  .A3(\-PDLA3B ),
-  .A4(\-PDLA4B ),
-  .D0(PDL29),
-  .A5(\-PDLA5B ),
-  .A6(\-PDLA6B ),
-  .A7(\-PDLA7B ),
-  .A8(\-PDLA8B ),
-  .A9(\-PDLA9B ),
-  .WE_N(\-PWPA )
+  .D0(PDL29)
 );
 
 
 // 4D12:
 // (no code to express 93425A)
 part_93425A  i_PDL0_4D12 (
-  .CE_N(GND),
-  .A0(\-PDLA0B ),
-  .A1(\-PDLA1B ),
-  .A2(\-PDLA2B ),
-  .A3(\-PDLA3B ),
-  .A4(\-PDLA4B ),
-  .D0(PDL30),
-  .A5(\-PDLA5B ),
-  .A6(\-PDLA6B ),
-  .A7(\-PDLA7B ),
-  .A8(\-PDLA8B ),
-  .A9(\-PDLA9B ),
-  .WE_N(\-PWPA )
+  .D0(PDL30)
 );
 
 
 // 4D11:
 // (no code to express 93425A)
 part_93425A  i_PDL0_4D11 (
-  .CE_N(GND),
-  .A0(\-PDLA0B ),
-  .A1(\-PDLA1B ),
-  .A2(\-PDLA2B ),
-  .A3(\-PDLA3B ),
-  .A4(\-PDLA4B ),
-  .D0(PDL31),
-  .A5(\-PDLA5B ),
-  .A6(\-PDLA6B ),
-  .A7(\-PDLA7B ),
-  .A8(\-PDLA8B ),
-  .A9(\-PDLA9B ),
-  .WE_N(\-PWPA )
+  .D0(PDL31)
 );
 
 
@@ -10318,15 +8584,15 @@ part_93425A  i_PDL0_4C10 (
 
 
 // 1E07:
-assign DCDRIVE = TSE1B & internal1157;
-assign \ZERO16.DRIVE  = ZERO16 & internal1157;
+assign DCDRIVE = TSE1B & internal356;
+assign \ZERO16.DRIVE  = ZERO16 & internal356;
 
 
 
 // 1D18:
 
-assign internal1157 = ! \-SRCDC ;
-assign internal1158 = ! \-SRCOPC ;
+assign internal356 = ! \-SRCDC ;
+assign internal357 = ! \-SRCOPC ;
 
 
 
@@ -10334,17 +8600,17 @@ assign internal1158 = ! \-SRCOPC ;
 // 1E06:
 
 
-assign \-OPCDRIVE  = ! (TSE1B & internal1158);
+assign \-OPCDRIVE  = ! (TSE1B & internal357);
 assign \-ZERO16.DRIVE  = ! (TSE1B & ZERO16);
 
 // 1E16:
-assign \ZERO12.DRIVE  = \ZERO12.DRIVE  & ZERO16 & TSE1B;
+assign \ZERO12.DRIVE  = \-SRCOPC  & ZERO16 & TSE1B;
 
 
 
 // 3E30:
 
-assign ZERO16 = ! (\-SRCOPC  & \-SRCOPC  & \-SRCOPC  & \-SRCOPC );
+assign ZERO16 = ! (\-SRCOPC  & \-SRCPDLIDX  & \-SRCPDLPTR  & \-SRCDC );
 
 // 1F01:
 // (no code to express 74S241)
@@ -10364,7 +8630,6 @@ part_74S241  i_OPCD_1F01 (
 // 1F02:
 // (no code to express 74S241)
 part_74S241  i_OPCD_1F02 (
-  .AENB_N(\-ZERO16.DRIVE ),
   .Q7(MF16),
   .Q6(MF17),
   .Q5(MF18),
@@ -10394,7 +8659,6 @@ part_74S241  i_OPCD_1F03 (
 // 1F04:
 // (no code to express 74S241)
 part_74S241  i_OPCD_1F04 (
-  .AENB_N(\-OPCDRIVE ),
   .Q7(MF8),
   .Q6(MF9),
   .Q5(MF10),
@@ -10409,6 +8673,7 @@ part_74S241  i_OPCD_1F04 (
 // 1E01:
 // (no code to express 74S241)
 part_74S241  i_OPCD_1E01 (
+  .AENB_N(internal358),
   .Q7(MF4),
   .Q6(MF5),
   .Q5(MF6),
@@ -10423,7 +8688,6 @@ part_74S241  i_OPCD_1E01 (
 // 1E03:
 // (no code to express 74S241)
 part_74S241  i_OPCD_1E03 (
-  .AENB_N(internal1159),
   .Q7(MF0),
   .Q6(MF1),
   .Q5(MF2),
@@ -10514,7 +8778,6 @@ part_74S283  i_NPC_3F26 (
 // 4E05:
 // (no code to express 74S374)
 part_74S374  i_NPC_4E05 (
-  .OENB_N(GND),
   .O0(PC7),
   .I0(NPC7),
   .I1(NPC6),
@@ -10523,7 +8786,6 @@ part_74S374  i_NPC_4E05 (
   .I2(NPC5),
   .I3(NPC4),
   .O3(PC4),
-  .CLK(CLK4B),
   .O4(PC3),
   .I4(NPC3),
   .I5(NPC2),
@@ -10562,16 +8824,16 @@ part_74S374  i_NPC_4E04 (
 part_74S153  i_NPC_4F01 (
   .ENB1_N(TRAPA),
   .SEL1(PCS1),
-  .G1D3(IPC13),
-  .G1D2(DPC13),
-  .G1D1(IR25),
-  .G1D0(SPC13),
+  .G1C3(IPC13),
+  .G1C2(DPC13),
+  .G1C1(IR25),
+  .G1C0(SPC13),
   .G1Q(NPC13),
   .G2Q(NPC12),
-  .G2D0(SPC12),
-  .G2D1(IR24),
-  .G2D2(DPC12),
-  .G2D3(IPC12),
+  .G2C0(SPC12),
+  .G2C1(IR24),
+  .G2C2(DPC12),
+  .G2C3(IPC12),
   .SEL0(PCS0)
 );
 
@@ -10579,100 +8841,98 @@ part_74S153  i_NPC_4F01 (
 // 4F02:
 // (no code to express 74S153)
 part_74S153  i_NPC_4F02 (
-  .ENB1_N(TRAPA),
-  .G1D3(IPC11),
-  .G1D2(DPC11),
-  .G1D1(IR23),
-  .G1D0(SPC11),
+  .G1C3(IPC11),
+  .G1C2(DPC11),
+  .G1C1(IR23),
+  .G1C0(SPC11),
   .G1Q(NPC11),
   .G2Q(NPC10),
-  .G2D0(SPC10),
-  .G2D1(IR22),
-  .G2D2(DPC10),
-  .G2D3(IPC10)
+  .G2C0(SPC10),
+  .G2C1(IR22),
+  .G2C2(DPC10),
+  .G2C3(IPC10)
 );
 
 
 // 4F03:
 // (no code to express 74S153)
 part_74S153  i_NPC_4F03 (
-  .SEL1(internal1160),
-  .G1D3(IPC9),
-  .G1D2(DPC9),
-  .G1D1(IR21),
-  .G1D0(SPC9),
+  .ENB1_N(internal360),
+  .G1C3(IPC9),
+  .G1C2(DPC9),
+  .G1C1(IR21),
+  .G1C0(SPC9),
   .G1Q(NPC9),
   .G2Q(NPC8),
-  .G2D0(SPC8),
-  .G2D1(IR20),
-  .G2D2(DPC8),
-  .G2D3(IPC8),
-  .SEL0(internal1161)
+  .G2C0(SPC8),
+  .G2C1(IR20),
+  .G2C2(DPC8),
+  .G2C3(IPC8)
 );
 
 
 // 4F04:
 // (no code to express 74S153)
 part_74S153  i_NPC_4F04 (
-  .ENB1_N(internal1162),
-  .G1D3(IPC7),
-  .G1D2(DPC7),
-  .G1D1(IR19),
-  .G1D0(SPC7),
+  .G1C3(IPC7),
+  .G1C2(DPC7),
+  .G1C1(IR19),
+  .G1C0(SPC7),
   .G1Q(NPC7),
   .G2Q(NPC6),
-  .G2D0(SPC6),
-  .G2D1(IR18),
-  .G2D2(DPC6),
-  .G2D3(IPC6)
+  .G2C0(SPC6),
+  .G2C1(IR18),
+  .G2C2(DPC6),
+  .G2C3(IPC6)
 );
 
 
 // 4F05:
 // (no code to express 74S153)
 part_74S153  i_NPC_4F05 (
-  .G1D3(IPC5),
-  .G1D2(DPC5),
-  .G1D1(IR17),
-  .G1D0(SPC5),
+  .G1C3(IPC5),
+  .G1C2(DPC5),
+  .G1C1(IR17),
+  .G1C0(SPC5),
   .G1Q(NPC5),
   .G2Q(NPC4),
-  .G2D0(SPC4),
-  .G2D1(IR16),
-  .G2D2(DPC4),
-  .G2D3(IPC4)
+  .G2C0(SPC4),
+  .G2C1(IR16),
+  .G2C2(DPC4),
+  .G2C3(IPC4)
 );
 
 
 // 4E01:
 // (no code to express 74S153)
 part_74S153  i_NPC_4E01 (
-  .G1D3(IPC3),
-  .G1D2(DPC3),
-  .G1D1(IR15),
-  .G1D0(SPC3),
+  .G1C3(IPC3),
+  .G1C2(DPC3),
+  .G1C1(IR15),
+  .G1C0(SPC3),
   .G1Q(NPC3),
   .G2Q(NPC2),
-  .G2D0(SPC2),
-  .G2D1(IR14),
-  .G2D2(DPC2),
-  .G2D3(IPC2)
+  .G2C0(SPC2),
+  .G2C1(IR14),
+  .G2C2(DPC2),
+  .G2C3(IPC2)
 );
 
 
 // 4E02:
 // (no code to express 74S153)
 part_74S153  i_NPC_4E02 (
-  .G1D3(IPC1),
-  .G1D2(DPC1),
-  .G1D1(IR13),
-  .G1D0(SPC1A),
+  .ENB1_N(internal363),
+  .G1C3(IPC1),
+  .G1C2(DPC1),
+  .G1C1(IR13),
+  .G1C0(SPC1A),
   .G1Q(NPC1),
   .G2Q(NPC0),
-  .G2D0(SPC0),
-  .G2D1(IR12),
-  .G2D2(DPC0),
-  .G2D3(IPC0)
+  .G2C0(SPC0),
+  .G2C1(IR12),
+  .G2C2(DPC0),
+  .G2C3(IPC0)
 );
 
 
@@ -10723,7 +8983,7 @@ part_RES20  i_MSKG4_2E20 (
 assign NC = ! NC;
 assign \-IR31  = ! IR31;
 assign \-IR13  = ! IR13;
-assign IR12 = ! \-IR12 ;
+assign \-IR12  = ! IR12;
 assign NC = ! NC;
 assign NC = ! NC;
 
@@ -10737,12 +8997,7 @@ part_5600  i_MSKG4_2D12 (
   .O4(MSK28),
   .O5(MSK29),
   .O6(MSK30),
-  .O7(MSK31),
-  .A0(MSKR0),
-  .A1(MSKR1),
-  .A2(MSKR2),
-  .A3(MSKR3),
-  .A4(MSKR4)
+  .O7(MSK31)
 );
 
 
@@ -10757,11 +9012,11 @@ part_5600  i_MSKG4_2E12 (
   .O5(MSK21),
   .O6(MSK22),
   .O7(MSK23),
-  .A0(MSKR0),
-  .A1(MSKR1),
-  .A2(MSKR2),
-  .A3(MSKR3),
-  .A4(MSKR4)
+  .A0(internal364),
+  .A1(internal365),
+  .A2(internal366),
+  .A3(internal367),
+  .A4(internal368)
 );
 
 
@@ -10775,12 +9030,7 @@ part_5600  i_MSKG4_2D17 (
   .O4(MSK12),
   .O5(MSK13),
   .O6(MSK14),
-  .O7(MSK15),
-  .A0(MSKR0),
-  .A1(MSKR1),
-  .A2(MSKR2),
-  .A3(MSKR3),
-  .A4(MSKR4)
+  .O7(MSK15)
 );
 
 
@@ -10828,11 +9078,11 @@ part_5600  i_MSKG4_2E11 (
   .O5(MSK21),
   .O6(MSK22),
   .O7(MSK23),
-  .A0(internal1165),
-  .A1(internal1166),
-  .A2(internal1167),
-  .A3(internal1168),
-  .A4(internal1169)
+  .A0(internal370),
+  .A1(internal371),
+  .A2(internal372),
+  .A3(internal373),
+  .A4(internal374)
 );
 
 
@@ -10846,12 +9096,7 @@ part_5600  i_MSKG4_2D16 (
   .O4(MSK12),
   .O5(MSK13),
   .O6(MSK14),
-  .O7(MSK15),
-  .A0(MSKL0),
-  .A1(MSKL1),
-  .A2(MSKL2),
-  .A3(MSKL3),
-  .A4(MSKL4)
+  .O7(MSK15)
 );
 
 
@@ -10883,9 +9128,6 @@ part_74S151  i_MO1_2D19 (
   .I0(A16),
   .Q(OB16),
   .Q_N(NC),
-  .CE_N(GND),
-  .SEL2(OSEL1A),
-  .SEL1(OSEL0A),
   .SEL0(MSK16),
   .I7(ALU15),
   .I6(ALU15),
@@ -10902,7 +9144,9 @@ part_74S151  i_MO1_2D18 (
   .I0(A17),
   .Q(OB17),
   .Q_N(NC),
-  .CE_N(GND),
+  .CE_N(internal376),
+  .SEL2(internal377),
+  .SEL1(internal378),
   .SEL0(MSK17),
   .I7(ALU16),
   .I6(ALU16),
@@ -10919,7 +9163,6 @@ part_74S151  i_MO1_2D14 (
   .I0(A18),
   .Q(OB18),
   .Q_N(NC),
-  .CE_N(GND),
   .SEL0(MSK18),
   .I7(ALU17),
   .I6(ALU17),
@@ -10936,7 +9179,8 @@ part_74S151  i_MO1_2D13 (
   .I0(A19),
   .Q(OB19),
   .Q_N(NC),
-  .CE_N(GND),
+  .SEL2(internal379),
+  .SEL1(internal380),
   .SEL0(MSK19),
   .I7(ALU18),
   .I6(ALU18),
@@ -10953,7 +9197,6 @@ part_74S151  i_MO1_2B15 (
   .I0(A20),
   .Q(OB20),
   .Q_N(NC),
-  .CE_N(GND),
   .SEL0(MSK20),
   .I7(ALU19),
   .I6(ALU19),
@@ -10970,7 +9213,8 @@ part_74S151  i_MO1_2B14 (
   .I0(A21),
   .Q(OB21),
   .Q_N(NC),
-  .CE_N(GND),
+  .SEL2(internal381),
+  .SEL1(internal382),
   .SEL0(MSK21),
   .I7(ALU20),
   .I6(ALU20),
@@ -10987,7 +9231,6 @@ part_74S151  i_MO1_2B10 (
   .I0(A22),
   .Q(OB22),
   .Q_N(NC),
-  .CE_N(GND),
   .SEL0(MSK22),
   .I7(ALU21),
   .I6(ALU21),
@@ -11039,9 +9282,9 @@ part_74S151  i_MO1_2D09 (
   .I0(A25),
   .Q(OB25),
   .Q_N(NC),
-  .CE_N(internal1171),
-  .SEL2(internal1172),
-  .SEL1(internal1173),
+  .CE_N(internal383),
+  .SEL2(internal384),
+  .SEL1(internal385),
   .SEL0(MSK25),
   .I7(ALU24),
   .I6(ALU24),
@@ -11058,8 +9301,6 @@ part_74S151  i_MO1_2D04 (
   .I0(A26),
   .Q(OB26),
   .Q_N(NC),
-  .SEL2(internal1174),
-  .SEL1(internal1175),
   .SEL0(MSK26),
   .I7(ALU25),
   .I6(ALU25),
@@ -11076,8 +9317,8 @@ part_74S151  i_MO1_2C09 (
   .I0(A27),
   .Q(OB27),
   .Q_N(NC),
-  .SEL2(internal1176),
-  .SEL1(internal1177),
+  .SEL2(internal386),
+  .SEL1(internal387),
   .SEL0(MSK27),
   .I7(ALU26),
   .I6(ALU26),
@@ -11094,8 +9335,6 @@ part_74S151  i_MO1_2A15 (
   .I0(A28),
   .Q(OB28),
   .Q_N(NC),
-  .SEL2(internal1178),
-  .SEL1(internal1179),
   .SEL0(MSK28),
   .I7(ALU27),
   .I6(ALU27),
@@ -11112,8 +9351,8 @@ part_74S151  i_MO1_2A14 (
   .I0(A29),
   .Q(OB29),
   .Q_N(NC),
-  .SEL2(internal1180),
-  .SEL1(internal1181),
+  .SEL2(internal388),
+  .SEL1(internal389),
   .SEL0(MSK29),
   .I7(ALU28),
   .I6(ALU28),
@@ -11130,9 +9369,6 @@ part_74S151  i_MO1_2A10 (
   .I0(A30),
   .Q(OB30),
   .Q_N(NC),
-  .CE_N(GND),
-  .SEL2(internal1182),
-  .SEL1(internal1183),
   .SEL0(MSK30),
   .I7(ALU29),
   .I6(ALU29),
@@ -11150,6 +9386,7 @@ part_74S151  i_MO1_2A09 (
   .Q(OB31),
   .Q_N(NC),
   .CE_N(GND),
+  .SEL2(internal390),
   .SEL1(OSEL0A),
   .SEL0(MSK31),
   .I7(ALU30),
@@ -11183,9 +9420,9 @@ part_74S151  i_MO0_2D28 (
   .I0(A1),
   .Q(OB1),
   .Q_N(NC),
-  .CE_N(internal1184),
-  .SEL2(internal1185),
-  .SEL1(internal1186),
+  .CE_N(internal391),
+  .SEL2(internal392),
+  .SEL1(internal393),
   .SEL0(MSK1),
   .I7(ALU0),
   .I6(ALU0),
@@ -11202,8 +9439,6 @@ part_74S151  i_MO0_2C30 (
   .I0(A2),
   .Q(OB2),
   .Q_N(NC),
-  .SEL2(internal1187),
-  .SEL1(internal1188),
   .SEL0(MSK2),
   .I7(ALU1),
   .I6(ALU1),
@@ -11220,8 +9455,8 @@ part_74S151  i_MO0_2C29 (
   .I0(A3),
   .Q(OB3),
   .Q_N(NC),
-  .SEL2(internal1189),
-  .SEL1(internal1190),
+  .SEL2(internal394),
+  .SEL1(internal395),
   .SEL0(MSK3),
   .I7(ALU2),
   .I6(ALU2),
@@ -11238,8 +9473,6 @@ part_74S151  i_MO0_2B30 (
   .I0(A4),
   .Q(OB4),
   .Q_N(NC),
-  .SEL2(internal1191),
-  .SEL1(internal1192),
   .SEL0(MSK4),
   .I7(ALU3),
   .I6(ALU3),
@@ -11256,8 +9489,8 @@ part_74S151  i_MO0_2B29 (
   .I0(A5),
   .Q(OB5),
   .Q_N(NC),
-  .SEL2(internal1193),
-  .SEL1(internal1194),
+  .SEL2(internal396),
+  .SEL1(internal397),
   .SEL0(MSK5),
   .I7(ALU4),
   .I6(ALU4),
@@ -11274,9 +9507,6 @@ part_74S151  i_MO0_2B25 (
   .I0(A6),
   .Q(OB6),
   .Q_N(NC),
-  .CE_N(GND),
-  .SEL2(internal1195),
-  .SEL1(internal1196),
   .SEL0(MSK6),
   .I7(ALU5),
   .I6(ALU5),
@@ -11294,6 +9524,7 @@ part_74S151  i_MO0_2B24 (
   .Q(OB7),
   .Q_N(NC),
   .CE_N(GND),
+  .SEL2(internal398),
   .SEL1(OSEL0B),
   .SEL0(MSK7),
   .I7(ALU6),
@@ -11327,9 +9558,9 @@ part_74S151  i_MO0_2D23 (
   .I0(A9),
   .Q(OB9),
   .Q_N(NC),
-  .CE_N(internal1197),
-  .SEL2(internal1198),
-  .SEL1(internal1199),
+  .CE_N(internal399),
+  .SEL2(internal400),
+  .SEL1(internal401),
   .SEL0(MSK9),
   .I7(ALU8),
   .I6(ALU8),
@@ -11346,8 +9577,6 @@ part_74S151  i_MO0_2C24 (
   .I0(A10),
   .Q(OB10),
   .Q_N(NC),
-  .SEL2(internal1200),
-  .SEL1(internal1201),
   .SEL0(MSK10),
   .I7(ALU9),
   .I6(ALU9),
@@ -11364,8 +9593,8 @@ part_74S151  i_MO0_2C19 (
   .I0(A11),
   .Q(OB11),
   .Q_N(NC),
-  .SEL2(internal1202),
-  .SEL1(internal1203),
+  .SEL2(internal402),
+  .SEL1(internal403),
   .SEL0(MSK11),
   .I7(ALU10),
   .I6(ALU10),
@@ -11382,8 +9611,6 @@ part_74S151  i_MO0_2A30 (
   .I0(A12),
   .Q(OB12),
   .Q_N(NC),
-  .SEL2(internal1204),
-  .SEL1(internal1205),
   .SEL0(MSK12),
   .I7(ALU11),
   .I6(ALU11),
@@ -11400,8 +9627,8 @@ part_74S151  i_MO0_2A29 (
   .I0(A13),
   .Q(OB13),
   .Q_N(NC),
-  .SEL2(internal1206),
-  .SEL1(internal1207),
+  .SEL2(internal404),
+  .SEL1(internal405),
   .SEL0(MSK13),
   .I7(ALU12),
   .I6(ALU12),
@@ -11418,9 +9645,6 @@ part_74S151  i_MO0_2A25 (
   .I0(A14),
   .Q(OB14),
   .Q_N(NC),
-  .CE_N(GND),
-  .SEL2(internal1208),
-  .SEL1(internal1209),
   .SEL0(MSK14),
   .I7(ALU13),
   .I6(ALU13),
@@ -11468,17 +9692,9 @@ part_82S21  i_MMEM_4A27 (
 // 4A22:
 // (no code to express 82S21)
 part_82S21  i_MMEM_4A22 (
-  .WCLK_N(\-MWPB ),
-  .WE0_N(GND),
   .I0(L12),
-  .A4(\-MADR4B ),
-  .CE(HI2),
   .D0(MMEM12),
   .D1(MMEM13),
-  .A3(\-MADR3B ),
-  .A2(\-MADR2B ),
-  .A1(\-MADR1B ),
-  .A0(\-MADR0B ),
   .I1(L13)
 );
 
@@ -11486,17 +9702,17 @@ part_82S21  i_MMEM_4A22 (
 // 4A28:
 // (no code to express 82S21)
 part_82S21  i_MMEM_4A28 (
-  .WCLK_N(\-MWPB ),
-  .WE0_N(GND),
+  .WCLK_N(internal406),
+  .WE0_N(internal407),
   .I0(L10),
-  .A4(\-MADR4B ),
-  .CE(HI2),
+  .A4(internal408),
+  .CE(internal409),
   .D0(MMEM10),
   .D1(MMEM11),
-  .A3(\-MADR3B ),
-  .A2(\-MADR2B ),
-  .A1(\-MADR1B ),
-  .A0(\-MADR0B ),
+  .A3(internal411),
+  .A2(internal412),
+  .A1(internal413),
+  .A0(internal414),
   .I1(L11)
 );
 
@@ -11504,17 +9720,9 @@ part_82S21  i_MMEM_4A28 (
 // 4A23:
 // (no code to express 82S21)
 part_82S21  i_MMEM_4A23 (
-  .WCLK_N(\-MWPB ),
-  .WE0_N(GND),
   .I0(L8),
-  .A4(\-MADR4B ),
-  .CE(HI2),
   .D0(MMEM8),
   .D1(MMEM9),
-  .A3(\-MADR3B ),
-  .A2(\-MADR2B ),
-  .A1(\-MADR1B ),
-  .A0(\-MADR0B ),
   .I1(L9)
 );
 
@@ -11522,17 +9730,17 @@ part_82S21  i_MMEM_4A23 (
 // 4A29:
 // (no code to express 82S21)
 part_82S21  i_MMEM_4A29 (
-  .WCLK_N(\-MWPB ),
-  .WE0_N(GND),
+  .WCLK_N(internal416),
+  .WE0_N(internal417),
   .I0(L6),
-  .A4(\-MADR4B ),
-  .CE(HI2),
+  .A4(internal418),
+  .CE(internal419),
   .D0(MMEM6),
   .D1(MMEM7),
-  .A3(\-MADR3B ),
-  .A2(\-MADR2B ),
-  .A1(\-MADR1B ),
-  .A0(\-MADR0B ),
+  .A3(internal421),
+  .A2(internal422),
+  .A1(internal423),
+  .A0(internal424),
   .I1(L7)
 );
 
@@ -11540,17 +9748,9 @@ part_82S21  i_MMEM_4A29 (
 // 4A24:
 // (no code to express 82S21)
 part_82S21  i_MMEM_4A24 (
-  .WCLK_N(\-MWPB ),
-  .WE0_N(GND),
   .I0(L4),
-  .A4(\-MADR4B ),
-  .CE(HI2),
   .D0(MMEM4),
   .D1(MMEM5),
-  .A3(\-MADR3B ),
-  .A2(\-MADR2B ),
-  .A1(\-MADR1B ),
-  .A0(\-MADR0B ),
   .I1(L5)
 );
 
@@ -11558,17 +9758,17 @@ part_82S21  i_MMEM_4A24 (
 // 4A30:
 // (no code to express 82S21)
 part_82S21  i_MMEM_4A30 (
-  .WCLK_N(\-MWPB ),
-  .WE0_N(GND),
+  .WCLK_N(internal426),
+  .WE0_N(internal427),
   .I0(L2),
-  .A4(\-MADR4B ),
-  .CE(HI2),
+  .A4(internal428),
+  .CE(internal429),
   .D0(MMEM2),
   .D1(MMEM3),
-  .A3(\-MADR3B ),
-  .A2(\-MADR2B ),
-  .A1(\-MADR1B ),
-  .A0(\-MADR0B ),
+  .A3(internal431),
+  .A2(internal432),
+  .A1(internal433),
+  .A0(internal434),
   .I1(L3)
 );
 
@@ -11576,17 +9776,9 @@ part_82S21  i_MMEM_4A30 (
 // 4A25:
 // (no code to express 82S21)
 part_82S21  i_MMEM_4A25 (
-  .WCLK_N(\-MWPB ),
-  .WE0_N(GND),
   .I0(L0),
-  .A4(\-MADR4B ),
-  .CE(HI2),
   .D0(MMEM0),
   .D1(MMEM1),
-  .A3(\-MADR3B ),
-  .A2(\-MADR2B ),
-  .A1(\-MADR1B ),
-  .A0(\-MADR0B ),
   .I1(L1)
 );
 
@@ -11612,16 +9804,8 @@ part_82S21  i_MMEM_4B27 (
 // 4B28:
 // (no code to express 82S21)
 part_82S21  i_MMEM_4B28 (
-  .WCLK_N(\-MWPA ),
-  .WE0_N(GND),
   .I0(L30),
-  .A4(\-MADR4A ),
-  .CE(HI3),
   .D0(MMEM30),
-  .A3(\-MADR3A ),
-  .A2(\-MADR2A ),
-  .A1(\-MADR1A ),
-  .A0(\-MADR0A ),
   .I1(L31)
 );
 
@@ -11629,9 +9813,17 @@ part_82S21  i_MMEM_4B28 (
 // 4B23:
 // (no code to express 82S21)
 part_82S21  i_MMEM_4B23 (
+  .WCLK_N(internal436),
+  .WE0_N(internal437),
   .I0(L28),
+  .A4(internal438),
+  .CE(internal439),
   .D0(MMEM28),
   .D1(MMEM29),
+  .A3(internal442),
+  .A2(internal443),
+  .A1(internal444),
+  .A0(internal445),
   .I1(L29)
 );
 
@@ -11639,17 +9831,9 @@ part_82S21  i_MMEM_4B23 (
 // 4B29:
 // (no code to express 82S21)
 part_82S21  i_MMEM_4B29 (
-  .WCLK_N(internal1211),
-  .WE0_N(internal1212),
   .I0(L26),
-  .A4(internal1213),
-  .CE(internal1214),
   .D0(MMEM26),
   .D1(MMEM27),
-  .A3(internal1216),
-  .A2(internal1217),
-  .A1(internal1218),
-  .A0(internal1219),
   .I1(L27)
 );
 
@@ -11657,17 +9841,17 @@ part_82S21  i_MMEM_4B29 (
 // 4B24:
 // (no code to express 82S21)
 part_82S21  i_MMEM_4B24 (
-  .WCLK_N(internal1220),
-  .WE0_N(internal1221),
+  .WCLK_N(internal447),
+  .WE0_N(internal448),
   .I0(L24),
-  .A4(internal1222),
-  .CE(internal1223),
+  .A4(internal449),
+  .CE(internal450),
   .D0(MMEM24),
   .D1(MMEM25),
-  .A3(internal1225),
-  .A2(internal1226),
-  .A1(internal1227),
-  .A0(internal1228),
+  .A3(internal452),
+  .A2(internal453),
+  .A1(internal454),
+  .A0(internal455),
   .I1(L25)
 );
 
@@ -11675,17 +9859,9 @@ part_82S21  i_MMEM_4B24 (
 // 4B30:
 // (no code to express 82S21)
 part_82S21  i_MMEM_4B30 (
-  .WCLK_N(internal1230),
-  .WE0_N(internal1231),
   .I0(L22),
-  .A4(internal1232),
-  .CE(internal1233),
   .D0(MMEM22),
   .D1(MMEM23),
-  .A3(internal1235),
-  .A2(internal1236),
-  .A1(internal1237),
-  .A0(internal1238),
   .I1(L23)
 );
 
@@ -11693,17 +9869,17 @@ part_82S21  i_MMEM_4B30 (
 // 4B25:
 // (no code to express 82S21)
 part_82S21  i_MMEM_4B25 (
-  .WCLK_N(internal1240),
-  .WE0_N(internal1241),
+  .WCLK_N(internal457),
+  .WE0_N(internal458),
   .I0(L20),
-  .A4(internal1242),
-  .CE(internal1243),
+  .A4(internal459),
+  .CE(internal460),
   .D0(MMEM20),
   .D1(MMEM21),
-  .A3(internal1245),
-  .A2(internal1246),
-  .A1(internal1247),
-  .A0(internal1248),
+  .A3(internal462),
+  .A2(internal463),
+  .A1(internal464),
+  .A0(internal465),
   .I1(L21)
 );
 
@@ -11711,17 +9887,10 @@ part_82S21  i_MMEM_4B25 (
 // 4A26:
 // (no code to express 82S21)
 part_82S21  i_MMEM_4A26 (
-  .WCLK_N(internal1250),
-  .WE0_N(internal1251),
   .I0(L18),
-  .A4(internal1252),
-  .CE(internal1210),
+  .CE(internal441),
   .D0(MMEM18),
   .D1(MMEM19),
-  .A3(internal1254),
-  .A2(internal1255),
-  .A1(internal1256),
-  .A0(internal1257),
   .I1(L19)
 );
 
@@ -11729,17 +9898,16 @@ part_82S21  i_MMEM_4A26 (
 // 4A21:
 // (no code to express 82S21)
 part_82S21  i_MMEM_4A21 (
-  .WCLK_N(internal1259),
-  .WE0_N(internal1260),
+  .WCLK_N(internal467),
+  .WE0_N(internal468),
   .I0(L16),
-  .A4(internal1261),
-  .CE(internal1262),
+  .A4(internal469),
   .D0(MMEM16),
   .D1(MMEM17),
-  .A3(internal1264),
-  .A2(internal1265),
-  .A1(internal1266),
-  .A0(internal1267),
+  .A3(internal471),
+  .A2(internal472),
+  .A1(internal473),
+  .A0(internal474),
   .I1(L17)
 );
 
@@ -11762,7 +9930,6 @@ part_74S241  i_MLATCH_4B07 (
 // 4B09:
 // (no code to express 74S241)
 part_74S241  i_MLATCH_4B09 (
-  .AENB_N(\-MPASSL ),
   .Q7(MF16),
   .Q6(MF17),
   .Q5(MF18),
@@ -11777,7 +9944,7 @@ part_74S241  i_MLATCH_4B09 (
 // 4A06:
 // (no code to express 74S241)
 part_74S241  i_MLATCH_4A06 (
-  .AENB_N(internal1269),
+  .AENB_N(internal475),
   .Q7(MF8),
   .Q6(MF9),
   .Q5(MF10),
@@ -11792,7 +9959,6 @@ part_74S241  i_MLATCH_4A06 (
 // 4A08:
 // (no code to express 74S241)
 part_74S241  i_MLATCH_4A08 (
-  .AENB_N(internal1270),
   .Q7(MF0),
   .Q6(MF1),
   .Q5(MF2),
@@ -11807,7 +9973,6 @@ part_74S241  i_MLATCH_4A08 (
 // 4A05:
 // (no code to express 74S373)
 part_74S373  i_MLATCH_4A05 (
-  .OENB_N(\-MPASSM ),
   .O0(M7),
   .I0(MMEM7),
   .I1(MMEM6),
@@ -11816,7 +9981,6 @@ part_74S373  i_MLATCH_4A05 (
   .I2(MMEM5),
   .I3(MMEM4),
   .O3(M4),
-  .HOLD_N(CLK4A),
   .O4(M3),
   .I4(MMEM3),
   .I5(MMEM2),
@@ -11830,7 +9994,7 @@ part_74S373  i_MLATCH_4A05 (
 // 4A03:
 // (no code to express 74S373)
 part_74S373  i_MLATCH_4A03 (
-  .OENB_N(\-MPASSM ),
+  .OENB_N(internal477),
   .O0(M15),
   .I0(MMEM15),
   .I1(MMEM14),
@@ -11839,7 +10003,7 @@ part_74S373  i_MLATCH_4A03 (
   .I2(MMEM13),
   .I3(MMEM12),
   .O3(M12),
-  .HOLD_N(CLK4A),
+  .HOLD_N(internal478),
   .O4(M11),
   .I4(MMEM11),
   .I5(MMEM10),
@@ -11853,7 +10017,6 @@ part_74S373  i_MLATCH_4A03 (
 // 4A01:
 // (no code to express 74S373)
 part_74S373  i_MLATCH_4A01 (
-  .OENB_N(\-MPASSM ),
   .O0(M23),
   .I0(MMEM23),
   .I1(MMEM22),
@@ -11862,7 +10025,6 @@ part_74S373  i_MLATCH_4A01 (
   .I2(MMEM21),
   .I3(MMEM20),
   .O3(M20),
-  .HOLD_N(CLK4A),
   .O4(M19),
   .I4(MMEM19),
   .I5(MMEM18),
@@ -11876,7 +10038,6 @@ part_74S373  i_MLATCH_4A01 (
 // 4B04:
 // (no code to express 74S373)
 part_74S373  i_MLATCH_4B04 (
-  .OENB_N(\-MPASSM ),
   .O0(M31),
   .I0(MMEM31),
   .I1(MMEM30),
@@ -11885,7 +10046,6 @@ part_74S373  i_MLATCH_4B04 (
   .I2(MMEM29),
   .I3(MMEM28),
   .O3(M28),
-  .HOLD_N(CLK4A),
   .O4(M27),
   .I4(MMEM27),
   .I5(MMEM26),
@@ -11923,19 +10083,19 @@ part_74S373  i_MLATCH_4B02 (
 
 
 
-assign internal1272 = ! (\-IR31  & \-IR31 );
+assign \-MFDRIVE  = ! (\-IR31  & \-MPASS );
 
 // 3F14:
 
 
-assign internal1273 = ! (SPCENB | PDLENB);
+assign internal479 = ! (SPCENB | PDLENB);
 
 
 // 4D06:
 
 
 
-assign MFENB = internal1273 & internal1273;
+assign MFENB = \-MFDRIVE  & internal479;
 
 // 2A04:
 
@@ -11967,7 +10127,6 @@ part_74S241  i_MF_1B24 (
 // 1A21:
 // (no code to express 74S241)
 part_74S241  i_MF_1A21 (
-  .AENB_N(\-MFDRIVE ),
   .Q7(M16),
   .Q6(M17),
   .Q5(M18),
@@ -11982,7 +10141,7 @@ part_74S241  i_MF_1A21 (
 // 1A23:
 // (no code to express 74S241)
 part_74S241  i_MF_1A23 (
-  .AENB_N(\-MFDRIVE ),
+  .AENB_N(internal480),
   .Q7(M8),
   .Q6(M9),
   .Q5(M10),
@@ -11997,7 +10156,6 @@ part_74S241  i_MF_1A23 (
 // 1A25:
 // (no code to express 74S241)
 part_74S241  i_MF_1A25 (
-  .AENB_N(\-MFDRIVE ),
   .Q7(M0),
   .Q6(M1),
   .Q5(M2),
@@ -12053,7 +10211,6 @@ part_74S258  i_MDS_1A30 (
 // 2B05:
 // (no code to express 74S258)
 part_74S258  i_MDS_2B05 (
-  .SEL(MDSELA),
   .D0(MEM24),
   .D1(OB24),
   .DY(\-MDS24 ),
@@ -12072,6 +10229,7 @@ part_74S258  i_MDS_2B05 (
 // 1A28:
 // (no code to express 74S258)
 part_74S258  i_MDS_1A28 (
+  .SEL(internal483),
   .D0(MEM20),
   .D1(OB20),
   .DY(\-MDS20 ),
@@ -12090,7 +10248,6 @@ part_74S258  i_MDS_1A28 (
 // 1B30:
 // (no code to express 74S258)
 part_74S258  i_MDS_1B30 (
-  .SEL(internal1275),
   .D0(MEM16),
   .D1(OB16),
   .DY(\-MDS16 ),
@@ -12128,7 +10285,6 @@ part_74S258  i_MDS_1B27 (
 // 1C26:
 // (no code to express 74S258)
 part_74S258  i_MDS_1C26 (
-  .SEL(MDSELB),
   .D0(MEM8),
   .D1(OB8),
   .DY(\-MDS8 ),
@@ -12147,6 +10303,7 @@ part_74S258  i_MDS_1C26 (
 // 2B02:
 // (no code to express 74S258)
 part_74S258  i_MDS_2B02 (
+  .SEL(internal486),
   .D0(MEM4),
   .D1(OB4),
   .DY(\-MDS4 ),
@@ -12165,7 +10322,6 @@ part_74S258  i_MDS_2B02 (
 // 1C29:
 // (no code to express 74S258)
 part_74S258  i_MDS_1C29 (
-  .SEL(internal1279),
   .D0(MEM0),
   .D1(OB0),
   .DY(\-MDS0 ),
@@ -12184,7 +10340,6 @@ part_74S258  i_MDS_1C29 (
 // 1A11:
 // (no code to express 74S240)
 part_74S240  i_MDS_1A11 (
-  .AENB_N(\-MEMDRIVE.A ),
   .AIN0(\-MD31 ),
   .BOUT3(MEM24),
   .AIN1(\-MD30 ),
@@ -12207,6 +10362,7 @@ part_74S240  i_MDS_1A11 (
 // 1A17:
 // (no code to express 74S240)
 part_74S240  i_MDS_1A17 (
+  .AENB_N(internal487),
   .AIN0(\-MD23 ),
   .BOUT3(MEM16),
   .AIN1(\-MD22 ),
@@ -12229,7 +10385,6 @@ part_74S240  i_MDS_1A17 (
 // 1A19:
 // (no code to express 74S240)
 part_74S240  i_MDS_1A19 (
-  .AENB_N(internal1281),
   .AIN0(\-MD15 ),
   .BOUT3(MEM8),
   .AIN1(\-MD14 ),
@@ -12252,7 +10407,7 @@ part_74S240  i_MDS_1A19 (
 // 1A15:
 // (no code to express 74S240)
 part_74S240  i_MDS_1A15 (
-  .AENB_N(internal1282),
+  .AENB_N(internal489),
   .AIN0(\-MD7 ),
   .BOUT3(MEM0),
   .AIN1(\-MD6 ),
@@ -12276,8 +10431,8 @@ part_74S240  i_MDS_1A15 (
 
 
 
-assign \-LOADMD  = ! internal1284;
-assign \-DESTMDR  = ! DESTMDR;
+assign \-MDDRIVE  = ! \-MDDRIVE ;
+assign DESTMDR = ! \-DESTMDR ;
 
 
 // 1D16:
@@ -12338,7 +10493,6 @@ part_74S374  i_MD_1B16 (
 // 1C19:
 // (no code to express 74S374)
 part_74S374  i_MD_1C19 (
-  .OENB_N(internal1285),
   .O0(\-MD23 ),
   .I0(\-MDS23 ),
   .I1(\-MDS22 ),
@@ -12347,7 +10501,6 @@ part_74S374  i_MD_1C19 (
   .I2(\-MDS21 ),
   .I3(\-MDS20 ),
   .O3(\-MD20 ),
-  .CLK(internal1286),
   .O4(\-MD19 ),
   .I4(\-MDS19 ),
   .I5(\-MDS18 ),
@@ -12369,7 +10522,6 @@ part_74S374  i_MD_1D20 (
   .I2(\-MDS13 ),
   .I3(\-MDS12 ),
   .O3(\-MD12 ),
-  .CLK(internal1284),
   .O4(\-MD11 ),
   .I4(\-MDS11 ),
   .I5(\-MDS10 ),
@@ -12404,7 +10556,7 @@ part_74S374  i_MD_1C17 (
 // 1E07:
 
 
-assign MDGETSPAR = \-IGNPAR  & \-IGNPAR ;
+assign MDGETSPAR = \-IGNPAR  & \-DESTMDR ;
 
 
 // 1A08:
@@ -12447,7 +10599,6 @@ part_74S240  i_MD_1A02 (
 // 1A04:
 // (no code to express 74S240)
 part_74S240  i_MD_1A04 (
-  .AENB_N(\-MDDRIVE ),
   .AIN0(\-MD23 ),
   .BOUT3(MF16),
   .AIN1(\-MD22 ),
@@ -12470,7 +10621,7 @@ part_74S240  i_MD_1A04 (
 // 1A09:
 // (no code to express 74S240)
 part_74S240  i_MD_1A09 (
-  .AENB_N(\-MDDRIVE ),
+  .AENB_N(internal490),
   .AIN0(\-MD15 ),
   .BOUT3(MF8),
   .AIN1(\-MD14 ),
@@ -12493,7 +10644,6 @@ part_74S240  i_MD_1A09 (
 // 1A05:
 // (no code to express 74S240)
 part_74S240  i_MD_1A05 (
-  .AENB_N(\-MDDRIVE ),
   .AIN0(\-MD7 ),
   .BOUT3(MF0),
   .AIN1(\-MD6 ),
@@ -12522,11 +10672,11 @@ assign \-MWPB  = ! (DESTMD & WP4B);
 // 4B11:
 assign MPASSL = MPASS & TSE4A & \-IR31 ;
 
-assign SRCM = GND & \-IR31  & \-IR31 ;
+assign SRCM = internal492 & \-IR31  & \-MPASS ;
 
 // 4B14:
-assign \-MPASSL  = ! (MPASS & TSE4A & \-MPASSL );
-assign \-MPASSM  = ! (TSE4A & \-MPASSM  & \-MPASSM );
+assign \-MPASSL  = ! (MPASS & TSE4A & \-IR31 );
+assign \-MPASSM  = ! (TSE4A & \-IR31  & \-MPASS );
 
 
 // 4B12:
@@ -12621,7 +10771,7 @@ part_93S46  i_MCTL_4B18 (
 // 4A16:
 // (no code to express 74S258)
 part_74S258  i_MCTL_4A16 (
-  .SEL(CLK4E),
+  .SEL(internal493),
   .D0(WADR4),
   .D1(IR30),
   .DY(\-MADR4A ),
@@ -12659,7 +10809,6 @@ part_74S258  i_MCTL_4B19 (
 // 4D02:
 // (no code to express 74S241)
 part_74S241  i_LPC_4D02 (
-  .AENB_N(GND),
   .Q7(PC7B),
   .Q6(PC6B),
   .Q5(PC5B),
@@ -12686,7 +10835,7 @@ part_74S241  i_LPC_4D01 (
 
 
 // 4D06:
-assign LPC12 = IRDISP & IR25;
+assign internal495 = IRDISP & IR25;
 
 
 
@@ -12712,7 +10861,7 @@ part_74S157  i_LPC_4E09 (
 // 4E08:
 // (no code to express 74S157)
 part_74S157  i_LPC_4E08 (
-  .SEL(internal1288),
+  .SEL(internal496),
   .A4(PC4),
   .B4(LPC4),
   .Y4(WPC4),
@@ -12749,7 +10898,7 @@ part_74S157  i_LPC_4E07 (
 // 4E06:
 // (no code to express 74S157)
 part_74S157  i_LPC_4E06 (
-  .SEL(IRDISP),
+  .SEL(internal495),
   .A4(PC12),
   .B4(LPC12),
   .Y4(WPC12),
@@ -12766,20 +10915,20 @@ part_74S157  i_LPC_4E06 (
 
 
 // 4F06:
-ff i_LPC_4F06_1 (.q(LPC5), .d(PC5), .clk(CLK4B), .enb_n(\LPC.HOLD ) );
-ff i_LPC_4F06_2 (.q(LPC4), .d(PC4), .clk(CLK4B), .enb_n(\LPC.HOLD ) );
-ff i_LPC_4F06_3 (.q(LPC3), .d(PC3), .clk(CLK4B), .enb_n(\LPC.HOLD ) );
-ff i_LPC_4F06_4 (.q(LPC2), .d(PC2), .clk(CLK4B), .enb_n(\LPC.HOLD ) );
-ff i_LPC_4F06_5 (.q(LPC1), .d(PC1), .clk(CLK4B), .enb_n(\LPC.HOLD ) );
-ff i_LPC_4F06_6 (.q(LPC0), .d(PC0), .clk(CLK4B), .enb_n(\LPC.HOLD ) );
+ff i_LPC_4F06_1 (.q(LPC5), .d(PC5), .clk(internal498), .enb_n(internal497) );
+ff i_LPC_4F06_2 (.q(LPC4), .d(PC4), .clk(internal498), .enb_n(internal497) );
+ff i_LPC_4F06_3 (.q(LPC3), .d(PC3), .clk(internal498), .enb_n(internal497) );
+ff i_LPC_4F06_4 (.q(LPC2), .d(PC2), .clk(internal498), .enb_n(internal497) );
+ff i_LPC_4F06_5 (.q(LPC1), .d(PC1), .clk(internal498), .enb_n(internal497) );
+ff i_LPC_4F06_6 (.q(LPC0), .d(PC0), .clk(internal498), .enb_n(internal497) );
 
 // 4F07:
-ff i_LPC_4F07_1 (.q(LPC11), .d(PC11), .clk(CLK4B), .enb_n(\LPC.HOLD ) );
-ff i_LPC_4F07_2 (.q(LPC10), .d(PC10), .clk(CLK4B), .enb_n(\LPC.HOLD ) );
-ff i_LPC_4F07_3 (.q(LPC9), .d(PC9), .clk(CLK4B), .enb_n(\LPC.HOLD ) );
-ff i_LPC_4F07_4 (.q(LPC8), .d(PC8), .clk(CLK4B), .enb_n(\LPC.HOLD ) );
-ff i_LPC_4F07_5 (.q(LPC7), .d(PC7), .clk(CLK4B), .enb_n(\LPC.HOLD ) );
-ff i_LPC_4F07_6 (.q(LPC6), .d(PC6), .clk(CLK4B), .enb_n(\LPC.HOLD ) );
+ff i_LPC_4F07_1 (.q(LPC11), .d(PC11), .clk(internal498), .enb_n(internal497) );
+ff i_LPC_4F07_2 (.q(LPC10), .d(PC10), .clk(internal498), .enb_n(internal497) );
+ff i_LPC_4F07_3 (.q(LPC9), .d(PC9), .clk(internal498), .enb_n(internal497) );
+ff i_LPC_4F07_4 (.q(LPC8), .d(PC8), .clk(internal498), .enb_n(internal497) );
+ff i_LPC_4F07_5 (.q(LPC7), .d(PC7), .clk(internal498), .enb_n(internal497) );
+ff i_LPC_4F07_6 (.q(LPC6), .d(PC6), .clk(internal498), .enb_n(internal497) );
 
 // 4F08:
 ff i_LPC_4F08_1 (.q(NC), .d(NC), .clk(CLK4B), .enb_n(\LPC.HOLD ) );
@@ -12792,7 +10941,7 @@ ff i_LPC_4F08_6 (.q(LPC12), .d(PC12), .clk(CLK4B), .enb_n(\LPC.HOLD ) );
 // 3E22:
 
 
-assign internal1289 = ! NEEDFETCH;
+assign internal499 = ! NEEDFETCH;
 
 
 
@@ -12800,7 +10949,7 @@ assign internal1289 = ! NEEDFETCH;
 // 1C15:
 
 
-assign LCA3 = ! (\-LCINC  | \-LCINC );
+assign internal500 = ! (\-LCINC  | \LC_BYTE_MODE );
 
 
 // 1C21:
@@ -12811,6 +10960,7 @@ part_74S283  i_LCC_1C21 (
   .A1(LC1),
   .S0(LCA0),
   .A0(LC0),
+  .B0(internal500),
   .C0(LCINC),
   .C4(LCRY3),
   .S3(LCA3),
@@ -12828,7 +10978,7 @@ ff_dsel i_LCC_1C27_3 (.q(OB0), .a(OB1), .b(LCA1), .sel(\-DESTLC ), .clk(CLK2A) )
 ff_dsel i_LCC_1C27_4 (.q(LC0), .a(OB0), .b(LCA0), .sel(\-DESTLC ), .clk(CLK2A) );
 
 // 3E05:
-assign \INST_IN_2ND_OR_4TH_QUARTER  = internal1290 & \INST_IN_2ND_OR_4TH_QUARTER ;
+assign \INST_IN_2ND_OR_4TH_QUARTER  = internal501 & \LC_BYTE_MODE ;
 
 
 
@@ -12836,13 +10986,13 @@ assign \INST_IN_2ND_OR_4TH_QUARTER  = internal1290 & \INST_IN_2ND_OR_4TH_QUARTER
 // 2E30:
 
 
-assign \INST_IN_LEFT_HALF  = ! (internal1291 | \INST_IN_LEFT_HALF );
-assign internal1290 = ! (LC0 | \-LC_MODIFIES_MROT );
+assign \INST_IN_LEFT_HALF  = ! (internal502 | \-LC_MODIFIES_MROT );
+assign internal501 = ! (LC0 | \-LC_MODIFIES_MROT );
 
 // 2E05:
-assign \-SH4  = \-SH4  ^ \-SH4 ;
-assign internal1291 = LC1 ^ LC0B;
-assign \-SH3  = \-SH3  ^ \-SH3 ;
+assign \-SH4  = \INST_IN_LEFT_HALF  ^ \-IR4 ;
+assign internal502 = LC1 ^ LC0B;
+assign \-SH3  = \-IR3  ^ \INST_IN_2ND_OR_4TH_QUARTER ;
 
 
 // 1E07:
@@ -12854,37 +11004,37 @@ assign LC0B = LC0 & \LC_BYTE_MODE ;
 // 3E07:
 
 
-assign internal1292 = ! (\-SRCSPCPOPREAL  & SPC14);
+assign internal503 = ! (\-SRCSPCPOPREAL  & SPC14);
 assign \-IFETCH  = ! (NEEDFETCH & LCINC);
 
 // 4E03:
 assign SPC1A = SPCMUNG | SPC1;
 
 
-assign LCINC = \NEXT.INSTRD  | internal1289;
+assign LCINC = \NEXT.INSTRD  | internal499;
 
 // 4D09:
 
 assign SPCMUNG = SPC14 & \-NEEDFETCH ;
 
-assign internal1289 = IRDISP & IR24;
+assign internal499 = IRDISP & IR24;
 
 // 3E09:
 
 
 
-assign NEEDFETCH = \HAVE_WRONG_WORD  | \HAVE_WRONG_WORD ;
+assign NEEDFETCH = \HAVE_WRONG_WORD  | \LAST_BYTE_IN_WORD ;
 
 // 3E17:
-assign \NEXT.INSTR  = ! (\NEXT.INSTR  | internal1292);
+assign \NEXT.INSTR  = ! (\-SPOP  | internal503);
 assign \LAST_BYTE_IN_WORD  = ! (LC1 | LC0B);
-assign \-LCINC  = ! (\-LCINC  | internal1289);
+assign \-LCINC  = ! (\NEXT.INSTRD  | internal499);
 
 
 // 3E11:
 assign \-LC_MODIFIES_MROT  = ! (IR10 & IR11);
-assign \HAVE_WRONG_WORD  = ! (\HAVE_WRONG_WORD  & \HAVE_WRONG_WORD );
-assign \-NEWLC.IN  = ! (\-NEWLC.IN  & \-NEWLC.IN );
+assign \HAVE_WRONG_WORD  = ! (\-NEWLC  & \-DESTLC );
+assign \-NEWLC.IN  = ! (\HAVE_WRONG_WORD  & \-LCINC );
 
 
 // 3E12:
@@ -12948,14 +11098,10 @@ part_74S169  i_LC_2B03 (
 // 1A26:
 // (no code to express 74S169)
 part_74S169  i_LC_1A26 (
-  .UP_DN(HI11),
-  .CLK(CLK1A),
   .I0(OB20),
   .I1(OB21),
   .I2(OB22),
   .I3(OB23),
-  .ENB_P_N(GND),
-  .LOAD_N(\-DESTLC ),
   .ENB_T_N(\-LCRY19 ),
   .O3(LC23),
   .O2(LC22),
@@ -12967,14 +11113,14 @@ part_74S169  i_LC_1A26 (
 // 1B28:
 // (no code to express 74S169)
 part_74S169  i_LC_1B28 (
-  .UP_DN(HI11),
-  .CLK(CLK1A),
+  .UP_DN(internal504),
+  .CLK(internal505),
   .I0(OB16),
   .I1(OB17),
   .I2(OB18),
   .I3(OB19),
-  .ENB_P_N(GND),
-  .LOAD_N(\-DESTLC ),
+  .ENB_P_N(internal506),
+  .LOAD_N(internal507),
   .ENB_T_N(\-LCRY15 ),
   .O3(LC19),
   .O2(LC18),
@@ -12986,14 +11132,11 @@ part_74S169  i_LC_1B28 (
 // 1C30:
 // (no code to express 74S169)
 part_74S169  i_LC_1C30 (
-  .UP_DN(HI11),
   .CLK(CLK2A),
   .I0(OB12),
   .I1(OB13),
   .I2(OB14),
   .I3(OB15),
-  .ENB_P_N(GND),
-  .LOAD_N(\-DESTLC ),
   .ENB_T_N(\-LCRY11 ),
   .O3(LC15),
   .O2(LC14),
@@ -13005,14 +11148,14 @@ part_74S169  i_LC_1C30 (
 // 1D29:
 // (no code to express 74S169)
 part_74S169  i_LC_1D29 (
-  .UP_DN(HI11),
+  .UP_DN(internal508),
   .CLK(CLK2C),
   .I0(OB8),
   .I1(OB9),
   .I2(OB10),
   .I3(OB11),
-  .ENB_P_N(GND),
-  .LOAD_N(\-DESTLC ),
+  .ENB_P_N(internal509),
+  .LOAD_N(internal510),
   .ENB_T_N(\-LCRY7 ),
   .O3(LC11),
   .O2(LC10),
@@ -13024,14 +11167,10 @@ part_74S169  i_LC_1D29 (
 // 2C05:
 // (no code to express 74S169)
 part_74S169  i_LC_2C05 (
-  .UP_DN(HI11),
-  .CLK(CLK2A),
   .I0(OB4),
   .I1(OB5),
   .I2(OB6),
   .I3(OB7),
-  .ENB_P_N(GND),
-  .LOAD_N(\-DESTLC ),
   .ENB_T_N(\-LCRY3 ),
   .O3(LC7),
   .O2(LC6),
@@ -13058,7 +11197,6 @@ part_74S241  i_LC_1A16 (
 // 1A22:
 // (no code to express 74S241)
 part_74S241  i_LC_1A22 (
-  .AENB_N(\-LCDRIVE ),
   .Q7(MF16),
   .Q6(MF17),
   .Q5(MF18),
@@ -13073,7 +11211,7 @@ part_74S241  i_LC_1A22 (
 // 1A24:
 // (no code to express 74S241)
 part_74S241  i_LC_1A24 (
-  .AENB_N(\-LCDRIVE ),
+  .AENB_N(internal511),
   .Q7(MF8),
   .Q6(MF9),
   .Q5(MF10),
@@ -13088,7 +11226,6 @@ part_74S241  i_LC_1A24 (
 // 1A20:
 // (no code to express 74S241)
 part_74S241  i_LC_1A20 (
-  .AENB_N(\-LCDRIVE ),
   .Q7(MF0),
   .Q6(MF1),
   .Q5(MF2),
@@ -13203,7 +11340,7 @@ part_74S374  i_L_3C28 (
 // 3C27:
 // (no code to express 74S374)
 part_74S374  i_L_3C27 (
-  .OENB_N(internal1293),
+  .OENB_N(internal513),
   .O0(L15),
   .I0(OB15),
   .I1(OB14),
@@ -13212,7 +11349,6 @@ part_74S374  i_L_3C27 (
   .I2(OB13),
   .I3(OB12),
   .O3(L12),
-  .CLK(internal1294),
   .O4(L11),
   .I4(OB11),
   .I5(OB10),
@@ -13226,7 +11362,6 @@ part_74S374  i_L_3C27 (
 // 3C26:
 // (no code to express 74S374)
 part_74S374  i_L_3C26 (
-  .OENB_N(GND),
   .O0(L7),
   .I0(OB7),
   .I1(OB6),
@@ -13235,7 +11370,6 @@ part_74S374  i_L_3C26 (
   .I2(OB5),
   .I3(OB4),
   .O3(L4),
-  .CLK(CLK3F),
   .O4(L3),
   .I4(OB3),
   .I5(OB2),
@@ -13280,7 +11414,6 @@ part_74S374  i_IWR_1F14 (
   .I2(AA5),
   .I3(AA4),
   .O3(IWR36),
-  .CLK(CLK2C),
   .O4(IWR35),
   .I4(AA3),
   .I5(AA2),
@@ -13294,7 +11427,6 @@ part_74S374  i_IWR_1F14 (
 // 4C04:
 // (no code to express 74S374)
 part_74S374  i_IWR_4C04 (
-  .OENB_N(internal1295),
   .O0(IWR31),
   .I0(M31),
   .I1(M30),
@@ -13316,7 +11448,6 @@ part_74S374  i_IWR_4C04 (
 // 4C05:
 // (no code to express 74S374)
 part_74S374  i_IWR_4C05 (
-  .OENB_N(internal1296),
   .O0(IWR23),
   .I0(M23),
   .I1(M22),
@@ -13338,7 +11469,6 @@ part_74S374  i_IWR_4C05 (
 // 4B01:
 // (no code to express 74S374)
 part_74S374  i_IWR_4B01 (
-  .OENB_N(internal1297),
   .O0(IWR15),
   .I0(M15),
   .I1(M14),
@@ -13347,7 +11477,6 @@ part_74S374  i_IWR_4B01 (
   .I2(M13),
   .I3(M12),
   .O3(IWR12),
-  .CLK(internal1298),
   .O4(IWR11),
   .I4(M11),
   .I5(M10),
@@ -13361,7 +11490,6 @@ part_74S374  i_IWR_4B01 (
 // 4B06:
 // (no code to express 74S374)
 part_74S374  i_IWR_4B06 (
-  .OENB_N(GND),
   .O0(IWR7),
   .I0(M7),
   .I1(M6),
@@ -13370,7 +11498,6 @@ part_74S374  i_IWR_4B06 (
   .I2(M5),
   .I3(M4),
   .O3(IWR4),
-  .CLK(internal1299),
   .O4(IWR3),
   .I4(M3),
   .I5(M2),
@@ -13388,34 +11515,34 @@ ff_dsel i_IREG_3D06_3 (.q(IOB46), .a(IOB47), .b(I47), .sel(\-DESTIMOD1 ), .clk(C
 ff_dsel i_IREG_3D06_4 (.q(IR46), .a(IOB46), .b(I46), .sel(\-DESTIMOD1 ), .clk(CLK3A) );
 
 // 3D07:
-ff_dsel i_IREG_3D07_1 (.q(IR45), .a(IOB45), .b(I45), .sel(internal1300), .clk(CLK3A) );
-ff_dsel i_IREG_3D07_2 (.q(IR44), .a(IOB44), .b(I44), .sel(internal1300), .clk(CLK3A) );
-ff_dsel i_IREG_3D07_3 (.q(IOB42), .a(IOB43), .b(I43), .sel(internal1300), .clk(CLK3A) );
-ff_dsel i_IREG_3D07_4 (.q(IR42), .a(IOB42), .b(I42), .sel(internal1300), .clk(CLK3A) );
+ff_dsel i_IREG_3D07_1 (.q(IR45), .a(IOB45), .b(I45), .sel(\-DESTIMOD1 ), .clk(CLK3A) );
+ff_dsel i_IREG_3D07_2 (.q(IR44), .a(IOB44), .b(I44), .sel(\-DESTIMOD1 ), .clk(CLK3A) );
+ff_dsel i_IREG_3D07_3 (.q(IOB42), .a(IOB43), .b(I43), .sel(\-DESTIMOD1 ), .clk(CLK3A) );
+ff_dsel i_IREG_3D07_4 (.q(IR42), .a(IOB42), .b(I42), .sel(\-DESTIMOD1 ), .clk(CLK3A) );
 
 // 3D16:
-ff_dsel i_IREG_3D16_1 (.q(IR41), .a(IOB41), .b(I41), .sel(internal1301), .clk(internal1301) );
-ff_dsel i_IREG_3D16_2 (.q(IR40), .a(IOB40), .b(I40), .sel(internal1301), .clk(internal1301) );
-ff_dsel i_IREG_3D16_3 (.q(IOB38), .a(IOB39), .b(I39), .sel(internal1301), .clk(internal1301) );
-ff_dsel i_IREG_3D16_4 (.q(IR38), .a(IOB38), .b(I38), .sel(internal1301), .clk(internal1301) );
+ff_dsel i_IREG_3D16_1 (.q(IR41), .a(IOB41), .b(I41), .sel(\-DESTIMOD1 ), .clk(\-DESTIMOD1 ) );
+ff_dsel i_IREG_3D16_2 (.q(IR40), .a(IOB40), .b(I40), .sel(\-DESTIMOD1 ), .clk(\-DESTIMOD1 ) );
+ff_dsel i_IREG_3D16_3 (.q(IOB38), .a(IOB39), .b(I39), .sel(\-DESTIMOD1 ), .clk(\-DESTIMOD1 ) );
+ff_dsel i_IREG_3D16_4 (.q(IR38), .a(IOB38), .b(I38), .sel(\-DESTIMOD1 ), .clk(\-DESTIMOD1 ) );
 
 // 3D17:
-ff_dsel i_IREG_3D17_1 (.q(IR37), .a(IOB37), .b(I37), .sel(internal1302), .clk(internal1303) );
-ff_dsel i_IREG_3D17_2 (.q(IR36), .a(IOB36), .b(I36), .sel(internal1302), .clk(internal1303) );
-ff_dsel i_IREG_3D17_3 (.q(IOB34), .a(IOB35), .b(I35), .sel(internal1302), .clk(internal1303) );
-ff_dsel i_IREG_3D17_4 (.q(IR34), .a(IOB34), .b(I34), .sel(internal1302), .clk(internal1303) );
+ff_dsel i_IREG_3D17_1 (.q(IR37), .a(IOB37), .b(I37), .sel(\-DESTIMOD1 ), .clk(\-DESTIMOD1 ) );
+ff_dsel i_IREG_3D17_2 (.q(IR36), .a(IOB36), .b(I36), .sel(\-DESTIMOD1 ), .clk(\-DESTIMOD1 ) );
+ff_dsel i_IREG_3D17_3 (.q(IOB34), .a(IOB35), .b(I35), .sel(\-DESTIMOD1 ), .clk(\-DESTIMOD1 ) );
+ff_dsel i_IREG_3D17_4 (.q(IR34), .a(IOB34), .b(I34), .sel(\-DESTIMOD1 ), .clk(\-DESTIMOD1 ) );
 
 // 3D18:
-ff_dsel i_IREG_3D18_1 (.q(IR33), .a(IOB33), .b(I33), .sel(\-DESTIMOD1 ), .clk(internal1304) );
-ff_dsel i_IREG_3D18_2 (.q(IR32), .a(IOB32), .b(I32), .sel(\-DESTIMOD1 ), .clk(internal1304) );
-ff_dsel i_IREG_3D18_3 (.q(IOB30), .a(IOB31), .b(I31), .sel(\-DESTIMOD1 ), .clk(internal1304) );
-ff_dsel i_IREG_3D18_4 (.q(IR30), .a(IOB30), .b(I30), .sel(\-DESTIMOD1 ), .clk(internal1304) );
+ff_dsel i_IREG_3D18_1 (.q(IR33), .a(IOB33), .b(I33), .sel(\-DESTIMOD1 ), .clk(\-DESTIMOD1 ) );
+ff_dsel i_IREG_3D18_2 (.q(IR32), .a(IOB32), .b(I32), .sel(\-DESTIMOD1 ), .clk(\-DESTIMOD1 ) );
+ff_dsel i_IREG_3D18_3 (.q(IOB30), .a(IOB31), .b(I31), .sel(\-DESTIMOD1 ), .clk(\-DESTIMOD1 ) );
+ff_dsel i_IREG_3D18_4 (.q(IR30), .a(IOB30), .b(I30), .sel(\-DESTIMOD1 ), .clk(\-DESTIMOD1 ) );
 
 // 3D19:
-ff_dsel i_IREG_3D19_1 (.q(IR29), .a(IOB29), .b(I29), .sel(\-DESTIMOD1 ), .clk(internal1301) );
-ff_dsel i_IREG_3D19_2 (.q(IR28), .a(IOB28), .b(I28), .sel(\-DESTIMOD1 ), .clk(internal1301) );
-ff_dsel i_IREG_3D19_3 (.q(IOB26), .a(IOB27), .b(I27), .sel(\-DESTIMOD1 ), .clk(internal1301) );
-ff_dsel i_IREG_3D19_4 (.q(IR26), .a(IOB26), .b(I26), .sel(\-DESTIMOD1 ), .clk(internal1301) );
+ff_dsel i_IREG_3D19_1 (.q(IR29), .a(IOB29), .b(I29), .sel(\-DESTIMOD1 ), .clk(\-DESTIMOD1 ) );
+ff_dsel i_IREG_3D19_2 (.q(IR28), .a(IOB28), .b(I28), .sel(\-DESTIMOD1 ), .clk(\-DESTIMOD1 ) );
+ff_dsel i_IREG_3D19_3 (.q(IOB26), .a(IOB27), .b(I27), .sel(\-DESTIMOD1 ), .clk(\-DESTIMOD1 ) );
+ff_dsel i_IREG_3D19_4 (.q(IR26), .a(IOB26), .b(I26), .sel(\-DESTIMOD1 ), .clk(\-DESTIMOD1 ) );
 
 // 3D20:
 ff_dsel i_IREG_3D20_1 (.q(NC), .a(NC), .b(NC), .sel(\-DESTIMOD0 ), .clk(CLK3B) );
@@ -13424,28 +11551,28 @@ ff_dsel i_IREG_3D20_3 (.q(IOB24), .a(IOB25), .b(I25), .sel(\-DESTIMOD0 ), .clk(C
 ff_dsel i_IREG_3D20_4 (.q(IR24), .a(IOB24), .b(I24), .sel(\-DESTIMOD0 ), .clk(CLK3B) );
 
 // 3C17:
-ff_dsel i_IREG_3C17_1 (.q(IR23), .a(IOB23), .b(I23), .sel(internal1305), .clk(CLK3B) );
-ff_dsel i_IREG_3C17_2 (.q(IR22), .a(IOB22), .b(I22), .sel(internal1305), .clk(CLK3B) );
-ff_dsel i_IREG_3C17_3 (.q(IOB20), .a(IOB21), .b(I21), .sel(internal1305), .clk(CLK3B) );
-ff_dsel i_IREG_3C17_4 (.q(IR20), .a(IOB20), .b(I20), .sel(internal1305), .clk(CLK3B) );
+ff_dsel i_IREG_3C17_1 (.q(IR23), .a(IOB23), .b(I23), .sel(\-DESTIMOD0 ), .clk(CLK3B) );
+ff_dsel i_IREG_3C17_2 (.q(IR22), .a(IOB22), .b(I22), .sel(\-DESTIMOD0 ), .clk(CLK3B) );
+ff_dsel i_IREG_3C17_3 (.q(IOB20), .a(IOB21), .b(I21), .sel(\-DESTIMOD0 ), .clk(CLK3B) );
+ff_dsel i_IREG_3C17_4 (.q(IR20), .a(IOB20), .b(I20), .sel(\-DESTIMOD0 ), .clk(CLK3B) );
 
 // 3C19:
-ff_dsel i_IREG_3C19_1 (.q(IR19), .a(IOB19), .b(I19), .sel(internal1306), .clk(CLK3B) );
-ff_dsel i_IREG_3C19_2 (.q(IR18), .a(IOB18), .b(I18), .sel(internal1306), .clk(CLK3B) );
-ff_dsel i_IREG_3C19_3 (.q(IOB16), .a(IOB17), .b(I17), .sel(internal1306), .clk(CLK3B) );
-ff_dsel i_IREG_3C19_4 (.q(IR16), .a(IOB16), .b(I16), .sel(internal1306), .clk(CLK3B) );
+ff_dsel i_IREG_3C19_1 (.q(IR19), .a(IOB19), .b(I19), .sel(\-DESTIMOD0 ), .clk(CLK3B) );
+ff_dsel i_IREG_3C19_2 (.q(IR18), .a(IOB18), .b(I18), .sel(\-DESTIMOD0 ), .clk(CLK3B) );
+ff_dsel i_IREG_3C19_3 (.q(IOB16), .a(IOB17), .b(I17), .sel(\-DESTIMOD0 ), .clk(CLK3B) );
+ff_dsel i_IREG_3C19_4 (.q(IR16), .a(IOB16), .b(I16), .sel(\-DESTIMOD0 ), .clk(CLK3B) );
 
 // 3C01:
-ff_dsel i_IREG_3C01_1 (.q(IR15), .a(IOB15), .b(I15), .sel(internal1307), .clk(CLK3A) );
-ff_dsel i_IREG_3C01_2 (.q(IR14), .a(IOB14), .b(I14), .sel(internal1307), .clk(CLK3A) );
-ff_dsel i_IREG_3C01_3 (.q(IOB12), .a(IOB13), .b(I13), .sel(internal1307), .clk(CLK3A) );
-ff_dsel i_IREG_3C01_4 (.q(IR12), .a(IOB12), .b(I12), .sel(internal1307), .clk(CLK3A) );
+ff_dsel i_IREG_3C01_1 (.q(IR15), .a(IOB15), .b(I15), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
+ff_dsel i_IREG_3C01_2 (.q(IR14), .a(IOB14), .b(I14), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
+ff_dsel i_IREG_3C01_3 (.q(IOB12), .a(IOB13), .b(I13), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
+ff_dsel i_IREG_3C01_4 (.q(IR12), .a(IOB12), .b(I12), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
 
 // 3C02:
-ff_dsel i_IREG_3C02_1 (.q(IR11), .a(IOB11), .b(I11), .sel(internal1308), .clk(internal1309) );
-ff_dsel i_IREG_3C02_2 (.q(IR10), .a(IOB10), .b(I10), .sel(internal1308), .clk(internal1309) );
-ff_dsel i_IREG_3C02_3 (.q(IOB8), .a(IOB9), .b(I9), .sel(internal1308), .clk(internal1309) );
-ff_dsel i_IREG_3C02_4 (.q(IR8), .a(IOB8), .b(I8), .sel(internal1308), .clk(internal1309) );
+ff_dsel i_IREG_3C02_1 (.q(IR11), .a(IOB11), .b(I11), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
+ff_dsel i_IREG_3C02_2 (.q(IR10), .a(IOB10), .b(I10), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
+ff_dsel i_IREG_3C02_3 (.q(IOB8), .a(IOB9), .b(I9), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
+ff_dsel i_IREG_3C02_4 (.q(IR8), .a(IOB8), .b(I8), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
 
 // 3C03:
 ff_dsel i_IREG_3C03_1 (.q(IR7), .a(IOB7), .b(I7), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
@@ -13661,7 +11788,7 @@ assign SINT = SINTR & \INT.ENABLE ;
 
 
 // 3E07:
-assign \-ILONG  = ! (IR45 & \-ILONG );
+assign \-ILONG  = ! (IR45 & \-NOPA );
 
 
 
@@ -13670,21 +11797,21 @@ assign \-ILONG  = ! (IR45 & \-ILONG );
 
 
 
-assign \-STATBIT  = ! (\-STATBIT  & IR46);
+assign \-STATBIT  = ! (\-NOPA  & IR46);
 
 // 3E22:
 
 
 
-assign ALU32 = ! \-ALU32 ;
+assign \-ALU32  = ! ALU32;
 
 
 
 // 3E18:
 
-assign \PGF.OR.INT  = \PGF.OR.INT  | SINT;
-assign internal1310 = \SEQUENCE.BREAK  | SINT;
-assign \PGF.OR.INT.OR.SB  = internal1310 | \PGF.OR.INT.OR.SB ;
+assign \PGF.OR.INT  = \-VMAOK  | SINT;
+assign internal514 = \SEQUENCE.BREAK  | SINT;
+assign \PGF.OR.INT.OR.SB  = internal514 | \-VMAOK ;
 
 // 3E14:
 assign CONDS2 = IR2 & IR5;
@@ -13749,7 +11876,6 @@ part_74S241  i_DSPCTL_3F12 (
 // 3F13:
 // (no code to express 74S241)
 part_74S241  i_DSPCTL_3F13 (
-  .AENB_N(GND),
   .Q7(AA0),
   .Q6(AA1),
   .Q5(AA2),
@@ -13807,7 +11933,7 @@ part_74S280  i_DSPCTL_4F09 (
 
 // 3F14:
 assign \-DMAPBENB  = ! (IR8 | IR9);
-assign DISPWR = ! (\-IRDISP  | \-IRDISP );
+assign DISPWR = ! (\-IRDISP  | \-FUNCT2 );
 
 
 
@@ -13856,9 +11982,9 @@ assign \-DWEC  = ! (DISPWR & WP2);
 assign NC = ! NC;
 assign DADR10C = ! \-DADR10C ;
 assign \-DADR10C  = ! IR22B;
-assign IR21B = ! \-DADR9C ;
-assign IR20B = ! \-DADR8C ;
-assign IR19B = ! \-DADR7C ;
+assign \-DADR9C  = ! IR21B;
+assign \-DADR8C  = ! IR20B;
+assign \-DADR7C  = ! IR19B;
 
 // 2F01:
 // (no code to express 74S64)
@@ -13944,95 +12070,59 @@ part_93425A  i_DRAM2_1F16 (
 // 1F18:
 // (no code to express 93425A)
 part_93425A  i_DRAM2_1F18 (
-  .CE_N(DADR10C),
-  .A0(\-DADR0C ),
-  .A1(\-DADR1C ),
-  .A2(\-DADR2C ),
-  .A3(\-DADR3C ),
-  .A4(\-DADR4C ),
-  .D0(DR),
-  .A5(\-DADR5C ),
-  .A6(\-DADR6C ),
-  .A7(\-DADR7C ),
-  .A8(\-DADR8C ),
-  .A9(\-DADR9C ),
-  .WE_N(\-DWEC )
+  .D0(DR)
 );
 
 
 // 1F21:
 // (no code to express 93425A)
 part_93425A  i_DRAM2_1F21 (
-  .CE_N(DADR10C),
-  .A0(\-DADR0C ),
-  .A1(\-DADR1C ),
-  .A2(\-DADR2C ),
-  .A3(\-DADR3C ),
-  .A4(\-DADR4C ),
+  .CE_N(internal517),
+  .A0(internal518),
+  .A1(internal519),
+  .A2(internal520),
+  .A3(internal521),
+  .A4(internal522),
   .D0(DP),
-  .A5(\-DADR5C ),
-  .A6(\-DADR6C ),
-  .A7(\-DADR7C ),
-  .A8(\-DADR8C ),
-  .A9(\-DADR9C ),
-  .WE_N(\-DWEC )
+  .A5(internal523),
+  .A6(internal524),
+  .A7(internal525),
+  .A8(internal526),
+  .A9(internal527),
+  .WE_N(internal528)
 );
 
 
 // 1F23:
 // (no code to express 93425A)
 part_93425A  i_DRAM2_1F23 (
-  .CE_N(DADR10C),
-  .A0(\-DADR0C ),
-  .A1(\-DADR1C ),
-  .A2(\-DADR2C ),
-  .A3(\-DADR3C ),
-  .A4(\-DADR4C ),
-  .D0(DN),
-  .A5(\-DADR5C ),
-  .A6(\-DADR6C ),
-  .A7(\-DADR7C ),
-  .A8(\-DADR8C ),
-  .A9(\-DADR9C ),
-  .WE_N(\-DWEC )
+  .D0(DN)
 );
 
 
 // 1F26:
 // (no code to express 93425A)
 part_93425A  i_DRAM2_1F26 (
-  .CE_N(DADR10C),
-  .A0(\-DADR0C ),
-  .A1(\-DADR1C ),
-  .A2(\-DADR2C ),
-  .A3(\-DADR3C ),
-  .A4(\-DADR4C ),
+  .CE_N(internal529),
+  .A0(internal530),
+  .A1(internal531),
+  .A2(internal532),
+  .A3(internal533),
+  .A4(internal534),
   .D0(DPC13),
-  .A5(\-DADR5C ),
-  .A6(\-DADR6C ),
-  .A7(\-DADR7C ),
-  .A8(\-DADR8C ),
-  .A9(\-DADR9C ),
-  .WE_N(\-DWEC )
+  .A5(internal535),
+  .A6(internal536),
+  .A7(internal537),
+  .A8(internal538),
+  .A9(internal539),
+  .WE_N(internal540)
 );
 
 
 // 1F28:
 // (no code to express 93425A)
 part_93425A  i_DRAM2_1F28 (
-  .CE_N(DADR10C),
-  .A0(\-DADR0C ),
-  .A1(\-DADR1C ),
-  .A2(\-DADR2C ),
-  .A3(\-DADR3C ),
-  .A4(\-DADR4C ),
-  .D0(DPC12),
-  .A5(\-DADR5C ),
-  .A6(\-DADR6C ),
-  .A7(\-DADR7C ),
-  .A8(\-DADR8C ),
-  .A9(\-DADR9C ),
-  .WE_N(\-DWEC )
+  .D0(DPC12)
 );
 
 
@@ -14058,83 +12148,59 @@ part_93425A  i_DRAM2_1F17 (
 // 1F19:
 // (no code to express 93425A)
 part_93425A  i_DRAM2_1F19 (
-  .CE_N(\-DADR10C ),
-  .A0(\-DADR0C ),
-  .A1(\-DADR1C ),
-  .A2(\-DADR2C ),
-  .A3(\-DADR3C ),
-  .A4(\-DADR4C ),
-  .D0(DR),
-  .A5(\-DADR5C ),
-  .A6(\-DADR6C ),
-  .A7(\-DADR7C ),
-  .A8(\-DADR8C ),
-  .A9(\-DADR9C ),
-  .WE_N(\-DWEC )
+  .D0(DR)
 );
 
 
 // 1F22:
 // (no code to express 93425A)
 part_93425A  i_DRAM2_1F22 (
-  .D0(DP)
+  .CE_N(internal541),
+  .A0(internal542),
+  .A1(internal543),
+  .A2(internal544),
+  .A3(internal545),
+  .A4(internal546),
+  .D0(DP),
+  .A5(internal547),
+  .A6(internal548),
+  .A7(internal549),
+  .A8(internal550),
+  .A9(internal551),
+  .WE_N(internal552)
 );
 
 
 // 1F24:
 // (no code to express 93425A)
 part_93425A  i_DRAM2_1F24 (
-  .CE_N(internal1312),
-  .A0(internal1313),
-  .A1(internal1314),
-  .A2(internal1315),
-  .A3(internal1316),
-  .A4(internal1317),
-  .D0(DN),
-  .A5(internal1318),
-  .A6(internal1319),
-  .A7(internal1320),
-  .A8(internal1321),
-  .A9(internal1322),
-  .WE_N(internal1323)
+  .D0(DN)
 );
 
 
 // 1F27:
 // (no code to express 93425A)
 part_93425A  i_DRAM2_1F27 (
-  .CE_N(internal1324),
-  .A0(internal1325),
-  .A1(internal1326),
-  .A2(internal1327),
-  .A3(internal1328),
-  .A4(internal1329),
+  .CE_N(internal553),
+  .A0(internal554),
+  .A1(internal555),
+  .A2(internal556),
+  .A3(internal557),
+  .A4(internal558),
   .D0(DPC13),
-  .A5(internal1330),
-  .A6(internal1331),
-  .A7(internal1332),
-  .A8(internal1333),
-  .A9(internal1334),
-  .WE_N(internal1311)
+  .A5(internal559),
+  .A6(internal560),
+  .A7(internal561),
+  .A8(internal562),
+  .A9(internal563),
+  .WE_N(internal516)
 );
 
 
 // 1F29:
 // (no code to express 93425A)
 part_93425A  i_DRAM2_1F29 (
-  .CE_N(internal1335),
-  .A0(internal1336),
-  .A1(internal1337),
-  .A2(internal1338),
-  .A3(internal1339),
-  .A4(internal1340),
-  .D0(DPC12),
-  .A5(internal1341),
-  .A6(internal1342),
-  .A7(internal1343),
-  .A8(internal1344),
-  .A9(internal1345),
-  .WE_N(internal1346)
+  .D0(DPC12)
 );
 
 
@@ -14162,9 +12228,9 @@ assign \-DWEB  = ! (WP2 & DISPWR);
 assign NC = ! NC;
 assign VMO19 = ! \-VMO19 ;
 assign VMO18 = ! \-VMO18 ;
-assign IR21B = ! \-DADR9B ;
-assign IR20B = ! \-DADR8B ;
-assign IR19B = ! \-DADR7B ;
+assign \-DADR9B  = ! IR21B;
+assign \-DADR8B  = ! IR20B;
+assign \-DADR7B  = ! IR19B;
 
 // 2F05:
 // (no code to express 74S64)
@@ -14250,38 +12316,26 @@ part_93425A  i_DRAM1_2F06 (
 // 2F08:
 // (no code to express 93425A)
 part_93425A  i_DRAM1_2F08 (
-  .CE_N(DADR10A),
-  .A0(\-DADR0B ),
-  .A1(\-DADR1B ),
-  .A2(\-DADR2B ),
-  .A3(\-DADR3B ),
-  .A4(\-DADR4B ),
-  .D0(DPC10),
-  .A5(\-DADR5B ),
-  .A6(\-DADR6B ),
-  .A7(\-DADR7B ),
-  .A8(\-DADR8B ),
-  .A9(\-DADR9B ),
-  .WE_N(\-DWEB )
+  .D0(DPC10)
 );
 
 
 // 2F11:
 // (no code to express 93425A)
 part_93425A  i_DRAM1_2F11 (
-  .CE_N(DADR10A),
-  .A0(\-DADR0B ),
-  .A1(\-DADR1B ),
-  .A2(\-DADR2B ),
-  .A3(\-DADR3B ),
-  .A4(\-DADR4B ),
+  .CE_N(internal565),
+  .A0(internal566),
+  .A1(internal567),
+  .A2(internal568),
+  .A3(internal569),
+  .A4(internal570),
   .D0(DPC9),
-  .A5(\-DADR5B ),
-  .A6(\-DADR6B ),
-  .A7(\-DADR7B ),
-  .A8(\-DADR8B ),
-  .A9(\-DADR9B ),
-  .WE_N(\-DWEB )
+  .A5(internal571),
+  .A6(internal572),
+  .A7(internal573),
+  .A8(internal574),
+  .A9(internal575),
+  .WE_N(internal576)
 );
 
 
@@ -14289,56 +12343,33 @@ part_93425A  i_DRAM1_2F11 (
 // (no code to express 93425A)
 part_93425A  i_DRAM1_2F13 (
   .CE_N(DADR10C),
-  .A0(\-DADR0B ),
-  .A1(\-DADR1B ),
-  .A2(\-DADR2B ),
-  .A3(\-DADR3B ),
-  .A4(\-DADR4B ),
-  .D0(DPC8),
-  .A5(\-DADR5B ),
-  .A6(\-DADR6B ),
-  .A7(\-DADR7B ),
-  .A8(\-DADR8B ),
-  .A9(\-DADR9B ),
-  .WE_N(\-DWEB )
+  .D0(DPC8)
 );
 
 
 // 2F16:
 // (no code to express 93425A)
 part_93425A  i_DRAM1_2F16 (
-  .CE_N(DADR10C),
-  .A0(\-DADR0B ),
-  .A1(\-DADR1B ),
-  .A2(\-DADR2B ),
-  .A3(\-DADR3B ),
-  .A4(\-DADR4B ),
+  .A0(internal577),
+  .A1(internal578),
+  .A2(internal579),
+  .A3(internal580),
+  .A4(internal581),
   .D0(DPC7),
-  .A5(\-DADR5B ),
-  .A6(\-DADR6B ),
-  .A7(\-DADR7B ),
-  .A8(\-DADR8B ),
-  .A9(\-DADR9B ),
-  .WE_N(\-DWEB )
+  .A5(internal582),
+  .A6(internal583),
+  .A7(internal584),
+  .A8(internal585),
+  .A9(internal586),
+  .WE_N(internal587)
 );
 
 
 // 2F18:
 // (no code to express 93425A)
 part_93425A  i_DRAM1_2F18 (
-  .CE_N(DADR10C),
-  .A0(\-DADR0B ),
-  .A1(\-DADR1B ),
-  .A2(\-DADR2B ),
-  .A3(\-DADR3B ),
-  .A4(\-DADR4B ),
-  .D0(DPC6),
-  .A5(\-DADR5B ),
-  .A6(\-DADR6B ),
-  .A7(\-DADR7B ),
-  .A8(\-DADR8B ),
-  .A9(\-DADR9B ),
-  .WE_N(\-DWEB )
+  .CE_N(internal588),
+  .D0(DPC6)
 );
 
 
@@ -14364,26 +12395,26 @@ part_93425A  i_DRAM1_2F07 (
 // 2F09:
 // (no code to express 93425A)
 part_93425A  i_DRAM1_2F09 (
-  .CE_N(\-DADR10A ),
-  .A0(\-DADR0B ),
-  .A1(\-DADR1B ),
-  .A2(\-DADR2B ),
-  .A3(\-DADR3B ),
-  .A4(\-DADR4B ),
-  .D0(DPC10),
-  .A5(\-DADR5B ),
-  .A6(\-DADR6B ),
-  .A7(\-DADR7B ),
-  .A8(\-DADR8B ),
-  .A9(\-DADR9B ),
-  .WE_N(\-DWEB )
+  .D0(DPC10)
 );
 
 
 // 2F12:
 // (no code to express 93425A)
 part_93425A  i_DRAM1_2F12 (
-  .D0(DPC9)
+  .CE_N(internal589),
+  .A0(internal590),
+  .A1(internal591),
+  .A2(internal592),
+  .A3(internal593),
+  .A4(internal594),
+  .D0(DPC9),
+  .A5(internal595),
+  .A6(internal596),
+  .A7(internal597),
+  .A8(internal598),
+  .A9(internal599),
+  .WE_N(internal600)
 );
 
 
@@ -14391,55 +12422,33 @@ part_93425A  i_DRAM1_2F12 (
 // (no code to express 93425A)
 part_93425A  i_DRAM1_2F14 (
   .CE_N(\-DADR10C ),
-  .A0(internal1348),
-  .A1(internal1349),
-  .A2(internal1350),
-  .A3(internal1351),
-  .A4(internal1352),
-  .D0(DPC8),
-  .A5(internal1353),
-  .A6(internal1354),
-  .A7(internal1355),
-  .A8(internal1356),
-  .A9(internal1357),
-  .WE_N(internal1358)
+  .D0(DPC8)
 );
 
 
 // 2F17:
 // (no code to express 93425A)
 part_93425A  i_DRAM1_2F17 (
-  .CE_N(\-DADR10C ),
-  .A0(internal1359),
-  .A1(internal1360),
-  .A2(internal1361),
-  .A3(internal1362),
-  .A4(internal1363),
+  .A0(internal601),
+  .A1(internal602),
+  .A2(internal603),
+  .A3(internal604),
+  .A4(internal605),
   .D0(DPC7),
-  .A5(internal1364),
-  .A6(internal1365),
-  .A7(internal1366),
-  .A8(internal1367),
-  .A9(internal1368),
-  .WE_N(internal1347)
+  .A5(internal606),
+  .A6(internal607),
+  .A7(internal608),
+  .A8(internal609),
+  .A9(internal610),
+  .WE_N(internal564)
 );
 
 
 // 2F19:
 // (no code to express 93425A)
 part_93425A  i_DRAM1_2F19 (
-  .A0(internal1369),
-  .A1(internal1370),
-  .A2(internal1371),
-  .A3(internal1372),
-  .A4(internal1373),
-  .D0(DPC6),
-  .A5(internal1374),
-  .A6(internal1375),
-  .A7(internal1376),
-  .A8(internal1377),
-  .A9(internal1378),
-  .WE_N(internal1379)
+  .CE_N(internal611),
+  .D0(DPC6)
 );
 
 
@@ -14467,9 +12476,9 @@ assign \-DWEA  = ! (WP2 & DISPWR);
 assign NC = ! NC;
 assign DADR10A = ! \-DADR10A ;
 assign \-DADR10A  = ! IR22B;
-assign IR21B = ! \-DADR9A ;
-assign IR20B = ! \-DADR8A ;
-assign IR19B = ! \-DADR7A ;
+assign \-DADR9A  = ! IR21B;
+assign \-DADR8A  = ! IR20B;
+assign \-DADR7A  = ! IR19B;
 
 // 2F24:
 // (no code to express 74S64)
@@ -14555,83 +12564,59 @@ part_93425A  i_DRAM0_2F26 (
 // 2F28:
 // (no code to express 93425A)
 part_93425A  i_DRAM0_2F28 (
-  .CE_N(DADR10A),
-  .A0(\-DADR0A ),
-  .A1(\-DADR1A ),
-  .A2(\-DADR2A ),
-  .A3(\-DADR3A ),
-  .A4(\-DADR4A ),
-  .D0(DPC4),
-  .A5(\-DADR5A ),
-  .A6(\-DADR6A ),
-  .A7(\-DADR7A ),
-  .A8(\-DADR8A ),
-  .A9(\-DADR9A ),
-  .WE_N(\-DWEA )
+  .D0(DPC4)
 );
 
 
 // 3F01:
 // (no code to express 93425A)
 part_93425A  i_DRAM0_3F01 (
-  .D0(DPC3)
+  .CE_N(internal613),
+  .A0(internal614),
+  .A1(internal615),
+  .A2(internal616),
+  .A3(internal617),
+  .A4(internal618),
+  .D0(DPC3),
+  .A5(internal619),
+  .A6(internal620),
+  .A7(internal621),
+  .A8(internal622),
+  .A9(internal623),
+  .WE_N(internal624)
 );
 
 
 // 3F03:
 // (no code to express 93425A)
 part_93425A  i_DRAM0_3F03 (
-  .CE_N(internal1381),
-  .A0(internal1382),
-  .A1(internal1383),
-  .A2(internal1384),
-  .A3(internal1385),
-  .A4(internal1386),
-  .D0(DPC2),
-  .A5(internal1387),
-  .A6(internal1388),
-  .A7(internal1389),
-  .A8(internal1390),
-  .A9(internal1391),
-  .WE_N(internal1392)
+  .D0(DPC2)
 );
 
 
 // 3F06:
 // (no code to express 93425A)
 part_93425A  i_DRAM0_3F06 (
-  .CE_N(internal1393),
-  .A0(internal1394),
-  .A1(internal1395),
-  .A2(internal1396),
-  .A3(internal1397),
-  .A4(internal1398),
+  .CE_N(internal625),
+  .A0(internal626),
+  .A1(internal627),
+  .A2(internal628),
+  .A3(internal629),
+  .A4(internal630),
   .D0(DPC1),
-  .A5(internal1399),
-  .A6(internal1400),
-  .A7(internal1401),
-  .A8(internal1402),
-  .A9(internal1403),
-  .WE_N(internal1380)
+  .A5(internal631),
+  .A6(internal632),
+  .A7(internal633),
+  .A8(internal634),
+  .A9(internal635),
+  .WE_N(internal612)
 );
 
 
 // 3F08:
 // (no code to express 93425A)
 part_93425A  i_DRAM0_3F08 (
-  .CE_N(internal1404),
-  .A0(internal1405),
-  .A1(internal1406),
-  .A2(internal1407),
-  .A3(internal1408),
-  .A4(internal1409),
-  .D0(DPC0),
-  .A5(internal1410),
-  .A6(internal1411),
-  .A7(internal1412),
-  .A8(internal1413),
-  .A9(internal1414),
-  .WE_N(internal1415)
+  .D0(DPC0)
 );
 
 
@@ -14657,100 +12642,64 @@ part_93425A  i_DRAM0_2F27 (
 // 2F29:
 // (no code to express 93425A)
 part_93425A  i_DRAM0_2F29 (
-  .CE_N(\-DADR10A ),
-  .A0(\-DADR0A ),
-  .A1(\-DADR1A ),
-  .A2(\-DADR2A ),
-  .A3(\-DADR3A ),
-  .A4(\-DADR4A ),
-  .D0(DPC4),
-  .A5(\-DADR5A ),
-  .A6(\-DADR6A ),
-  .A7(\-DADR7A ),
-  .A8(\-DADR8A ),
-  .A9(\-DADR9A ),
-  .WE_N(\-DWEA )
+  .D0(DPC4)
 );
 
 
 // 3F02:
 // (no code to express 93425A)
 part_93425A  i_DRAM0_3F02 (
-  .CE_N(\-DADR10A ),
-  .A0(\-DADR0A ),
-  .A1(\-DADR1A ),
-  .A2(\-DADR2A ),
-  .A3(\-DADR3A ),
-  .A4(\-DADR4A ),
+  .CE_N(internal636),
+  .A0(internal637),
+  .A1(internal638),
+  .A2(internal639),
+  .A3(internal640),
+  .A4(internal641),
   .D0(DPC3),
-  .A5(\-DADR5A ),
-  .A6(\-DADR6A ),
-  .A7(\-DADR7A ),
-  .A8(\-DADR8A ),
-  .A9(\-DADR9A ),
-  .WE_N(\-DWEA )
+  .A5(internal642),
+  .A6(internal643),
+  .A7(internal644),
+  .A8(internal645),
+  .A9(internal646),
+  .WE_N(internal647)
 );
 
 
 // 3F04:
 // (no code to express 93425A)
 part_93425A  i_DRAM0_3F04 (
-  .CE_N(\-DADR10A ),
-  .A0(\-DADR0A ),
-  .A1(\-DADR1A ),
-  .A2(\-DADR2A ),
-  .A3(\-DADR3A ),
-  .A4(\-DADR4A ),
-  .D0(DPC2),
-  .A5(\-DADR5A ),
-  .A6(\-DADR6A ),
-  .A7(\-DADR7A ),
-  .A8(\-DADR8A ),
-  .A9(\-DADR9A ),
-  .WE_N(\-DWEA )
+  .D0(DPC2)
 );
 
 
 // 3F07:
 // (no code to express 93425A)
 part_93425A  i_DRAM0_3F07 (
-  .CE_N(\-DADR10A ),
-  .A0(\-DADR0A ),
-  .A1(\-DADR1A ),
-  .A2(\-DADR2A ),
-  .A3(\-DADR3A ),
-  .A4(\-DADR4A ),
+  .CE_N(internal648),
+  .A0(internal649),
+  .A1(internal650),
+  .A2(internal651),
+  .A3(internal652),
+  .A4(internal653),
   .D0(DPC1),
-  .A5(\-DADR5A ),
-  .A6(\-DADR6A ),
-  .A7(\-DADR7A ),
-  .A8(\-DADR8A ),
-  .A9(\-DADR9A ),
-  .WE_N(\-DWEA )
+  .A5(internal654),
+  .A6(internal655),
+  .A7(internal656),
+  .A8(internal657),
+  .A9(internal658),
+  .WE_N(internal659)
 );
 
 
 // 3F09:
 // (no code to express 93425A)
 part_93425A  i_DRAM0_3F09 (
-  .CE_N(\-DADR10A ),
-  .A0(\-DADR0A ),
-  .A1(\-DADR1A ),
-  .A2(\-DADR2A ),
-  .A3(\-DADR3A ),
-  .A4(\-DADR4A ),
-  .D0(DPC0),
-  .A5(\-DADR5A ),
-  .A6(\-DADR6A ),
-  .A7(\-DADR7A ),
-  .A8(\-DADR8A ),
-  .A9(\-DADR9A ),
-  .WE_N(\-DWEA )
+  .D0(DPC0)
 );
 
 
 // 3E18:
-assign \-JCOND  = \-JCOND  | DR;
+assign internal660 = \-IRDISP  | DR;
 
 
 
@@ -14770,18 +12719,18 @@ assign JRETF = JRET & IR6;
 assign POPJ = ! \-POPJ ;
 assign \-IR8  = ! IR8;
 assign \-IR6  = ! IR6;
-assign \-SPUSH  = ! SPUSH;
-assign DP = ! \-DP ;
-assign DR = ! \-DR ;
+assign SPUSH = ! \-SPUSH ;
+assign \-DP  = ! DP;
+assign \-DR  = ! DR;
 
 // 3E09:
-assign \-SRCSPCPOPREAL  = \-SRCSPCPOPREAL  | NOP;
+assign \-SRCSPCPOPREAL  = \-SRCSPCPOP  | NOP;
 
 
 
 
 // 4D09:
-assign \-SPCNT  = \-SPCNT  & \-SPCNT ;
+assign \-SPCNT  = \-SPUSH  & \-SPOP ;
 
 
 
@@ -14814,7 +12763,6 @@ part_74S64  i_CONTRL_3E28 (
   .A3(JRET),
   .OUT(\-SPOP ),
   .A1(\-IGNPOPJ ),
-  .B1(\-SRCSPCPOPREAL ),
   .C4(\-DP ),
   .B4(DR)
 );
@@ -14874,23 +12822,23 @@ part_74S64  i_CONTRL_3E27 (
 
 
 
-assign \-NOPA  = \-NOPA  & \-NOPA ;
+assign \-NOPA  = \-INOP  & \-NOP11 ;
 
 // 3E23:
 assign \-DFALL  = ! (DR & DP);
-assign N = ! (\-TRAP  & \-TRAP );
-assign \-SPOP  = ! (\-SPOP  & \-SPOP );
-assign NOP = ! (\-TRAP  & \-TRAP );
+assign N = ! (\-TRAP  & internal660);
+assign internal661 = ! (\-SRCSPCPOPREAL  & \-POPJ );
+assign NOP = ! (\-TRAP  & \-NOPA );
 
 // 3D28:
-assign SPCENB = ! (\-SRCSPC  & \-SRCSPC );
+assign SPCENB = ! (\-SRCSPC  & \-SRCSPCPOP );
 assign \-SPCDRIVE  = ! (SPCENB & TSE3A);
-assign \-SPCPASS  = ! (\-SPCPASS  & TSE3A);
+assign \-SPCPASS  = ! (\-SPUSHD  & TSE3A);
 assign \-SPCWPASS  = ! (TSE3A & SPUSHD);
 
 // 3E07:
 
-assign \-IPOPJ  = ! (IR42 & \-IPOPJ );
+assign \-IPOPJ  = ! (IR42 & \-NOP );
 
 
 
@@ -14910,7 +12858,7 @@ assign \-SWPA  = ! (SPUSHD & WP4C);
 
 // 3D21:
 assign SPCWPASS = SPUSHD & TSE3A;
-assign \-POPJ  = \-POPJ  & \-POPJ ;
+assign \-POPJ  = \-IPOPJ  & \-IWRITED ;
 assign SPCDRIVE = TSE3A & SPCENB;
 
 
@@ -14956,9 +12904,9 @@ part_74S133  i_CLOCKD_1F05 (
 assign NC = ! NC;
 assign NC = ! NC;
 assign TSE4B = ! \-TSE4 ;
-assign \-TSE4  = ! TSE4A;
-assign \-SRCPDLPTR  = ! SRCPDLPTR;
-assign \-SRCPDLIDX  = ! SRCPDLIDX;
+assign TSE4A = ! \-TSE4 ;
+assign SRCPDLPTR = ! \-SRCPDLPTR ;
+assign SRCPDLIDX = ! \-SRCPDLIDX ;
 
 // 4C07:
 assign CLK4D = ! (\-CLK4D  & HI2);
@@ -14976,9 +12924,9 @@ assign CLK4C = ! (HI5 & \-CLK4A );
 assign \-CLK4E  = ! CLK4;
 assign \-CLK4D  = ! CLK4;
 assign \-CLK4A  = ! CLK4;
-assign \-WP4  = ! WP4C;
-assign \-WP4  = ! WP4B;
-assign \-WP4  = ! WP4A;
+assign WP4C = ! \-WP4 ;
+assign WP4B = ! \-WP4 ;
+assign WP4A = ! \-WP4 ;
 
 // 3C13:
 assign CLK3D = ! (\-CLK3D  & HI5);
@@ -14996,9 +12944,9 @@ assign CLK3C = ! (HI5 & \-CLK3A );
 assign NC = ! NC;
 assign \-CLK3G  = ! CLK3;
 assign \-CLK3D  = ! CLK3;
-assign CLK3 = ! \-CLK3A ;
-assign \-WP3  = ! WP3A;
-assign \-TSE3  = ! TSE3A;
+assign \-CLK3A  = ! CLK3;
+assign WP3A = ! \-WP3 ;
+assign TSE3A = ! \-TSE3 ;
 
 // 2C03:
 assign CLK2A = ! (\-CLK2A  & HI7);
@@ -15010,9 +12958,9 @@ assign CLK2C = ! (HI7 & \-CLK2C );
 assign \-LCRY3  = ! LCRY3;
 assign NC = ! NC;
 assign \-CLK2C  = ! CLK2;
-assign CLK2 = ! \-CLK2A ;
-assign \-WP2  = ! WP2;
-assign \-TSE2  = ! TSE2;
+assign \-CLK2A  = ! CLK2;
+assign WP2 = ! \-WP2 ;
+assign TSE2 = ! \-TSE2 ;
 
 // 1B18:
 assign CLK1A = ! (\-CLK1  & HI12);
@@ -15024,9 +12972,9 @@ assign MCLK1A = ! (HI12 & \-MCLK1 );
 assign \-MCLK1  = ! MCLK1;
 assign \-CLK1  = ! CLK1;
 assign WP1B = ! \-WP1 ;
-assign \-WP1  = ! WP1A;
-assign \-TSE1  = ! TSE1B;
-assign \-TSE1  = ! TSE1A;
+assign WP1A = ! \-WP1 ;
+assign TSE1B = ! \-TSE1 ;
+assign TSE1A = ! \-TSE1 ;
 
 // 2C25:
 // (no code to express SIP330/470-8)
@@ -15195,133 +13143,61 @@ part_93S48  i_APAR_4B15 (
 // 3A20:
 // (no code to express 93425A)
 part_93425A  i_AMEM1_3A20 (
-  .CE_N(GND),
-  .A0(\-AADR0A ),
-  .A1(\-AADR1A ),
-  .A2(\-AADR2A ),
-  .A3(\-AADR3A ),
-  .A4(\-AADR4A ),
-  .D0(AMEM0),
-  .A5(\-AADR5A ),
-  .A6(\-AADR6A ),
-  .A7(\-AADR7A ),
-  .A8(\-AADR8A ),
-  .A9(\-AADR9A ),
-  .WE_N(\-AWPC )
+  .D0(AMEM0)
 );
 
 
 // 3A25:
 // (no code to express 93425A)
 part_93425A  i_AMEM1_3A25 (
-  .CE_N(GND),
-  .A0(\-AADR0A ),
-  .A1(\-AADR1A ),
-  .A2(\-AADR2A ),
-  .A3(\-AADR3A ),
-  .A4(\-AADR4A ),
+  .CE_N(internal662),
+  .A0(internal663),
+  .A1(internal664),
+  .A2(internal665),
+  .A3(internal666),
+  .A4(internal667),
   .D0(AMEM1),
-  .A5(\-AADR5A ),
-  .A6(\-AADR6A ),
-  .A7(\-AADR7A ),
-  .A8(\-AADR8A ),
-  .A9(\-AADR9A ),
-  .WE_N(\-AWPC )
+  .A5(internal668),
+  .A6(internal669),
+  .A7(internal670),
+  .A8(internal671),
+  .A9(internal672),
+  .WE_N(internal673)
 );
 
 
 // 3A19:
 // (no code to express 93425A)
 part_93425A  i_AMEM1_3A19 (
-  .CE_N(GND),
-  .A0(\-AADR0A ),
-  .A1(\-AADR1A ),
-  .A2(\-AADR2A ),
-  .A3(\-AADR3A ),
-  .A4(\-AADR4A ),
-  .D0(AMEM2),
-  .A5(\-AADR5A ),
-  .A6(\-AADR6A ),
-  .A7(\-AADR7A ),
-  .A8(\-AADR8A ),
-  .A9(\-AADR9A ),
-  .WE_N(\-AWPC )
+  .D0(AMEM2)
 );
 
 
 // 3A24:
 // (no code to express 93425A)
 part_93425A  i_AMEM1_3A24 (
-  .CE_N(GND),
-  .A0(\-AADR0A ),
-  .A1(\-AADR1A ),
-  .A2(\-AADR2A ),
-  .A3(\-AADR3A ),
-  .A4(\-AADR4A ),
-  .D0(AMEM3),
-  .A5(\-AADR5A ),
-  .A6(\-AADR6A ),
-  .A7(\-AADR7A ),
-  .A8(\-AADR8A ),
-  .A9(\-AADR9A ),
-  .WE_N(\-AWPC )
+  .D0(AMEM3)
 );
 
 
 // 3A18:
 // (no code to express 93425A)
 part_93425A  i_AMEM1_3A18 (
-  .CE_N(GND),
-  .A0(\-AADR0A ),
-  .A1(\-AADR1A ),
-  .A2(\-AADR2A ),
-  .A3(\-AADR3A ),
-  .A4(\-AADR4A ),
-  .D0(AMEM4),
-  .A5(\-AADR5A ),
-  .A6(\-AADR6A ),
-  .A7(\-AADR7A ),
-  .A8(\-AADR8A ),
-  .A9(\-AADR9A ),
-  .WE_N(\-AWPC )
+  .D0(AMEM4)
 );
 
 
 // 3A23:
 // (no code to express 93425A)
 part_93425A  i_AMEM1_3A23 (
-  .CE_N(GND),
-  .A0(\-AADR0A ),
-  .A1(\-AADR1A ),
-  .A2(\-AADR2A ),
-  .A3(\-AADR3A ),
-  .A4(\-AADR4A ),
-  .D0(AMEM5),
-  .A5(\-AADR5A ),
-  .A6(\-AADR6A ),
-  .A7(\-AADR7A ),
-  .A8(\-AADR8A ),
-  .A9(\-AADR9A ),
-  .WE_N(\-AWPC )
+  .D0(AMEM5)
 );
 
 
 // 3A17:
 // (no code to express 93425A)
 part_93425A  i_AMEM1_3A17 (
-  .CE_N(GND),
-  .A0(\-AADR0A ),
-  .A1(\-AADR1A ),
-  .A2(\-AADR2A ),
-  .A3(\-AADR3A ),
-  .A4(\-AADR4A ),
-  .D0(AMEM6),
-  .A5(\-AADR5A ),
-  .A6(\-AADR6A ),
-  .A7(\-AADR7A ),
-  .A8(\-AADR8A ),
-  .A9(\-AADR9A ),
-  .WE_N(\-AWPC )
+  .D0(AMEM6)
 );
 
 
@@ -15347,133 +13223,62 @@ part_93425A  i_AMEM1_3A22 (
 // 3B20:
 // (no code to express 93425A)
 part_93425A  i_AMEM1_3B20 (
-  .CE_N(GND),
-  .A0(\-AADR0A ),
-  .A1(\-AADR1A ),
-  .A2(\-AADR2A ),
-  .A3(\-AADR3A ),
-  .A4(\-AADR4A ),
-  .D0(AMEM8),
-  .A5(\-AADR5A ),
-  .A6(\-AADR6A ),
-  .A7(\-AADR7A ),
-  .A8(\-AADR8A ),
-  .A9(\-AADR9A ),
-  .WE_N(\-AWPC )
+  .D0(AMEM8)
 );
 
 
 // 3B25:
 // (no code to express 93425A)
 part_93425A  i_AMEM1_3B25 (
-  .CE_N(GND),
-  .A0(\-AADR0A ),
-  .A1(\-AADR1A ),
-  .A2(\-AADR2A ),
-  .A3(\-AADR3A ),
-  .A4(\-AADR4A ),
+  .CE_N(internal674),
+  .A0(internal675),
+  .A1(internal676),
+  .A2(internal677),
+  .A3(internal678),
+  .A4(internal679),
   .D0(AMEM9),
-  .A5(\-AADR5A ),
-  .A6(\-AADR6A ),
-  .A7(\-AADR7A ),
-  .A8(\-AADR8A ),
-  .A9(\-AADR9A ),
-  .WE_N(\-AWPC )
+  .A5(internal680),
+  .A6(internal681),
+  .A7(internal682),
+  .A8(internal683),
+  .A9(internal684),
+  .WE_N(internal685)
 );
 
 
 // 3B19:
 // (no code to express 93425A)
 part_93425A  i_AMEM1_3B19 (
-  .CE_N(GND),
-  .A0(\-AADR0A ),
-  .A1(\-AADR1A ),
-  .A2(\-AADR2A ),
-  .A3(\-AADR3A ),
-  .A4(\-AADR4A ),
-  .D0(AMEM10),
-  .A5(\-AADR5A ),
-  .A6(\-AADR6A ),
-  .A7(\-AADR7A ),
-  .A8(\-AADR8A ),
-  .A9(\-AADR9A ),
-  .WE_N(\-AWPC )
+  .D0(AMEM10)
 );
 
 
 // 3B24:
 // (no code to express 93425A)
 part_93425A  i_AMEM1_3B24 (
-  .CE_N(GND),
-  .A0(\-AADR0A ),
-  .A1(\-AADR1A ),
-  .A2(\-AADR2A ),
-  .A3(\-AADR3A ),
-  .A4(\-AADR4A ),
-  .D0(AMEM11),
-  .A5(\-AADR5A ),
-  .A6(\-AADR6A ),
-  .A7(\-AADR7A ),
-  .A8(\-AADR8A ),
-  .A9(\-AADR9A ),
-  .WE_N(\-AWPB )
+  .D0(AMEM11)
 );
 
 
 // 3B18:
 // (no code to express 93425A)
 part_93425A  i_AMEM1_3B18 (
-  .CE_N(GND),
-  .A0(\-AADR0A ),
-  .A1(\-AADR1A ),
-  .A2(\-AADR2A ),
-  .A3(\-AADR3A ),
-  .A4(\-AADR4A ),
   .D0(AMEM12),
-  .A5(\-AADR5A ),
-  .A6(\-AADR6A ),
-  .A7(\-AADR7A ),
-  .A8(\-AADR8A ),
-  .A9(\-AADR9A ),
-  .WE_N(\-AWPB )
+  .WE_N(internal686)
 );
 
 
 // 3B23:
 // (no code to express 93425A)
 part_93425A  i_AMEM1_3B23 (
-  .CE_N(GND),
-  .A0(\-AADR0A ),
-  .A1(\-AADR1A ),
-  .A2(\-AADR2A ),
-  .A3(\-AADR3A ),
-  .A4(\-AADR4A ),
-  .D0(AMEM13),
-  .A5(\-AADR5A ),
-  .A6(\-AADR6A ),
-  .A7(\-AADR7A ),
-  .A8(\-AADR8A ),
-  .A9(\-AADR9A ),
-  .WE_N(\-AWPB )
+  .D0(AMEM13)
 );
 
 
 // 3B17:
 // (no code to express 93425A)
 part_93425A  i_AMEM1_3B17 (
-  .CE_N(GND),
-  .A0(\-AADR0A ),
-  .A1(\-AADR1A ),
-  .A2(\-AADR2A ),
-  .A3(\-AADR3A ),
-  .A4(\-AADR4A ),
-  .D0(AMEM14),
-  .A5(\-AADR5A ),
-  .A6(\-AADR6A ),
-  .A7(\-AADR7A ),
-  .A8(\-AADR8A ),
-  .A9(\-AADR9A ),
-  .WE_N(\-AWPB )
+  .D0(AMEM14)
 );
 
 
@@ -15506,37 +13311,37 @@ assign ALUMODE = ! (\-ALUMODE  & \-ALUMODE );
 assign \-A31  = ! A31B;
 assign \-IR4  = ! IR4;
 assign \-IR3  = ! IR3;
-assign IR2 = ! \-IR2 ;
-assign IR1 = ! \-IR1 ;
-assign IR0 = ! \-IR0 ;
+assign \-IR2  = ! IR2;
+assign \-IR1  = ! IR1;
+assign \-IR0  = ! IR0;
 
 // 2C10:
-assign internal1416 = ! (IR5 | \-DIVPOSLASTTIME );
+assign internal687 = ! (IR5 | \-DIVPOSLASTTIME );
 assign \-DIVPOSLASTTIME  = ! (Q0 | IR6);
-assign DIVSUBCOND = ! (\-DIV  | \-DIV );
-assign DIVADDCOND = ! (\-DIV  | internal1416);
+assign DIVSUBCOND = ! (\-DIV  | \-DIVPOSLASTTIME );
+assign DIVADDCOND = ! (\-DIV  | internal687);
 
 // 2D15:
 
-assign \-MULNOP  = \-MULNOP  | Q0;
+assign \-MULNOP  = \-MUL  | Q0;
 
 
 
 // 2C15:
-assign internal1417 = ! (DIVADDCOND & \-A31 );
-assign internal1418 = ! (DIVSUBCOND & A31A);
-assign internal1419 = ! (\-A31  & DIVSUBCOND);
-assign internal1420 = ! (DIVADDCOND & A31A);
+assign internal688 = ! (DIVADDCOND & \-A31 );
+assign internal689 = ! (DIVSUBCOND & A31A);
+assign internal690 = ! (\-A31  & DIVSUBCOND);
+assign internal691 = ! (DIVADDCOND & A31A);
 
 // 2C20:
-assign ALUSUB = ! (\-MULNOP  & internal1419 & internal1420 & \-MULNOP );
-assign ALUADD = ! (\-MUL  & HI12 & internal1418 & internal1417);
+assign ALUSUB = ! (\-MULNOP  & internal690 & internal691 & \-IRJUMP );
+assign ALUADD = ! (\-MUL  & HI12 & internal689 & internal688);
 
 // 2D21:
-assign OSEL1A = ! (\-IR13  | \-IR13 );
-assign GND = ! (\-IR12  | \-IR12 );
-assign OSEL1B = ! (\-IR13  | \-IR13 );
-assign OSEL0B = ! (\-IR12  | \-IR12 );
+assign OSEL1A = ! (\-IR13  | \-IRALU );
+assign internal692 = ! (\-IR12  | \-IRALU );
+assign OSEL1B = ! (\-IR13  | \-IRALU );
+assign OSEL0B = ! (\-IR12  | \-IRALU );
 
 // 2A16:
 assign ALUF0B = ! (\-ALUF0  & \-ALUF0 );
@@ -15553,35 +13358,35 @@ assign ALUF3A = ! (\-ALUF3  & \-ALUF3 );
 // 2B18:
 // (no code to express 74S153)
 part_74S153  i_ALUC4_2B18 (
-  .G1D3(GND),
-  .G1D2(HI12),
-  .G1D1(HI12),
-  .G1D0(IR7),
+  .G1C3(GND),
+  .G1C2(HI12),
+  .G1C1(HI12),
+  .G1C0(IR7),
   .G1Q(\-ALUMODE ),
   .G2Q(\-CIN0 ),
-  .G2D0(\-IR2 ),
-  .G2D1(HI12),
-  .G2D2(IRJUMP),
-  .G2D3(GND)
+  .G2C0(\-IR2 ),
+  .G2C1(HI12),
+  .G2C2(IRJUMP),
+  .G2C3(GND)
 );
 
 
 // 2B17:
 // (no code to express 74S153)
 part_74S153  i_ALUC4_2B17 (
-  .ENB1_N(GND),
-  .SEL1(internal1421),
-  .G1D3(GND),
-  .G1D2(GND),
-  .G1D1(HI12),
-  .G1D0(IR6),
+  .ENB1_N(internal693),
+  .SEL1(internal694),
+  .G1C3(GND),
+  .G1C2(GND),
+  .G1C1(HI12),
+  .G1C0(IR6),
   .G1Q(\-ALUF1 ),
   .G2Q(\-ALUF0 ),
-  .G2D0(IR5),
-  .G2D1(GND),
-  .G2D2(HI12),
-  .G2D3(GND),
-  .SEL0(internal1422)
+  .G2C0(IR5),
+  .G2C1(GND),
+  .G2C2(HI12),
+  .G2C3(GND),
+  .SEL0(internal695)
 );
 
 
@@ -15590,16 +13395,16 @@ part_74S153  i_ALUC4_2B17 (
 part_74S153  i_ALUC4_2B16 (
   .ENB1_N(GND),
   .SEL1(ALUSUB),
-  .G1D3(GND),
-  .G1D2(HI12),
-  .G1D1(GND),
-  .G1D0(\-IR3 ),
+  .G1C3(GND),
+  .G1C2(HI12),
+  .G1C1(GND),
+  .G1C0(\-IR3 ),
   .G1Q(\-ALUF3 ),
   .G2Q(\-ALUF2 ),
-  .G2D0(\-IR4 ),
-  .G2D1(HI12),
-  .G2D2(GND),
-  .G2D3(GND),
+  .G2C0(\-IR4 ),
+  .G2C1(HI12),
+  .G2C2(GND),
+  .G2C3(GND),
   .SEL0(ALUADD)
 );
 
@@ -15662,7 +13467,7 @@ part_74S182  i_ALUC4_2A20 (
 
 
 // 2A04:
-assign M31B = M31 & internal1423;
+assign M31B = M31 & ALUF0A;
 
 
 
@@ -15699,12 +13504,7 @@ part_74S181  i_ALU1_2A03 (
 part_74S181  i_ALU1_2A08 (
   .B0(A28),
   .A0(M28),
-  .S3(ALUF3A),
-  .S2(ALUF2A),
-  .S1(ALUF1A),
-  .S0(ALUF0A),
   .CIN_N(\-CIN28 ),
-  .M(ALUMODE),
   .F0(ALU28),
   .F1(ALU29),
   .F2(ALU30),
@@ -15725,17 +13525,17 @@ part_74S181  i_ALU1_2A08 (
 part_74S181  i_ALU1_2B08 (
   .B0(A24),
   .A0(M24),
-  .S3(ALUF3A),
-  .S2(ALUF2A),
-  .S1(ALUF1A),
-  .S0(ALUF0A),
+  .S3(internal696),
+  .S2(internal697),
+  .S1(internal698),
+  .S0(internal699),
   .CIN_N(\-CIN24 ),
-  .M(ALUMODE),
+  .M(internal700),
   .F0(ALU24),
   .F1(ALU25),
   .F2(ALU26),
   .F3(ALU27),
-  .AEB(internal1423),
+  .AEB(internal701),
   .X(XOUT27),
   .COUT_N(NC),
   .Y(YOUT27),
@@ -15752,17 +13552,11 @@ part_74S181  i_ALU1_2B08 (
 part_74S181  i_ALU1_2A13 (
   .B0(A20),
   .A0(M20),
-  .S3(ALUF3A),
-  .S2(ALUF2A),
-  .S1(ALUF1A),
-  .S0(ALUF0A),
   .CIN_N(\-CIN20 ),
-  .M(ALUMODE),
   .F0(ALU20),
   .F1(ALU21),
   .F2(ALU22),
   .F3(ALU23),
-  .AEB(A),
   .X(XOUT23),
   .COUT_N(NC),
   .Y(YOUT23),
@@ -15779,12 +13573,12 @@ part_74S181  i_ALU1_2A13 (
 part_74S181  i_ALU1_2B13 (
   .B0(A16),
   .A0(M16),
-  .S3(ALUF3A),
-  .S2(ALUF2A),
-  .S1(ALUF1A),
-  .S0(ALUF0A),
+  .S3(internal702),
+  .S2(internal703),
+  .S1(internal704),
+  .S0(internal705),
   .CIN_N(\-CIN16 ),
-  .M(ALUMODE),
+  .M(internal706),
   .F0(ALU16),
   .F1(ALU17),
   .F2(ALU18),
@@ -15831,16 +13625,12 @@ part_74S181  i_ALU0_2A23 (
 part_74S181  i_ALU0_2B23 (
   .B0(A8),
   .A0(M8),
-  .S3(ALUF3B),
-  .S2(ALUF2B),
-  .S1(ALUF1B),
-  .S0(ALUF0B),
   .CIN_N(\-CIN8 ),
   .F0(ALU8),
   .F1(ALU9),
   .F2(ALU10),
   .F3(ALU11),
-  .AEB(internal1424),
+  .AEB(internal707),
   .X(XOUT11),
   .COUT_N(NC),
   .Y(YOUT11),
@@ -15857,16 +13647,16 @@ part_74S181  i_ALU0_2B23 (
 part_74S181  i_ALU0_2A28 (
   .B0(A4),
   .A0(M4),
-  .S3(ALUF3B),
-  .S2(ALUF2B),
-  .S1(ALUF1B),
-  .S0(ALUF0B),
+  .S3(internal708),
+  .S2(internal709),
+  .S1(internal710),
+  .S0(internal711),
   .CIN_N(\-CIN4 ),
+  .M(internal712),
   .F0(ALU4),
   .F1(ALU5),
   .F2(ALU6),
   .F3(ALU7),
-  .AEB(A),
   .X(XOUT7),
   .COUT_N(NC),
   .Y(YOUT7),
@@ -15883,10 +13673,6 @@ part_74S181  i_ALU0_2A28 (
 part_74S181  i_ALU0_2B28 (
   .B0(A0),
   .A0(M0),
-  .S3(ALUF3B),
-  .S2(ALUF2B),
-  .S1(ALUF1B),
-  .S0(ALUF0B),
   .CIN_N(\-CIN0 ),
   .F0(ALU0),
   .F1(ALU1),
@@ -15950,6 +13736,7 @@ part_74S241  i_ALATCH_3B05 (
 // 3A02:
 // (no code to express 74S241)
 part_74S241  i_ALATCH_3A02 (
+  .AENB_N(internal714),
   .Q7(A8),
   .Q6(A9),
   .Q5(A10),
@@ -15999,7 +13786,7 @@ part_74S373  i_ALATCH_3A05 (
 // 3A03:
 // (no code to express 74S373)
 part_74S373  i_ALATCH_3A03 (
-  .OENB_N(internal1425),
+  .OENB_N(internal716),
   .O0(A15),
   .I0(AMEM15),
   .I1(AMEM14),
@@ -16008,7 +13795,7 @@ part_74S373  i_ALATCH_3A03 (
   .I2(AMEM13),
   .I3(AMEM12),
   .O3(A12),
-  .HOLD_N(internal1426),
+  .HOLD_N(internal717),
   .O4(A11),
   .I4(AMEM11),
   .I5(AMEM10),
@@ -16043,7 +13830,6 @@ part_74S373  i_ALATCH_3A01 (
 // 3B04:
 // (no code to express 74S373)
 part_74S373  i_ALATCH_3B04 (
-  .OENB_N(\-AMEMENB ),
   .O0(A31A),
   .I0(AMEM31),
   .I1(AMEM30),
@@ -16052,7 +13838,6 @@ part_74S373  i_ALATCH_3B04 (
   .I2(AMEM29),
   .I3(AMEM28),
   .O3(A28),
-  .HOLD_N(CLK3E),
   .O4(A27),
   .I4(AMEM27),
   .I5(AMEM26),
@@ -16104,7 +13889,7 @@ assign \-AWPC  = ! (DESTD & WP3A);
 
 // 3B16:
 assign \-APASS  = ! (APASS1 & APASS2);
-assign \-AMEMENB  = ! (\-AMEMENB  & TSE3A);
+assign \-AMEMENB  = ! (\-APASS  & TSE3A);
 
 
 
@@ -16142,7 +13927,6 @@ ff_dsel i_ACTL_3B29_4 (.q(WADR8), .a(IR22), .b(GND), .sel(DESTM), .clk(CLK3D) );
 // 3A12:
 // (no code to express 74S258)
 part_74S258  i_ACTL_3A12 (
-  .SEL(CLK3D),
   .D0(WADR4),
   .D1(IR36),
   .DY(\-AADR4B ),
@@ -16161,7 +13945,7 @@ part_74S258  i_ACTL_3A12 (
 // 3B15:
 // (no code to express 74S258)
 part_74S258  i_ACTL_3B15 (
-  .SEL(CLK3D),
+  .SEL(internal719),
   .D0(WADR8),
   .D1(IR40),
   .DY(\-AADR8A ),
@@ -16180,7 +13964,6 @@ part_74S258  i_ACTL_3B15 (
 // 3A16:
 // (no code to express 74S258)
 part_74S258  i_ACTL_3A16 (
-  .SEL(CLK3D),
   .D0(WADR0),
   .D1(IR32),
   .DY(\-AADR0A ),
@@ -16224,7 +14007,6 @@ part_93S46  i_ACTL_3B27 (
   .B1(WADR7),
   .A2(IR40),
   .B2(WADR8),
-  .ENB(HI3),
   .EQ(APASS2),
   .A3(IR41),
   .B3(WADR9),
@@ -16270,6 +14052,9 @@ part_74S174  i_ACTL_3B26 (
   .D5(DESTM),
   .D6(DEST)
 );
+
+
+`include "extra.v"
 
 endmodule
 

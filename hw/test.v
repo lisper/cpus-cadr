@@ -1,22 +1,39 @@
 /*
  */
 
-module part_74S00 (a1, b1, o1);
- input a1, b1;
- output o1;
+`timescale 1ns / 100ps
 
- and and1 (o1, a1, b1);
+/*
+module clock_source;
+reg clock;
+always
+  begin
+    #50 clock = 0;
+    #50 clock = 1;
+  end
 endmodule
+*/
 
-module top;
+module cpu;
+reg reset, clock;
 
- wire sig1, sig2, out;
+initial
+  begin
+    $display("start");
+    clock = 0;
+    reset = 1;
+    #10 reset = 0;
+    #10 reset = 1;
+    #10 reset = 0;
+    #20 $finish;
+  end
 
- initial $display("starting");
+always #1 clock = ! clock;
 
- assign sig1 = 1;
- assign sig2 = 0;
-
- part_74S00 gate1 ( .o1(out), .a1(sig1), .b1(sig2) );
+always
+  begin
+    $timeformat(-9, 2, "ns", 7);
+    #1 $display("now %t reset %b, clock %b.", $time, reset, clock);
+  end
 
 endmodule

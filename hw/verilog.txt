@@ -1,0 +1,50 @@
+2147.v		ok,no delay	simple ram
+2510.v		ok
+252519.v	? init ok
+5600.v		ok, needs read
+5610.v		ok, needs read
+7451.v		empty
+7464.v		empty
+7474.v		ok
+74109.v		ok, needs jk
+74133.v		ok
+74138.v		ok
+74139.v		ok, raw
+74151.v		ok, raw
+74153.v		ok, raw
+74157.v		ok, raw
+74169.v		ok, raw
+74174.v		ok
+74175.v		ok
+74181.v		ok
+74182.v		ok
+74194.v		ok
+74240.v		empty
+74241.v		empty
+74244.v		empty
+74258.v		empty
+74260.v		seems too small
+74280.v		empty
+74283.v		ok
+74373.v		empty
+74374.v		ok
+74472.v		empty
+8221.v		empty
+9328.v		empty
+93425.v		empty
+9346.v		ok
+9348.v		empty
+942.v		ok
+td100.v
+td250.v
+td25.v
+td50.v
+til309.v	empty
+
+ff_dsel.v
+ff.v
+ram.v
+res20.v
+sip220.v
+test.v
+[brad@mwave hw]$ 
