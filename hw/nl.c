@@ -8,6 +8,8 @@
 #include <string.h>
 #include <ctype.h>
 
+int debug;
+
 #define MAX_PINS 40
 
 /* why I didn't do this in lisp, I'll never know... */
@@ -43,7 +45,7 @@ struct pin_s {
 struct model_s {
 	struct model_s *next;
 	char *name;
-	int pin_count;
+	int pin_max;
 	struct pin_s pin[MAX_PINS];
 };
 
@@ -52,7 +54,7 @@ struct part_s {
 	char *refdes;
 	struct model_s *model;
 	struct page_s *page;
-	int pin_count;
+	int pin_max;
 	struct pin_s pin[MAX_PINS];
 };
 
@@ -68,6 +70,7 @@ int signal_count;
 int page_count;
 
 int verbose;
+int debug;
 
 struct signal_s *
 find_signal(char *name)
@@ -191,10 +194,30 @@ new_model(char *name)
 
 	m = (struct model_s *)malloc(sizeof(struct model_s));
 	m->name = strdup(name);
-	m->pin_count = 0;
+	m->pin_max = 0;
 
 	m->next = models;
 	models = m;
+
+	model_count++;
+
+	return m;
+}
+
+void *
+dup_model(char *name, char *newname)
+{
+	struct model_s *m, *new;
+
+	if ((m = find_model(name)) == 0)
+		return 0;
+
+	new = (struct model_s *)malloc(sizeof(struct model_s));
+	*new = *m;
+	new->name = strdup(newname);
+
+	new->next = models;
+	models = new;
 
 	model_count++;
 
@@ -213,13 +236,18 @@ new_part(char *name, char *model, struct page_s *page)
 	}
 
 	p = (struct part_s *)malloc(sizeof(struct part_s));
-//printf("new part %p, %s\n", p, name);
+	memset((char *)p, 0, sizeof(*p));
+
 	p->refdes = strdup(name);
-	p->pin_count = 0;
+	p->pin_max = 0;
+
+	if (debug) printf("new part %p, %s\n", p, name);
 
 	m = find_model(model);
-	if (m == 0)
+	if (m == 0) {
+		if (verbose) printf("can't find model '%s'\n", model);
 		m = new_model(model);
+	}
 	p->model = m;
 
 	p->page = page;
@@ -238,12 +266,16 @@ new_internal(void)
 
 	num++;
 	sprintf(b, "internal%d", num);
+
+	if (debug) printf("%s\n", b);
+
 	return b;
 }
 
 int
-parse_model_reset(char *rest, int *pattrib)
+parse_model_rest(char *rest, int *pattrib)
 {
+	if (0) printf("rest '%s'\n", rest);
 	if (*rest == ',')
 		rest++;
 
@@ -268,9 +300,11 @@ add_pin_model(struct model_s *obj, int pin, char *word, char *rest)
 		return -1;
 	}
 
-	obj->pin_count++;
+	if (pin > obj->pin_max)
+		obj->pin_max = pin;
+
 	obj->pin[pin].name = strdup(word);
-	parse_model_reset(rest, &obj->pin[pin].attrib);
+	parse_model_rest(rest, &obj->pin[pin].attrib);
 
 	return 0;
 }
@@ -286,7 +320,7 @@ add_pin_part(struct part_s *obj, int pin, char *word, char *rest)
 //}
 
 	if (obj->pin[pin].name) {
-		printf("part pin already in use, %s, pin %d\n",
+		printf("// part pin already in use, %s, pin %d\n",
 		       obj->refdes, pin);
 		return -1;
 	}
@@ -295,7 +329,9 @@ add_pin_part(struct part_s *obj, int pin, char *word, char *rest)
 
 	add_ref(s, obj, pin);
 
-	obj->pin_count++;
+	if (pin > obj->pin_max)
+		obj->pin_max = pin;
+
 	obj->pin[pin].name = strdup(word);
 	obj->pin[pin].signal = s;
 
@@ -307,7 +343,12 @@ add_pin_forward_part(struct part_s *obj, int pin, char *word, int fpin)
 {
 	struct signal_s *s;
 
-	obj->pin_count++;
+	if (debug) printf("add_pin_forward_part() %s pin %d to %s pin %d\n",
+		      obj->refdes, pin, word, fpin);
+
+	if (pin > obj->pin_max)
+		obj->pin_max = pin;
+
 	obj->pin[pin].name = 0;
 	obj->pin[pin].signal = 0;
 	obj->pin[pin].forw_name = strdup(word);
@@ -338,8 +379,9 @@ char *getword(char *p, char *word)
 		c = (*pw++ = *p++);
 		if (isalnum(c) || c == '-' || c == '&') {
 
+			c = *p;
 			while (isalnum(c) ||
-			       c == '-' || c == '&' || c == '.' ||
+			       c == '-' || c == '&' || c == '.' || c == '_' ||
 			       c == '/')
 			{
 				*pw++ = *p++;
@@ -377,11 +419,13 @@ fix_forward_pins(void)
 	struct part_s *p;
 	int i, ret;
 	
-	printf("fixing forward references\n");
+	if (debug) printf("fixing forward references\n");
 
 	ret = 0;
 	for (p = parts; p; p = p->next) {
-		for (i = 0; i < p->pin_count; i++) {
+		for (i = 1; i <= p->pin_max; i++) {
+			if (debug) printf("%s %d %s\n", p->refdes, i, p->pin[i].forw_name);
+
 			if (p->pin[i].forw_name) {
 				struct part_s *op;
 				struct signal_s *s;
@@ -395,15 +439,20 @@ fix_forward_pins(void)
 					continue;
 				}
 
-				/* make an interal signal */
-				name = new_internal();
-				s = add_signal(name);
+				/* if otherpart already has a signal, use it */
+				s = op->pin[ p->pin[i].forw_pin ].signal;
 
-				/* add to other part */
-				if (add_pin_part(op, p->pin[i].forw_pin, name, ""))
-					continue;
+				if (s == NULL) {
+					/* make an interal signal */
+					name = new_internal();
+					s = add_signal(name);
 
-				if (0) {
+					/* add to other part */
+					if (add_pin_part(op, p->pin[i].forw_pin, name, ""))
+						continue;
+				}
+
+				if (debug) {
 					printf("other: %s %s %d\n",
 					       name, op->refdes, p->pin[i].forw_pin);
 					printf("this: %s %s %d\n",
@@ -424,7 +473,7 @@ fix_forward_pins(void)
 }
 
 int
-parse(void)
+parse(char *filename)
 {
 	char line[1024], *p;
 	int linenum;
@@ -433,12 +482,19 @@ parse(void)
 	int state;
 	void *obj;
 	void *page;
+	FILE *file;
 
 	linenum = 0;
 	state = 0;
 	page = 0;
 
-	while (fgets(line, sizeof(line), stdin) != NULL) {
+	file = fopen(filename, "r");
+	if (file == 0) {
+		perror(filename);
+		return -1;
+	}
+
+	while (fgets(line, sizeof(line), file) != NULL) {
 		int len = strlen(line);
 
 		linenum++;
@@ -455,6 +511,11 @@ parse(void)
 		if (strcmp(word, "model") == 0) {
 			p = getword(p, word);
 			obj = new_model(word);
+			state = 1;
+		} else if (strcmp(word, "alias") == 0) {
+			p = getword(p, word);
+			p = getword(p, word2);
+			obj = dup_model(word, word2);
 			state = 1;
 		} else if (strcmp(word, "part") == 0) {
 			/* refdes */
@@ -506,6 +567,7 @@ parse(void)
 				/* handle local unnamed nets */
 				if (word[0] == '@') {
 					struct part_s *op;
+					struct signal_s *s;
 					int opin;
 					char *name;
 
@@ -518,6 +580,7 @@ parse(void)
 						printf("%d: missing ',' %s\n", linenum, word2);
 						return -1;
 					}
+
 					/* pin on other part */
 					p = getword(p, word2);
 					if (parse_pin(word2, &opin)) {
@@ -530,18 +593,25 @@ parse(void)
 						break;
 					}
 
-					/* make an interal signal */
-					name = new_internal();
-					add_signal(name);
-					if (0) {
+					s = op->pin[ opin ].signal;
+
+					if (s == NULL) {
+						/* make an interal signal */
+						name = new_internal();
+						add_signal(name);
+						add_pin_part(op, opin, name, p);
+						strcpy(word, name);
+					} else {
+						strcpy(word, s->name);
+					}
+
+					if (debug) {
 						printf("other: %s %s %d\n",
 						       name, op->refdes, opin);
 						printf("this: %s %s %d\n",
 						       name, ((struct part_s *)obj)->refdes, pin);
 					}
-					add_pin_part(op, opin, name, p);
 
-					strcpy(word, name);
 				}
 
 				add_pin_part(obj, pin, word, p);
@@ -549,6 +619,8 @@ parse(void)
 			}
 		}
 	}
+
+	fclose(file);
 
 	if (fix_forward_pins())
 		return -1;
@@ -597,9 +669,10 @@ print_netlist(void)
 
 		if (ss[n]->refcount) {
 			struct ref_s *r;
-			int c;
+			int c,wid;
 
 			c = 0;
+			wid = 0;
 
 			for (r = ss[n]->refs; r; r = r->next) {
 				if (c == 0)
@@ -607,10 +680,13 @@ print_netlist(void)
 
 				printf("%s,p%d ",
 				       r->part->refdes, r->pin);
+
+				wid += strlen(r->part->refdes) + 4;
 				c++;
-				if (c > 10) {
+				if (c > 10 || wid > 70) {
 					printf("\n");
 					c = 0;
+					wid = 0;
 				}
 			}
 
@@ -631,17 +707,22 @@ check_nets_for_models(void)
 
 	count = 0;
 	for (p = parts; p; p = p->next) {
-		if (p->model == 0 || p->model->pin_count == 0) {
-			if (verbose) printf("no model for part %s\n", p->refdes);
+		if (p->model == 0 || p->model->pin_max == 0) {
+			if (verbose)
+				printf("no model for part %s\n",
+				       p->refdes);
 			count++;
 		}
 	}
 
-	printf("nets without models: %d\n", count);
+	printf("// nets without models: %d\n", count);
 
 	count = 0;
 	for (m = models; m; m = m->next) {
-		if (m->pin_count == 0) {
+		if (m->pin_max == 0) {
+			if (count == 0)
+				printf("// ");
+
 			printf("%s ", m->name);
 			count++;
 			if (count > 10) {
@@ -661,20 +742,28 @@ int
 check_nets_for_singles(void)
 {
 	struct signal_s *s;
-	int singles, count;
+	int singles, count, wid;
+
+	printf("// signals with only one node:\n");
 
 	singles = 0;
 	count = 0;
+
+	printf("// ");
+	wid = 0;
 
 	for (s = signals; s; s = s->next) {
 		if (s->refcount == 1) {
 			printf("%s ", s->name);
 			singles++;
+			wid += strlen(s->name) + 1;
 
 			count++;
-			if (count > 10) {
+			if (count > 10 || wid > 65) {
 				printf("\n");
+				printf("// ");
 				count = 0;
+				wid = 0;
 			} 
 		}
 	}
@@ -682,7 +771,7 @@ check_nets_for_singles(void)
 	if (count)
 		printf("\n");
 
-	printf("signal with only one node: %d\n", singles);
+	printf("// signals with only one node: %d\n", singles);
 	return 0;
 }
 
@@ -692,6 +781,8 @@ check_nets_for_drivers(void)
 	struct signal_s *s;
 	struct ref_s *r;
 	int count;
+
+	printf("// signals without drivers:\n");
 
 	count = 0;
 	for (s = signals; s; s = s->next) {
@@ -725,19 +816,61 @@ check_nets_for_drivers(void)
 		}
 	}
 
-	printf("signals without drivers: %d\n", count);
+	printf("// signals without drivers: %d\n", count);
 
 	return 0;
+}
+
+char *
+cleanup_name(char *n)
+{
+	static char fn[256];
+	char *p;
+
+	sprintf(fn, "%s ", n);
+	for (p = fn; *p; p++) {
+		if (p[1] && *p == ' ') *p = '_';
+		if (p[1] && *p == '-') *p = '_';
+		if (p[1] && *p == '+') *p = 'p';
+		if (p[1] && *p == '/') *p = '_';
+	}
+	return fn;
+}
+
+char *
+fix_name(char *n)
+{
+	static char fn[256];
+	char *p;
+
+	if (strchr(n, ' ')) {
+		sprintf(fn, "\\%s ", n);
+		for (p = fn; *p; p++) {
+			if (p[1] && *p == ' ') *p = '_';
+		}
+		return fn;
+	}
+
+	if (strchr(n, '-') ||
+	    strchr(n, '+') ||
+	    strchr(n, '=') ||
+	    strchr(n, '.'))
+	{
+		sprintf(fn, "\\%s ", n);
+		return fn;
+	}
+
+	return n;
 }
 
 char *
 signame(struct part_s *p, int pin)
 {
 	if (p->pin[pin].signal == 0) {
-		return "<?>";
+		return "\\lost<?> ";
 	}
 
-	return p->pin[pin].signal->name;
+	return fix_name(p->pin[pin].signal->name);
 }
 
 char *
@@ -745,7 +878,9 @@ simplelogic(struct part_s *p, char *func, int p1, int p2, int p3)
 {
 	static char b[256];
 
-	sprintf(b, "%s := %s %s %s",
+	if (p->pin[p1].signal == 0) return "";
+
+	sprintf(b, "assign %s = %s %s %s;",
 		signame(p, p1), signame(p, p2), func, signame(p, p3));
 
 	return b;
@@ -756,7 +891,9 @@ simplelogic_inv(struct part_s *p, char *func, int p1, int p2, int p3)
 {
 	static char b[256];
 
-	sprintf(b, "%s := NOT (%s %s %s)",
+	if (p->pin[p1].signal == 0) return "";
+
+	sprintf(b, "assign %s = ! (%s %s %s);",
 		signame(p, p1), signame(p, p2), func, signame(p, p3));
 
 	return b;
@@ -767,7 +904,9 @@ simplelogic3(struct part_s *p, char *func, int p1, int p2, int p3, int p4)
 {
 	static char b[256];
 
-	sprintf(b, "%s := %s %s %s %s %s",
+	if (p->pin[p1].signal == 0) return "";
+
+	sprintf(b, "assign %s = %s %s %s %s %s;",
 		signame(p, p1),
 		signame(p, p2), func, signame(p, p3), func, signame(p, p4));
 
@@ -779,7 +918,9 @@ simplelogic3_inv(struct part_s *p, char *func, int p1, int p2, int p3, int p4)
 {
 	static char b[256];
 
-	sprintf(b, "%s := NOT (%s %s %s %s %s)",
+	if (p->pin[p1].signal == 0) return "";
+
+	sprintf(b, "assign %s = ! (%s %s %s %s %s);",
 		signame(p, p1),
 		signame(p, p2), func, signame(p, p3), func, signame(p, p4));
 
@@ -791,7 +932,9 @@ simplelogic4_inv(struct part_s *p, char *func, int p1, int p2, int p3, int p4, i
 {
 	static char b[256];
 
-	sprintf(b, "%s := NOT (%s %s %s %s %s %s %s)",
+	if (p->pin[p1].signal == 0) return "";
+
+	sprintf(b, "assign %s = ! (%s %s %s %s %s %s %s);",
 		signame(p, p1),
 		signame(p, p2), func, signame(p, p3), func, signame(p, p4),
 		func, signame(p, p5));
@@ -804,22 +947,104 @@ simple_uinary(struct part_s *p, char *func, int p1, int p2)
 {
 	static char b[256];
 
-	sprintf(b, "%s := %s %s",
+	if (p->pin[p1].signal == 0) return "";
+
+	sprintf(b, "assign %s = %s %s;",
 		signame(p, p1), func, signame(p, p2));
 
 	return b;
 }
 
 char *
-fflogic_dsel(struct part_s *p, int p1, int p2, int p3, int p4, int p5)
+iname(struct part_s *p)
+{
+	static char b[256];
+	sprintf(b, "i_%s", p->refdes);
+	return b;
+}
+
+char *
+fflogic_dsel(struct part_s *p, int inst,
+	     int p1, int p2, int p3, int p4, int p5)
 {
 	static char b[256];
 
-	sprintf(b, "%s := ff-dsel(a=%s b=%s sel=%s clk=%s)",
+	sprintf(b,
+		"ff_dsel %s_%d "
+		"(.q(%s), .a(%s), .b(%s), .sel(%s), .clk(%s) );",
+		iname(p), inst,
 		signame(p, p1), signame(p, p2), signame(p, p3),
 		signame(p, p4), signame(p, p5));
 
 	return b;
+}
+
+int
+dump_model(struct part_s *p)
+{
+	struct model_s *m = p->model;
+	int i, c;
+
+	printf("part_%s %s (\n", cleanup_name(p->model->name), iname(p));
+
+	c = 0;
+	for (i = 1; i < m->pin_max; i++) {
+		if (m->pin[i].name == 0)
+			continue;
+		if (p->pin[i].name == 0)
+			continue;
+
+		if (c++ > 0)
+			printf(",\n");
+
+		printf("  .%s(%s)", m->pin[i].name, fix_name(p->pin[i].name));
+
+//		if (i < m->pin_max - 1)
+//			printf(",\n");
+//		else
+//			printf(");\n");
+	}
+
+	printf("\n);\n\n");
+}
+
+	
+int
+dump_wires(void)
+{
+	struct signal_s *s, **ss;
+	int n;
+	int c, wid;
+
+	c = 0;
+	wid = 0;
+
+	ss = sorted_signals;
+	for (n = 0; n < signal_count; n++) {
+		char *sname;
+
+		if (c == 0) {
+			printf("  wire ");
+		} else {
+			printf(", ");
+		}
+
+		sname = fix_name(ss[n]->name);
+		printf("%s", sname);
+		c++;
+		wid += strlen(sname) + 2;
+
+		if (c > 8 || wid > 62) {
+			printf(";\n");
+			c = 0;
+			wid = 0;
+		}
+	}
+
+	if (c > 0)
+		printf(";\n\n");
+
+	return 0;
 }
 
 int
@@ -829,101 +1054,115 @@ dump_logic(void)
 	struct model_s *m;
 	int count;
 
+	printf("module top;\n");
+
+	dump_wires();
+
 	count = 0;
 	for (p = parts; p; p = p->next) {
 		int hit;
 
-		printf("\n%s:\n", p->refdes);
+		printf("\n// %s:\n", p->refdes);
 
 		hit = 0;
-		if (strcmp(p->model->name, "74S00") == 0) {
-			printf("%s\n", simplelogic_inv(p, "AND", 3, 1, 2));
-			printf("%s\n", simplelogic_inv(p, "AND", 6, 4, 5));
-			printf("%s\n", simplelogic_inv(p, "AND", 8, 10, 9));
-			printf("%s\n", simplelogic_inv(p, "AND", 11, 12, 13));
+		if (strcmp(p->model->name, "74S00") == 0 ||
+		    strcmp(p->model->name, "74S00O") == 0) {
+			printf("%s\n", simplelogic_inv(p, "&", 3, 1, 2));
+			printf("%s\n", simplelogic_inv(p, "&", 6, 4, 5));
+			printf("%s\n", simplelogic_inv(p, "&", 8, 10, 9));
+			printf("%s\n", simplelogic_inv(p, "&", 11, 12, 13));
 			hit = 1;
 		}
-		if (strcmp(p->model->name, "74S02") == 0) {
-			printf("%s\n", simplelogic_inv(p, "OR", 1, 2, 3));
-			printf("%s\n", simplelogic_inv(p, "OR", 4, 5, 6));
-			printf("%s\n", simplelogic_inv(p, "OR", 10, 9, 8));
-			printf("%s\n", simplelogic_inv(p, "OR", 13, 12, 11));
+		if (strcmp(p->model->name, "74S02") == 0 ||
+		    strcmp(p->model->name, "74S02O") == 0) {
+			printf("%s\n", simplelogic_inv(p, "|", 1, 2, 3));
+			printf("%s\n", simplelogic_inv(p, "|", 4, 5, 6));
+			printf("%s\n", simplelogic_inv(p, "|", 10, 9, 8));
+			printf("%s\n", simplelogic_inv(p, "|", 13, 12, 11));
 			hit = 1;
 		}
-		if (strcmp(p->model->name, "74S04") == 0) {
-			printf("%s\n", simple_uinary(p, "NOT", 2, 1));
-			printf("%s\n", simple_uinary(p, "NOT", 4, 3));
-			printf("%s\n", simple_uinary(p, "NOT", 6, 5));
-			printf("%s\n", simple_uinary(p, "NOT", 9, 8));
-			printf("%s\n", simple_uinary(p, "NOT", 11, 10));
-			printf("%s\n", simple_uinary(p, "NOT", 13, 12));
+		if (strcmp(p->model->name, "74S04") == 0 ||
+		    strcmp(p->model->name, "74S04O") == 0 ||
+		    strcmp(p->model->name, "74S04A") == 0) {
+			printf("%s\n", simple_uinary(p, "!", 2, 1));
+			printf("%s\n", simple_uinary(p, "!", 4, 3));
+			printf("%s\n", simple_uinary(p, "!", 6, 5));
+			printf("%s\n", simple_uinary(p, "!", 9, 8));
+			printf("%s\n", simple_uinary(p, "!", 11, 10));
+			printf("%s\n", simple_uinary(p, "!", 13, 12));
 			hit = 1;
 		}
-		if (strcmp(p->model->name, "74S08") == 0) {
-			printf("%s\n", simplelogic(p, "AND", 3, 1, 2));
-			printf("%s\n", simplelogic(p, "AND", 6, 4, 5));
-			printf("%s\n", simplelogic(p, "AND", 8, 10, 9));
-			printf("%s\n", simplelogic(p, "AND", 11, 13, 12));
+		if (strcmp(p->model->name, "74S08") == 0 ||
+		    strcmp(p->model->name, "74S08O") == 0) {
+			printf("%s\n", simplelogic(p, "&", 3, 1, 2));
+			printf("%s\n", simplelogic(p, "&", 6, 4, 5));
+			printf("%s\n", simplelogic(p, "&", 8, 10, 9));
+			printf("%s\n", simplelogic(p, "&", 11, 13, 12));
 			hit = 1;
 		}
 		if (strcmp(p->model->name, "74S10") == 0) {
-			printf("%s\n", simplelogic3_inv(p, "AND", 12, 1, 2, 13));
-			printf("%s\n", simplelogic3_inv(p, "AND", 6, 3, 4, 5));
-			printf("%s\n", simplelogic3_inv(p, "AND", 8, 9, 10, 11));
+			printf("%s\n", simplelogic3_inv(p, "&", 12, 1, 2, 13));
+			printf("%s\n", simplelogic3_inv(p, "&", 6, 3, 4, 5));
+			printf("%s\n", simplelogic3_inv(p, "&", 8, 9, 10, 11));
 			hit = 1;
 		}
 		if (strcmp(p->model->name, "74S11") == 0) {
-			printf("%s\n", simplelogic3(p, "AND", 12, 1, 2, 13));
-			printf("%s\n", simplelogic3(p, "AND", 6, 3, 4, 5));
-			printf("%s\n", simplelogic3(p, "AND", 8, 9, 10, 11));
+			printf("%s\n", simplelogic3(p, "&", 12, 1, 2, 13));
+			printf("%s\n", simplelogic3(p, "&", 6, 3, 4, 5));
+			printf("%s\n", simplelogic3(p, "&", 8, 9, 10, 11));
 			hit = 1;
 		}
 		if (strcmp(p->model->name, "7428") == 0) {
-			printf("%s\n", simplelogic_inv(p, "OR", 1, 2, 3));
-			printf("%s\n", simplelogic_inv(p, "OR", 4, 5, 6));
-			printf("%s\n", simplelogic_inv(p, "OR", 10, 9, 8));
-			printf("%s\n", simplelogic_inv(p, "OR", 13, 12, 11));
+			printf("%s\n", simplelogic_inv(p, "|", 1, 2, 3));
+			printf("%s\n", simplelogic_inv(p, "|", 4, 5, 6));
+			printf("%s\n", simplelogic_inv(p, "|", 10, 9, 8));
+			printf("%s\n", simplelogic_inv(p, "|", 13, 12, 11));
 			hit = 1;
 		}
-		if (strcmp(p->model->name, "74S20") == 0) {
-			printf("%s\n", simplelogic4_inv(p, "AND", 6, 1, 2, 4, 5));
-			printf("%s\n", simplelogic4_inv(p, "AND", 8, 9, 10, 12, 13));
+		if (strcmp(p->model->name, "74S20") == 0 ||
+		    strcmp(p->model->name, "74S20O") == 0) {
+			printf("%s\n", simplelogic4_inv(p, "&", 6, 1, 2, 4, 5));
+			printf("%s\n", simplelogic4_inv(p, "&", 8, 9, 10, 12, 13));
 			hit = 1;
 		}
-		if (strcmp(p->model->name, "74S32") == 0) {
-			printf("%s\n", simplelogic(p, "OR", 3, 1, 2));
-			printf("%s\n", simplelogic(p, "OR", 6, 4, 5));
-			printf("%s\n", simplelogic(p, "OR", 8, 9, 10));
-			printf("%s\n", simplelogic(p, "OR", 11, 12, 13));
+		if (strcmp(p->model->name, "74S32") == 0 ||
+		    strcmp(p->model->name, "74S32O") == 0) {
+			printf("%s\n", simplelogic(p, "|", 3, 1, 2));
+			printf("%s\n", simplelogic(p, "|", 6, 4, 5));
+			printf("%s\n", simplelogic(p, "|", 8, 9, 10));
+			printf("%s\n", simplelogic(p, "|", 11, 12, 13));
 			hit = 1;
 		}
 		if (strcmp(p->model->name, "74S37") == 0) {
-			printf("%s\n", simplelogic_inv(p, "AND", 3, 1, 2));
-			printf("%s\n", simplelogic_inv(p, "AND", 6, 4, 5));
-			printf("%s\n", simplelogic_inv(p, "AND", 8, 9, 10));
-			printf("%s\n", simplelogic_inv(p, "AND", 11, 12, 13));
+			printf("%s\n", simplelogic_inv(p, "&", 3, 1, 2));
+			printf("%s\n", simplelogic_inv(p, "&", 6, 4, 5));
+			printf("%s\n", simplelogic_inv(p, "&", 8, 9, 10));
+			printf("%s\n", simplelogic_inv(p, "&", 11, 12, 13));
 			hit = 1;
 		}
 		if (strcmp(p->model->name, "74S86") == 0) {
-			printf("%s\n", simplelogic(p, "XOR", 3, 1, 2));
-			printf("%s\n", simplelogic(p, "XOR", 6, 4, 5));
-			printf("%s\n", simplelogic(p, "XOR", 8, 9, 10));
-			printf("%s\n", simplelogic(p, "XOR", 11, 12, 13));
+			printf("%s\n", simplelogic(p, "^", 3, 1, 2));
+			printf("%s\n", simplelogic(p, "^", 6, 4, 5));
+			printf("%s\n", simplelogic(p, "^", 8, 9, 10));
+			printf("%s\n", simplelogic(p, "^", 11, 12, 13));
 			hit = 1;
 		}
 
 		if (strcmp(p->model->name, "25S09") == 0) {
-			printf("%s\n", fflogic_dsel(p, 2, 3, 4, 1, 9));
-			printf("%s\n", fflogic_dsel(p, 7, 6, 5, 1, 9));
-			printf("%s\n", fflogic_dsel(p, 14, 11, 12, 1, 9));
-			printf("%s\n", fflogic_dsel(p, 15, 14, 13, 1, 9));
+			printf("%s\n", fflogic_dsel(p, 1, 2, 3, 4, 1, 9));
+			printf("%s\n", fflogic_dsel(p, 2, 7, 6, 5, 1, 9));
+			printf("%s\n", fflogic_dsel(p, 3, 14, 11, 12, 1, 9));
+			printf("%s\n", fflogic_dsel(p, 4, 15, 14, 13, 1, 9));
 			hit = 1;
 		}
 
 		if (!hit) {
-			printf("#(no code to express %s)\n", p->model->name);
+			printf("// (no code to express %s)\n", p->model->name);
+			dump_model(p);
 		}
 	}
+
+	printf("endmodule\n\n");
 
 	return 0;
 }
@@ -932,30 +1171,60 @@ dump_logic(void)
 int
 check()
 {
-	printf("models: %d\n", model_count);
-	printf("pages: %d\n", page_count);
-	printf("signals (nets): %d\n", signal_count);
+	printf("// models: %d\n", model_count);
+	printf("// pages: %d\n", page_count);
+	printf("// signals (nets): %d\n", signal_count);
 
 	sort_netlist();
+
 	if (verbose) print_netlist();
 
 	/* check nets for at least one O */
 	/* check nets for multiple O's */
 	/* check for single node nets */
 	check_nets_for_singles();
+
 /* check for unused pins on parts */
 	check_nets_for_models();
 	check_nets_for_drivers();
 
-	if (1) dump_logic();
-
 	return 0;
 }
 
-main()
+void
+usage(void)
 {
-	parse();
+	fprintf(stderr, "usage:\n");
+	exit(1);
+}
+
+extern int optind;
+extern char *optarg;
+
+main(int argc, char *argv[])
+{
+	int c;
+
+	while ((c = getopt(argc, argv, "dv")) != -1) {
+		switch (c) {
+		case 'd':
+			debug++;
+			break;
+		case 'v':
+			verbose++;
+			break;
+		default:
+			usage();
+		}
+	}
+
+	while (optind < argc) {
+		parse(argv[optind++]);
+	}
+
 	check();
+
+	if (1) dump_logic();
 
 	exit(0);
 }

@@ -12,6 +12,74 @@
 
 #-----------------------------------------
 
+# ACTL		x
+# ALATCH	x
+# ALU0		x
+# ALU1		x
+# ALUC4		x
+# AMEM0		x
+# AMEM1		x
+# APAR		x
+#
+# BCPINS
+# BCTERM
+# CAPS
+# CLOCKD	x
+# CONTRL	x
+# CPINS
+# DRAM0		x
+# DRAM1		x
+# DRAM2		x
+# DSPCTL	x
+# FLAG		x
+# IOR		x
+# IPAR		x
+# IREG		x
+# IWR		x
+# L		x
+# LC		x
+# LCC		x
+# LPC
+# MCTL
+# MD
+# MDS
+# MF
+# MLATCH
+# MMEM
+# MO0
+# MO1
+# MSKG4
+# NPC
+# OPCD
+# PDL0
+# PDL1
+# PDLCTL
+# PDLPTR
+# PLATCH
+# Q
+# QCTL
+# SHIFT0
+# SHIFT1
+# SMCTL
+# SOURCE
+# SPC
+# SPCLCH
+# SPCPAR
+# SPCW
+# SPY1
+# SPY2
+# TRAP
+# VCTL1
+# VCTL2
+# VMA
+# VMAS
+# VMEM0
+# VMEM1
+# VMEM2
+# VMEMDR
+
+#-----------------------------------------
+
 # Basic models, really just for simple DRC
 
 # 74S51 74S64 74S133 74S280  
@@ -181,24 +249,24 @@ p1=-CLR
 
 model 74S175
 (
-p4=D0
-p2=Q0
-p3=-Q0
+p4=D0,I
+p2=Q0,O
+p3=-Q0,O
 
-p5=D1
-p7=Q1
-p6=-Q1
+p5=D1,I
+p7=Q1,O
+p6=-Q1,O
 
 p12=D2
-p10=Q2
-p11=-Q2
+p10=Q2,O
+p11=-Q2,O
 
 p13=D3
-p15=Q3
-p14=-Q3
+p15=Q3,O
+p14=-Q3,O
 
-p1=-CLR
-p9=CLK+
+p1=-CLR,I
+p9=CLK+,I
 )
 
 model 74S181
@@ -272,18 +340,40 @@ model 74S258
 (
 p14=A0
 p13=A1
-p12=AY
+p12=AY,O
 p11=B0
 p10=B1
-p9=BY
+p9=BY,O
 p5=C0
 p6=C1
-p7=CY
+p7=CY,O
 p2=D0
 p3=D1
-p4=DY
-p1=SEL
-p15=-ENB
+p4=DY,O
+p1=SEL,I
+p15=-ENB,I
+)
+
+model 74S283
+(
+p9=C0,O
+
+p12=A3
+p14=A2
+p3=A1
+p5=A0
+
+p10=S3,O
+p13=S2,O
+p1=S1,O
+p4=S0,O
+
+p11=B3
+p15=B2
+p2=B1
+p6=B0
+
+p7=CI
 )
 
 model 74S373
@@ -652,21 +742,21 @@ p9=TSE4A
 p8=APASSENB
 )
 
-part 3b30,74S37
+part 3B30,74S37
 (
 p1=WP3A
 p2=DESTD
 p3=-AWPA
 )
 
-part 3b30,74S37
+part 3B30,74S37
 (
 p4=WP3A
 p5=DESTD
 p6=-AWPB
 )
 
-part 3b30,74S37
+part 3B30,74S37
 (
 p10=WP3A
 p9=DESTD
@@ -5301,7 +5391,7 @@ p3=SPC1A
 part 4E03,74S32
 (
 p12=NEXT.INSTRD
-p13=@4D09,pin11
+p13=@4D09,p11
 p11=LCINC
 )
 
@@ -5315,6 +5405,143 @@ p11=@3E17,p8
 part 3E17,74S02
 (
 p9=NEXT.INSTRD
-p8=@4D09,pin11
+p8=@4D09,p11
 p10=-LCINC
 )
+
+part 3E12,74S175
+(
+p4=-NEWLC.IN
+p2=-NEWLC
+p3=NEWLC
+
+p5=INT
+p7=SINTR
+p6=NC
+
+p12=NEXT.INSTR
+p10=NEXT.INSTRD
+p11=NC
+
+p13=NC
+p15=NC
+p14=NC
+
+p1=-RESET
+p9=CLK3C
+)
+
+part 3E11,74S00
+(
+p1=IR10
+p2=IR11
+p3='-LC MODIFIES MROT'
+)
+
+part 2E05,74S86
+(
+p4=LC1
+p5=LC0B
+p6=@2E30,p9
+)
+
+part 2E30,74S02
+(
+p9=@2E05,p6
+p8='-LC MODIFIES MROT'
+p10='INST IN LEFT HALF'
+)
+
+part 2E05,74S86
+(
+p1='INST IN LEFT HALF'
+p2=-IR4
+p3=-SH4
+)
+
+#     LC <1:0>
+# +-----------------+
+# | 0 | 3 |  2 |  1 |
+# +-----------------+
+# |   0   |    2    |
+# +-----------------+
+#
+
+part 2E30,74S02
+(
+p12=LC0
+p11='-LC MODIFIES MROT'
+p13=@3E05,p1
+)
+
+part 3E05,74S08
+(
+p1=@2E30,p13
+p2='LC BYTE MODE'
+p3='INST IN 2ND OR 4TH QUARTER'
+)
+
+part 2E05,74S86
+(
+p10='INST IN 2ND OR 4TH QUARTER'
+p9=-IR3
+p8=-SH3
+)
+
+part 1C15,74S02
+(
+p9=-LCINC
+p10='LC BYTE MODE'
+p10=@1C21,p6
+)
+
+part 1C21,74S283
+(
+p9=LCRY3
+
+p12=LC3
+p14=LC2
+p3=LC1
+p5=LC0
+
+p10=LCA3
+p13=LCA2
+p1=LCA1
+p4=LCA0
+
+p11=GND
+p15=GND
+p2=GND
+p6=@1C15,p10
+
+p7=LCINC
+)
+
+part 1C27,25S09
+(
+p3=OB3
+p4=LCA3
+
+p6=OB2
+p5=LCA2
+
+p11=OB1
+p12=LCA1
+
+p14=OB0
+p13=LCA0
+
+p2=LC3
+p7=LC2
+p10=LC1
+p15=LC0
+
+p1=-DESTLC
+p9=CLK2A
+)
+
+#-----------------------------------------
+
+page LPC
+
+
