@@ -1,10 +1,12 @@
 /*
  * soap.c
  *
- * try and decode SUDS data files
+ * try and decode SUDS data files into an intermediate netlist
  *
  * (I just wanted to type "soap suds" :-)
  *
+ * brad@heeltoe.com 10/2004
+ * $Id$
  */
 
 #include <stdio.h>
@@ -122,6 +124,7 @@ struct point_s {
 #define MAX_POINTS 4000
 #define MID_POINTS (MAX_POINTS / 2)
 int point_count;
+int zero_point_max;
 int mixed_point_count;
 struct point_s points[MAX_POINTS];
 
@@ -170,6 +173,24 @@ add_body(struct body_s *bdy)
 }
 
 void
+show_point_dir(struct point_s *pnt, char *dir, int id0, int id1)
+{
+	if (id0 || id1) {
+		printf("%s %d %d ", dir, id0, id1);
+		if (id0 == 0 && id1) {
+			if (points[id1].name_of_pin[0]) {
+				printf("%s ", points[id1].name_of_pin);
+			} else
+				if (points[id1].named_pin_index) {
+					printf("->%s ", points[
+						       points[id1].named_pin_index
+						       ].name_of_pin);
+				}
+		}
+	}
+}
+
+void
 show_point(struct point_s *pnt)
 {
 	printf("id %d %d; ", pnt->id[0], pnt->id[1]);
@@ -187,10 +208,10 @@ show_point(struct point_s *pnt)
 		printf("%s ", bodies[pnt->id[1]].refdes);
 	}
 
-	if (pnt->d[0] || pnt->d[1]) printf("d %d %d ", pnt->d[0],pnt->d[1]);
-	if (pnt->u[0] || pnt->u[1]) printf("u %d %d ", pnt->u[0],pnt->u[1]);
-	if (pnt->l[0] || pnt->l[1]) printf("l %d %d ", pnt->l[0],pnt->l[1]);
-	if (pnt->r[0] || pnt->r[1]) printf("r %d %d ", pnt->r[0],pnt->r[1]);
+	show_point_dir(pnt, "d", pnt->d[0],pnt->d[1]);
+	show_point_dir(pnt, "u", pnt->u[0],pnt->u[1]);
+	show_point_dir(pnt, "l", pnt->l[0],pnt->l[1]);
+	show_point_dir(pnt, "r", pnt->r[0],pnt->r[1]);
 
 	printf("\n");
 }
@@ -242,6 +263,10 @@ add_point(struct point_s *pnt)
 			exit(1);
 		}
 		p = &points[pnt->id[1]];
+
+		if (pnt->id[1] > zero_point_max) {
+			zero_point_max = pnt->id[1];
+		}
 	}
 	else {
 		p = &points[1000 + mixed_point_count++];
@@ -259,6 +284,9 @@ int
 add_signal(char *name, int id0, int id1)
 {
 	struct signal_s *s;
+
+	if (show_suds) printf("add_signal() %s (%d, %d)\n",
+			      name, id0, id1);
 
 	s = (struct signal_s *)malloc(sizeof(struct signal_s));
 	memset((char *)s, 0, sizeof(*s));
@@ -864,40 +892,50 @@ parse_pins(int p)
 			printf("loc (%d, %d)\n", pnt->loc[0], pnt->loc[1]);
 			printf("id (%d, %d) ", pnt->id[0], pnt->id[1]);
 			if (pnt->id[0] && pnt->id[1])
-				printf("%s\n",
+				printf("%s ",
 				       bodies[pnt->id[1]].name_of_body);
+			printf("%s\n",
+			       bodies[pnt->id[1]].refdes);
 
 			printf("bits %d, pin name %d\n",
 			       pnt->bits, pnt->pinname);
 		}
 
 		id0 = id1 = 0;
-		if (pnt->d[0] && pnt->d[1]) {
-			if (show_suds) printf("d (%d, %d) ", pnt->d[0], pnt->d[1]);
+		if (pnt->d[0] || pnt->d[1]) {
+			if (show_suds) printf("d (%d, %d) ",
+					      pnt->d[0], pnt->d[1]);
 			id0 = pnt->d[0];
 			id1 = pnt->d[1];
 		}
-		if (pnt->u[0] && pnt->u[1]) {
-			if (show_suds) printf("u (%d, %d) ", pnt->u[0], pnt->u[1]);
+		if (pnt->u[0] || pnt->u[1]) {
+			if (show_suds) printf("u (%d, %d) ", 
+					      pnt->u[0], pnt->u[1]);
 			id0 = pnt->u[0];
 			id1 = pnt->u[1];
 		}
-		if (pnt->l[0] && pnt->l[1]) {
-			if (show_suds) printf("l (%d, %d) ", pnt->l[0], pnt->l[1]);
+		if (pnt->l[0] || pnt->l[1]) {
+			if (show_suds) printf("l (%d, %d) ",
+					      pnt->l[0], pnt->l[1]);
 			id0 = pnt->l[0];
 			id1 = pnt->l[1];
 		}
-		if (pnt->r[0] && pnt->r[1]) {
-			if (show_suds) printf("r (%d, %d) ", pnt->r[0], pnt->r[1]);
+		if (pnt->r[0] || pnt->r[1]) {
+			if (show_suds) printf("r (%d, %d) ",
+					      pnt->r[0], pnt->r[1]);
 			id0 = pnt->r[0];
 			id1 = pnt->r[1];
 		}
 		
-		if (id1 && show_suds) 
-			printf("%s\n", bodies[id1].name_of_body);
+		if (id1 && show_suds) {
+			printf("%s ", bodies[id1].name_of_body);
+			printf("%s ", bodies[id1].refdes);
+			printf("\n");
+		}
 
 		if (pnt->name_of_pin[0]) {
-			add_signal(pnt->name_of_pin, id0, id1);
+//			add_signal(pnt->name_of_pin, id0, id1);
+			add_signal(pnt->name_of_pin, pnt->id[0], pnt->id[1]);
 		} else {
 			struct signal_s *s;
 			s = find_signal_at(pnt->id[0], pnt->id[1]);
@@ -1107,6 +1145,56 @@ find_pin(int body_id, int pinname)
 }
 
 int
+pick_next(struct point_s *p)
+{
+	if (p->d[1])
+		return p->d[1];
+	if (p->u[1])
+		return p->u[1];
+	if (p->l[1])
+		return p->l[1];
+	if (p->r[1])
+		return p->r[1];
+
+	return -1;
+}
+
+struct point_s *
+pick_lr_notself(struct point_s *p, struct point_s *porig)
+{
+	struct point_s *pp = 0;
+
+	if (p->l[1] && pp == 0) {
+		pp = &points[ find_id(p->l[0], p->l[1]) ];
+		if (pp == porig) pp = 0;
+	}
+	if (p->r[1] && pp == 0) {
+		pp = &points[ find_id(p->r[0], p->r[1]) ];
+		if (pp == porig) pp = 0;
+	}
+
+	return pp;
+}
+
+struct point_s *
+pick_down(struct point_s *p)
+{
+	if (p->d[1] == 0)
+		return 0;
+
+	return &points[ find_id(p->d[0], p->d[1]) ];
+}
+
+struct point_s *
+pick_up(struct point_s *p)
+{
+	if (p->u[1] == 0)
+		return 0;
+
+	return &points[ find_id(p->u[0], p->u[1]) ];
+}
+
+int
 follow_points(void)
 {
 	int i, j, id;
@@ -1124,7 +1212,7 @@ follow_points(void)
 //		if (points[i].id[0] != 0)
 //			continue;
 
-		clear_visits();
+//		clear_visits();
 
 		if (follow_one(i, i, 1)) {
 			if (show_follow) printf("\n");
@@ -1160,26 +1248,6 @@ follow_points(void)
 	}
 #endif
 
-#if 0
-	/* follow unvisited unnamed */
-	if (show_follow) printf("PASS 2\n");
-
-	for (i = 0; i < MAX_POINTS; i++) {
-		if (points[i].id[0] == 0 && points[i].id[1] == 0)
-			continue;
-		if (points[i].name_of_pin[0])
-			continue;
-		if (points[i].id[0] == 0)
-			continue;
-		if (points[i].visited)
-			continue;
-
-		if (follow_one(i, i, 2)) {
-			if (show_follow) printf("\n");
-		}
-	}
-#endif
-
 	/* follow unvisited unnamed */
 	if (show_follow) printf("PASS 2\n");
 
@@ -1193,21 +1261,139 @@ follow_points(void)
 		if (points[i].visited)
 			continue;
 
+		if (show_follow) show_point(&points[i]);
+
 		bi = points[i].id[1];
 		pinnum = points[i].pinname;
-
-if (show_follow) show_point(&points[i]);
-
 		pi = bodies[bi].named_pin_index[ pinnum ];
-if (show_follow) printf("checking body %d, pin %d -> %d; ", bi, pinnum, pi);
 
-		if (pi) {
-			if (show_follow) printf("fixed ");
+		if (pi == 0) {
+			if (show_follow) printf("body %d was blank, ", bi);
+			bi = pick_next(&points[i]);
+			if (show_follow) printf("trying %d; ", bi);
+			pi = bodies[bi].named_pin_index[ pinnum ];
 		}
+
+		if (show_follow) {
+			printf("checking body %d, pin %d -> %d; ",
+			       bi, pinnum, pi);
+		}
+
+		if (pi && points[i].named_pin_index == 0) {
+			if (show_follow) printf("fixed ");
+			points[i].named_pin_index = pi;
+
+			/* now fix original body */
+			bi = points[i].id[1];
+			bodies[bi].named_pin_index[ pinnum ] = pi;
+
+			points[i].visited++;
+		}
+
 		if (show_follow) printf("\n");
 	}
 
+	/* find unnamed nets */
+	if (show_follow) printf("PASS 3\n");
 
+	for (i = 0; i < MAX_POINTS; i++) {
+		int bi, pi, pinnum;
+		int other_bi, other_pinnum;
+		struct point_s *pp, *ppdn;
+		int ppi;
+
+		if (points[i].id[0] == 0 || points[i].id[1] == 0)
+			continue;
+		if (points[i].name_of_pin[0])
+			continue;
+		if (points[i].visited)
+			continue;
+
+		if (show_follow) {
+			printf("\nstart ");
+			show_point(&points[i]);
+		}
+
+		/* hack - follow nodes to find terminal which is not start */
+		/* (this code only works for simple case) */
+
+		pp = pick_lr_notself(&points[i], &points[i]);
+		if (pp == 0)
+			continue;
+		if (show_follow) {
+			show_point(pp);
+		}
+
+		if (pick_down(pp)) {
+			if ((ppdn = pick_down(pp))) {
+			loop_down:
+				pp = ppdn;
+				if (pp == 0)
+					continue;
+				if (show_follow) show_point(pp);
+			}
+
+			if (pp->pinname == 0) {
+				pp = pick_lr_notself(pp, &points[i]);
+				if (pp == 0)
+					continue;
+				if (show_follow) show_point(pp);
+			}
+
+			if ((ppdn = pick_down(pp)))
+				goto loop_down;
+		} else {
+			if (pick_up(pp)) {
+				if ((ppdn = pick_up(pp))) {
+				loop_up:
+					pp = ppdn;
+					if (pp == 0)
+						continue;
+					if (show_follow) show_point(pp);
+				}
+
+				if (pp->pinname == 0) {
+					pp = pick_lr_notself(pp, &points[i]);
+					if (pp == 0)
+						continue;
+					if (show_follow) show_point(pp);
+				}
+
+				if ((ppdn = pick_up(pp)))
+					goto loop_up;
+			}
+		}
+
+		bi = points[i].id[1];
+		pinnum = points[i].pinname;
+
+		other_bi = pp->id[1];
+		other_pinnum = pp->pinname;
+
+		if (show_follow) {
+			printf("picked "); show_point(pp);
+			printf("@%s,p%d",
+			       bodies[other_bi].refdes, other_pinnum);
+		}
+
+		/* make a new point with "name" of other connection */
+		ppi = zero_point_max;
+		pp = &points[zero_point_max++];
+
+		sprintf(pp->name_of_pin, "@%s,p%d",
+			bodies[other_bi].refdes,
+			other_pinnum);
+
+		points[i].named_pin_index = ppi;
+		bodies[bi].named_pin_index[ pinnum ] = ppi;
+		
+		if (show_follow) {
+			printf("fixed %s", pp->name_of_pin);
+			printf("\n");
+		}
+	}
+
+	return 0;
 }
 
 char *
@@ -1234,6 +1420,12 @@ format_bodies(void)
 
 	for (i = 0; i < MAX_BODIES; i++) {
 		if (bodies[i].name_of_body[0] == 0)
+			continue;
+
+		/* hack */
+		if (strcmp(bodies[i].name_of_body, "TABLE") == 0)
+			continue;
+		if (strcmp(bodies[i].name_of_body, "COMMENT") == 0)
 			continue;
 
 		printf("part %s,%s\n",
