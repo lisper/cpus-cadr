@@ -99,6 +99,24 @@ p8=G3Q_N,O
 p12=G1A_N,O
 )
 
+alias 74S11 74S11O
+
+model 74LS14
+(
+p1=G1A,I
+p2=G1Q_N,O
+p3=G2A,I
+p4=G2Q_N,O
+p5=G3A,I
+p6=G3Q_N,O
+p8=G4Q,O
+p9=G4A,I
+p10=G5Q_N,O
+p11=G5A,I
+p12=G6Q_N,O
+p13=G6A,I
+)
+
 model 74S28
 (
 p1=G1Q_N,O
@@ -125,10 +143,18 @@ p13=G4Q_N,O
 
 model 74S32
 (
+p1=G1A
+p2=G1B
 p3=G1Q,O
+p4=G2A
+p5=G2B
 p6=G2Q,O
 p8=G3Q,O
+p9=G3A
+p10=G3B
 p11=G4Q,O
+p12=G4A
+p13=G4B
 )
 
 alias 74S32 74S32O
@@ -198,6 +224,48 @@ p12=G2D,I
 p13=G2R_N,I
 )
 
+model 74LS109
+(
+p1=R
+p2=J
+p3=K_N
+p4=CLK
+p5=S
+p6=Q,O
+p7=Q_N,O
+)
+
+model 74S110
+(
+p1=R
+p2=J
+p3=K_N
+p4=CLK
+p5=S
+p6=Q,O
+p7=Q_N,O
+)
+
+model 74S133
+(
+p1=G
+p2=F
+p3=E
+p4=D
+p5=C
+p6=B
+p7=A
+p9=Q_N
+p10=H
+p11=I
+p12=J
+p13=K
+p14=L
+p15=M
+)
+
+alias 74S133 74S133O
+
 model 74S138
 (
 p1=A,I
@@ -255,11 +323,19 @@ p7=CE_N,I
 model 74S153
 (
 p1=ENB1_N,I
-p7=G1Q,O
-p15=ENB2_N,I
-p9=G2Q,O
-p14=SEL0
 p2=SEL1
+p3=G1D3
+p4=G1D2
+p5=G1D1
+p6=G1D0
+p7=G1Q,O
+p9=G2Q,O
+p10=G2D0
+p11=G2D1
+p12=G2D2
+p13=G2D3
+p14=SEL0
+p15=ENB2_N,I
 )
 
 model 74S157
@@ -303,8 +379,20 @@ p2=CLK,I
 model 74S174
 (
 # need i's & o's
-p9=CLK
 p1=CLR_N
+p2=Q1
+p3=D1
+p4=D2
+p5=Q2
+p6=D3
+p7=Q3
+p9=CLK
+p10=Q4
+p11=D4
+p12=Q5
+p13=D5
+p14=D6
+p15=6Q
 )
 
 model 74S175
@@ -334,12 +422,12 @@ model 74S181
 p16=COUT_N,O
 p17=Y,O
 p15=X,O
-p14=A=B,O
+p14=AEB,O
 
-p13=F3,I
-p11=F2,I
-p10=F1,I
-p9=F0,I
+p13=F3,O
+p11=F2,O
+p10=F1,O
+p9=F0,O
 
 p18=B3,I
 p20=B2,I
@@ -422,6 +510,8 @@ p18=AOUT0,O
 p19=BENB_N
 )
 
+alias 74S240 74LS240
+
 model 74S241
 (
 p1=AENB_N,I
@@ -476,6 +566,16 @@ p1=SEL,I
 p15=ENB_N,I
 )
 
+model 74S260
+(
+p1=I1
+p2=I2
+p3=I3
+p5=O1
+p12=I4
+p13=I5
+)
+
 model 74S280
 (
 p1=I0
@@ -493,7 +593,7 @@ p13=I8
 
 model 74S283
 (
-p9=C0,O
+p9=C4,O
 
 p12=A3
 p14=A2
@@ -510,7 +610,7 @@ p15=B2
 p2=B1
 p6=B0
 
-p7=CI
+p7=C0
 )
 
 model 74S373
@@ -557,6 +657,28 @@ p11=CLK,I
 p1=OENB_N,I
 )
 
+model 74S472
+(
+p1=A0
+p2=A1
+p3=A2
+p4=A3
+p5=A4
+p6=D0
+p7=D1
+p8=D2
+p9=D3
+p11=D4
+p12=D5
+p13=D6
+p14=D7
+p15=CE_N
+p16=A5
+p17=A6
+p18=A7
+p19=A8
+)
+
 model 93425A
 (
 p2=A0,I
@@ -575,16 +697,16 @@ p15=DI,I
 p7=D0,O
 )
 
-model IM5610
+model 5610
 (
-p9=D07,O
-p7=D06,O
-p6=D05,O
-p5=D04,O
-p4=D03,O
-p3=D02,O
-p2=D01,O
-p1=D00,O
+p9=O7,O
+p7=O6,O
+p6=O5,O
+p5=O4,O
+p4=O3,O
+p3=O2,O
+p2=O1,O
+p1=O0,O
 p14=A4,I
 p13=A3,I
 p12=A2,I
@@ -595,14 +717,14 @@ p15=CE_N,I
 
 model 5600
 (
-p9=D07,O
-p7=D06,O
-p6=D05,O
-p5=D04,O
-p4=D03,O
-p3=D02,O
-p2=D01,O
-p1=D00,O
+p9=O7,O
+p7=O6,O
+p6=O5,O
+p5=O4,O
+p4=O3,O
+p3=O2,O
+p2=O1,O
+p1=O0,O
 p14=A4,I
 p13=A3,I
 p12=A2,I
@@ -611,7 +733,7 @@ p10=A0,I
 p15=CE_N,I
 )
 
-alias IM5610 5610
+alias 5610 IM5610
 
 model 25S07
 (
@@ -664,7 +786,7 @@ p6=B2
 p4=B1
 p2=B0
 p7=ENB
-p9=EQ
+p9=EQ,O
 )
 
 model 93S48
@@ -685,6 +807,16 @@ p10=PE,O
 p9=PO,O
 )
 
+model TD25
+(
+p1=INPUT,I
+p4=O_10ns,O
+p6=O_20ns,O
+p8=O_25ns,O
+p10=O_15ns,O
+p12=O_5ns,O
+)
+
 model TD50
 (
 p1=INPUT,I
@@ -693,6 +825,16 @@ p4=O_20ns,O
 p10=O_30ns,O
 p5=O_40ns,O
 p8=O_50ns,O
+)
+
+model TD100
+(
+p1=INPUT,I
+p12=O_20ns,O
+p4=O_40ns,O
+p10=O_60ns,O
+p6=O_80ns,O
+p8=O_100ns,O
 )
 
 model TD250
@@ -819,6 +961,23 @@ p14=BQ
 p15=BQ_N
 )
 
+model TIL309
+(
+p1=L2
+p2=L4
+p3=L8
+p4=L1
+p5=LATCH
+p6=I4
+p7=I8
+p12=I2
+p13=BLANK_N
+p14=DP
+p15=TEST_N
+p16=LDP
+p17=I1
+)
+
 model RES20
 (
 # pull ups
@@ -864,9 +1023,15 @@ p7=R7
 
 model BYPASS
 (
+p1=dummy
 )
 
 model COMMENT
 (
+p1=dummy
 )
 
+model 16DUMMY
+(
+p1=dummy
+)

@@ -10,7 +10,45 @@
  *                                                                          *
  ****************************************************************************/
 
-module part_74S181 (S, A, B, M, CNb, F, X, Y, CN4b, AEB);
+module part_74S181 ( A0, A1, A2, A3,
+		 B0, B1, B2, B3,
+		 S0, S1, S2, S3, M, CIN_N,
+		 F0, F1, F2, F3,
+		 COUT_N, Y, X, AEB );
+
+  input A0, A1, A2, A3;
+  input B0, B1, B2, B3;
+  input S0, S1, S2, S3, M, CIN_N;
+  output F0, F1, F2, F3;
+  output COUT_N, Y, X, AEB ;
+
+  wire[3:0]  AA, BB, SS, FF;
+
+  assign AA[0] = A0;
+  assign AA[1] = A1;
+  assign AA[2] = A2;
+  assign AA[3] = A3;
+
+  assign BB[0] = B0;
+  assign BB[1] = B1;
+  assign BB[2] = B2;
+  assign BB[3] = B3;
+
+  assign SS[0] = S0;
+  assign SS[1] = S1;
+  assign SS[2] = S2;
+  assign SS[3] = S3;
+
+  ic_74S181 blah (SS, AA, BB, M, CIN_N, FF, X, Y, COUT_N, AEB);
+
+  assign F0 = FF[0];
+  assign F1 = FF[1];
+  assign F2 = FF[2];
+  assign F3 = FF[3];
+
+endmodule
+
+module ic_74S181 (S, A, B, M, CNb, F, X, Y, CN4b, AEB);
 
   input [3:0] A, B, S;
   input CNb, M; 

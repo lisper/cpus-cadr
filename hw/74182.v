@@ -10,7 +10,31 @@
  *                                                                          *
  ****************************************************************************/
 
-module Circuit74182 (CN, PB, GB, PBo, GBo, CNX, CNY, CNZ);
+module part_74S182 ( X0, X1, X2, Y0, Y1, Y2, CIN_N,
+		 XOUT, YOUT, X3, Y3,
+		 COUT0_N, COUT1_N, COUT2_N );
+
+  input X0, X1, X2, Y0, Y1, Y2, CIN_N;
+  output XOUT, YOUT, X3, Y3;
+  output COUT0_N, COUT1_N, COUT2_N;
+
+  wire[3:0] XX, YY;
+
+  assign XX[0] = X0;
+  assign XX[1] = X1;
+  assign XX[2] = X2;
+  assign XX[3] = X3;
+
+  assign YY[0] = Y0;
+  assign YY[1] = Y1;
+  assign YY[2] = Y2;
+  assign YY[3] = Y3;
+
+  ic_74S182 blah (CIN_N, XX, YY, XOUT, YOUT, COUT0_N, COUT1_N, COUT2_N);
+
+endmodule
+
+module ic_74S182 (CN, PB, GB, PBo, GBo, CNX, CNY, CNZ);
 
   input[3:0]    PB, GB;
   input	        CN;

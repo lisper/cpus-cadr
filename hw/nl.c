@@ -45,6 +45,7 @@ struct pin_s {
 struct model_s {
 	struct model_s *next;
 	char *name;
+	char *output_name;
 	int pin_max;
 	struct pin_s pin[MAX_PINS];
 };
@@ -52,6 +53,7 @@ struct model_s {
 struct part_s {
 	struct part_s *next;
 	char *refdes;
+	int inst;
 	struct model_s *model;
 	struct page_s *page;
 	int pin_max;
@@ -64,6 +66,8 @@ struct part_s *parts;
 
 struct signal_s *signals;
 struct signal_s **sorted_signals;
+
+struct page_s *current_page;
 
 int model_count;
 int signal_count;
@@ -143,12 +147,12 @@ find_model(char *name)
 }
 
 struct part_s *
-find_part(char *name)
+find_part(char *name, struct page_s *page)
 {
 	struct part_s *p;
 
 	for (p = parts; p; p = p->next) {
-		if (strcasecmp(p->refdes, name) == 0) 
+		if (strcasecmp(p->refdes, name) == 0 && p->page == page)
 			return p;
 	}
 
@@ -194,6 +198,7 @@ new_model(char *name)
 
 	m = (struct model_s *)malloc(sizeof(struct model_s));
 	m->name = strdup(name);
+	m->output_name = m->name;
 	m->pin_max = 0;
 
 	m->next = models;
@@ -231,7 +236,7 @@ new_part(char *name, char *model, struct page_s *page)
 	struct model_s *m;
 	struct page_s *pg;
 
-	if ((p = find_part(name))) {
+	if ((p = find_part(name, page))) {
 		return p;
 	}
 
@@ -424,14 +429,16 @@ fix_forward_pins(void)
 	ret = 0;
 	for (p = parts; p; p = p->next) {
 		for (i = 1; i <= p->pin_max; i++) {
-			if (debug) printf("%s %d %s\n", p->refdes, i, p->pin[i].forw_name);
+			if (debug) printf("%s %d %s\n",
+					  p->refdes, i, p->pin[i].forw_name);
 
 			if (p->pin[i].forw_name) {
 				struct part_s *op;
 				struct signal_s *s;
 				char *name;
 
-				op = find_part(p->pin[i].forw_name);
+				op = find_part(p->pin[i].forw_name,
+					       p->page);
 				if (op == 0) {
 					printf("can't find forward reference to %s\n",
 					       p->pin[i].forw_name);
@@ -448,8 +455,11 @@ fix_forward_pins(void)
 					s = add_signal(name);
 
 					/* add to other part */
-					if (add_pin_part(op, p->pin[i].forw_pin, name, ""))
+					if (add_pin_part(op, p->pin[i].forw_pin, name, "")) {
+						printf("// signal %s, page %s\n",
+						       s, p->page);
 						continue;
+					}
 				}
 
 				if (debug) {
@@ -472,6 +482,12 @@ fix_forward_pins(void)
 	return ret;
 }
 
+/*
+ * parse the input file, which is basicially a list of "parts", each
+ * of which has a list of pins and signal names.
+ *
+ *
+ */
 int
 parse(char *filename)
 {
@@ -481,12 +497,11 @@ parse(char *filename)
 	char *n;
 	int state;
 	void *obj;
-	void *page;
 	FILE *file;
 
 	linenum = 0;
 	state = 0;
-	page = 0;
+	current_page = 0;
 
 	file = fopen(filename, "r");
 	if (file == 0) {
@@ -521,6 +536,7 @@ parse(char *filename)
 			/* refdes */
 			p = getword(p, word);
 
+			/* model name */
 			p = getword(p, word2);
 			if (strcmp(word2, ",") != 0) {
 				printf("%d: missing ',' %s\n", linenum, word2);
@@ -529,12 +545,13 @@ parse(char *filename)
 
 			/* model */
 			p = getword(p, word2);
-			obj = new_part(word, word2, page);
+
+			obj = new_part(word, word2, current_page);
 			state = 2;
 		} else if (strcmp(word, "page") == 0) {
 			state = 0;
 			p = getword(p, word);
-			new_page(word);
+			current_page = new_page(word);
 		} else {
 			int pin;
 
@@ -571,25 +588,31 @@ parse(char *filename)
 					int opin;
 					char *name;
 
-					op = find_part(word);
+					op = find_part(word,
+						       current_page);
 
 					/* other part */
 					p = getword(p, word);
 					p = getword(p, word2);
 					if (strcmp(word2, ",") != 0) {
-						printf("%d: missing ',' %s\n", linenum, word2);
+						printf("%d: missing ',' %s\n",
+						       linenum, word2);
 						return -1;
 					}
 
 					/* pin on other part */
 					p = getword(p, word2);
 					if (parse_pin(word2, &opin)) {
-						printf("%d: bad pin spec '%s'\n", linenum, word2);
+						printf("%d: bad pin spec '%s'\n",
+						       linenum, word2);
 						return -1;
 					}
 
 					if (op == 0) {
-						add_pin_forward_part(obj, pin, word, opin);
+						add_pin_forward_part(obj,
+								     pin,
+								     word,
+								     opin);
 						break;
 					}
 
@@ -599,7 +622,11 @@ parse(char *filename)
 						/* make an interal signal */
 						name = new_internal();
 						add_signal(name);
-						add_pin_part(op, opin, name, p);
+						if (add_pin_part(op, opin, name, p)) {
+							printf("// page %s\n",
+							       current_page->name);
+
+						}
 						strcpy(word, name);
 					} else {
 						strcpy(word, s->name);
@@ -614,7 +641,11 @@ parse(char *filename)
 
 				}
 
-				add_pin_part(obj, pin, word, p);
+				if (add_pin_part(obj, pin, word, p)) {
+					printf("// page %s\n",
+					       current_page->name);
+				}
+
 				break;
 			}
 		}
@@ -759,7 +790,7 @@ check_nets_for_singles(void)
 			wid += strlen(s->name) + 1;
 
 			count++;
-			if (count > 10 || wid > 65) {
+			if (count > 10 || wid > 60) {
 				printf("\n");
 				printf("// ");
 				count = 0;
@@ -959,7 +990,23 @@ char *
 iname(struct part_s *p)
 {
 	static char b[256];
-	sprintf(b, "i_%s", p->refdes);
+	sprintf(b, "i_%s_%s", p->page->name, p->refdes);
+	return b;
+}
+
+char *
+fflogic(struct part_s *p, int inst,
+	int p1, int p2, int p3, int p4)
+{
+	static char b[256];
+
+	sprintf(b,
+		"ff %s_%d "
+		"(.q(%s), .d(%s), .clk(%s), .enb_n(%s) );",
+		iname(p), inst,
+		signame(p, p1), signame(p, p2), signame(p, p3),
+		signame(p, p4));
+
 	return b;
 }
 
@@ -985,7 +1032,8 @@ dump_model(struct part_s *p)
 	struct model_s *m = p->model;
 	int i, c;
 
-	printf("part_%s %s (\n", cleanup_name(p->model->name), iname(p));
+	printf("part_%s %s (\n",
+	       cleanup_name(p->model->output_name), iname(p));
 
 	c = 0;
 	for (i = 1; i < m->pin_max; i++) {
@@ -1083,7 +1131,8 @@ dump_logic(void)
 		}
 		if (strcmp(p->model->name, "74S04") == 0 ||
 		    strcmp(p->model->name, "74S04O") == 0 ||
-		    strcmp(p->model->name, "74S04A") == 0) {
+		    strcmp(p->model->name, "74S04A") == 0 ||
+		    strcmp(p->model->name, "74LS14") == 0) {
 			printf("%s\n", simple_uinary(p, "!", 2, 1));
 			printf("%s\n", simple_uinary(p, "!", 4, 3));
 			printf("%s\n", simple_uinary(p, "!", 6, 5));
@@ -1100,13 +1149,15 @@ dump_logic(void)
 			printf("%s\n", simplelogic(p, "&", 11, 13, 12));
 			hit = 1;
 		}
-		if (strcmp(p->model->name, "74S10") == 0) {
+		if (strcmp(p->model->name, "74S10") == 0 ||
+		    strcmp(p->model->name, "74S10O") == 0) {
 			printf("%s\n", simplelogic3_inv(p, "&", 12, 1, 2, 13));
 			printf("%s\n", simplelogic3_inv(p, "&", 6, 3, 4, 5));
 			printf("%s\n", simplelogic3_inv(p, "&", 8, 9, 10, 11));
 			hit = 1;
 		}
-		if (strcmp(p->model->name, "74S11") == 0) {
+		if (strcmp(p->model->name, "74S11") == 0 ||
+		    strcmp(p->model->name, "74S11O") == 0) {
 			printf("%s\n", simplelogic3(p, "&", 12, 1, 2, 13));
 			printf("%s\n", simplelogic3(p, "&", 6, 3, 4, 5));
 			printf("%s\n", simplelogic3(p, "&", 8, 9, 10, 11));
@@ -1126,7 +1177,8 @@ dump_logic(void)
 			hit = 1;
 		}
 		if (strcmp(p->model->name, "74S32") == 0 ||
-		    strcmp(p->model->name, "74S32O") == 0) {
+		    strcmp(p->model->name, "74S32O") == 0 ||
+		    strcmp(p->model->name, "74S32W") == 0) {
 			printf("%s\n", simplelogic(p, "|", 3, 1, 2));
 			printf("%s\n", simplelogic(p, "|", 6, 4, 5));
 			printf("%s\n", simplelogic(p, "|", 8, 9, 10));
@@ -1145,6 +1197,16 @@ dump_logic(void)
 			printf("%s\n", simplelogic(p, "^", 6, 4, 5));
 			printf("%s\n", simplelogic(p, "^", 8, 9, 10));
 			printf("%s\n", simplelogic(p, "^", 11, 12, 13));
+			hit = 1;
+		}
+
+		if (strcmp(p->model->name, "25S07") == 0) {
+			printf("%s\n", fflogic(p, 1, 2, 3, 9, 1));
+			printf("%s\n", fflogic(p, 2, 5, 4, 9, 1));
+			printf("%s\n", fflogic(p, 3, 7, 6, 9, 1));
+			printf("%s\n", fflogic(p, 4, 10, 11, 9, 1));
+			printf("%s\n", fflogic(p, 5, 12, 13, 9, 1));
+			printf("%s\n", fflogic(p, 6, 15, 14, 9, 1));
 			hit = 1;
 		}
 
