@@ -1,6 +1,7 @@
 #!/bin/sh
 
-PREFIX=/work6/oldtapes/mit/extract/cadr
+#PREFIX=/work6/oldtapes/mit/extract/cadr
+PREFIX=cad-orig
 OUTPUT=netlist-new.txt
 
 (

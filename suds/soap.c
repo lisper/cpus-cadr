@@ -1241,22 +1241,37 @@ follow_points(void)
 		if (points[i].visited)
 			continue;
 
-		if (show_follow) show_point(&points[i]);
+		if (show_follow) {
+			printf("\nstart ");
+			show_point(&points[i]);
+		}
 
 		bi = points[i].id[1];
 		pinnum = points[i].pinname;
 		pi = bodies[bi].named_pin_index[ pinnum ];
 
 		if (pi == 0) {
-			if (show_follow) printf("body %d was blank, ", bi);
+#if 0
+			if (show_follow) {
+				printf("body %d (%s), pin %d was blank, ",
+				       bi, bodies[bi].refdes, pinnum);
+			}
 			bi = pick_next(&points[i]);
-			if (show_follow) printf("trying %d; ", bi);
+			if (show_follow) {
+				printf("trying body %d (%s); ",
+				       bi, bodies[bi].refdes);
+			}
+//xxx this is wrong
 			pi = bodies[bi].named_pin_index[ pinnum ];
+#else
+			continue;
+#endif
 		}
 
 		if (show_follow) {
-			printf("checking body %d, pin %d -> %d; ",
-			       bi, pinnum, pi);
+			printf("checking body %d (%s), pin %d -> %d; ",
+			       bi, bodies[bi].refdes,
+			       pinnum, pi);
 		}
 
 		if (pi && points[i].named_pin_index == 0) {
