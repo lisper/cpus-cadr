@@ -5,6 +5,18 @@
  *
  * (I just wanted to type "soap suds" :-)
  *
+ * Mostly parse the data file, identify the "bodies" (chips in this case)
+ * and the interconnections ("points").
+ *
+ * Note that like most software projects, when I started writing this I
+ * didn't really understand the format of the SUDS data file.
+ *
+ * points are just that, points.  And the vertices's they describe
+ * (up, down, left, right) are just that, verticies to a new point.
+ *
+ * so, there should be some generalize "traverse vertices" functions but
+ * I didn't start to understand till late in the game.
+ *
  * brad@heeltoe.com 10/2004
  * $Id$
  */
@@ -563,7 +575,14 @@ parse_body_def(int p)
 		p = grab_7bit_ascii(p, bd->name_of_body_def);
 		if (debug) printf("after name, p %d\n", p);
 
+#if 0
 		p += 2; /* ? */
+#else
+		{
+			char name2[256];
+			p = grab_7bit_ascii(p, name2);
+		}
+#endif
 
 		bd->bits = up[p];
 		p += 2;
@@ -858,7 +877,13 @@ parse_pins(int p)
 		case 0:
 			if (debug) printf("bits 0\n");
 			if (pnt->text_size[1]) {
+#if 0
 				p = grab_7bit_ascii(p, pnt->name_of_pin);
+#else
+				pnt->xy_const_offset[0] = up[p++];
+				pnt->xy_const_offset[1] = up[p++];
+				p = grab_7bit_ascii(p, pnt->name_of_pin);
+#endif
 			}
 			break;
 		case 011000:
@@ -1128,6 +1153,7 @@ clear_visits(void)
 	}
 }
 
+#if 0
 struct point_s *
 find_pin(int body_id, int pinname)
 {
@@ -1143,6 +1169,7 @@ find_pin(int body_id, int pinname)
 
 	return 0;
 }
+#endif
 
 int
 pick_next(struct point_s *p)
@@ -1376,6 +1403,9 @@ follow_points(void)
 			       bodies[other_bi].refdes, other_pinnum);
 		}
 
+		if (other_pinnum == 0)
+			continue;
+
 		/* make a new point with "name" of other connection */
 		ppi = zero_point_max;
 		pp = &points[zero_point_max++];
@@ -1426,6 +1456,11 @@ format_bodies(void)
 		if (strcmp(bodies[i].name_of_body, "TABLE") == 0)
 			continue;
 		if (strcmp(bodies[i].name_of_body, "COMMENT") == 0)
+			continue;
+		if (strcmp(bodies[i].name_of_body, "BYPASS") == 0)
+			continue;
+
+		if (strcmp(bodies[i].refdes, "0@00") == 0)
 			continue;
 
 		printf("part %s,%s\n",
