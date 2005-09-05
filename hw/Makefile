@@ -2,6 +2,9 @@
 #
 #
 
+#VERILOG=iverilog
+VERILOG=cver
+
 all: go
 
 nl: nl.c
@@ -20,15 +23,22 @@ PARTS = 2147.v 7451.v 7464.v 7474.v \
 	74260.v 74280.v 74283.v 74373.v 74374.v 74472.v \
 	2510.v \
 	5600.v 5610.v 8221.v 9328.v 9346.v 9348.v 93425.v 252519.v \
-	ff_dsel.v ff.v td25.v td50.v td100.v td250.v 942.v \
-	res20.v sip220.v til309.v dummy.v
+	td25.v td50.v td100.v td250.v 942.v \
+	res20.v sip220.v til309.v dummy.v \
+	ff.v ff_enb.v ff_dsel.v ff_rs.v
 
 parts.o: $(PARTS)
-	iverilog -o parts.o $(PARTS)
+	$(VERILOG) -o parts.o $(PARTS)
 
-run: $(PARTS) cadr.v run.v extra.v nl
-	iverilog -o run $(PARTS) cadr.v run.v
+run: $(PARTS) time.v cadr.v run.v extra.v nl
+#	$(VERILOG) -o run $(PARTS) cadr.v run.v
+	$(VERILOG) +change_port_type time.v $(PARTS) cadr.v run.v
+	echo "exit 0" > run
+	chmod +x run
 
 go: run
 	./run
 
+
+test:
+	$(VERILOG) ff.v ff_rs.v 74373.v 74174.v test.v; ./a.out

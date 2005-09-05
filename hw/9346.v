@@ -12,7 +12,7 @@ module part_93S46(A0, A1, A2, A3, A4, A5,
   output EQ;
 
   /* ... */
-  assign EQ = ENG & (A1 == B1) & (A2 == B2) & (A3 == B3) & (A4 == B4) &
+  assign EQ = ENB & (A1 == B1) & (A2 == B2) & (A3 == B3) & (A4 == B4) &
 	(A5 == B5);
 
 endmodule

@@ -9,6 +9,7 @@ module part_TD50 ( INPUT, O_10ns, O_20ns, O_30ns, O_40ns, O_50ns );
   output O_10ns, O_20ns, O_30ns, O_40ns, O_50ns;
   reg O_10ns, O_20ns, O_30ns, O_40ns, O_50ns;
 
+/*
 initial
   begin
    O_10ns <= 1;
@@ -27,15 +28,43 @@ always @(posedge INPUT)
    O_50ns <= #(50) 0;
   end
 
-always @(posedge O_10ns)
+always @(negedge O_10ns)
    O_10ns <= #(`PULSE_WIDTH) 1;
-always @(posedge O_20ns)
+always @(negedge O_20ns)
    O_20ns <= #(`PULSE_WIDTH) 1;
-always @(posedge O_30ns)
+always @(negedge O_30ns)
    O_30ns <= #(`PULSE_WIDTH) 1;
-always @(posedge O_40ns)
+always @(negedge O_40ns)
    O_40ns <= #(`PULSE_WIDTH) 1;
-always @(posedge O_50ns)
+always @(negedge O_50ns)
    O_50ns <= #(`PULSE_WIDTH) 1;
+*/
+
+initial
+  begin
+   O_10ns <= 0;
+   O_20ns <= 0;
+   O_30ns <= 0;
+   O_40ns <= 0;
+   O_50ns <= 0;
+  end
+
+always @(posedge INPUT)
+  begin
+   O_10ns <= #(10) 1;
+   O_20ns <= #(20) 1;
+   O_30ns <= #(30) 1;
+   O_40ns <= #(40) 1;
+   O_50ns <= #(50) 1;
+  end
+
+always @(negedge INPUT)
+  begin
+   O_10ns <= #(10) 0;
+   O_20ns <= #(20) 0;
+   O_30ns <= #(30) 0;
+   O_40ns <= #(40) 0;
+   O_50ns <= #(50) 0;
+  end
 
 endmodule

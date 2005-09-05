@@ -314,6 +314,18 @@ add_pin_model(struct model_s *obj, int pin, char *word, char *rest)
 	return 0;
 }
 
+void
+set_pin_part(struct part_s *obj, int pin, char *word, struct signal_s *s)
+{
+	add_ref(s, obj, pin);
+
+	if (pin > obj->pin_max)
+		obj->pin_max = pin;
+
+	obj->pin[pin].name = strdup(word);
+	obj->pin[pin].signal = s;
+}
+
 int
 add_pin_part(struct part_s *obj, int pin, char *word, char *rest)
 {
@@ -332,13 +344,7 @@ add_pin_part(struct part_s *obj, int pin, char *word, char *rest)
 
 	s = add_signal(word);
 
-	add_ref(s, obj, pin);
-
-	if (pin > obj->pin_max)
-		obj->pin_max = pin;
-
-	obj->pin[pin].name = strdup(word);
-	obj->pin[pin].signal = s;
+	set_pin_part(obj, pin, word, s);
 
 	return 0;
 }
@@ -419,7 +425,7 @@ parse_pin(char *word, int *pin)
 }
 
 int
-fix_forward_pins(void)
+fix_forward_pins(int make_internals)
 {
 	struct part_s *p;
 	int i, ret;
@@ -457,8 +463,12 @@ fix_forward_pins(void)
 
 			/* if otherpart already has a signal, use it */
 			s = op->pin[ p->pin[i].forw_pin ].signal;
+//printf("s %p, s->name %p '%s'\n", s, s->name, s->name);
 
 			if (s == NULL) {
+				if (!make_internals)
+					continue;
+
 				/* make an interal signal */
 				name = new_internal();
 				s = add_signal(name);
@@ -476,7 +486,8 @@ fix_forward_pins(void)
 				if (debug)
 					printf("//now %p\n",
 					       op->pin[ p->pin[i].forw_pin ].signal);
-			}
+			} else
+				name = s->name;
 
 			if (debug) {
 				printf("other: %s %s %d\n",
@@ -486,8 +497,7 @@ fix_forward_pins(void)
 			}
 
 			/* fixup this part */
-			add_ref(s, p, i);
-			p->pin[i].signal = s;
+			set_pin_part(p, i, s->name, s);
 
 			p->pin[i].forw_name = 0;
 			p->pin[i].forw_pin = 0;
@@ -670,7 +680,15 @@ printf("//new2 %s\n", name);
 
 	fclose(file);
 
-	if (fix_forward_pins())
+	/* the first time don't create internals nets, because we may
+	 * point to something which in term points to a real signal
+	 * (this is a hack, and only works becuase there's only one
+	 *  level of indirection)
+	 */
+	if (fix_forward_pins(0))
+		return -1;
+
+	if (fix_forward_pins(1))
 		return -1;
 
 	return 0;
@@ -1008,7 +1026,7 @@ simple_uinary(struct part_s *p, char *func, int p1, int p2)
 	if (p->pin[p1].signal == 0) return "";
 
 	sprintf(b, "assign %s = %s %s;",
-		signame(p, p1, b2), func, signame(p, p2, b2));
+		signame(p, p1, b1), func, signame(p, p2, b2));
 
 	return b;
 }
@@ -1022,14 +1040,14 @@ iname(struct part_s *p)
 }
 
 char *
-fflogic(struct part_s *p, int inst,
-	int p1, int p2, int p3, int p4)
+fflogic_enb(struct part_s *p, int inst,
+	    int p1, int p2, int p3, int p4)
 {
 	static char b[256];
 	char b1[256], b2[256], b3[256], b4[256];
 
 	sprintf(b,
-		"ff %s_%d "
+		"ff_enb %s_%d "
 		"(.q(%s), .d(%s), .clk(%s), .enb_n(%s) );",
 		iname(p), inst,
 		signame(p, p1, b1), signame(p, p2, b2), signame(p, p3, b3),
@@ -1065,7 +1083,7 @@ dump_model(struct part_s *p)
 	       cleanup_name(p->model->output_name), iname(p));
 
 	c = 0;
-	for (i = 1; i < m->pin_max; i++) {
+	for (i = 1; i <= m->pin_max; i++) {
 		char buf[256];
 
 		if (m->pin[i].name == 0)
@@ -1230,12 +1248,12 @@ dump_logic(void)
 		}
 
 		if (strcmp(p->model->name, "25S07") == 0) {
-			printf("%s\n", fflogic(p, 1, 2, 3, 9, 1));
-			printf("%s\n", fflogic(p, 2, 5, 4, 9, 1));
-			printf("%s\n", fflogic(p, 3, 7, 6, 9, 1));
-			printf("%s\n", fflogic(p, 4, 10, 11, 9, 1));
-			printf("%s\n", fflogic(p, 5, 12, 13, 9, 1));
-			printf("%s\n", fflogic(p, 6, 15, 14, 9, 1));
+			printf("%s\n", fflogic_enb(p, 1, 2, 3, 9, 1));
+			printf("%s\n", fflogic_enb(p, 2, 5, 4, 9, 1));
+			printf("%s\n", fflogic_enb(p, 3, 7, 6, 9, 1));
+			printf("%s\n", fflogic_enb(p, 4, 10, 11, 9, 1));
+			printf("%s\n", fflogic_enb(p, 5, 12, 13, 9, 1));
+			printf("%s\n", fflogic_enb(p, 6, 15, 14, 9, 1));
 			hit = 1;
 		}
 

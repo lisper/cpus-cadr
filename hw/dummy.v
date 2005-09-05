@@ -1,4 +1,5 @@
 
-module part_16DUMMY ();
+module part_16DUMMY (dummy);
+  input dummy;
 
 endmodule

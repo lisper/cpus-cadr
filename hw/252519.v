@@ -14,15 +14,15 @@ module part_25LS2519 ( I0, I1, I2, I3,
 always @(ASYN_CLR_N)
   if (ASYN_CLR_N)
     begin
-      Q0A <= #1 0;
-      Q1A <= #1 0;
-      Q2A <= #1 0;
-      Q3A <= #1 0;
+      Q0A <= 0;
+      Q1A <= 0;
+      Q2A <= 0;
+      Q3A <= 0;
 
-      Q0B <= #1 0;
-      Q1B <= #1 0;
-      Q2B <= #1 0;
-      Q3B <= #1 0;
+      Q0B <= 0;
+      Q1B <= 0;
+      Q2B <= 0;
+      Q3B <= 0;
     end
 
 endmodule

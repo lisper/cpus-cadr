@@ -15,10 +15,14 @@ module part_74S74 ( G1R_N, G1D, G1CLK, G1S_N,
   input G1R_N, G1D, G1CLK, G1S_N;
   input G2S_N, G2CLK, G2D, G2R_N;
   output G1Q, G1Q_N, G2Q_N, G2Q;
+/*
   reg G1Q, G1Q_N, G2Q_N, G2Q;
 
   always @(posedge G1CLK)
-    G1Q <= #(`REG_DELAY) G1D;
+    begin
+      G1Q <= #(`REG_DELAY) G1D;
+//      G1Q_N <= #(`REG_DELAY) !G1DQ;
+    end
 
   always @(G1S_N or G1R_N)
     case ( {G1S_N, G1R_N} )
@@ -29,7 +33,7 @@ module part_74S74 ( G1R_N, G1D, G1CLK, G1S_N,
     endcase
 
   always @(G1Q)
-    G1Q_N <= !G1Q;
+    G1Q_N <= !G1D;
 
   always @(posedge G2CLK)
     G2Q <= #(`REG_DELAY) G2D;
@@ -44,5 +48,9 @@ module part_74S74 ( G1R_N, G1D, G1CLK, G1S_N,
 
   always @(G2Q)
     G2Q_N <= !G2Q;
+*/
+
+  ff_rs ff1 (G1R_N, G1SN, G1D, G1CLK, G1Q, G1Q_N);
+  ff_rs ff2 (G2R_N, G2SN, G2D, G2CLK, G2Q, G2Q_N);
 
 endmodule

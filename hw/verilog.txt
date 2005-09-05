@@ -1,10 +1,12 @@
+verilog modules for cadr
+
 2147.v		ok,no delay	simple ram
 2510.v		ok
 252519.v	? init ok
 5600.v		ok, needs read
 5610.v		ok, needs read
-7451.v		empty
-7464.v		empty
+7451.v		ok
+7464.v		ok
 7474.v		ok
 74109.v		ok, needs jk
 74133.v		ok
@@ -19,32 +21,31 @@
 74181.v		ok
 74182.v		ok
 74194.v		ok
-74240.v		empty
-74241.v		empty
-74244.v		empty
-74258.v		empty
+74240.v		ok
+74241.v		ok
+74244.v		ok
+74258.v		ok
 74260.v		seems too small
-74280.v		empty
+74280.v		ok
 74283.v		ok
-74373.v		empty
+74373.v		maybe
 74374.v		ok
-74472.v		empty
-8221.v		empty
-9328.v		empty
-93425.v		empty
+74472.v		ok
+
+8221.v		temp
+9328.v		temp
+93425.v		ok?
 9346.v		ok
-9348.v		empty
+9348.v		temp
 942.v		ok
-td100.v
-td250.v
-td25.v
-td50.v
+
+td100.v		maybe
+td250.v		maybe
+td25.v		maybe
+td50.v		maybe
 til309.v	empty
 
+res20.v		ok
+sip220.v	ok
 ff_dsel.v
 ff.v
-ram.v
-res20.v
-sip220.v
-test.v
-[brad@mwave hw]$ 

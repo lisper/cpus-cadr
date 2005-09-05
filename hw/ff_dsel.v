@@ -6,14 +6,16 @@
 `define REG_DELAY 1
 
 module ff_dsel (q, a, b, sel, clk );
- input a, b, sel, clk;
- output q;
- reg q;
- wire d;
+  input a, b, sel, clk;
+  output q;
+  reg q;
 
- assign d = sel ? b : a;
+initial q <= 0;
 
- always @(posedge clk) q <= #(`REG_DELAY) d;
+  wire d = sel ? b : a;
+
+  always @(posedge clk)
+    q <= #(`REG_DELAY) d;
 
 endmodule
 

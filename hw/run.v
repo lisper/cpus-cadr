@@ -2,8 +2,6 @@
  * $Id$
  */
 
-`timescale 1ns / 1ns
-
 module test;
   reg master_clk;
 
@@ -18,10 +16,10 @@ module test;
   initial
     begin
       assign master_clk = 0;
-//      #100 $finish;
+//      #500 $finish;
     end
  
-//  always #10 master_clk = ! master_clk;
+//  always #10 master_clk <= ! master_clk;
 
 endmodule
 
