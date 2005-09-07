@@ -277,6 +277,19 @@ new_internal(void)
 	return b;
 }
 
+static int nc_num;
+
+char *
+new_nc(char *b)
+{
+	nc_num++;
+	sprintf(b, "nc%d", nc_num);
+
+	if (debug) printf("%s\n", b);
+
+	return b;
+}
+
 int
 parse_model_rest(char *rest, int *pattrib)
 {
@@ -935,6 +948,12 @@ signame(struct part_s *p, int pin, char *buf)
 		return "\\lost<?> ";
 	}
 
+#if 1
+	if (strcasecmp(p->pin[pin].signal->name, "nc") == 0) {
+		return new_nc(buf);
+	}
+#endif
+
 	return fix_name(p->pin[pin].signal->name, buf);
 }
 
@@ -1096,7 +1115,8 @@ dump_model(struct part_s *p)
 
 		printf("  .%s(%s)",
 		       m->pin[i].name,
-		       fix_name(p->pin[i].name, buf));
+//		       fix_name(p->pin[i].name, buf));
+		       signame(p, i, buf));
 	}
 
 	printf("\n);\n\n");
@@ -1260,7 +1280,7 @@ dump_logic(void)
 		if (strcmp(p->model->name, "25S09") == 0) {
 			printf("%s\n", fflogic_dsel(p, 1, 2, 3, 4, 1, 9));
 			printf("%s\n", fflogic_dsel(p, 2, 7, 6, 5, 1, 9));
-			printf("%s\n", fflogic_dsel(p, 3, 14, 11, 12, 1, 9));
+			printf("%s\n", fflogic_dsel(p, 3, 10, 11, 12, 1, 9));
 			printf("%s\n", fflogic_dsel(p, 4, 15, 14, 13, 1, 9));
 			hit = 1;
 		}
@@ -1272,6 +1292,26 @@ dump_logic(void)
 	}
 
 	printf("\n");
+
+#if 1
+	if (nc_num)
+	{
+		int i;
+
+		printf("wire ");
+		for (i = 0; i < nc_num; i++) {
+			if (i > 0) printf(" , ");
+			printf("nc%d", i+1);
+		}
+		printf(" ;\n");
+
+		for (i = 0; i < nc_num; i++) {
+			printf("assign nc%d = 0 ;\n", i+1);
+		}
+
+	}
+#endif
+	
 	printf("`include \"extra.v\"\n\n");
 	printf("endmodule\n\n");
 

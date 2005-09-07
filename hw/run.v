@@ -3,7 +3,6 @@
  */
 
 module test;
-  reg master_clk;
 
   cpu cpu ();
 
@@ -15,11 +14,8 @@ module test;
 
   initial
     begin
-      assign master_clk = 0;
-//      #500 $finish;
+      #10000 $finish;
     end
- 
-//  always #10 master_clk <= ! master_clk;
 
 endmodule
 

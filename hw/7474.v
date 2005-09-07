@@ -6,7 +6,8 @@
  * flipflop w/async set and reset
  */
 
-`define REG_DELAY 1
+//`define REG_DELAY 1
+`define REG_DELAY 0
 
 module part_74S74 ( G1R_N, G1D, G1CLK, G1S_N,
 	G2S_N, G2CLK, G2D, G2R_N,
@@ -50,7 +51,7 @@ module part_74S74 ( G1R_N, G1D, G1CLK, G1S_N,
     G2Q_N <= !G2Q;
 */
 
-  ff_rs ff1 (G1R_N, G1SN, G1D, G1CLK, G1Q, G1Q_N);
-  ff_rs ff2 (G2R_N, G2SN, G2D, G2CLK, G2Q, G2Q_N);
+  ff_rs ff1 (G1R_N, G1S_N, G1D, G1CLK, G1Q, G1Q_N);
+  ff_rs ff2 (G2R_N, G2S_N, G2D, G2CLK, G2Q, G2Q_N);
 
 endmodule

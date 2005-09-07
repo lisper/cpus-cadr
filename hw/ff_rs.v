@@ -2,7 +2,8 @@
  * $Id$
  */
 
-`define REG_DELAY 1
+//`define REG_DELAY 1
+`define REG_DELAY 0
 
 module ff_rs( R, S, D, CLK, Q, Q_N);
 

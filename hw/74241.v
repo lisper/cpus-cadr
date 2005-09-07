@@ -7,7 +7,7 @@ module part_74S241(AIN0, AIN1, AIN2, AIN3,
 	AENB_N,
 	BIN0, BIN1, BIN2, BIN3,
 	BOUT0, BOUT1, BOUT2, BOUT3,
-	BENB_N);
+	BENB);
 
   input AIN0, AIN1, AIN2, AIN3;
   output AOUT0, AOUT1, AOUT2, AOUT3;
@@ -17,12 +17,17 @@ module part_74S241(AIN0, AIN1, AIN2, AIN3,
   input BIN0, BIN1, BIN2, BIN3;
   output BOUT0, BOUT1, BOUT2, BOUT3;
   reg BOUT0, BOUT1, BOUT2, BOUT3;
-  input BENB_N;
+  input BENB;
 
   always @(AENB_N)
     begin
     if (AENB_N)
       begin
+	deassign AOUT0;
+	deassign AOUT1;
+	deassign AOUT2;
+	deassign AOUT3;
+
         assign AOUT0 = 1'bz;
         assign AOUT1 = 1'bz;
         assign AOUT2 = 1'bz;
@@ -31,6 +36,11 @@ module part_74S241(AIN0, AIN1, AIN2, AIN3,
       end
     else
       begin
+	deassign AOUT0;
+	deassign AOUT1;
+	deassign AOUT2;
+	deassign AOUT3;
+
         assign AOUT0 = AIN0;
         assign AOUT1 = AIN1;
         assign AOUT2 = AIN2;
@@ -39,9 +49,9 @@ module part_74S241(AIN0, AIN1, AIN2, AIN3,
       end
     end
 
-  always @(BENB_N)
+  always @(BENB)
     begin
-    if (BENB_N)
+    if (! BENB)
       begin
         assign BOUT0 = 1'bz;
         assign BOUT1 = 1'bz;

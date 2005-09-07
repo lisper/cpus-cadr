@@ -6,7 +6,8 @@
  * 3-to-8-line decoder
  */
 
-`define REG_DELAY 1
+//`define REG_DELAY 1
+`define REG_DELAY 0
 
 module part_74S138( A, B, C, G2A, G2B, G1,
 	Y0, Y1, Y2, Y3, Y4, Y5, Y6, Y7);

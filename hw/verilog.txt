@@ -1,23 +1,23 @@
 verilog modules for cadr
 
-2147.v		ok,no delay	simple ram
-2510.v		ok
+2147.v		ok, no delay	simple ram
+2510.v		ok, tested
 252519.v	? init ok
 5600.v		ok, needs read
 5610.v		ok, needs read
 7451.v		ok
 7464.v		ok
 7474.v		ok
-74109.v		ok, needs jk
+74109.v		ok, tested
 74133.v		ok
 74138.v		ok
 74139.v		ok, raw
-74151.v		ok, raw
+74151.v		ok, tested
 74153.v		ok, raw
 74157.v		ok, raw
 74169.v		ok, raw
 74174.v		ok
-74175.v		ok
+74175.v		ok, tested
 74181.v		ok
 74182.v		ok
 74194.v		ok
@@ -25,7 +25,7 @@ verilog modules for cadr
 74241.v		ok
 74244.v		ok
 74258.v		ok
-74260.v		seems too small
+74260.v		ok
 74280.v		ok
 74283.v		ok
 74373.v		maybe
@@ -39,13 +39,15 @@ verilog modules for cadr
 9348.v		temp
 942.v		ok
 
-td100.v		maybe
-td250.v		maybe
-td25.v		maybe
-td50.v		maybe
+td100.v		ok
+td250.v		ok
+td25.v		ok
+td50.v		ok
 til309.v	empty
 
 res20.v		ok
 sip220.v	ok
 ff_dsel.v
 ff.v
+ff_enb.v
+ff_rs.v

@@ -2,7 +2,8 @@
  * $Id$
  */
 
-`define REG_DELAY 1
+//`define REG_DELAY 1
+`define REG_DELAY 0
 
 module part_74S157 ( A1, B1, A2, B2, A3, B3, B4, A4, 
 		     Y1, Y2, Y3, Y4,

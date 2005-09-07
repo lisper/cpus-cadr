@@ -753,8 +753,8 @@ part_74S138  i_SPY0_1F03 (
   .G2A(\-DBWRITE ),
   .G2B(GND),
   .G1(HI1),
-  .Y7(NC),
-  .Y6(NC),
+  .Y7(nc1),
+  .Y6(nc2),
   .Y5(\-LDMODE ),
   .Y4(\-LDOPC ),
   .Y3(\-LDCLK ),
@@ -797,7 +797,7 @@ part_74S138  i_SPY0_1F01 (
   .Y6(\-SPY.OBL ),
   .Y5(\-SPY.PC ),
   .Y4(\-SPY.OPC ),
-  .Y3(NC),
+  .Y3(nc3),
   .Y2(\-SPY.IRH ),
   .Y1(\-SPY.IRM ),
   .Y0(\-SPY.IRL )
@@ -827,20 +827,20 @@ part_2147  i_IRAM33_2B29 (
 
 
 // 2C26:
-assign #1 PC6P = ! \-PCC6 ;
-assign #1 PC7P = ! \-PCC7 ;
-assign #1 PC8P = ! \-PCC8 ;
-assign #1 PC9P = ! \-PCC9 ;
-assign #1 PC10P = ! \-PCC10 ;
-assign #1 PC11P = ! \-PCC11 ;
+assign PC6P = ! \-PCC6 ;
+assign PC7P = ! \-PCC7 ;
+assign PC8P = ! \-PCC8 ;
+assign PC9P = ! \-PCC9 ;
+assign PC10P = ! \-PCC10 ;
+assign PC11P = ! \-PCC11 ;
 
 // 2C27:
-assign #1 PC0P = ! \-PCC0 ;
-assign #1 PC1P = ! \-PCC1 ;
-assign #1 PC2P = ! \-PCC2 ;
-assign #1 PC3P = ! \-PCC3 ;
-assign #1 PC4P = ! \-PCC4 ;
-assign #1 PC5P = ! \-PCC5 ;
+assign PC0P = ! \-PCC0 ;
+assign PC1P = ! \-PCC1 ;
+assign PC2P = ! \-PCC2 ;
+assign PC3P = ! \-PCC3 ;
+assign PC4P = ! \-PCC4 ;
+assign PC5P = ! \-PCC5 ;
 
 // 2B28:
 // (no code to express 2147)
@@ -1129,20 +1129,20 @@ part_2147  i_IRAM32_2B24 (
 
 
 // 2C21:
-assign #1 PC6O = ! \-PCC6 ;
-assign #1 PC7O = ! \-PCC7 ;
-assign #1 PC8O = ! \-PCC8 ;
-assign #1 PC9O = ! \-PCC9 ;
-assign #1 PC10O = ! \-PCC10 ;
-assign #1 PC11O = ! \-PCC11 ;
+assign PC6O = ! \-PCC6 ;
+assign PC7O = ! \-PCC7 ;
+assign PC8O = ! \-PCC8 ;
+assign PC9O = ! \-PCC9 ;
+assign PC10O = ! \-PCC10 ;
+assign PC11O = ! \-PCC11 ;
 
 // 2C22:
-assign #1 PC0O = ! \-PCC0 ;
-assign #1 PC1O = ! \-PCC1 ;
-assign #1 PC2O = ! \-PCC2 ;
-assign #1 PC3O = ! \-PCC3 ;
-assign #1 PC4O = ! \-PCC4 ;
-assign #1 PC5O = ! \-PCC5 ;
+assign PC0O = ! \-PCC0 ;
+assign PC1O = ! \-PCC1 ;
+assign PC2O = ! \-PCC2 ;
+assign PC3O = ! \-PCC3 ;
+assign PC4O = ! \-PCC4 ;
+assign PC5O = ! \-PCC5 ;
 
 // 2B23:
 // (no code to express 2147)
@@ -1431,20 +1431,20 @@ part_2147  i_IRAM31_2B19 (
 
 
 // 2C16:
-assign #1 PC6N = ! \-PCC6 ;
-assign #1 PC7N = ! \-PCC7 ;
-assign #1 PC8N = ! \-PCC8 ;
-assign #1 PC9N = ! \-PCC9 ;
-assign #1 PC10N = ! \-PCC10 ;
-assign #1 PC11N = ! \-PCC11 ;
+assign PC6N = ! \-PCC6 ;
+assign PC7N = ! \-PCC7 ;
+assign PC8N = ! \-PCC8 ;
+assign PC9N = ! \-PCC9 ;
+assign PC10N = ! \-PCC10 ;
+assign PC11N = ! \-PCC11 ;
 
 // 2C17:
-assign #1 PC0N = ! \-PCC0 ;
-assign #1 PC1N = ! \-PCC1 ;
-assign #1 PC2N = ! \-PCC2 ;
-assign #1 PC3N = ! \-PCC3 ;
-assign #1 PC4N = ! \-PCC4 ;
-assign #1 PC5N = ! \-PCC5 ;
+assign PC0N = ! \-PCC0 ;
+assign PC1N = ! \-PCC1 ;
+assign PC2N = ! \-PCC2 ;
+assign PC3N = ! \-PCC3 ;
+assign PC4N = ! \-PCC4 ;
+assign PC5N = ! \-PCC5 ;
 
 // 2B18:
 // (no code to express 2147)
@@ -1733,20 +1733,20 @@ part_2147  i_IRAM30_2B14 (
 
 
 // 2C11:
-assign #1 PC6M = ! \-PCC6 ;
-assign #1 PC7M = ! \-PCC7 ;
-assign #1 PC8M = ! \-PCC8 ;
-assign #1 PC9M = ! \-PCC9 ;
-assign #1 PC10M = ! \-PCC10 ;
-assign #1 PC11M = ! \-PCC11 ;
+assign PC6M = ! \-PCC6 ;
+assign PC7M = ! \-PCC7 ;
+assign PC8M = ! \-PCC8 ;
+assign PC9M = ! \-PCC9 ;
+assign PC10M = ! \-PCC10 ;
+assign PC11M = ! \-PCC11 ;
 
 // 2C12:
-assign #1 PC0M = ! \-PCC0 ;
-assign #1 PC1M = ! \-PCC1 ;
-assign #1 PC2M = ! \-PCC2 ;
-assign #1 PC3M = ! \-PCC3 ;
-assign #1 PC4M = ! \-PCC4 ;
-assign #1 PC5M = ! \-PCC5 ;
+assign PC0M = ! \-PCC0 ;
+assign PC1M = ! \-PCC1 ;
+assign PC2M = ! \-PCC2 ;
+assign PC3M = ! \-PCC3 ;
+assign PC4M = ! \-PCC4 ;
+assign PC5M = ! \-PCC5 ;
 
 // 2B13:
 // (no code to express 2147)
@@ -2013,20 +2013,20 @@ part_2147  i_IRAM30_2B15 (
 
 
 // 2C07:
-assign #1 PC6L = ! \-PCC6 ;
-assign #1 PC7L = ! \-PCC7 ;
-assign #1 PC8L = ! \-PCC8 ;
-assign #1 PC9L = ! \-PCC9 ;
-assign #1 PC10L = ! \-PCC10 ;
-assign #1 PC11L = ! \-PCC11 ;
+assign PC6L = ! \-PCC6 ;
+assign PC7L = ! \-PCC7 ;
+assign PC8L = ! \-PCC8 ;
+assign PC9L = ! \-PCC9 ;
+assign PC10L = ! \-PCC10 ;
+assign PC11L = ! \-PCC11 ;
 
 // 2C08:
-assign #1 PC0L = ! \-PCC0 ;
-assign #1 PC1L = ! \-PCC1 ;
-assign #1 PC2L = ! \-PCC2 ;
-assign #1 PC3L = ! \-PCC3 ;
-assign #1 PC4L = ! \-PCC4 ;
-assign #1 PC5L = ! \-PCC5 ;
+assign PC0L = ! \-PCC0 ;
+assign PC1L = ! \-PCC1 ;
+assign PC2L = ! \-PCC2 ;
+assign PC3L = ! \-PCC3 ;
+assign PC4L = ! \-PCC4 ;
+assign PC5L = ! \-PCC5 ;
 
 // 2B09:
 // (no code to express 2147)
@@ -2293,20 +2293,20 @@ part_2147  i_IRAM23_2B10 (
 
 
 // 2C02:
-assign #1 PC6K = ! \-PCC6 ;
-assign #1 PC7K = ! \-PCC7 ;
-assign #1 PC8K = ! \-PCC8 ;
-assign #1 PC9K = ! \-PCC9 ;
-assign #1 PC10K = ! \-PCC10 ;
-assign #1 PC11K = ! \-PCC11 ;
+assign PC6K = ! \-PCC6 ;
+assign PC7K = ! \-PCC7 ;
+assign PC8K = ! \-PCC8 ;
+assign PC9K = ! \-PCC9 ;
+assign PC10K = ! \-PCC10 ;
+assign PC11K = ! \-PCC11 ;
 
 // 2C03:
-assign #1 PC0K = ! \-PCC0 ;
-assign #1 PC1K = ! \-PCC1 ;
-assign #1 PC2K = ! \-PCC2 ;
-assign #1 PC3K = ! \-PCC3 ;
-assign #1 PC4K = ! \-PCC4 ;
-assign #1 PC5K = ! \-PCC5 ;
+assign PC0K = ! \-PCC0 ;
+assign PC1K = ! \-PCC1 ;
+assign PC2K = ! \-PCC2 ;
+assign PC3K = ! \-PCC3 ;
+assign PC4K = ! \-PCC4 ;
+assign PC5K = ! \-PCC5 ;
 
 // 2B04:
 // (no code to express 2147)
@@ -2573,20 +2573,20 @@ part_2147  i_IRAM22_2B05 (
 
 
 // 1C27:
-assign #1 PC6J = ! \-PCC6 ;
-assign #1 PC7J = ! \-PCC7 ;
-assign #1 PC8J = ! \-PCC8 ;
-assign #1 PC9J = ! \-PCC9 ;
-assign #1 PC10J = ! \-PCC10 ;
-assign #1 PC11J = ! \-PCC11 ;
+assign PC6J = ! \-PCC6 ;
+assign PC7J = ! \-PCC7 ;
+assign PC8J = ! \-PCC8 ;
+assign PC9J = ! \-PCC9 ;
+assign PC10J = ! \-PCC10 ;
+assign PC11J = ! \-PCC11 ;
 
 // 1C28:
-assign #1 PC0J = ! \-PCC0 ;
-assign #1 PC1J = ! \-PCC1 ;
-assign #1 PC2J = ! \-PCC2 ;
-assign #1 PC3J = ! \-PCC3 ;
-assign #1 PC4J = ! \-PCC4 ;
-assign #1 PC5J = ! \-PCC5 ;
+assign PC0J = ! \-PCC0 ;
+assign PC1J = ! \-PCC1 ;
+assign PC2J = ! \-PCC2 ;
+assign PC3J = ! \-PCC3 ;
+assign PC4J = ! \-PCC4 ;
+assign PC5J = ! \-PCC5 ;
 
 // 1B29:
 // (no code to express 2147)
@@ -2853,20 +2853,20 @@ part_2147  i_IRAM21_1B30 (
 
 
 // 1C22:
-assign #1 PC6I = ! \-PCC6 ;
-assign #1 PC7I = ! \-PCC7 ;
-assign #1 PC8I = ! \-PCC8 ;
-assign #1 PC9I = ! \-PCC9 ;
-assign #1 PC10I = ! \-PCC10 ;
-assign #1 PC11I = ! \-PCC11 ;
+assign PC6I = ! \-PCC6 ;
+assign PC7I = ! \-PCC7 ;
+assign PC8I = ! \-PCC8 ;
+assign PC9I = ! \-PCC9 ;
+assign PC10I = ! \-PCC10 ;
+assign PC11I = ! \-PCC11 ;
 
 // 1C23:
-assign #1 PC0I = ! \-PCC0 ;
-assign #1 PC1I = ! \-PCC1 ;
-assign #1 PC2I = ! \-PCC2 ;
-assign #1 PC3I = ! \-PCC3 ;
-assign #1 PC4I = ! \-PCC4 ;
-assign #1 PC5I = ! \-PCC5 ;
+assign PC0I = ! \-PCC0 ;
+assign PC1I = ! \-PCC1 ;
+assign PC2I = ! \-PCC2 ;
+assign PC3I = ! \-PCC3 ;
+assign PC4I = ! \-PCC4 ;
+assign PC5I = ! \-PCC5 ;
 
 // 1B24:
 // (no code to express 2147)
@@ -3133,20 +3133,20 @@ part_2147  i_IRAM20_1B25 (
 
 
 // 2D28:
-assign #1 PC6H = ! \-PCB6 ;
-assign #1 PC7H = ! \-PCB7 ;
-assign #1 PC8H = ! \-PCB8 ;
-assign #1 PC9H = ! \-PCB9 ;
-assign #1 PC10H = ! \-PCB10 ;
-assign #1 PC11H = ! \-PCB11 ;
+assign PC6H = ! \-PCB6 ;
+assign PC7H = ! \-PCB7 ;
+assign PC8H = ! \-PCB8 ;
+assign PC9H = ! \-PCB9 ;
+assign PC10H = ! \-PCB10 ;
+assign PC11H = ! \-PCB11 ;
 
 // 2D29:
-assign #1 PC0H = ! \-PCB0 ;
-assign #1 PC1H = ! \-PCB1 ;
-assign #1 PC2H = ! \-PCB2 ;
-assign #1 PC3H = ! \-PCB3 ;
-assign #1 PC4H = ! \-PCB4 ;
-assign #1 PC5H = ! \-PCB5 ;
+assign PC0H = ! \-PCB0 ;
+assign PC1H = ! \-PCB1 ;
+assign PC2H = ! \-PCB2 ;
+assign PC3H = ! \-PCB3 ;
+assign PC4H = ! \-PCB4 ;
+assign PC5H = ! \-PCB5 ;
 
 // 2E26:
 // (no code to express 2147)
@@ -3413,20 +3413,20 @@ part_2147  i_IRAM13_2E27 (
 
 
 // 2D23:
-assign #1 PC6G = ! \-PCB6 ;
-assign #1 PC7G = ! \-PCB7 ;
-assign #1 PC8G = ! \-PCB8 ;
-assign #1 PC9G = ! \-PCB9 ;
-assign #1 PC10G = ! \-PCB10 ;
-assign #1 PC11G = ! \-PCB11 ;
+assign PC6G = ! \-PCB6 ;
+assign PC7G = ! \-PCB7 ;
+assign PC8G = ! \-PCB8 ;
+assign PC9G = ! \-PCB9 ;
+assign PC10G = ! \-PCB10 ;
+assign PC11G = ! \-PCB11 ;
 
 // 2D24:
-assign #1 PC0G = ! \-PCB0 ;
-assign #1 PC1G = ! \-PCB1 ;
-assign #1 PC2G = ! \-PCB2 ;
-assign #1 PC3G = ! \-PCB3 ;
-assign #1 PC4G = ! \-PCB4 ;
-assign #1 PC5G = ! \-PCB5 ;
+assign PC0G = ! \-PCB0 ;
+assign PC1G = ! \-PCB1 ;
+assign PC2G = ! \-PCB2 ;
+assign PC3G = ! \-PCB3 ;
+assign PC4G = ! \-PCB4 ;
+assign PC5G = ! \-PCB5 ;
 
 // 2E21:
 // (no code to express 2147)
@@ -3693,20 +3693,20 @@ part_2147  i_IRAM12_2E22 (
 
 
 // 2D18:
-assign #1 PC6F = ! \-PCB6 ;
-assign #1 PC7F = ! \-PCB7 ;
-assign #1 PC8F = ! \-PCB8 ;
-assign #1 PC9F = ! \-PCB9 ;
-assign #1 PC10F = ! \-PCB10 ;
-assign #1 PC11F = ! \-PCB11 ;
+assign PC6F = ! \-PCB6 ;
+assign PC7F = ! \-PCB7 ;
+assign PC8F = ! \-PCB8 ;
+assign PC9F = ! \-PCB9 ;
+assign PC10F = ! \-PCB10 ;
+assign PC11F = ! \-PCB11 ;
 
 // 2D19:
-assign #1 PC0F = ! \-PCB0 ;
-assign #1 PC1F = ! \-PCB1 ;
-assign #1 PC2F = ! \-PCB2 ;
-assign #1 PC3F = ! \-PCB3 ;
-assign #1 PC4F = ! \-PCB4 ;
-assign #1 PC5F = ! \-PCB5 ;
+assign PC0F = ! \-PCB0 ;
+assign PC1F = ! \-PCB1 ;
+assign PC2F = ! \-PCB2 ;
+assign PC3F = ! \-PCB3 ;
+assign PC4F = ! \-PCB4 ;
+assign PC5F = ! \-PCB5 ;
 
 // 2E16:
 // (no code to express 2147)
@@ -3973,20 +3973,20 @@ part_2147  i_IRAM11_2E17 (
 
 
 // 2D13:
-assign #1 PC6E = ! \-PCB6 ;
-assign #1 PC7E = ! \-PCB7 ;
-assign #1 PC8E = ! \-PCB8 ;
-assign #1 PC9E = ! \-PCB9 ;
-assign #1 PC10E = ! \-PCB10 ;
-assign #1 PC11E = ! \-PCB11 ;
+assign PC6E = ! \-PCB6 ;
+assign PC7E = ! \-PCB7 ;
+assign PC8E = ! \-PCB8 ;
+assign PC9E = ! \-PCB9 ;
+assign PC10E = ! \-PCB10 ;
+assign PC11E = ! \-PCB11 ;
 
 // 2D14:
-assign #1 PC0E = ! \-PCB0 ;
-assign #1 PC1E = ! \-PCB1 ;
-assign #1 PC2E = ! \-PCB2 ;
-assign #1 PC3E = ! \-PCB3 ;
-assign #1 PC4E = ! \-PCB4 ;
-assign #1 PC5E = ! \-PCB5 ;
+assign PC0E = ! \-PCB0 ;
+assign PC1E = ! \-PCB1 ;
+assign PC2E = ! \-PCB2 ;
+assign PC3E = ! \-PCB3 ;
+assign PC4E = ! \-PCB4 ;
+assign PC5E = ! \-PCB5 ;
 
 // 2E11:
 // (no code to express 2147)
@@ -4253,20 +4253,20 @@ part_2147  i_IRAM10_2E12 (
 
 
 // 2D08:
-assign #1 PC6D = ! \-PCB6 ;
-assign #1 PC7D = ! \-PCB7 ;
-assign #1 PC8D = ! \-PCB8 ;
-assign #1 PC9D = ! \-PCB9 ;
-assign #1 PC10D = ! \-PCB10 ;
-assign #1 PC11D = ! \-PCB11 ;
+assign PC6D = ! \-PCB6 ;
+assign PC7D = ! \-PCB7 ;
+assign PC8D = ! \-PCB8 ;
+assign PC9D = ! \-PCB9 ;
+assign PC10D = ! \-PCB10 ;
+assign PC11D = ! \-PCB11 ;
 
 // 2D09:
-assign #1 PC0D = ! \-PCB0 ;
-assign #1 PC1D = ! \-PCB1 ;
-assign #1 PC2D = ! \-PCB2 ;
-assign #1 PC3D = ! \-PCB3 ;
-assign #1 PC4D = ! \-PCB4 ;
-assign #1 PC5D = ! \-PCB5 ;
+assign PC0D = ! \-PCB0 ;
+assign PC1D = ! \-PCB1 ;
+assign PC2D = ! \-PCB2 ;
+assign PC3D = ! \-PCB3 ;
+assign PC4D = ! \-PCB4 ;
+assign PC5D = ! \-PCB5 ;
 
 // 2E06:
 // (no code to express 2147)
@@ -4533,20 +4533,20 @@ part_2147  i_IRAM03_2E07 (
 
 
 // 2D03:
-assign #1 PC6C = ! \-PCB6 ;
-assign #1 PC7C = ! \-PCB7 ;
-assign #1 PC8C = ! \-PCB8 ;
-assign #1 PC9C = ! \-PCB9 ;
-assign #1 PC10C = ! \-PCB10 ;
-assign #1 PC11C = ! \-PCB11 ;
+assign PC6C = ! \-PCB6 ;
+assign PC7C = ! \-PCB7 ;
+assign PC8C = ! \-PCB8 ;
+assign PC9C = ! \-PCB9 ;
+assign PC10C = ! \-PCB10 ;
+assign PC11C = ! \-PCB11 ;
 
 // 2D04:
-assign #1 PC0C = ! \-PCB0 ;
-assign #1 PC1C = ! \-PCB1 ;
-assign #1 PC2C = ! \-PCB2 ;
-assign #1 PC3C = ! \-PCB3 ;
-assign #1 PC4C = ! \-PCB4 ;
-assign #1 PC5C = ! \-PCB5 ;
+assign PC0C = ! \-PCB0 ;
+assign PC1C = ! \-PCB1 ;
+assign PC2C = ! \-PCB2 ;
+assign PC3C = ! \-PCB3 ;
+assign PC4C = ! \-PCB4 ;
+assign PC5C = ! \-PCB5 ;
 
 // 2E01:
 // (no code to express 2147)
@@ -4813,20 +4813,20 @@ part_2147  i_IRAM02_2E02 (
 
 
 // 1D28:
-assign #1 PC6B = ! \-PCB6 ;
-assign #1 PC7B = ! \-PCB7 ;
-assign #1 PC8B = ! \-PCB8 ;
-assign #1 PC9B = ! \-PCB9 ;
-assign #1 PC10B = ! \-PCB10 ;
-assign #1 PC11B = ! \-PCB11 ;
+assign PC6B = ! \-PCB6 ;
+assign PC7B = ! \-PCB7 ;
+assign PC8B = ! \-PCB8 ;
+assign PC9B = ! \-PCB9 ;
+assign PC10B = ! \-PCB10 ;
+assign PC11B = ! \-PCB11 ;
 
 // 1D29:
-assign #1 PC0B = ! \-PCB0 ;
-assign #1 PC1B = ! \-PCB1 ;
-assign #1 PC2B = ! \-PCB2 ;
-assign #1 PC3B = ! \-PCB3 ;
-assign #1 PC4B = ! \-PCB4 ;
-assign #1 PC5B = ! \-PCB5 ;
+assign PC0B = ! \-PCB0 ;
+assign PC1B = ! \-PCB1 ;
+assign PC2B = ! \-PCB2 ;
+assign PC3B = ! \-PCB3 ;
+assign PC4B = ! \-PCB4 ;
+assign PC5B = ! \-PCB5 ;
 
 // 1E26:
 // (no code to express 2147)
@@ -5093,20 +5093,20 @@ part_2147  i_IRAM01_1E27 (
 
 
 // 1D23:
-assign #1 PC6A = ! \-PCB6 ;
-assign #1 PC7A = ! \-PCB7 ;
-assign #1 PC8A = ! \-PCB8 ;
-assign #1 PC9A = ! \-PCB9 ;
-assign #1 PC10A = ! \-PCB10 ;
-assign #1 PC11A = ! \-PCB11 ;
+assign PC6A = ! \-PCB6 ;
+assign PC7A = ! \-PCB7 ;
+assign PC8A = ! \-PCB8 ;
+assign PC9A = ! \-PCB9 ;
+assign PC10A = ! \-PCB10 ;
+assign PC11A = ! \-PCB11 ;
 
 // 1D24:
-assign #1 PC0A = ! \-PCB0 ;
-assign #1 PC1A = ! \-PCB1 ;
-assign #1 PC2A = ! \-PCB2 ;
-assign #1 PC3A = ! \-PCB3 ;
-assign #1 PC4A = ! \-PCB4 ;
-assign #1 PC5A = ! \-PCB5 ;
+assign PC0A = ! \-PCB0 ;
+assign PC1A = ! \-PCB1 ;
+assign PC2A = ! \-PCB2 ;
+assign PC3A = ! \-PCB3 ;
+assign PC4A = ! \-PCB4 ;
+assign PC5A = ! \-PCB5 ;
 
 // 1E21:
 // (no code to express 2147)
@@ -5661,24 +5661,24 @@ part_74S472  i_PROM0_1E17 (
 
 
 // 1E16:
-assign #1 TILT1 = ! (\-APE  & \-PDLPE  & \-SPE  & \-MPE );
-assign #1 TILT0 = ! (HI2 & \-MEMPE  & \-V1PE  & \-V0PE );
+assign TILT1 = ! (\-APE  & \-PDLPE  & \-SPE  & \-MPE );
+assign TILT0 = ! (HI2 & \-MEMPE  & \-V1PE  & \-V0PE );
 
 // 1F10:
 
 
-assign #1 PROMENABLE = ! \-PROMENABLE ;
+assign PROMENABLE = ! \-PROMENABLE ;
 
-assign #1 DPE = ! \-DPE ;
-assign #1 IPE = ! \-IPE ;
+assign DPE = ! \-DPE ;
+assign IPE = ! \-IPE ;
 
 // 1F16:
 // (no code to express TIL309)
 part_TIL309  i_PCTL_1F16 (
-  .L2(NC),
-  .L4(NC),
-  .L8(NC),
-  .L1(NC),
+  .L2(nc4),
+  .L4(nc5),
+  .L8(nc6),
+  .L1(nc7),
   .LATCH(GND),
   .I4(PC2),
   .I8(GND),
@@ -5686,7 +5686,7 @@ part_TIL309  i_PCTL_1F16 (
   .BLANK_N(HI2),
   .DP(TILT1),
   .TEST_N(HI2),
-  .LDP(NC),
+  .LDP(nc8),
   .I1(PC0)
 );
 
@@ -5694,10 +5694,10 @@ part_TIL309  i_PCTL_1F16 (
 // 1F17:
 // (no code to express TIL309)
 part_TIL309  i_PCTL_1F17 (
-  .L2(NC),
-  .L4(NC),
-  .L8(NC),
-  .L1(NC),
+  .L2(nc9),
+  .L4(nc10),
+  .L8(nc11),
+  .L1(nc12),
   .LATCH(GND),
   .I4(PC5),
   .I8(GND),
@@ -5705,7 +5705,7 @@ part_TIL309  i_PCTL_1F17 (
   .BLANK_N(HI2),
   .DP(TILT0),
   .TEST_N(HI2),
-  .LDP(NC),
+  .LDP(nc13),
   .I1(PC3)
 );
 
@@ -5713,10 +5713,10 @@ part_TIL309  i_PCTL_1F17 (
 // 1F18:
 // (no code to express TIL309)
 part_TIL309  i_PCTL_1F18 (
-  .L2(NC),
-  .L4(NC),
-  .L8(NC),
-  .L1(NC),
+  .L2(nc14),
+  .L4(nc15),
+  .L8(nc16),
+  .L1(nc17),
   .LATCH(GND),
   .I4(PC8),
   .I8(GND),
@@ -5724,7 +5724,7 @@ part_TIL309  i_PCTL_1F18 (
   .BLANK_N(HI2),
   .DP(DPE),
   .TEST_N(HI2),
-  .LDP(NC),
+  .LDP(nc18),
   .I1(PC6)
 );
 
@@ -5732,10 +5732,10 @@ part_TIL309  i_PCTL_1F18 (
 // 1F19:
 // (no code to express TIL309)
 part_TIL309  i_PCTL_1F19 (
-  .L2(NC),
-  .L4(NC),
-  .L8(NC),
-  .L1(NC),
+  .L2(nc19),
+  .L4(nc20),
+  .L8(nc21),
+  .L1(nc22),
   .LATCH(GND),
   .I4(PC11),
   .I8(GND),
@@ -5743,7 +5743,7 @@ part_TIL309  i_PCTL_1F19 (
   .BLANK_N(HI2),
   .DP(IPE),
   .TEST_N(HI2),
-  .LDP(NC),
+  .LDP(nc23),
   .I1(PC9)
 );
 
@@ -5751,10 +5751,10 @@ part_TIL309  i_PCTL_1F19 (
 // 1F20:
 // (no code to express TIL309)
 part_TIL309  i_PCTL_1F20 (
-  .L2(NC),
-  .L4(NC),
-  .L8(NC),
-  .L1(NC),
+  .L2(nc24),
+  .L4(nc25),
+  .L8(nc26),
+  .L1(nc27),
   .LATCH(GND),
   .I4(GND),
   .I8(GND),
@@ -5762,7 +5762,7 @@ part_TIL309  i_PCTL_1F20 (
   .BLANK_N(HI2),
   .DP(PROMENABLE),
   .TEST_N(HI2),
-  .LDP(NC),
+  .LDP(nc28),
   .I1(PC12)
 );
 
@@ -5772,33 +5772,33 @@ part_TIL309  i_PCTL_1F20 (
 part_74LS244  i_PCTL_1A16 (
   .AENB_N(\-PROMENABLE ),
   .AIN0(GND),
-  .BOUT3(NC),
-  .AIN1(NC),
-  .BOUT2(NC),
-  .AIN2(NC),
-  .BOUT1(NC),
-  .AIN3(NC),
-  .BOUT0(NC),
-  .BIN0(NC),
-  .AOUT3(NC),
-  .BIN1(NC),
-  .AOUT2(NC),
-  .BIN2(NC),
-  .AOUT1(NC),
-  .BIN3(NC),
+  .BOUT3(nc29),
+  .AIN1(nc30),
+  .BOUT2(nc31),
+  .AIN2(nc32),
+  .BOUT1(nc33),
+  .AIN3(nc34),
+  .BOUT0(nc35),
+  .BIN0(nc36),
+  .AOUT3(nc37),
+  .BIN1(nc38),
+  .AOUT2(nc39),
+  .BIN2(nc40),
+  .AOUT1(nc41),
+  .BIN3(nc42),
   .AOUT0(I46),
   .BENB_N(HI2)
 );
 
 
 // 1C18:
-assign #1 \-PROMCE0  = \-PROMENABLE  | PC9;
-assign #1 \-PROMCE1  = \-PROMPC9  | \-PROMENABLE ;
+assign \-PROMCE0  = \-PROMENABLE  | PC9;
+assign \-PROMCE1  = \-PROMPC9  | \-PROMENABLE ;
 
 
 
 // 1C19:
-assign #1 \-PROMENABLE  = ! (\BOTTOM.1K  & \-IDEBUG  & \-PROMDISABLED  & \-IWRITEDA );
+assign \-PROMENABLE  = ! (\BOTTOM.1K  & \-IDEBUG  & \-PROMDISABLED  & \-IWRITEDA );
 
 
 // 1D18:
@@ -5814,30 +5814,30 @@ part_74S260  i_PCTL_1D18 (
 
 
 // 1D19:
-assign #1 \-PROMPC5  = ! PC5;
-assign #1 \-PROMPC6  = ! PC6;
-assign #1 \-PROMPC7  = ! PC7;
-assign #1 \-PROMPC8  = ! PC8;
-assign #1 \-PROMPC9  = ! PC9;
-assign #1 NC = ! NC;
+assign \-PROMPC5  = ! PC5;
+assign \-PROMPC6  = ! PC6;
+assign \-PROMPC7  = ! PC7;
+assign \-PROMPC8  = ! PC8;
+assign \-PROMPC9  = ! PC9;
+assign nc44 = ! nc43;
 
 // 1C17:
-assign #1 \-PROMPC0  = ! PC0;
-assign #1 \-PROMPC1  = ! PC1;
-assign #1 \-PROMPC2  = ! PC2;
-assign #1 \-PROMPC3  = ! PC3;
-assign #1 \-PROMPC4  = ! PC4;
-assign #1 NC = ! NC;
+assign \-PROMPC0  = ! PC0;
+assign \-PROMPC1  = ! PC1;
+assign \-PROMPC2  = ! PC2;
+assign \-PROMPC3  = ! PC3;
+assign \-PROMPC4  = ! PC4;
+assign nc46 = ! nc45;
 
 // 1F14:
-assign #1 OPCCLKA = ! (\-CLK5  | OPCCLK);
-assign #1 OPCCLKB = ! (\-CLK5  | OPCCLK);
-assign #1 OPCCLKC = ! (\-CLK5  | OPCCLK);
+assign OPCCLKA = ! (\-CLK5  | OPCCLK);
+assign OPCCLKB = ! (\-CLK5  | OPCCLK);
+assign OPCCLKC = ! (\-CLK5  | OPCCLK);
 
 
 // 1F10:
-assign #1 OPCINHA = ! \-OPCINH ;
-assign #1 OPCINHB = ! \-OPCINH ;
+assign OPCINHA = ! \-OPCINH ;
+assign OPCINHB = ! \-OPCINH ;
 
 
 
@@ -5847,19 +5847,19 @@ assign #1 OPCINHB = ! \-OPCINH ;
 // (no code to express 9328)
 part_9328  i_OPCS_1F13 (
   .CLR_N(HI2),
-  .AQ_N(NC),
+  .AQ_N(nc47),
   .AQ(OPC1),
   .ASEL(GND),
-  .AI1(NC),
+  .AI1(nc48),
   .AI0(PC1),
   .ACLK(OPCINHB),
   .COMCLK(OPCCLKB),
   .BCLK(OPCINHB),
   .BI0(PC0),
-  .BI1(NC),
+  .BI1(nc49),
   .BSEL(GND),
   .BQ(OPC0),
-  .BQ_N(NC)
+  .BQ_N(nc50)
 );
 
 
@@ -5867,19 +5867,19 @@ part_9328  i_OPCS_1F13 (
 // (no code to express 9328)
 part_9328  i_OPCS_1F12 (
   .CLR_N(HI2),
-  .AQ_N(NC),
+  .AQ_N(nc51),
   .AQ(OPC3),
   .ASEL(GND),
-  .AI1(NC),
+  .AI1(nc52),
   .AI0(PC3),
   .ACLK(OPCINHB),
   .COMCLK(OPCCLKB),
   .BCLK(OPCINHB),
   .BI0(PC2),
-  .BI1(NC),
+  .BI1(nc53),
   .BSEL(GND),
   .BQ(OPC2),
-  .BQ_N(NC)
+  .BQ_N(nc54)
 );
 
 
@@ -5887,19 +5887,19 @@ part_9328  i_OPCS_1F12 (
 // (no code to express 9328)
 part_9328  i_OPCS_1F11 (
   .CLR_N(HI2),
-  .AQ_N(NC),
+  .AQ_N(nc55),
   .AQ(OPC5),
   .ASEL(GND),
-  .AI1(NC),
+  .AI1(nc56),
   .AI0(PC5),
   .ACLK(OPCINHB),
   .COMCLK(OPCCLKB),
   .BCLK(OPCINHB),
   .BI0(PC4),
-  .BI1(NC),
+  .BI1(nc57),
   .BSEL(GND),
   .BQ(OPC4),
-  .BQ_N(NC)
+  .BQ_N(nc58)
 );
 
 
@@ -5907,19 +5907,19 @@ part_9328  i_OPCS_1F11 (
 // (no code to express 9328)
 part_9328  i_OPCS_1F09 (
   .CLR_N(HI2),
-  .AQ_N(NC),
+  .AQ_N(nc59),
   .AQ(OPC7),
   .ASEL(GND),
-  .AI1(NC),
+  .AI1(nc60),
   .AI0(PC7),
   .ACLK(OPCINHA),
   .COMCLK(OPCCLKC),
   .BCLK(OPCINHA),
   .BI0(PC6),
-  .BI1(NC),
+  .BI1(nc61),
   .BSEL(GND),
   .BQ(OPC6),
-  .BQ_N(NC)
+  .BQ_N(nc62)
 );
 
 
@@ -5927,19 +5927,19 @@ part_9328  i_OPCS_1F09 (
 // (no code to express 9328)
 part_9328  i_OPCS_1F08 (
   .CLR_N(HI2),
-  .AQ_N(NC),
+  .AQ_N(nc63),
   .AQ(OPC9),
   .ASEL(GND),
-  .AI1(NC),
+  .AI1(nc64),
   .AI0(PC9),
   .ACLK(OPCINHA),
   .COMCLK(OPCCLKC),
   .BCLK(OPCINHA),
   .BI0(PC8),
-  .BI1(NC),
+  .BI1(nc65),
   .BSEL(GND),
   .BQ(OPC8),
-  .BQ_N(NC)
+  .BQ_N(nc66)
 );
 
 
@@ -5947,19 +5947,19 @@ part_9328  i_OPCS_1F08 (
 // (no code to express 9328)
 part_9328  i_OPCS_1F07 (
   .CLR_N(HI2),
-  .AQ_N(NC),
+  .AQ_N(nc67),
   .AQ(OPC11),
   .ASEL(GND),
-  .AI1(NC),
+  .AI1(nc68),
   .AI0(PC11),
   .ACLK(OPCINHA),
   .COMCLK(OPCCLKA),
   .BCLK(OPCINHA),
   .BI0(PC10),
-  .BI1(NC),
+  .BI1(nc69),
   .BSEL(GND),
   .BQ(OPC10),
-  .BQ_N(NC)
+  .BQ_N(nc70)
 );
 
 
@@ -5967,37 +5967,37 @@ part_9328  i_OPCS_1F07 (
 // (no code to express 9328)
 part_9328  i_OPCS_1F06 (
   .CLR_N(HI2),
-  .AQ_N(NC),
+  .AQ_N(nc71),
   .AQ(OPC13),
   .ASEL(GND),
-  .AI1(NC),
+  .AI1(nc72),
   .AI0(PC13),
   .ACLK(OPCINHA),
   .COMCLK(OPCCLKA),
   .BCLK(OPCINHA),
   .BI0(PC12),
-  .BI1(NC),
+  .BI1(nc73),
   .BSEL(GND),
   .BQ(OPC12),
-  .BQ_N(NC)
+  .BQ_N(nc74)
 );
 
 
 // 1A11:
-assign #1 \-CLOCK_RESET_B  = ! (\POWER_RESET_A  | internal1);
-assign #1 \-CLOCK_RESET_A  = ! (\POWER_RESET_A  | internal1);
-assign #1 \POWER_RESET_A  = ! (\-POWER_RESET  | GND);
+assign \-CLOCK_RESET_B  = ! (\POWER_RESET_A  | internal1);
+assign \-CLOCK_RESET_A  = ! (\POWER_RESET_A  | internal1);
+assign \POWER_RESET_A  = ! (\-POWER_RESET  | GND);
 
 
 // 1A18:
 // (no code to express 74LS109)
 part_74LS109  i_OLORD2_1A18 (
-  .R1(\-BOOT ),
+  .CLR1_N(\-BOOT ),
   .J1(SRUN),
   .K1_N(HI1),
   .CLK1(MCLK5A),
-  .S1(\-CLOCK_RESET_A ),
-  .Q1(NC),
+  .PRE1_N(\-CLOCK_RESET_A ),
+  .Q1(nc75),
   .Q1_N(\BOOT.TRAP )
 );
 
@@ -6005,12 +6005,12 @@ part_74LS109  i_OLORD2_1A18 (
 // 1C18:
 
 
-assign #1 internal2 = internal3 | \PROG.BOOT ;
+assign internal2 = internal3 | \PROG.BOOT ;
 
 
 // 1D10:
 
-assign #1 \PROG.BOOT  = LDMODE & SPY7;
+assign \PROG.BOOT  = LDMODE & SPY7;
 
 
 
@@ -6018,18 +6018,18 @@ assign #1 \PROG.BOOT  = LDMODE & SPY7;
 
 
 
-assign #1 \-LOWERHIGHOK  = ! (HI2 & HI1);
+assign \-LOWERHIGHOK  = ! (HI2 & HI1);
 
 // 1C08:
 
 
-assign #1 RESET = ! (\-BOOT  & \-CLOCK_RESET_B  & \-PROG.RESET );
+assign RESET = ! (\-BOOT  & \-CLOCK_RESET_B  & \-PROG.RESET );
 
 // 1A20:
-assign #1 internal4 = ! \lost<?> ;
-assign #1 internal5 = ! \-BOOT1 ;
-assign #1 internal3 = ! \-BOOT2 ;
-assign #1 \-POWER_RESET  = ! internal4;
+assign internal4 = ! \lost<?> ;
+assign internal5 = ! \-BOOT1 ;
+assign internal3 = ! \-BOOT2 ;
+assign \-POWER_RESET  = ! internal4;
 
 
 
@@ -6041,18 +6041,18 @@ part_16DUMMY  i_OLORD2_1A19 (
 
 
 // 1A07:
-assign #1 HIGHOK = ! (\-UPPERHIGHOK  | \-LOWERHIGHOK );
-assign #1 \-BOOT  = ! (internal5 | internal2);
-assign #1 \-BUS.RESET  = ! (\PROG.BUS.RESET  | \POWER_RESET_A );
+assign HIGHOK = ! (\-UPPERHIGHOK  | \-LOWERHIGHOK );
+assign \-BOOT  = ! (internal5 | internal2);
+assign \-BUS.RESET  = ! (\PROG.BUS.RESET  | \POWER_RESET_A );
 
 
 // 1B10:
-assign #1 LDMODE = ! \-LDMODE ;
+assign LDMODE = ! \-LDMODE ;
 
-assign #1 \-MCLK5  = ! MCLK5;
-assign #1 \-CLK5  = ! CLK5;
+assign \-MCLK5  = ! MCLK5;
+assign \-CLK5  = ! CLK5;
 
-assign #1 internal1 = ! \-BUSINT.LM.RESET ;
+assign internal1 = ! \-BUSINT.LM.RESET ;
 
 // 1A05:
 // (no code to express 74S374)
@@ -6067,28 +6067,28 @@ part_74S374  i_OLORD2_1A05 (
   .I3(\-HALT ),
   .O3(\-HALTED ),
   .CLK(CLK5A),
-  .O4(NC),
-  .I4(NC),
-  .I5(NC),
-  .O5(NC),
-  .O6(NC),
-  .I6(NC),
-  .I7(NC),
-  .O7(NC)
+  .O4(nc76),
+  .I4(nc77),
+  .I5(nc78),
+  .O5(nc79),
+  .O6(nc80),
+  .I6(nc81),
+  .I7(nc82),
+  .O7(nc83)
 );
 
 
 // 1A06:
-assign #1 MCLK5A = ! (\-MCLK5  & \-MCLK5 );
-assign #1 CLK5A = ! (\-CLK5  & \-CLK5 );
-assign #1 \-RESET  = ! (HI1 & RESET);
-assign #1 \BUS.POWER.RESET_L  = ! (\POWER_RESET_A  & \POWER_RESET_A );
+assign MCLK5A = ! (\-MCLK5  & \-MCLK5 );
+assign CLK5A = ! (\-CLK5  & \-CLK5 );
+assign \-RESET  = ! (HI1 & RESET);
+assign \BUS.POWER.RESET_L  = ! (\POWER_RESET_A  & \POWER_RESET_A );
 
 // 1C09:
 
-assign #1 \-PROG.RESET  = ! (LDMODE & SPY6);
+assign \-PROG.RESET  = ! (LDMODE & SPY6);
 
-assign #1 \-ERRHALT  = ! (ERRSTOP & ERR);
+assign \-ERRHALT  = ! (ERRSTOP & ERR);
 
 // 1A02:
 // (no code to express 74S133O)
@@ -6135,7 +6135,7 @@ part_74S374  i_OLORD2_1A03 (
 
 
 // 1C10:
-assign #1 \-MACHRUNA  = ! (GND | MACHRUN);
+assign \-MACHRUNA  = ! (GND | MACHRUN);
 
 
 
@@ -6143,17 +6143,17 @@ assign #1 \-MACHRUNA  = ! (GND | MACHRUN);
 // 1C01:
 
 
-assign #1 SPEEDCLK = ! (GND | \-TPR60 );
+assign SPEEDCLK = ! (GND | \-TPR60 );
 
 
 // 1A01:
 // (no code to express 74S174)
 part_74S174  i_OLORD1_1A01 (
   .CLR_N(\-CLOCK_RESET_A ),
-  .Q1(NC),
-  .D1(NC),
-  .D2(NC),
-  .Q2(NC),
+  .Q1(nc84),
+  .D1(nc85),
+  .D2(nc86),
+  .Q2(nc87),
   .D3(SPEED1A),
   .Q3(SSPEED1),
   .CLK(SPEEDCLK),
@@ -6170,7 +6170,7 @@ part_74S174  i_OLORD1_1A01 (
 
 
 
-assign #1 \-MACHRUN  = ! MACHRUN;
+assign \-MACHRUN  = ! MACHRUN;
 
 
 
@@ -6207,25 +6207,25 @@ part_74S174  i_OLORD1_1A10 (
   .CLK(MCLK5A),
   .Q4(SRUN),
   .D4(RUN),
-  .Q5(NC),
-  .D5(NC),
-  .D6(NC),
-  .Q6(NC)
+  .Q5(nc88),
+  .D5(nc89),
+  .D6(nc90),
+  .Q6(nc91)
 );
 
 
 // 1C09:
 
 
-assign #1 \-STATHALT  = ! (STATSTOP & STATHENB);
+assign \-STATHALT  = ! (STATSTOP & STATHENB);
 
 
 // 1B10:
 
-assign #1 \-SSDONE  = ! SSDONE;
+assign \-SSDONE  = ! SSDONE;
 
 
-assign #1 \STAT.OVF  = ! \-STC32 ;
+assign \STAT.OVF  = ! \-STC32 ;
 
 
 // 1A14:
@@ -6244,8 +6244,8 @@ part_74S74  i_OLORD1_1A14 (
 // (no code to express 74S175)
 part_74S175  i_OLORD1_1A08 (
   .CLR_N(\-RESET ),
-  .Q0(NC),
-  .Q0_N(NC),
+  .Q0(nc92),
+  .Q0_N(nc93),
   .D0(SPY3),
   .D1(SPY2),
   .Q1_N(\-OPCINH ),
@@ -6303,7 +6303,7 @@ part_93S48  i_IWRPAR_1B15 (
   .I2(GND),
   .I1(GND),
   .I0(GND),
-  .PO(NC),
+  .PO(nc94),
   .PE(IWR48),
   .I11(IWRP1),
   .I10(IWRP2),
@@ -6324,7 +6324,7 @@ part_93S48  i_IWRPAR_1B14 (
   .I1(IWR10),
   .I0(IWR11),
   .PO(IWRP1),
-  .PE(NC),
+  .PE(nc95),
   .I11(IWR0),
   .I10(IWR1),
   .I9(IWR2),
@@ -6344,7 +6344,7 @@ part_93S48  i_IWRPAR_1B13 (
   .I1(IWR22),
   .I0(IWR23),
   .PO(IWRP2),
-  .PE(NC),
+  .PE(nc96),
   .I11(IWR12),
   .I10(IWR13),
   .I9(IWR14),
@@ -6364,7 +6364,7 @@ part_93S48  i_IWRPAR_1B12 (
   .I1(IWR34),
   .I0(IWR35),
   .PO(IWRP3),
-  .PE(NC),
+  .PE(nc97),
   .I11(IWR24),
   .I10(IWR25),
   .I9(IWR26),
@@ -6384,7 +6384,7 @@ part_93S48  i_IWRPAR_1B11 (
   .I1(IWR46),
   .I0(IWR47),
   .PO(IWRP4),
-  .PE(NC),
+  .PE(nc98),
   .I11(IWR36),
   .I10(IWR37),
   .I9(IWR38),
@@ -6427,76 +6427,76 @@ part_74S139  i_ICTL_2D25 (
 
 
 // 1C16:
-assign #1 \-IWRITEDA  = ! IWRITEDA;
-assign #1 \-PROMDISABLED  = ! PROMDISABLED;
-assign #1 WP5D = ! \-WP5 ;
-assign #1 WP5C = ! \-WP5 ;
-assign #1 WP5B = ! \-WP5 ;
-assign #1 WP5A = ! \-WP5 ;
+assign \-IWRITEDA  = ! IWRITEDA;
+assign \-PROMDISABLED  = ! PROMDISABLED;
+assign WP5D = ! \-WP5 ;
+assign WP5C = ! \-WP5 ;
+assign WP5B = ! \-WP5 ;
+assign WP5A = ! \-WP5 ;
 
 // 1D20:
-assign #1 \-PC13B  = ! PC13;
-assign #1 \-PC12B  = ! PC12;
-assign #1 IWRITEDD = ! \-IWRITED ;
-assign #1 IWRITEDC = ! \-IWRITED ;
-assign #1 IWRITEDB = ! \-IWRITED ;
-assign #1 IWRITEDA = ! \-IWRITED ;
+assign \-PC13B  = ! PC13;
+assign \-PC12B  = ! PC12;
+assign IWRITEDD = ! \-IWRITED ;
+assign IWRITEDC = ! \-IWRITED ;
+assign IWRITEDB = ! \-IWRITED ;
+assign IWRITEDA = ! \-IWRITED ;
 
 // 2D30:
-assign #1 \-IWEG  = ! (WP5D & IWRITEDD);
-assign #1 \-IWEH  = ! (WP5D & IWRITEDD);
-assign #1 \-IWEO  = ! (IWRITEDD & WP5D);
-assign #1 \-IWEP  = ! (IWRITEDD & WP5D);
+assign \-IWEG  = ! (WP5D & IWRITEDD);
+assign \-IWEH  = ! (WP5D & IWRITEDD);
+assign \-IWEO  = ! (IWRITEDD & WP5D);
+assign \-IWEP  = ! (IWRITEDD & WP5D);
 
 // 2D15:
-assign #1 \-IWEE  = ! (WP5C & IWRITEDC);
-assign #1 \-IWEF  = ! (WP5C & IWRITEDC);
-assign #1 \-IWEM  = ! (IWRITEDC & WP5C);
-assign #1 \-IWEN  = ! (IWRITEDC & WP5C);
+assign \-IWEE  = ! (WP5C & IWRITEDC);
+assign \-IWEF  = ! (WP5C & IWRITEDC);
+assign \-IWEM  = ! (IWRITEDC & WP5C);
+assign \-IWEN  = ! (IWRITEDC & WP5C);
 
 // 2C01:
-assign #1 \-IWEC  = ! (WP5B & IWRITEDB);
-assign #1 \-IWED  = ! (WP5B & IWRITEDB);
-assign #1 \-IWEK  = ! (IWRITEDB & WP5B);
-assign #1 \-IWEL  = ! (IWRITEDB & WP5B);
+assign \-IWEC  = ! (WP5B & IWRITEDB);
+assign \-IWED  = ! (WP5B & IWRITEDB);
+assign \-IWEK  = ! (IWRITEDB & WP5B);
+assign \-IWEL  = ! (IWRITEDB & WP5B);
 
 // 1C26:
-assign #1 \-IWEA  = ! (WP5A & IWRITEDA);
-assign #1 \-IWEB  = ! (WP5A & IWRITEDA);
-assign #1 \-IWEI  = ! (IWRITEDA & WP5A);
-assign #1 \-IWEJ  = ! (IWRITEDA & WP5A);
+assign \-IWEA  = ! (WP5A & IWRITEDA);
+assign \-IWEB  = ! (WP5A & IWRITEDA);
+assign \-IWEI  = ! (IWRITEDA & WP5A);
+assign \-IWEJ  = ! (IWRITEDA & WP5A);
 
 // 2C06:
-assign #1 \-PCC0  = ! PC0;
-assign #1 \-PCC1  = ! PC1;
-assign #1 \-PCC2  = ! PC2;
-assign #1 \-PCC3  = ! PC3;
-assign #1 \-PCC4  = ! PC4;
-assign #1 \-PCC5  = ! PC5;
+assign \-PCC0  = ! PC0;
+assign \-PCC1  = ! PC1;
+assign \-PCC2  = ! PC2;
+assign \-PCC3  = ! PC3;
+assign \-PCC4  = ! PC4;
+assign \-PCC5  = ! PC5;
 
 // 2D10:
-assign #1 \-PCC6  = ! PC6;
-assign #1 \-PCC7  = ! PC7;
-assign #1 \-PCC8  = ! PC8;
-assign #1 \-PCC9  = ! PC9;
-assign #1 \-PCC10  = ! PC10;
-assign #1 \-PCC11  = ! PC11;
+assign \-PCC6  = ! PC6;
+assign \-PCC7  = ! PC7;
+assign \-PCC8  = ! PC8;
+assign \-PCC9  = ! PC9;
+assign \-PCC10  = ! PC10;
+assign \-PCC11  = ! PC11;
 
 // 1C21:
-assign #1 \-PCB0  = ! PC0;
-assign #1 \-PCB1  = ! PC1;
-assign #1 \-PCB2  = ! PC2;
-assign #1 \-PCB3  = ! PC3;
-assign #1 \-PCB4  = ! PC4;
-assign #1 \-PCB5  = ! PC5;
+assign \-PCB0  = ! PC0;
+assign \-PCB1  = ! PC1;
+assign \-PCB2  = ! PC2;
+assign \-PCB3  = ! PC3;
+assign \-PCB4  = ! PC4;
+assign \-PCB5  = ! PC5;
 
 // 1D25:
-assign #1 \-PCB6  = ! PC6;
-assign #1 \-PCB7  = ! PC7;
-assign #1 \-PCB8  = ! PC8;
-assign #1 \-PCB9  = ! PC9;
-assign #1 \-PCB10  = ! PC10;
-assign #1 \-PCB11  = ! PC11;
+assign \-PCB6  = ! PC6;
+assign \-PCB7  = ! PC7;
+assign \-PCB8  = ! PC8;
+assign \-PCB9  = ! PC9;
+assign \-PCB10  = ! PC10;
+assign \-PCB11  = ! PC11;
 
 // 1D30:
 // (no code to express 74S139)
@@ -6664,67 +6664,67 @@ part_74S374  i_DEBUG_1E12 (
 
 // 1C10:
 
-assign #1 TPWP = ! (internal7 | \MACHRUNA_L );
-assign #1 TPWPIRAM = ! (internal8 | \MACHRUNA_L );
+assign TPWP = ! (internal7 | \MACHRUNA_L );
+assign TPWPIRAM = ! (internal8 | \MACHRUNA_L );
 
 
 // 1C13:
 
-assign #1 internal9 = ! (\-TPREND  & internal8 & internal8);
-assign #1 internal8 = ! (\-TPW45  & \-CLOCK_RESET_B  & internal9);
+assign internal9 = ! (\-TPREND  & internal8 & internal8);
+assign internal8 = ! (\-TPW45  & \-CLOCK_RESET_B  & internal9);
 
 // 1D04:
-assign #1 \-TSE1  = ! (TPTSE | GND);
-assign #1 \-TSE2  = ! (TPTSE | GND);
-assign #1 \-TSE3  = ! (TPTSE | GND);
-assign #1 \-TSE4  = ! (TPTSE | GND);
+assign \-TSE1  = ! (TPTSE | GND);
+assign \-TSE2  = ! (TPTSE | GND);
+assign \-TSE3  = ! (TPTSE | GND);
+assign \-TSE4  = ! (TPTSE | GND);
 
 // 1C02:
-assign #1 \-WP1  = ! (TPWP | GND);
-assign #1 \-WP2  = ! (TPWP | GND);
-assign #1 \-WP3  = ! (TPWP | GND);
-assign #1 \-WP4  = ! (TPWP | GND);
+assign \-WP1  = ! (TPWP | GND);
+assign \-WP2  = ! (TPWP | GND);
+assign \-WP3  = ! (TPWP | GND);
+assign \-WP4  = ! (TPWP | GND);
 
 // 1C11:
-assign #1 \-WP5  = ! (TPWPIRAM | GND);
-assign #1 CLK5 = ! (\-CLK0  | GND);
-assign #1 MCLK5 = ! (\-MCLK0  | GND);
+assign \-WP5  = ! (TPWPIRAM | GND);
+assign CLK5 = ! (\-CLK0  | GND);
+assign MCLK5 = ! (\-MCLK0  | GND);
 
 
 // 1C01:
-assign #1 CLK4 = ! (\-CLK0  | GND);
-assign #1 MCLK7 = ! (\-MCLK0  | GND);
+assign CLK4 = ! (\-CLK0  | GND);
+assign MCLK7 = ! (\-MCLK0  | GND);
 
 
 
 // 1D05:
-assign #1 CLK1 = ! (\-CLK0  | GND);
-assign #1 CLK2 = ! (\-CLK0  | GND);
-assign #1 CLK3 = ! (\-CLK0  | GND);
-assign #1 MCLK1 = ! (\-MCLK0  | GND);
+assign CLK1 = ! (\-CLK0  | GND);
+assign CLK2 = ! (\-CLK0  | GND);
+assign CLK3 = ! (\-CLK0  | GND);
+assign MCLK1 = ! (\-MCLK0  | GND);
 
 // 1D10:
-assign #1 \-CLK0  = \-TPCLK  & MACHRUN;
+assign \-CLK0  = \-TPCLK  & MACHRUN;
 
-assign #1 \-MCLK0  = \-TPCLK  & HI1;
+assign \-MCLK0  = \-TPCLK  & HI1;
 
 
 // 1C07:
-assign #1 TPCLK = ! (\-TPR0  & \-TPCLK );
-assign #1 \-TPTSE  = ! (\-TPR5  & TPTSE);
-assign #1 internal10 = ! (\-TPW30  & internal7);
+assign TPCLK = ! (\-TPR0  & \-TPCLK );
+assign \-TPTSE  = ! (\-TPR5  & TPTSE);
+assign internal10 = ! (\-TPW30  & internal7);
 
 
 // 1C06:
-assign #1 \-TPCLK  = ! (\-TPREND  & TPCLK & \-CLOCK_RESET_B );
-assign #1 TPTSE = ! (\-TPTSE  & \-TPR25  & \-CLOCK_RESET_B );
-assign #1 internal7 = ! (\-CLOCK_RESET_B  & \-TPW70  & internal10);
+assign \-TPCLK  = ! (\-TPREND  & TPCLK & \-CLOCK_RESET_B );
+assign TPTSE = ! (\-TPTSE  & \-TPR25  & \-CLOCK_RESET_B );
+assign internal7 = ! (\-CLOCK_RESET_B  & \-TPW70  & internal10);
 
 // 1C10:
 
 
 
-assign #1 CYCLECOMPLETED = ! (GND | internal11);
+assign CYCLECOMPLETED = ! (GND | internal11);
 
 // 1D11:
 // (no code to express TD25)
@@ -6842,14 +6842,14 @@ part_TD100  i_CLOCK1_1D12 (
 
 
 // 1C09:
-assign #1 internal11 = ! (internal12 & \-TPR40 );
+assign internal11 = ! (internal12 & \-TPR40 );
 
 
 
 
 // 1C08:
-assign #1 internal12 = ! (\-CLOCK_RESET_B  & \-TPDONE  & internal11);
-assign #1 \-TPR0  = ! (\-HANG  & \-CLOCK_RESET_B  & CYCLECOMPLETED);
+assign internal12 = ! (\-CLOCK_RESET_B  & \-TPDONE  & internal11);
+assign \-TPR0  = ! (\-HANG  & \-CLOCK_RESET_B  & CYCLECOMPLETED);
 
 
 // 1E18:
@@ -6863,7 +6863,7 @@ part_93S48  i_VMEMDR_1E18 (
   .I1(\-PMA13 ),
   .I0(\-PMA12 ),
   .PO(\-ADRPAR ),
-  .PE(NC),
+  .PE(nc99),
   .I11(internal13),
   .I10(GND),
   .I9(\-PMA21 ),
@@ -6883,7 +6883,7 @@ part_93S48  i_VMEMDR_1E17 (
   .I1(\-VMA1 ),
   .I0(\-VMA0 ),
   .PO(internal13),
-  .PE(NC),
+  .PE(nc100),
   .I11(\-PMA11 ),
   .I10(\-PMA10 ),
   .I9(\-PMA9 ),
@@ -6944,12 +6944,12 @@ part_74S373  i_VMEMDR_1D14 (
 
 
 
-assign #1 SRCMAP = ! \-SRCMAP ;
+assign SRCMAP = ! \-SRCMAP ;
 
 
 
 // 1A08:
-assign #1 \-MAPDRIVE  = ! (TSE1A & SRCMAP);
+assign \-MAPDRIVE  = ! (TSE1A & SRCMAP);
 
 
 
@@ -7054,30 +7054,30 @@ part_74S240  i_VMEMDR_1A13 (
 // (no code to express 74S240)
 part_74S240  i_VMEM2_1C10 (
   .AENB_N(GND),
-  .AIN0(NC),
+  .AIN0(nc101),
   .BOUT3(VMAP0B),
-  .AIN1(NC),
+  .AIN1(nc102),
   .BOUT2(VMAP1B),
-  .AIN2(NC),
+  .AIN2(nc103),
   .BOUT1(VMAP2B),
   .AIN3(\-VMAP4 ),
   .BOUT0(VMAP3B),
   .BIN0(\-VMAP3 ),
   .AOUT3(VMAP4B),
   .BIN1(\-VMAP2 ),
-  .AOUT2(NC),
+  .AOUT2(nc104),
   .BIN2(\-VMAP1 ),
-  .AOUT1(NC),
+  .AOUT1(nc105),
   .BIN3(\-VMAP0 ),
-  .AOUT0(NC),
+  .AOUT0(nc106),
   .BENB_N(GND)
 );
 
 
 // 1D12:
 
-assign #1 VMOPARCK = VMOPARM ^ VMOPARL;
-assign #1 VMOPARODD = VMOPAR ^ VMOPARCK;
+assign VMOPARCK = VMOPARM ^ VMOPARL;
+assign VMOPARODD = VMOPAR ^ VMOPARCK;
 
 
 // 1B17:
@@ -7091,7 +7091,7 @@ part_93S48  i_VMEM2_1B17 (
   .I1(\-VMO22 ),
   .I0(\-VMO23 ),
   .PO(VMOPARM),
-  .PE(NC),
+  .PE(nc107),
   .I11(\-VMO12 ),
   .I10(\-VMO13 ),
   .I9(\-VMO14 ),
@@ -7111,7 +7111,7 @@ part_93S48  i_VMEM2_1D03 (
   .I1(\-VMO10 ),
   .I0(\-VMO11 ),
   .PO(VMOPARL),
-  .PE(NC),
+  .PE(nc108),
   .I11(\-VMO0 ),
   .I10(\-VMO1 ),
   .I9(\-VMO2 ),
@@ -7381,7 +7381,7 @@ part_93425A  i_VMEM2_1B04 (
 
 
 // 1D12:
-assign #1 VM1PARI = VM1MPAR ^ \-VM1LPAR ;
+assign VM1PARI = VM1MPAR ^ \-VM1LPAR ;
 
 
 
@@ -7397,7 +7397,7 @@ part_93S48  i_VMEM1_1C03 (
   .I1(\-VMA22 ),
   .I0(\-VMA23 ),
   .PO(VM1MPAR),
-  .PE(NC),
+  .PE(nc109),
   .I11(\-VMA12 ),
   .I10(\-VMA13 ),
   .I9(\-VMA14 ),
@@ -7416,7 +7416,7 @@ part_93S48  i_VMEM1_1C04 (
   .I2(\-VMA9 ),
   .I1(\-VMA10 ),
   .I0(\-VMA11 ),
-  .PO(NC),
+  .PO(nc110),
   .PE(\-VM1LPAR ),
   .I11(\-VMA0 ),
   .I10(\-VMA1 ),
@@ -7459,12 +7459,12 @@ part_74S240  i_VMEM1_1D13 (
   .AIN1(MAPI11),
   .BOUT2(\-MAPI12A ),
   .AIN2(MAPI10),
-  .BOUT1(NC),
+  .BOUT1(nc111),
   .AIN3(MAPI9),
   .BOUT0(\-MAPI8B ),
   .BIN0(MAPI8),
   .AOUT3(\-MAPI9B ),
-  .BIN1(NC),
+  .BIN1(nc112),
   .AOUT2(\-MAPI10B ),
   .BIN2(MAPI12),
   .AOUT1(\-MAPI11B ),
@@ -7715,8 +7715,8 @@ part_93425A  i_VMEM1_1E04 (
 
 
 // 1E26:
-assign #1 V0PAROK = \-USE.MAP  | internal14;
-assign #1 VMOPAROK = \-USE.MAP  | VMOPARODD;
+assign V0PAROK = \-USE.MAP  | internal14;
+assign VMOPAROK = \-USE.MAP  | VMOPARODD;
 
 
 
@@ -7724,10 +7724,10 @@ assign #1 VMOPAROK = \-USE.MAP  | VMOPARODD;
 
 
 
-assign #1 \-USE.MAP  = ! (SRCMAP | MEMSTART);
+assign \-USE.MAP  = ! (SRCMAP | MEMSTART);
 
 // 1D18:
-assign #1 \-MAPI23  = ! MAPI23;
+assign \-MAPI23  = ! MAPI23;
 
 
 
@@ -7740,7 +7740,7 @@ part_74S280  i_VMEM0_1C01 (
   .I0(\-VMAP0 ),
   .I1(\-VMAP1 ),
   .I2(\-VMAP2 ),
-  .EVEN(NC),
+  .EVEN(nc113),
   .ODD(internal14),
   .I3(\-VMAP3 ),
   .I4(\-VMAP4 ),
@@ -7758,7 +7758,7 @@ part_74S280  i_VMEM0_1C02 (
   .I1(\-VMA28 ),
   .I2(\-VMA29 ),
   .EVEN(VM0PARI),
-  .ODD(NC),
+  .ODD(nc114),
   .I3(\-VMA30 ),
   .I4(\-VMA31 ),
   .I5(GND),
@@ -8252,12 +8252,12 @@ part_74S258  i_VMAS_1C20 (
 
 
 
-assign #1 \-VMADRIVE  = ! (TSE2 & SRCVMA);
+assign \-VMADRIVE  = ! (TSE2 & SRCVMA);
 
 // 2A05:
 
 
-assign #1 SRCVMA = ! \-SRCVMA ;
+assign SRCVMA = ! \-SRCVMA ;
 
 
 
@@ -8401,60 +8401,60 @@ ff_enb i_VMA_1B22_6 (.q(\-VMA29 ), .d(\-VMAS29 ), .clk(CLK1A), .enb_n(\-VMAENB )
 // 1B23:
 ff_enb i_VMA_1B23_1 (.q(\-VMA30 ), .d(\-VMAS30 ), .clk(CLK1A), .enb_n(\-VMAENB ) );
 ff_enb i_VMA_1B23_2 (.q(\-VMA31 ), .d(\-VMAS31 ), .clk(CLK1A), .enb_n(\-VMAENB ) );
-ff_enb i_VMA_1B23_3 (.q(NC), .d(NC), .clk(CLK1A), .enb_n(\-VMAENB ) );
-ff_enb i_VMA_1B23_4 (.q(NC), .d(NC), .clk(CLK1A), .enb_n(\-VMAENB ) );
-ff_enb i_VMA_1B23_5 (.q(NC), .d(NC), .clk(CLK1A), .enb_n(\-VMAENB ) );
-ff_enb i_VMA_1B23_6 (.q(NC), .d(NC), .clk(CLK1A), .enb_n(\-VMAENB ) );
+ff_enb i_VMA_1B23_3 (.q(nc116), .d(nc115), .clk(CLK1A), .enb_n(\-VMAENB ) );
+ff_enb i_VMA_1B23_4 (.q(nc118), .d(nc117), .clk(CLK1A), .enb_n(\-VMAENB ) );
+ff_enb i_VMA_1B23_5 (.q(nc120), .d(nc119), .clk(CLK1A), .enb_n(\-VMAENB ) );
+ff_enb i_VMA_1B23_6 (.q(nc122), .d(nc121), .clk(CLK1A), .enb_n(\-VMAENB ) );
 
 // 3F19:
 
 
 
 
-assign #1 NOPA = ! \-NOPA ;
+assign NOPA = ! \-NOPA ;
 
 
 // 1D27:
-assign #1 MDSELA = ! (\-DESTMDR  | CLK2C);
-assign #1 MDSELB = ! (\-DESTMDR  | CLK2C);
+assign MDSELA = ! (\-DESTMDR  | CLK2C);
+assign MDSELB = ! (\-DESTMDR  | CLK2C);
 
 
 
 // 3F18:
-assign #1 \USE.MD  = ! (\-SRCMD  | NOPA);
+assign \USE.MD  = ! (\-SRCMD  | NOPA);
 
 
 
 
 // 1D26:
-assign #1 NC = ! NC;
-assign #1 \-PFR  = ! \-LVMO23 ;
-assign #1 WMAP = ! \-WMAP ;
-assign #1 \-MEMRQ  = ! MEMRQ;
-assign #1 \-MEMPREPARE  = ! MEMPREPARE;
-assign #1 DESTMEM = ! \-DESTMEM ;
+assign nc124 = ! nc123;
+assign \-PFR  = ! \-LVMO23 ;
+assign WMAP = ! \-WMAP ;
+assign \-MEMRQ  = ! MEMRQ;
+assign \-MEMPREPARE  = ! MEMPREPARE;
+assign DESTMEM = ! \-DESTMEM ;
 
 // 1E06:
-assign #1 \-MEMDRIVE.A  = ! (WRCYC & \LM_DRIVE_ENB );
-assign #1 \-MEMDRIVE.B  = ! (WRCYC & \LM_DRIVE_ENB );
+assign \-MEMDRIVE.A  = ! (WRCYC & \LM_DRIVE_ENB );
+assign \-MEMDRIVE.B  = ! (WRCYC & \LM_DRIVE_ENB );
 
 
 
 // 1D28:
-assign #1 \-VMAENB  = \-DESTVMA  & \-IFETCH ;
-assign #1 VMASELA = \-IFETCH  & HI11;
-assign #1 VMASELB = \-IFETCH  & HI11;
+assign \-VMAENB  = \-DESTVMA  & \-IFETCH ;
+assign VMASELA = \-IFETCH  & HI11;
+assign VMASELB = \-IFETCH  & HI11;
 
 
 // 1D07:
-assign #1 \-VM0WPA  = ! (MAPWR0D & WP1A);
-assign #1 \-VM0WPB  = ! (MAPWR0D & WP1A);
-assign #1 \-VM1WPA  = ! (WP1B & MAPWR1D);
-assign #1 \-VM1WPB  = ! (WP1B & MAPWR1D);
+assign \-VM0WPA  = ! (MAPWR0D & WP1A);
+assign \-VM0WPB  = ! (MAPWR0D & WP1A);
+assign \-VM1WPA  = ! (WP1B & MAPWR1D);
+assign \-VM1WPB  = ! (WP1B & MAPWR1D);
 
 // 1C15:
-assign #1 MAPWR0D = ! (\-WMAPD  | \-VMA26 );
-assign #1 MAPWR1D = ! (\-WMAPD  | \-VMA25 );
+assign MAPWR0D = ! (\-WMAPD  | \-VMA26 );
+assign MAPWR1D = ! (\-WMAPD  | \-VMA25 );
 
 
 
@@ -8464,7 +8464,7 @@ part_74S139  i_VCTL2_3D04 (
   .G2Y3(\-WMAP ),
   .G2Y2(\-MEMWR ),
   .G2Y1(\-MEMRD ),
-  .G2Y0(NC),
+  .G2Y0(nc125),
   .B2(IR20),
   .A2(IR19),
   .G2(\-DESTMEM )
@@ -8475,16 +8475,16 @@ part_74S139  i_VCTL2_3D04 (
 // (no code to express 74S175)
 part_74S175  i_VCTL1_1C23 (
   .CLR_N(\-RESET ),
-  .Q0(NC),
-  .Q0_N(NC),
-  .D0(NC),
+  .Q0(nc126),
+  .Q0_N(nc127),
+  .D0(nc128),
   .D1(internal15),
   .Q1_N(RDCYC),
   .Q1(WRCYC),
   .CLK(CLK2A),
-  .Q2(NC),
-  .Q2_N(NC),
-  .D2(NC),
+  .Q2(nc129),
+  .Q2_N(nc130),
+  .D2(nc131),
   .D3(WMAP),
   .Q3_N(\-WMAPD ),
   .Q3(WMAPD)
@@ -8493,7 +8493,7 @@ part_74S175  i_VCTL1_1C23 (
 
 // 1E16:
 
-assign #1 \-MEMOP  = \-MEMRD  & \-MEMWR  & \-IFETCH ;
+assign \-MEMOP  = \-MEMRD  & \-MEMWR  & \-IFETCH ;
 
 
 // 3F16:
@@ -8515,7 +8515,7 @@ part_74S64  i_VCTL1_3F16 (
 
 
 // 3F17:
-assign #1 \-HANG  = ! (\RD.IN.PROGRESS  & \USE.MD  & \-CLK3G );
+assign \-HANG  = ! (\RD.IN.PROGRESS  & \USE.MD  & \-CLK3G );
 
 
 
@@ -8531,8 +8531,8 @@ part_74S51  i_VCTL1_1D16 (
 
 
 // 1D17:
-assign #1 \-PFW  = ! (\-LVMO22  & WRCYC);
-assign #1 \-VMAOK  = ! (\-PFR  & \-PFW );
+assign \-PFW  = ! (\-LVMO22  & WRCYC);
+assign \-VMAOK  = ! (\-PFR  & \-PFW );
 
 
 
@@ -8541,10 +8541,10 @@ assign #1 \-VMAOK  = ! (\-PFR  & \-PFW );
 part_TD250  i_VCTL1_1D22 (
   .INPUT(internal16),
   .O_100ns(\-RDFINISH ),
-  .O_200ns(NC),
-  .O_250ns(NC),
-  .O_150ns(NC),
-  .O_50ns(NC)
+  .O_200ns(nc132),
+  .O_250ns(nc133),
+  .O_150ns(nc134),
+  .O_50ns(nc135)
 );
 
 
@@ -8552,16 +8552,16 @@ part_TD250  i_VCTL1_1D22 (
 
 
 
-assign #1 \-MFINISH  = \-MEMACK  & \-RESET ;
+assign \-MFINISH  = \-MEMACK  & \-RESET ;
 
 // 1D23:
 // (no code to express TD50)
 part_TD50  i_VCTL1_1D23 (
   .INPUT(\-MFINISH ),
-  .O_20ns(NC),
-  .O_50ns(NC),
+  .O_20ns(nc136),
+  .O_50ns(nc137),
   .O_30ns(\-MFINISHD ),
-  .O_10ns(NC)
+  .O_10ns(nc138)
 );
 
 
@@ -8573,8 +8573,8 @@ part_74S74  i_VCTL1_1D21 (
   .G1CLK(MCLK1A),
   .G1S_N(HI11),
   .G1Q(MBUSY),
-  .G1Q_N(NC),
-  .G2Q_N(NC),
+  .G1Q_N(nc139),
+  .G2Q_N(nc140),
   .G2Q(\RD.IN.PROGRESS ),
   .G2S_N(HI11),
   .G2CLK(MCLK1A),
@@ -8606,7 +8606,7 @@ part_9S42_1  i_VCTL1_1E25 (
 // 1D27:
 
 
-assign #1 MEMPREPARE = ! (\-MEMOP  | CLK2C);
+assign MEMPREPARE = ! (\-MEMOP  | CLK2C);
 
 
 // 1E20:
@@ -8620,38 +8620,38 @@ part_74S175  i_VCTL1_1E20 (
   .Q1_N(\-MBUSY.SYNC ),
   .Q1(\MBUSY.SYNC ),
   .CLK(MCLK1A),
-  .Q2(NC),
-  .Q2_N(NC),
-  .D2(NC),
-  .D3(NC),
-  .Q3_N(NC),
-  .Q3(NC)
+  .Q2(nc141),
+  .Q2_N(nc142),
+  .D2(nc143),
+  .D3(nc144),
+  .Q3_N(nc145),
+  .Q3(nc146)
 );
 
 
 // 3E30:
-assign #1 \-PARERR  = ! (MDPARERR & MDHASPAR & \USE.MD  & \-WAIT );
+assign \-PARERR  = ! (MDPARERR & MDHASPAR & \USE.MD  & \-WAIT );
 
 
 // 3F19:
-assign #1 TRAPB = ! \-TRAP ;
-assign #1 TRAPA = ! \-TRAP ;
-assign #1 MEMPAROK = ! \-MEMPAROK ;
-assign #1 \-TRAPENB  = ! TRAPENB;
+assign TRAPB = ! \-TRAP ;
+assign TRAPA = ! \-TRAP ;
+assign MEMPAROK = ! \-MEMPAROK ;
+assign \-TRAPENB  = ! TRAPENB;
 
 
 
 // 3F18:
 
-assign #1 \-TRAP  = ! (internal17 | \BOOT.TRAP );
-assign #1 internal17 = ! (\-PARERR  | \-TRAPENB );
-assign #1 \-MEMPAROK  = ! (\-PARERR  | TRAPENB);
+assign \-TRAP  = ! (internal17 | \BOOT.TRAP );
+assign internal17 = ! (\-PARERR  | \-TRAPENB );
+assign \-MEMPAROK  = ! (\-PARERR  | TRAPENB);
 
 // 1D12:
 
 
 
-assign #1 MDPARERR = MDPAREVEN ^ MDPAR;
+assign MDPARERR = MDPAREVEN ^ MDPAR;
 
 // 1E30:
 // (no code to express 93S48)
@@ -8684,7 +8684,7 @@ part_93S48  i_TRAP_1E29 (
   .I1(\-MD22 ),
   .I0(\-MD23 ),
   .PO(MDPARM),
-  .PE(NC),
+  .PE(nc147),
   .I11(\-MD12 ),
   .I10(\-MD13 ),
   .I9(\-MD14 ),
@@ -8704,7 +8704,7 @@ part_93S48  i_TRAP_1E28 (
   .I1(\-MD10 ),
   .I0(\-MD11 ),
   .PO(MDPARL),
-  .PE(NC),
+  .PE(nc148),
   .I11(\-MD0 ),
   .I10(\-MD1 ),
   .I9(\-MD2 ),
@@ -8717,9 +8717,9 @@ part_93S48  i_TRAP_1E28 (
 // (no code to express 74LS244)
 part_74LS244  i_SPY2_3E16 (
   .AENB_N(\-SPY.FLAG2 ),
-  .AIN0(NC),
+  .AIN0(nc149),
   .BOUT3(SPY0),
-  .AIN1(NC),
+  .AIN1(nc150),
   .BOUT2(SPY1),
   .AIN2(IR48),
   .BOUT1(SPY2),
@@ -8741,9 +8741,9 @@ part_74LS244  i_SPY2_3E16 (
 // (no code to express 74LS244)
 part_74LS244  i_SPY2_3F15 (
   .AENB_N(\-SPY.FLAG2 ),
-  .AIN0(NC),
+  .AIN0(nc151),
   .BOUT3(SPY8),
-  .AIN1(NC),
+  .AIN1(nc152),
   .BOUT2(SPY9),
   .AIN2(WMAPD),
   .BOUT1(SPY10),
@@ -9196,25 +9196,25 @@ part_74LS244  i_SPY1_3E06 (
 // 4F11:
 ff_dsel i_SPCW_4F11_1 (.q(RETA12), .a(IPC12), .b(WPC12), .sel(N), .clk(CLK4D) );
 ff_dsel i_SPCW_4F11_2 (.q(RETA13), .a(IPC13), .b(WPC13), .sel(N), .clk(CLK4D) );
-ff_dsel i_SPCW_4F11_3 (.q(NC), .a(NC), .b(NC), .sel(N), .clk(CLK4D) );
-ff_dsel i_SPCW_4F11_4 (.q(NC), .a(NC), .b(NC), .sel(N), .clk(CLK4D) );
+ff_dsel i_SPCW_4F11_3 (.q(nc155), .a(nc154), .b(nc153), .sel(N), .clk(CLK4D) );
+ff_dsel i_SPCW_4F11_4 (.q(nc158), .a(nc157), .b(nc156), .sel(N), .clk(CLK4D) );
 
 // 4F12:
 ff_dsel i_SPCW_4F12_1 (.q(RETA8), .a(IPC8), .b(WPC8), .sel(N), .clk(CLK4D) );
 ff_dsel i_SPCW_4F12_2 (.q(RETA9), .a(IPC9), .b(WPC9), .sel(N), .clk(CLK4D) );
-ff_dsel i_SPCW_4F12_3 (.q(IPC11), .a(IPC10), .b(WPC10), .sel(N), .clk(CLK4D) );
+ff_dsel i_SPCW_4F12_3 (.q(RETA10), .a(IPC10), .b(WPC10), .sel(N), .clk(CLK4D) );
 ff_dsel i_SPCW_4F12_4 (.q(RETA11), .a(IPC11), .b(WPC11), .sel(N), .clk(CLK4D) );
 
 // 4F13:
 ff_dsel i_SPCW_4F13_1 (.q(RETA4), .a(IPC4), .b(WPC4), .sel(N), .clk(CLK4D) );
 ff_dsel i_SPCW_4F13_2 (.q(RETA5), .a(IPC5), .b(WPC5), .sel(N), .clk(CLK4D) );
-ff_dsel i_SPCW_4F13_3 (.q(IPC7), .a(IPC6), .b(WPC6), .sel(N), .clk(CLK4D) );
+ff_dsel i_SPCW_4F13_3 (.q(RETA6), .a(IPC6), .b(WPC6), .sel(N), .clk(CLK4D) );
 ff_dsel i_SPCW_4F13_4 (.q(RETA7), .a(IPC7), .b(WPC7), .sel(N), .clk(CLK4D) );
 
 // 4F14:
 ff_dsel i_SPCW_4F14_1 (.q(RETA0), .a(IPC0), .b(WPC0), .sel(N), .clk(CLK4D) );
 ff_dsel i_SPCW_4F14_2 (.q(RETA1), .a(IPC1), .b(WPC1), .sel(N), .clk(CLK4D) );
-ff_dsel i_SPCW_4F14_3 (.q(IPC3), .a(IPC2), .b(WPC2), .sel(N), .clk(CLK4D) );
+ff_dsel i_SPCW_4F14_3 (.q(RETA2), .a(IPC2), .b(WPC2), .sel(N), .clk(CLK4D) );
 ff_dsel i_SPCW_4F14_4 (.q(RETA3), .a(IPC3), .b(WPC3), .sel(N), .clk(CLK4D) );
 
 // 4F15:
@@ -9230,9 +9230,9 @@ part_74S157  i_SPCW_4F15 (
   .Y2(SPCW18),
   .B2(L18),
   .A2(GND),
-  .Y1(NC),
-  .B1(NC),
-  .A1(NC),
+  .Y1(nc159),
+  .B1(nc160),
+  .A1(nc161),
   .ENB_N(GND)
 );
 
@@ -9319,7 +9319,7 @@ part_74S157  i_SPCW_4E14 (
 
 // 3E19:
 
-assign #1 SPCWPAR = SPCWPARH ^ \-SPCWPARL ;
+assign SPCWPAR = SPCWPARH ^ \-SPCWPARL ;
 
 
 
@@ -9334,7 +9334,7 @@ part_93S48  i_SPCPAR_4F16 (
   .I1(GND),
   .I0(GND),
   .PO(SPCWPARH),
-  .PE(NC),
+  .PE(nc162),
   .I11(SPCW12),
   .I10(SPCW13),
   .I9(SPCW14),
@@ -9353,7 +9353,7 @@ part_93S48  i_SPCPAR_4F17 (
   .I2(SPCW9),
   .I1(SPCW10),
   .I0(SPCW11),
-  .PO(NC),
+  .PO(nc163),
   .PE(\-SPCWPARL ),
   .I11(SPCW0),
   .I10(SPCW1),
@@ -9374,7 +9374,7 @@ part_93S48  i_SPCPAR_4F21 (
   .I1(GND),
   .I0(GND),
   .PO(SPCPARH),
-  .PE(NC),
+  .PE(nc164),
   .I11(SPC11),
   .I10(SPC12),
   .I9(SPC13),
@@ -9394,7 +9394,7 @@ part_93S48  i_SPCPAR_4F26 (
   .I1(SPC10),
   .I0(SPCPARH),
   .PO(SPCPAROK),
-  .PE(NC),
+  .PE(nc165),
   .I11(SPC0),
   .I10(SPC1),
   .I9(SPC2),
@@ -9423,7 +9423,7 @@ part_74S241  i_SPCLCH_4B10 (
   .AOUT1(M30),
   .BIN3(SPCPTR0),
   .AOUT0(M31),
-  .BENB_N(SPCDRIVE)
+  .BENB(SPCDRIVE)
 );
 
 
@@ -9503,23 +9503,23 @@ part_74S373  i_SPCLCH_4A07 (
 // (no code to express 74S241)
 part_74S241  i_SPCLCH_4E16 (
   .AENB_N(HI1),
-  .AIN0(NC),
+  .AIN0(nc166),
   .BOUT3(SPC16),
-  .AIN1(NC),
+  .AIN1(nc167),
   .BOUT2(SPC17),
-  .AIN2(NC),
+  .AIN2(nc168),
   .BOUT1(SPC18),
-  .AIN3(NC),
+  .AIN3(nc169),
   .BOUT0(SPCPAR),
   .BIN0(SPCWPAR),
-  .AOUT3(NC),
+  .AOUT3(nc170),
   .BIN1(SPCW18),
-  .AOUT2(NC),
+  .AOUT2(nc171),
   .BIN2(SPCW17),
-  .AOUT1(NC),
+  .AOUT1(nc172),
   .BIN3(SPCW16),
-  .AOUT0(NC),
-  .BENB_N(SPCWPASS)
+  .AOUT0(nc173),
+  .BENB(SPCWPASS)
 );
 
 
@@ -9527,14 +9527,14 @@ part_74S241  i_SPCLCH_4E16 (
 // (no code to express 74S373)
 part_74S373  i_SPCLCH_4F18 (
   .OENB_N(\-SPCPASS ),
-  .O0(NC),
-  .I0(NC),
-  .I1(NC),
-  .O1(NC),
-  .O2(NC),
-  .I2(NC),
-  .I3(NC),
-  .O3(NC),
+  .O0(nc174),
+  .I0(nc175),
+  .I1(nc176),
+  .O1(nc177),
+  .O2(nc178),
+  .I2(nc179),
+  .I3(nc180),
+  .O3(nc181),
   .HOLD_N(CLK4D),
   .O4(SPCPAR),
   .I4(SPCOPAR),
@@ -9591,7 +9591,7 @@ part_74S241  i_SPCLCH_4E17 (
   .AOUT1(SPC14),
   .BIN3(SPCW8),
   .AOUT0(SPC15),
-  .BENB_N(SPCWPASS)
+  .BENB(SPCWPASS)
 );
 
 
@@ -9615,7 +9615,7 @@ part_74S241  i_SPCLCH_4E18 (
   .AOUT1(SPC6),
   .BIN3(SPCW0),
   .AOUT0(SPC7),
-  .BENB_N(SPCWPASS)
+  .BENB(SPCWPASS)
 );
 
 
@@ -9656,8 +9656,8 @@ part_RES20  i_SPC_4E29 (
   .R9(HI10),
   .R11(HI11),
   .R12(HI12),
-  .R13(NC),
-  .R14(NC),
+  .R13(nc182),
+  .R14(nc183),
   .R15(SPCO4),
   .R16(SPCO3),
   .R17(SPCO2),
@@ -9884,18 +9884,18 @@ part_82S21  i_SPC_4E23 (
 part_74S169  i_SPC_4F28 (
   .UP_DN(SPUSH),
   .CLK(CLK4F),
-  .I0(NC),
-  .I1(NC),
-  .I2(NC),
-  .I3(NC),
+  .I0(nc184),
+  .I1(nc185),
+  .I2(nc186),
+  .I3(nc187),
   .ENB_P_N(GND),
   .LOAD_N(HI1),
   .ENB_T_N(\-SPCCRY ),
-  .O3(NC),
-  .O2(NC),
-  .O1(NC),
+  .O3(nc188),
+  .O2(nc189),
+  .O1(nc190),
   .O0(SPCPTR4),
-  .CO_N(NC)
+  .CO_N(nc191)
 );
 
 
@@ -9904,10 +9904,10 @@ part_74S169  i_SPC_4F28 (
 part_74S169  i_SPC_4F23 (
   .UP_DN(SPUSH),
   .CLK(CLK4F),
-  .I0(NC),
-  .I1(NC),
-  .I2(NC),
-  .I3(NC),
+  .I0(nc192),
+  .I1(nc193),
+  .I2(nc194),
+  .I3(nc195),
   .ENB_P_N(GND),
   .LOAD_N(HI1),
   .ENB_T_N(\-SPCNT ),
@@ -9921,13 +9921,13 @@ part_74S169  i_SPC_4F23 (
 
 // 3E05:
 
-assign #1 internal18 = \DESTIMOD0_L  & \IWRITED_L ;
+assign internal18 = \DESTIMOD0_L  & \IWRITED_L ;
 
 
 
 // 4D10:
 
-assign #1 IMOD = ! (internal18 & \-DESTIMOD1  & \-IDEBUG );
+assign IMOD = ! (internal18 & \-DESTIMOD1  & \-IDEBUG );
 
 
 // 3D04:
@@ -9938,18 +9938,18 @@ part_74S139  i_SOURCE_3D04 (
   .B1(IR4),
   .G1Y0(\-MUL ),
   .G1Y1(\-DIV ),
-  .G1Y2(NC),
-  .G1Y3(NC)
+  .G1Y2(nc196),
+  .G1Y3(nc197)
 );
 
 
 // 3D03:
-assign #1 \-IR22  = ! IR22;
-assign #1 \-IR25  = ! IR25;
-assign #1 NC = ! NC;
-assign #1 IRDISP = ! \-IRDISP ;
-assign #1 IRJUMP = ! \-IRJUMP ;
-assign #1 IRALU = ! \-IRALU ;
+assign \-IR22  = ! IR22;
+assign \-IR25  = ! IR25;
+assign nc199 = ! nc198;
+assign IRDISP = ! \-IRDISP ;
+assign IRJUMP = ! \-IRJUMP ;
+assign IRALU = ! \-IRALU ;
 
 // 3D05:
 // (no code to express 74S139)
@@ -9975,19 +9975,19 @@ part_74S139  i_SOURCE_3D05 (
 
 
 
-assign #1 DESTM = DEST & \-IR25 ;
+assign DESTM = DEST & \-IR25 ;
 
 // 3E09:
 
-assign #1 \-DESTMDR  = \-DESTMEM  | \-IR22 ;
-assign #1 \-DESTVMA  = IR22 | \-DESTMEM ;
+assign \-DESTMDR  = \-DESTMEM  | \-IR22 ;
+assign \-DESTVMA  = IR22 | \-DESTMEM ;
 
 
 // 3D02:
 
-assign #1 DEST = ! (\-IRALU  & \-IRBYTE );
-assign #1 \-DESTMEM  = ! (DESTM & IR23);
-assign #1 \-SPECALU  = ! (IR8 & IRALU);
+assign DEST = ! (\-IRALU  & \-IRBYTE );
+assign \-DESTMEM  = ! (DESTM & IR23);
+assign \-SPECALU  = ! (IR8 & IRALU);
 
 // 3D12:
 // (no code to express 74S138)
@@ -10018,14 +10018,14 @@ part_74S138  i_SOURCE_3D11 (
   .G2A(IR22),
   .G2B(IR23),
   .G1(DESTM),
-  .Y7(NC),
-  .Y6(NC),
-  .Y5(NC),
-  .Y4(NC),
-  .Y3(NC),
+  .Y7(nc200),
+  .Y6(nc201),
+  .Y5(nc202),
+  .Y4(nc203),
+  .Y3(nc204),
   .Y2(\-DESTINTCTL ),
   .Y1(\-DESTLC ),
-  .Y0(NC)
+  .Y0(nc205)
 );
 
 
@@ -10038,9 +10038,9 @@ part_74S138  i_SOURCE_3D23 (
   .G2A(\-IR31 ),
   .G2B(GND),
   .G1(IR29),
-  .Y7(NC),
-  .Y6(NC),
-  .Y5(NC),
+  .Y7(nc206),
+  .Y6(nc207),
+  .Y5(nc208),
   .Y4(\-SRCSPCPOP ),
   .Y3(\-SRCLC ),
   .Y2(\-SRCMD ),
@@ -10070,7 +10070,7 @@ part_74S138  i_SOURCE_3D22 (
 
 
 // 2D15:
-assign #1 \-S4  = \-SH4  | \-SR ;
+assign \-S4  = \-SH4  | \-SR ;
 
 
 
@@ -10078,20 +10078,20 @@ assign #1 \-S4  = \-SH4  | \-SR ;
 // 2E10:
 // (no code to express 74S283)
 part_74S283  i_SMCTL_2E10 (
-  .S1(NC),
-  .B1(NC),
-  .A1(NC),
+  .S1(nc209),
+  .B1(nc210),
+  .A1(nc211),
   .S0(MSKL4),
   .A0(IR9),
   .B0(MSKR4),
   .C0(MSKL3CRY),
-  .C4(NC),
-  .S3(NC),
-  .B3(NC),
-  .A3(NC),
-  .S2(NC),
-  .A2(NC),
-  .B2(NC)
+  .C4(nc212),
+  .S3(nc213),
+  .B3(nc214),
+  .A3(nc215),
+  .S2(nc216),
+  .A2(nc217),
+  .B2(nc218)
 );
 
 
@@ -10116,26 +10116,26 @@ part_74S283  i_SMCTL_2E25 (
 
 
 // 2E14:
-assign #1 S3A = ! (\-SR  | \-SH3 );
-assign #1 S3B = ! (\-SH3  | \-SR );
-assign #1 S2A = ! (\-SR  | \-IR2 );
-assign #1 S2B = ! (\-IR2  | \-SR );
+assign S3A = ! (\-SR  | \-SH3 );
+assign S3B = ! (\-SH3  | \-SR );
+assign S2A = ! (\-SR  | \-IR2 );
+assign S2B = ! (\-IR2  | \-SR );
 
 // 2D20:
-assign #1 \-MR  = ! (\-IRBYTE  | IR13);
-assign #1 \-SR  = ! (\-IRBYTE  | IR12);
-assign #1 S0 = ! (\-SR  | \-IR0 );
-assign #1 S1 = ! (\-SR  | \-IR1 );
+assign \-MR  = ! (\-IRBYTE  | IR13);
+assign \-SR  = ! (\-IRBYTE  | IR12);
+assign S0 = ! (\-SR  | \-IR0 );
+assign S1 = ! (\-SR  | \-IR1 );
 
 // 2E19:
-assign #1 S4 = ! (\-SR  | \-SH4 );
-assign #1 MSKR0 = ! (\-MR  | \-IR0 );
-assign #1 MSKR1 = ! (\-MR  | \-IR1 );
-assign #1 MSKR2 = ! (\-MR  | \-IR2 );
+assign S4 = ! (\-SR  | \-SH4 );
+assign MSKR0 = ! (\-MR  | \-IR0 );
+assign MSKR1 = ! (\-MR  | \-IR1 );
+assign MSKR2 = ! (\-MR  | \-IR2 );
 
 // 2E30:
-assign #1 MSKR3 = ! (\-MR  | \-SH3 );
-assign #1 MSKR4 = ! (\-MR  | \-SH4 );
+assign MSKR3 = ! (\-MR  | \-SH3 );
+assign MSKR4 = ! (\-MR  | \-SH4 );
 
 
 
@@ -10624,26 +10624,26 @@ part_25S10  i_SHIFT0_2C26 (
 
 
 
-assign #1 SRCQ = ! \-SRCQ ;
-assign #1 \-ALU31  = ! ALU31;
+assign SRCQ = ! \-SRCQ ;
+assign \-ALU31  = ! ALU31;
 
 // 2A04:
 
 
 
-assign #1 QDRIVE = SRCQ & TSE2;
+assign QDRIVE = SRCQ & TSE2;
 
 // 1A18:
 
 
-assign #1 \-QDRIVE  = ! (SRCQ & TSE2);
+assign \-QDRIVE  = ! (SRCQ & TSE2);
 
 
 // 2B19:
 
 
-assign #1 QS1 = ! (\-IR1  | \-IRALU );
-assign #1 QS0 = ! (\-IR0  | \-IRALU );
+assign QS1 = ! (\-IR1  | \-IRALU );
+assign QS0 = ! (\-IR0  | \-IRALU );
 
 // 1F08:
 // (no code to express 74S241)
@@ -10665,7 +10665,7 @@ part_74S241  i_QCTL_1F08 (
   .AOUT1(MF30),
   .BIN3(Q24),
   .AOUT0(MF31),
-  .BENB_N(QDRIVE)
+  .BENB(QDRIVE)
 );
 
 
@@ -10689,7 +10689,7 @@ part_74S241  i_QCTL_1F10 (
   .AOUT1(MF22),
   .BIN3(Q16),
   .AOUT0(MF23),
-  .BENB_N(QDRIVE)
+  .BENB(QDRIVE)
 );
 
 
@@ -10713,7 +10713,7 @@ part_74S241  i_QCTL_1F15 (
   .AOUT1(MF14),
   .BIN3(Q8),
   .AOUT0(MF15),
-  .BENB_N(QDRIVE)
+  .BENB(QDRIVE)
 );
 
 
@@ -10737,7 +10737,7 @@ part_74S241  i_QCTL_1E12 (
   .AOUT1(MF6),
   .BIN3(Q0),
   .AOUT0(MF7),
-  .BENB_N(QDRIVE)
+  .BENB(QDRIVE)
 );
 
 
@@ -11001,21 +11001,21 @@ part_74S373  i_PLATCH_4B03 (
 // (no code to express 74S373)
 part_74S373  i_PLATCH_4B08 (
   .OENB_N(\-PDLDRIVE ),
-  .O0(NC),
-  .I0(NC),
-  .I1(NC),
-  .O1(NC),
-  .O2(NC),
-  .I2(NC),
-  .I3(NC),
-  .O3(NC),
+  .O0(nc219),
+  .I0(nc220),
+  .I1(nc221),
+  .O1(nc222),
+  .O2(nc223),
+  .I2(nc224),
+  .I3(nc225),
+  .O3(nc226),
   .HOLD_N(CLK4A),
-  .O4(NC),
-  .I4(NC),
-  .I5(NC),
-  .O5(NC),
-  .O6(NC),
-  .I6(NC),
+  .O4(nc227),
+  .I4(nc228),
+  .I5(nc229),
+  .O5(nc230),
+  .O6(nc231),
+  .I6(nc232),
   .I7(PDLPARITY),
   .O7(MPARITY)
 );
@@ -11024,13 +11024,13 @@ part_74S373  i_PLATCH_4B08 (
 // 4D08:
 
 
-assign #1 \-PPDRIVE  = ! (TSE4B & SRCPDLPTR);
+assign \-PPDRIVE  = ! (TSE4B & SRCPDLPTR);
 
 
 // 4D06:
 
 
-assign #1 PIDRIVE = TSE4B & SRCPDLIDX;
+assign PIDRIVE = TSE4B & SRCPDLIDX;
 
 
 // 4D04:
@@ -11053,7 +11053,7 @@ part_74S241  i_PDLPTR_4D04 (
   .AOUT1(MF10),
   .BIN3(PDLIDX8),
   .AOUT0(MF11),
-  .BENB_N(PIDRIVE)
+  .BENB(PIDRIVE)
 );
 
 
@@ -11077,7 +11077,7 @@ part_74S241  i_PDLPTR_4C01 (
   .AOUT1(MF2),
   .BIN3(PDLIDX0),
   .AOUT0(MF3),
-  .BENB_N(PIDRIVE)
+  .BENB(PIDRIVE)
 );
 
 
@@ -11101,7 +11101,7 @@ part_74S241  i_PDLPTR_4D05 (
   .AOUT1(MF6),
   .BIN3(PDLIDX4),
   .AOUT0(MF7),
-  .BENB_N(PIDRIVE)
+  .BENB(PIDRIVE)
 );
 
 
@@ -11110,8 +11110,8 @@ ff_enb i_PDLPTR_3C22_1 (.q(PDLIDX6), .d(OB6), .clk(CLK3F), .enb_n(\-DESTPDLX ) )
 ff_enb i_PDLPTR_3C22_2 (.q(PDLIDX7), .d(OB7), .clk(CLK3F), .enb_n(\-DESTPDLX ) );
 ff_enb i_PDLPTR_3C22_3 (.q(PDLIDX8), .d(OB8), .clk(CLK3F), .enb_n(\-DESTPDLX ) );
 ff_enb i_PDLPTR_3C22_4 (.q(PDLIDX9), .d(OB9), .clk(CLK3F), .enb_n(\-DESTPDLX ) );
-ff_enb i_PDLPTR_3C22_5 (.q(NC), .d(NC), .clk(CLK3F), .enb_n(\-DESTPDLX ) );
-ff_enb i_PDLPTR_3C22_6 (.q(NC), .d(NC), .clk(CLK3F), .enb_n(\-DESTPDLX ) );
+ff_enb i_PDLPTR_3C22_5 (.q(nc234), .d(nc233), .clk(CLK3F), .enb_n(\-DESTPDLX ) );
+ff_enb i_PDLPTR_3C22_6 (.q(nc236), .d(nc235), .clk(CLK3F), .enb_n(\-DESTPDLX ) );
 
 // 3D25:
 ff_enb i_PDLPTR_3D25_1 (.q(PDLIDX0), .d(OB0), .clk(CLK3F), .enb_n(\-DESTPDLX ) );
@@ -11128,16 +11128,16 @@ part_74S169  i_PDLPTR_3C21 (
   .CLK(CLK3F),
   .I0(OB8),
   .I1(OB9),
-  .I2(NC),
-  .I3(NC),
+  .I2(nc237),
+  .I3(nc238),
   .ENB_P_N(GND),
   .LOAD_N(\-DESTPDLP ),
   .ENB_T_N(\-PDLCRY7 ),
-  .O3(NC),
-  .O2(NC),
+  .O3(nc239),
+  .O2(nc240),
   .O1(PDLPTR9),
   .O0(PDLPTR8),
-  .CO_N(NC)
+  .CO_N(nc241)
 );
 
 
@@ -11196,37 +11196,37 @@ part_74S175  i_PDLCTL_4C11 (
   .Q2_N(\-IMODD ),
   .D2(IMOD),
   .D3(\-DESTSPC ),
-  .Q3_N(NC),
+  .Q3_N(nc242),
   .Q3(\-DESTSPCD )
 );
 
 
 // 4D08:
-assign #1 PDLENB = ! (\-SRCPDLPOP  & \-SRCPDLTOP );
-assign #1 \-PDLDRIVE  = ! (PDLENB & TSE4B);
+assign PDLENB = ! (\-SRCPDLPOP  & \-SRCPDLTOP );
+assign \-PDLDRIVE  = ! (PDLENB & TSE4B);
 
 
 
 // 4E03:
 
 
-assign #1 internal19 = \-SRCPDLPOP  | NOP;
+assign internal19 = \-SRCPDLPOP  | NOP;
 
 
 // 4D10:
-assign #1 PDLWRITE = ! (\-DESTPDLTOP  & \-DESTPDL  & \-DESTPDL );
+assign PDLWRITE = ! (\-DESTPDLTOP  & \-DESTPDL  & \-DESTPDL );
 
 
 
 // 4D20:
-assign #1 \-PWPA  = ! (PDLWRITED & WP4A);
-assign #1 \-PWPB  = ! (PDLWRITED & WP4A);
-assign #1 \-PWPC  = ! (WP4A & PDLWRITED);
+assign \-PWPA  = ! (PDLWRITED & WP4A);
+assign \-PWPB  = ! (PDLWRITED & WP4A);
+assign \-PWPC  = ! (WP4A & PDLWRITED);
 
 
 // 4D06:
 
-assign #1 \-PDLCNT  = internal19 & \-DESTPDL ;
+assign \-PDLCNT  = internal19 & \-DESTPDL ;
 
 
 
@@ -12007,15 +12007,15 @@ part_93425A  i_PDL0_4C10 (
 
 
 // 1E07:
-assign #1 DCDRIVE = TSE1B & internal20;
-assign #1 \ZERO16.DRIVE  = ZERO16 & TSE1B;
+assign DCDRIVE = TSE1B & internal20;
+assign \ZERO16.DRIVE  = ZERO16 & TSE1B;
 
 
 
 // 1D18:
 
-assign #1 internal20 = ! \-SRCDC ;
-assign #1 internal21 = ! \-SRCOPC ;
+assign internal20 = ! \-SRCDC ;
+assign internal21 = ! \-SRCOPC ;
 
 
 
@@ -12023,17 +12023,17 @@ assign #1 internal21 = ! \-SRCOPC ;
 // 1E06:
 
 
-assign #1 \-OPCDRIVE  = ! (TSE1B & internal21);
-assign #1 \-ZERO16.DRIVE  = ! (TSE1B & ZERO16);
+assign \-OPCDRIVE  = ! (TSE1B & internal21);
+assign \-ZERO16.DRIVE  = ! (TSE1B & ZERO16);
 
 // 1E16:
-assign #1 \ZERO12.DRIVE  = \-SRCOPC  & ZERO16 & TSE1B;
+assign \ZERO12.DRIVE  = \-SRCOPC  & ZERO16 & TSE1B;
 
 
 
 // 3E30:
 
-assign #1 ZERO16 = ! (\-SRCOPC  & \-SRCPDLIDX  & \-SRCPDLPTR  & \-SRCDC );
+assign ZERO16 = ! (\-SRCOPC  & \-SRCPDLIDX  & \-SRCPDLPTR  & \-SRCDC );
 
 // 1F01:
 // (no code to express 74S241)
@@ -12055,7 +12055,7 @@ part_74S241  i_OPCD_1F01 (
   .AOUT1(MF30),
   .BIN3(GND),
   .AOUT0(MF31),
-  .BENB_N(\ZERO16.DRIVE )
+  .BENB(\ZERO16.DRIVE )
 );
 
 
@@ -12079,7 +12079,7 @@ part_74S241  i_OPCD_1F02 (
   .AOUT1(MF22),
   .BIN3(GND),
   .AOUT0(MF23),
-  .BENB_N(\ZERO16.DRIVE )
+  .BENB(\ZERO16.DRIVE )
 );
 
 
@@ -12103,7 +12103,7 @@ part_74S241  i_OPCD_1F03 (
   .AOUT1(MF14),
   .BIN3(GND),
   .AOUT0(MF15),
-  .BENB_N(\ZERO12.DRIVE )
+  .BENB(\ZERO12.DRIVE )
 );
 
 
@@ -12127,7 +12127,7 @@ part_74S241  i_OPCD_1F04 (
   .AOUT1(MF10),
   .BIN3(DC8),
   .AOUT0(MF11),
-  .BENB_N(DCDRIVE)
+  .BENB(DCDRIVE)
 );
 
 
@@ -12151,7 +12151,7 @@ part_74S241  i_OPCD_1E01 (
   .AOUT1(MF6),
   .BIN3(DC4),
   .AOUT0(MF7),
-  .BENB_N(DCDRIVE)
+  .BENB(DCDRIVE)
 );
 
 
@@ -12175,7 +12175,7 @@ part_74S241  i_OPCD_1E03 (
   .AOUT1(MF2),
   .BIN3(DC0),
   .AOUT0(MF3),
-  .BENB_N(DCDRIVE)
+  .BENB(DCDRIVE)
 );
 
 
@@ -12249,12 +12249,12 @@ part_74S283  i_NPC_3F26 (
   .A0(PC12),
   .B0(GND),
   .C0(PCCRY11),
-  .C4(NC),
-  .S3(NC),
+  .C4(nc243),
+  .S3(nc244),
   .B3(GND),
-  .A3(NC),
-  .S2(NC),
-  .A2(NC),
+  .A3(nc245),
+  .S2(nc246),
+  .A2(nc247),
   .B2(GND)
 );
 
@@ -12287,10 +12287,10 @@ part_74S374  i_NPC_4E05 (
 // (no code to express 74S374)
 part_74S374  i_NPC_4E04 (
   .OENB_N(GND),
-  .O0(NC),
-  .I0(NC),
-  .I1(NC),
-  .O1(NC),
+  .O0(nc248),
+  .I0(nc249),
+  .I1(nc250),
+  .O1(nc251),
   .O2(PC13),
   .I2(NPC13),
   .I3(NPC12),
@@ -12473,7 +12473,7 @@ part_RES20  i_MSKG4_2E15 (
 // 2E20:
 // (no code to express RES20)
 part_RES20  i_MSKG4_2E20 (
-  .R2(NC),
+  .R2(nc252),
   .R3(MSK15),
   .R4(MSK14),
   .R5(MSK13),
@@ -12494,12 +12494,12 @@ part_RES20  i_MSKG4_2E20 (
 
 
 // 2D26:
-assign #1 NC = ! NC;
-assign #1 \-IR31  = ! IR31;
-assign #1 \-IR13  = ! IR13;
-assign #1 \-IR12  = ! IR12;
-assign #1 NC = ! NC;
-assign #1 NC = ! NC;
+assign nc254 = ! nc253;
+assign \-IR31  = ! IR31;
+assign \-IR13  = ! IR13;
+assign \-IR12  = ! IR12;
+assign nc256 = ! nc255;
+assign nc258 = ! nc257;
 
 // 2D12:
 // (no code to express 5600)
@@ -12669,7 +12669,7 @@ part_74S151  i_MO1_2D19 (
   .I1(R16),
   .I0(A16),
   .Q(OB16),
-  .Q_N(NC),
+  .Q_N(nc259),
   .CE_N(GND),
   .SEL2(OSEL1A),
   .SEL1(OSEL0A),
@@ -12689,7 +12689,7 @@ part_74S151  i_MO1_2D18 (
   .I1(R17),
   .I0(A17),
   .Q(OB17),
-  .Q_N(NC),
+  .Q_N(nc260),
   .CE_N(GND),
   .SEL2(OSEL1A),
   .SEL1(OSEL0A),
@@ -12709,7 +12709,7 @@ part_74S151  i_MO1_2D14 (
   .I1(R18),
   .I0(A18),
   .Q(OB18),
-  .Q_N(NC),
+  .Q_N(nc261),
   .CE_N(GND),
   .SEL2(OSEL1A),
   .SEL1(OSEL0A),
@@ -12729,7 +12729,7 @@ part_74S151  i_MO1_2D13 (
   .I1(R19),
   .I0(A19),
   .Q(OB19),
-  .Q_N(NC),
+  .Q_N(nc262),
   .CE_N(GND),
   .SEL2(OSEL1A),
   .SEL1(OSEL0A),
@@ -12749,7 +12749,7 @@ part_74S151  i_MO1_2B15 (
   .I1(R20),
   .I0(A20),
   .Q(OB20),
-  .Q_N(NC),
+  .Q_N(nc263),
   .CE_N(GND),
   .SEL2(OSEL1A),
   .SEL1(OSEL0A),
@@ -12769,7 +12769,7 @@ part_74S151  i_MO1_2B14 (
   .I1(R21),
   .I0(A21),
   .Q(OB21),
-  .Q_N(NC),
+  .Q_N(nc264),
   .CE_N(GND),
   .SEL2(OSEL1A),
   .SEL1(OSEL0A),
@@ -12789,7 +12789,7 @@ part_74S151  i_MO1_2B10 (
   .I1(R22),
   .I0(A22),
   .Q(OB22),
-  .Q_N(NC),
+  .Q_N(nc265),
   .CE_N(GND),
   .SEL2(OSEL1A),
   .SEL1(OSEL0A),
@@ -12809,7 +12809,7 @@ part_74S151  i_MO1_2B09 (
   .I1(R23),
   .I0(A23),
   .Q(OB23),
-  .Q_N(NC),
+  .Q_N(nc266),
   .CE_N(GND),
   .SEL2(OSEL1A),
   .SEL1(OSEL0A),
@@ -12829,7 +12829,7 @@ part_74S151  i_MO1_2C14 (
   .I1(R24),
   .I0(A24),
   .Q(OB24),
-  .Q_N(NC),
+  .Q_N(nc267),
   .CE_N(GND),
   .SEL2(OSEL1A),
   .SEL1(OSEL0A),
@@ -12849,7 +12849,7 @@ part_74S151  i_MO1_2D09 (
   .I1(R25),
   .I0(A25),
   .Q(OB25),
-  .Q_N(NC),
+  .Q_N(nc268),
   .CE_N(GND),
   .SEL2(OSEL1A),
   .SEL1(OSEL0A),
@@ -12869,7 +12869,7 @@ part_74S151  i_MO1_2D04 (
   .I1(R26),
   .I0(A26),
   .Q(OB26),
-  .Q_N(NC),
+  .Q_N(nc269),
   .CE_N(GND),
   .SEL2(OSEL1A),
   .SEL1(OSEL0A),
@@ -12889,7 +12889,7 @@ part_74S151  i_MO1_2C09 (
   .I1(R27),
   .I0(A27),
   .Q(OB27),
-  .Q_N(NC),
+  .Q_N(nc270),
   .CE_N(GND),
   .SEL2(OSEL1A),
   .SEL1(OSEL0A),
@@ -12909,7 +12909,7 @@ part_74S151  i_MO1_2A15 (
   .I1(R28),
   .I0(A28),
   .Q(OB28),
-  .Q_N(NC),
+  .Q_N(nc271),
   .CE_N(GND),
   .SEL2(OSEL1A),
   .SEL1(OSEL0A),
@@ -12929,7 +12929,7 @@ part_74S151  i_MO1_2A14 (
   .I1(R29),
   .I0(A29),
   .Q(OB29),
-  .Q_N(NC),
+  .Q_N(nc272),
   .CE_N(GND),
   .SEL2(OSEL1A),
   .SEL1(OSEL0A),
@@ -12949,7 +12949,7 @@ part_74S151  i_MO1_2A10 (
   .I1(R30),
   .I0(A30),
   .Q(OB30),
-  .Q_N(NC),
+  .Q_N(nc273),
   .CE_N(GND),
   .SEL2(OSEL1A),
   .SEL1(OSEL0A),
@@ -12969,7 +12969,7 @@ part_74S151  i_MO1_2A09 (
   .I1(R31),
   .I0(A31B),
   .Q(OB31),
-  .Q_N(NC),
+  .Q_N(nc274),
   .CE_N(GND),
   .SEL2(OSEL1A),
   .SEL1(OSEL0A),
@@ -12989,7 +12989,7 @@ part_74S151  i_MO0_2D29 (
   .I1(R0),
   .I0(A0),
   .Q(OB0),
-  .Q_N(NC),
+  .Q_N(nc275),
   .CE_N(GND),
   .SEL2(OSEL1B),
   .SEL1(OSEL0B),
@@ -13009,7 +13009,7 @@ part_74S151  i_MO0_2D28 (
   .I1(R1),
   .I0(A1),
   .Q(OB1),
-  .Q_N(NC),
+  .Q_N(nc276),
   .CE_N(GND),
   .SEL2(OSEL1B),
   .SEL1(OSEL0B),
@@ -13029,7 +13029,7 @@ part_74S151  i_MO0_2C30 (
   .I1(R2),
   .I0(A2),
   .Q(OB2),
-  .Q_N(NC),
+  .Q_N(nc277),
   .CE_N(GND),
   .SEL2(OSEL1B),
   .SEL1(OSEL0B),
@@ -13049,7 +13049,7 @@ part_74S151  i_MO0_2C29 (
   .I1(R3),
   .I0(A3),
   .Q(OB3),
-  .Q_N(NC),
+  .Q_N(nc278),
   .CE_N(GND),
   .SEL2(OSEL1B),
   .SEL1(OSEL0B),
@@ -13069,7 +13069,7 @@ part_74S151  i_MO0_2B30 (
   .I1(R4),
   .I0(A4),
   .Q(OB4),
-  .Q_N(NC),
+  .Q_N(nc279),
   .CE_N(GND),
   .SEL2(OSEL1B),
   .SEL1(OSEL0B),
@@ -13089,7 +13089,7 @@ part_74S151  i_MO0_2B29 (
   .I1(R5),
   .I0(A5),
   .Q(OB5),
-  .Q_N(NC),
+  .Q_N(nc280),
   .CE_N(GND),
   .SEL2(OSEL1B),
   .SEL1(OSEL0B),
@@ -13109,7 +13109,7 @@ part_74S151  i_MO0_2B25 (
   .I1(R6),
   .I0(A6),
   .Q(OB6),
-  .Q_N(NC),
+  .Q_N(nc281),
   .CE_N(GND),
   .SEL2(OSEL1B),
   .SEL1(OSEL0B),
@@ -13129,7 +13129,7 @@ part_74S151  i_MO0_2B24 (
   .I1(R7),
   .I0(A7),
   .Q(OB7),
-  .Q_N(NC),
+  .Q_N(nc282),
   .CE_N(GND),
   .SEL2(OSEL1B),
   .SEL1(OSEL0B),
@@ -13149,7 +13149,7 @@ part_74S151  i_MO0_2D24 (
   .I1(R8),
   .I0(A8),
   .Q(OB8),
-  .Q_N(NC),
+  .Q_N(nc283),
   .CE_N(GND),
   .SEL2(OSEL1B),
   .SEL1(OSEL0B),
@@ -13169,7 +13169,7 @@ part_74S151  i_MO0_2D23 (
   .I1(R9),
   .I0(A9),
   .Q(OB9),
-  .Q_N(NC),
+  .Q_N(nc284),
   .CE_N(GND),
   .SEL2(OSEL1B),
   .SEL1(OSEL0B),
@@ -13189,7 +13189,7 @@ part_74S151  i_MO0_2C24 (
   .I1(R10),
   .I0(A10),
   .Q(OB10),
-  .Q_N(NC),
+  .Q_N(nc285),
   .CE_N(GND),
   .SEL2(OSEL1B),
   .SEL1(OSEL0B),
@@ -13209,7 +13209,7 @@ part_74S151  i_MO0_2C19 (
   .I1(R11),
   .I0(A11),
   .Q(OB11),
-  .Q_N(NC),
+  .Q_N(nc286),
   .CE_N(GND),
   .SEL2(OSEL1B),
   .SEL1(OSEL0B),
@@ -13229,7 +13229,7 @@ part_74S151  i_MO0_2A30 (
   .I1(R12),
   .I0(A12),
   .Q(OB12),
-  .Q_N(NC),
+  .Q_N(nc287),
   .CE_N(GND),
   .SEL2(OSEL1B),
   .SEL1(OSEL0B),
@@ -13249,7 +13249,7 @@ part_74S151  i_MO0_2A29 (
   .I1(R13),
   .I0(A13),
   .Q(OB13),
-  .Q_N(NC),
+  .Q_N(nc288),
   .CE_N(GND),
   .SEL2(OSEL1B),
   .SEL1(OSEL0B),
@@ -13269,7 +13269,7 @@ part_74S151  i_MO0_2A25 (
   .I1(R14),
   .I0(A14),
   .Q(OB14),
-  .Q_N(NC),
+  .Q_N(nc289),
   .CE_N(GND),
   .SEL2(OSEL1B),
   .SEL1(OSEL0B),
@@ -13289,7 +13289,7 @@ part_74S151  i_MO0_2A24 (
   .I1(R15),
   .I0(A15),
   .Q(OB15),
-  .Q_N(NC),
+  .Q_N(nc290),
   .CE_N(GND),
   .SEL2(OSEL1B),
   .SEL1(OSEL0B),
@@ -13462,13 +13462,13 @@ part_82S21  i_MMEM_4B27 (
   .A4(\-MADR4A ),
   .CE(HI3),
   .D0(MMEMPARITY),
-  .D1(NC),
+  .D1(nc291),
   .A3(\-MADR3A ),
   .A2(\-MADR2A ),
   .A1(\-MADR1A ),
   .A0(\-MADR0A ),
-  .I1(NC),
-  .WE1_N(NC)
+  .I1(nc292),
+  .WE1_N(nc293)
 );
 
 
@@ -13644,7 +13644,7 @@ part_74S241  i_MLATCH_4B07 (
   .AOUT1(MF30),
   .BIN3(L24),
   .AOUT0(MF31),
-  .BENB_N(MPASSL)
+  .BENB(MPASSL)
 );
 
 
@@ -13668,7 +13668,7 @@ part_74S241  i_MLATCH_4B09 (
   .AOUT1(MF22),
   .BIN3(L16),
   .AOUT0(MF23),
-  .BENB_N(MPASSL)
+  .BENB(MPASSL)
 );
 
 
@@ -13692,7 +13692,7 @@ part_74S241  i_MLATCH_4A06 (
   .AOUT1(MF14),
   .BIN3(L8),
   .AOUT0(MF15),
-  .BENB_N(MPASSL)
+  .BENB(MPASSL)
 );
 
 
@@ -13716,7 +13716,7 @@ part_74S241  i_MLATCH_4A08 (
   .AOUT1(MF6),
   .BIN3(L0),
   .AOUT0(MF7),
-  .BENB_N(MPASSL)
+  .BENB(MPASSL)
 );
 
 
@@ -13820,21 +13820,21 @@ part_74S373  i_MLATCH_4B04 (
 // (no code to express 74S373)
 part_74S373  i_MLATCH_4B02 (
   .OENB_N(\-MPASSM ),
-  .O0(NC),
-  .I0(NC),
-  .I1(NC),
-  .O1(NC),
-  .O2(NC),
-  .I2(NC),
-  .I3(NC),
-  .O3(NC),
+  .O0(nc294),
+  .I0(nc295),
+  .I1(nc296),
+  .O1(nc297),
+  .O2(nc298),
+  .I2(nc299),
+  .I3(nc300),
+  .O3(nc301),
   .HOLD_N(CLK4A),
-  .O4(NC),
-  .I4(NC),
-  .I5(NC),
-  .O5(NC),
-  .O6(NC),
-  .I6(NC),
+  .O4(nc302),
+  .I4(nc303),
+  .I5(nc304),
+  .O5(nc305),
+  .O6(nc306),
+  .I6(nc307),
   .I7(MMEMPARITY),
   .O7(MPARITY)
 );
@@ -13844,28 +13844,28 @@ part_74S373  i_MLATCH_4B02 (
 
 
 
-assign #1 \-SRCM  = ! (\-IR31  & \-MPASS );
+assign \-SRCM  = ! (\-IR31  & \-MPASS );
 
 // 3F14:
 
 
-assign #1 internal22 = ! (SPCENB | PDLENB);
+assign internal22 = ! (SPCENB | PDLENB);
 
 
 // 4D06:
 
 
 
-assign #1 MFENB = \-SRCM  & internal22;
+assign MFENB = \-SRCM  & internal22;
 
 // 2A04:
 
-assign #1 MFDRIVE = TSE1A & MFENB;
+assign MFDRIVE = TSE1A & MFENB;
 
 
 
 // 1A18:
-assign #1 \-MFDRIVE  = ! (TSE1A & MFENB);
+assign \-MFDRIVE  = ! (TSE1A & MFENB);
 
 
 
@@ -13890,7 +13890,7 @@ part_74S241  i_MF_1B24 (
   .AOUT1(M30),
   .BIN3(MF24),
   .AOUT0(M31),
-  .BENB_N(MFDRIVE)
+  .BENB(MFDRIVE)
 );
 
 
@@ -13914,7 +13914,7 @@ part_74S241  i_MF_1A21 (
   .AOUT1(M22),
   .BIN3(MF16),
   .AOUT0(M23),
-  .BENB_N(MFDRIVE)
+  .BENB(MFDRIVE)
 );
 
 
@@ -13938,7 +13938,7 @@ part_74S241  i_MF_1A23 (
   .AOUT1(M14),
   .BIN3(MF8),
   .AOUT0(M15),
-  .BENB_N(MFDRIVE)
+  .BENB(MFDRIVE)
 );
 
 
@@ -13962,7 +13962,7 @@ part_74S241  i_MF_1A25 (
   .AOUT1(M6),
   .BIN3(MF0),
   .AOUT0(M7),
-  .BENB_N(MFDRIVE)
+  .BENB(MFDRIVE)
 );
 
 
@@ -13970,22 +13970,22 @@ part_74S241  i_MF_1A25 (
 // (no code to express 74S240)
 part_74S240  i_MDS_1B05 (
   .AENB_N(\-MEMDRIVE.A ),
-  .AIN0(NC),
-  .BOUT3(NC),
-  .AIN1(NC),
-  .BOUT2(NC),
-  .AIN2(NC),
-  .BOUT1(NC),
+  .AIN0(nc308),
+  .BOUT3(nc309),
+  .AIN1(nc310),
+  .BOUT2(nc311),
+  .AIN2(nc312),
+  .BOUT1(nc313),
   .AIN3(MDPARODD),
-  .BOUT0(NC),
-  .BIN0(NC),
+  .BOUT0(nc314),
+  .BIN0(nc315),
   .AOUT3(\MEMPAR_OUT ),
-  .BIN1(NC),
-  .AOUT2(NC),
-  .BIN2(NC),
-  .AOUT1(NC),
-  .BIN3(NC),
-  .AOUT0(NC),
+  .BIN1(nc316),
+  .AOUT2(nc317),
+  .BIN2(nc318),
+  .AOUT1(nc319),
+  .BIN3(nc320),
+  .AOUT0(nc321),
   .BENB_N(HI11)
 );
 
@@ -14250,8 +14250,8 @@ part_74S240  i_MDS_1A15 (
 
 
 
-assign #1 LOADMD = ! \-LOADMD ;
-assign #1 DESTMDR = ! \-DESTMDR ;
+assign LOADMD = ! \-LOADMD ;
+assign DESTMDR = ! \-DESTMDR ;
 
 
 // 1D16:
@@ -14269,19 +14269,19 @@ part_74S51  i_MD_1D16 (
 // (no code to express 74S374)
 part_74S374  i_MD_1E19 (
   .OENB_N(GND),
-  .O0(NC),
-  .I0(NC),
-  .I1(NC),
-  .O1(NC),
-  .O2(NC),
-  .I2(NC),
-  .I3(NC),
-  .O3(NC),
+  .O0(nc322),
+  .I0(nc323),
+  .I1(nc324),
+  .O1(nc325),
+  .O2(nc326),
+  .I2(nc327),
+  .I3(nc328),
+  .O3(nc329),
   .CLK(MDCLK),
-  .O4(NC),
-  .I4(NC),
-  .I5(NC),
-  .O5(NC),
+  .O4(nc330),
+  .I4(nc331),
+  .I5(nc332),
+  .O5(nc333),
   .O6(MDHASPAR),
   .I6(MDGETSPAR),
   .I7(\MEMPAR_IN ),
@@ -14388,18 +14388,18 @@ part_74S374  i_MD_1C17 (
 // 1E07:
 
 
-assign #1 MDGETSPAR = \-IGNPAR  & \-DESTMDR ;
+assign MDGETSPAR = \-IGNPAR  & \-DESTMDR ;
 
 
 // 1A08:
 
-assign #1 \-MDDRIVE  = ! (SRCMD & TSE2);
+assign \-MDDRIVE  = ! (SRCMD & TSE2);
 
 
 
 // 2A05:
 
-assign #1 SRCMD = ! \-SRCMD ;
+assign SRCMD = ! \-SRCMD ;
 
 
 
@@ -14502,23 +14502,23 @@ part_74S240  i_MD_1A05 (
 
 
 // 4B22:
-assign #1 \-MWPA  = ! (DESTMD & WP4B);
-assign #1 \-MWPB  = ! (DESTMD & WP4B);
+assign \-MWPA  = ! (DESTMD & WP4B);
+assign \-MWPB  = ! (DESTMD & WP4B);
 
 
 
 // 4B11:
-assign #1 MPASSL = MPASS & TSE4A & \-IR31 ;
+assign MPASSL = MPASS & TSE4A & \-IR31 ;
 
-assign #1 SRCM = HI2 & \-IR31  & \-MPASS ;
+assign SRCM = HI2 & \-IR31  & \-MPASS ;
 
 // 4B14:
-assign #1 \-MPASSL  = ! (MPASS & TSE4A & \-IR31 );
-assign #1 \-MPASSM  = ! (TSE4A & \-IR31  & \-MPASS );
+assign \-MPASSL  = ! (MPASS & TSE4A & \-IR31 );
+assign \-MPASSM  = ! (TSE4A & \-IR31  & \-MPASS );
 
 
 // 4B12:
-assign #1 \-MPASS  = ! MPASS;
+assign \-MPASS  = ! MPASS;
 
 
 
@@ -14528,7 +14528,7 @@ assign #1 \-MPASS  = ! MPASS;
 // 4A19:
 // (no code to express RES20)
 part_RES20  i_MCTL_4A19 (
-  .R2(NC),
+  .R2(nc334),
   .R3(MMEM15),
   .R4(MMEM14),
   .R5(MMEM13),
@@ -14618,12 +14618,12 @@ part_74S258  i_MCTL_4A16 (
   .D0(WADR4),
   .D1(IR30),
   .DY(\-MADR4A ),
-  .C0(NC),
-  .C1(NC),
-  .CY(NC),
-  .BY(NC),
-  .B1(NC),
-  .B0(NC),
+  .C0(nc335),
+  .C1(nc336),
+  .CY(nc337),
+  .BY(nc338),
+  .B1(nc339),
+  .B0(nc340),
   .AY(\-MADR4B ),
   .A1(IR30),
   .A0(WADR4),
@@ -14671,7 +14671,7 @@ part_74S241  i_LPC_4D02 (
   .AOUT1(PC1B),
   .BIN3(PC7),
   .AOUT0(PC0B),
-  .BENB_N(HI5)
+  .BENB(HI5)
 );
 
 
@@ -14680,9 +14680,9 @@ part_74S241  i_LPC_4D02 (
 part_74S241  i_LPC_4D01 (
   .AENB_N(GND),
   .AIN0(PC8),
-  .BOUT3(NC),
+  .BOUT3(nc341),
   .AIN1(PC9),
-  .BOUT2(NC),
+  .BOUT2(nc342),
   .AIN2(PC10),
   .BOUT1(PC13B),
   .AIN3(PC11),
@@ -14691,16 +14691,16 @@ part_74S241  i_LPC_4D01 (
   .AOUT3(PC11B),
   .BIN1(PC13),
   .AOUT2(PC10B),
-  .BIN2(NC),
+  .BIN2(nc343),
   .AOUT1(PC9B),
-  .BIN3(NC),
+  .BIN3(nc344),
   .AOUT0(PC8B),
-  .BENB_N(HI5)
+  .BENB(HI5)
 );
 
 
 // 4D06:
-assign #1 internal23 = IRDISP & IR25;
+assign internal23 = IRDISP & IR25;
 
 
 
@@ -14775,12 +14775,12 @@ part_74S157  i_LPC_4E06 (
   .B3(PC13),
   .A3(LPC13),
   .Y3(WPC13),
-  .Y2(NC),
-  .B2(NC),
-  .A2(NC),
-  .Y1(NC),
-  .B1(NC),
-  .A1(NC),
+  .Y2(nc345),
+  .B2(nc346),
+  .A2(nc347),
+  .Y1(nc348),
+  .B1(nc349),
+  .A1(nc350),
   .ENB_N(GND)
 );
 
@@ -14802,17 +14802,17 @@ ff_enb i_LPC_4F07_5 (.q(LPC7), .d(PC7), .clk(CLK4B), .enb_n(\LPC.HOLD ) );
 ff_enb i_LPC_4F07_6 (.q(LPC6), .d(PC6), .clk(CLK4B), .enb_n(\LPC.HOLD ) );
 
 // 4F08:
-ff_enb i_LPC_4F08_1 (.q(NC), .d(NC), .clk(CLK4B), .enb_n(\LPC.HOLD ) );
-ff_enb i_LPC_4F08_2 (.q(NC), .d(NC), .clk(CLK4B), .enb_n(\LPC.HOLD ) );
-ff_enb i_LPC_4F08_3 (.q(NC), .d(NC), .clk(CLK4B), .enb_n(\LPC.HOLD ) );
-ff_enb i_LPC_4F08_4 (.q(NC), .d(NC), .clk(CLK4B), .enb_n(\LPC.HOLD ) );
+ff_enb i_LPC_4F08_1 (.q(nc352), .d(nc351), .clk(CLK4B), .enb_n(\LPC.HOLD ) );
+ff_enb i_LPC_4F08_2 (.q(nc354), .d(nc353), .clk(CLK4B), .enb_n(\LPC.HOLD ) );
+ff_enb i_LPC_4F08_3 (.q(nc356), .d(nc355), .clk(CLK4B), .enb_n(\LPC.HOLD ) );
+ff_enb i_LPC_4F08_4 (.q(nc358), .d(nc357), .clk(CLK4B), .enb_n(\LPC.HOLD ) );
 ff_enb i_LPC_4F08_5 (.q(LPC13), .d(PC13), .clk(CLK4B), .enb_n(\LPC.HOLD ) );
 ff_enb i_LPC_4F08_6 (.q(LPC12), .d(PC12), .clk(CLK4B), .enb_n(\LPC.HOLD ) );
 
 // 3E22:
 
 
-assign #1 \-NEEDFETCH  = ! NEEDFETCH;
+assign \-NEEDFETCH  = ! NEEDFETCH;
 
 
 
@@ -14820,7 +14820,7 @@ assign #1 \-NEEDFETCH  = ! NEEDFETCH;
 // 1C15:
 
 
-assign #1 internal25 = ! (\-LCINC  | \LC_BYTE_MODE );
+assign internal25 = ! (\-LCINC  | \LC_BYTE_MODE );
 
 
 // 1C21:
@@ -14846,11 +14846,11 @@ part_74S283  i_LCC_1C21 (
 // 1C27:
 ff_dsel i_LCC_1C27_1 (.q(LC3), .a(OB3), .b(LCA3), .sel(\-DESTLC ), .clk(CLK2A) );
 ff_dsel i_LCC_1C27_2 (.q(LC2), .a(OB2), .b(LCA2), .sel(\-DESTLC ), .clk(CLK2A) );
-ff_dsel i_LCC_1C27_3 (.q(OB0), .a(OB1), .b(LCA1), .sel(\-DESTLC ), .clk(CLK2A) );
+ff_dsel i_LCC_1C27_3 (.q(LC1), .a(OB1), .b(LCA1), .sel(\-DESTLC ), .clk(CLK2A) );
 ff_dsel i_LCC_1C27_4 (.q(LC0), .a(OB0), .b(LCA0), .sel(\-DESTLC ), .clk(CLK2A) );
 
 // 3E05:
-assign #1 \INST_IN_2ND_OR_4TH_QUARTER  = internal26 & \LC_BYTE_MODE ;
+assign \INST_IN_2ND_OR_4TH_QUARTER  = internal26 & \LC_BYTE_MODE ;
 
 
 
@@ -14858,55 +14858,55 @@ assign #1 \INST_IN_2ND_OR_4TH_QUARTER  = internal26 & \LC_BYTE_MODE ;
 // 2E30:
 
 
-assign #1 \INST_IN_LEFT_HALF  = ! (internal27 | \-LC_MODIFIES_MROT );
-assign #1 internal26 = ! (LC0 | \-LC_MODIFIES_MROT );
+assign \INST_IN_LEFT_HALF  = ! (internal27 | \-LC_MODIFIES_MROT );
+assign internal26 = ! (LC0 | \-LC_MODIFIES_MROT );
 
 // 2E05:
-assign #1 \-SH4  = \INST_IN_LEFT_HALF  ^ \-IR4 ;
-assign #1 internal27 = LC1 ^ LC0B;
-assign #1 \-SH3  = \-IR3  ^ \INST_IN_2ND_OR_4TH_QUARTER ;
+assign \-SH4  = \INST_IN_LEFT_HALF  ^ \-IR4 ;
+assign internal27 = LC1 ^ LC0B;
+assign \-SH3  = \-IR3  ^ \INST_IN_2ND_OR_4TH_QUARTER ;
 
 
 // 1E07:
 
 
 
-assign #1 LC0B = LC0 & \LC_BYTE_MODE ;
+assign LC0B = LC0 & \LC_BYTE_MODE ;
 
 // 3E07:
 
 
-assign #1 internal28 = ! (\-SRCSPCPOPREAL  & SPC14);
-assign #1 \-IFETCH  = ! (NEEDFETCH & LCINC);
+assign internal28 = ! (\-SRCSPCPOPREAL  & SPC14);
+assign \-IFETCH  = ! (NEEDFETCH & LCINC);
 
 // 4E03:
-assign #1 SPC1A = SPCMUNG | SPC1;
+assign SPC1A = SPCMUNG | SPC1;
 
 
-assign #1 LCINC = \NEXT.INSTRD  | internal29;
+assign LCINC = \NEXT.INSTRD  | internal29;
 
 // 4D09:
 
-assign #1 SPCMUNG = SPC14 & \-NEEDFETCH ;
+assign SPCMUNG = SPC14 & \-NEEDFETCH ;
 
-assign #1 internal29 = IRDISP & IR24;
+assign internal29 = IRDISP & IR24;
 
 // 3E09:
 
 
 
-assign #1 NEEDFETCH = \HAVE_WRONG_WORD  | \LAST_BYTE_IN_WORD ;
+assign NEEDFETCH = \HAVE_WRONG_WORD  | \LAST_BYTE_IN_WORD ;
 
 // 3E17:
-assign #1 \NEXT.INSTR  = ! (\-SPOP  | internal28);
-assign #1 \LAST_BYTE_IN_WORD  = ! (LC1 | LC0B);
-assign #1 \-LCINC  = ! (\NEXT.INSTRD  | internal29);
+assign \NEXT.INSTR  = ! (\-SPOP  | internal28);
+assign \LAST_BYTE_IN_WORD  = ! (LC1 | LC0B);
+assign \-LCINC  = ! (\NEXT.INSTRD  | internal29);
 
 
 // 3E11:
-assign #1 \-LC_MODIFIES_MROT  = ! (IR10 & IR11);
-assign #1 \HAVE_WRONG_WORD  = ! (\-NEWLC  & \-DESTLC );
-assign #1 \-NEWLC.IN  = ! (\HAVE_WRONG_WORD  & \-LCINC );
+assign \-LC_MODIFIES_MROT  = ! (IR10 & IR11);
+assign \HAVE_WRONG_WORD  = ! (\-NEWLC  & \-DESTLC );
+assign \-NEWLC.IN  = ! (\HAVE_WRONG_WORD  & \-LCINC );
 
 
 // 3E12:
@@ -14917,32 +14917,32 @@ part_74S175  i_LCC_3E12 (
   .Q0_N(NEWLC),
   .D0(\-NEWLC.IN ),
   .D1(INT),
-  .Q1_N(NC),
+  .Q1_N(nc359),
   .Q1(SINTR),
   .CLK(CLK3C),
   .Q2(\NEXT.INSTRD ),
-  .Q2_N(NC),
+  .Q2_N(nc360),
   .D2(\NEXT.INSTR ),
-  .D3(NC),
-  .Q3_N(NC),
-  .Q3(NC)
+  .D3(nc361),
+  .Q3_N(nc362),
+  .Q3(nc363)
 );
 
 
 // 2A04:
 
 
-assign #1 LCDRIVE = SRCLC & TSE1A;
+assign LCDRIVE = SRCLC & TSE1A;
 
 
 // 1A18:
 
-assign #1 \-LCDRIVE  = ! (SRCLC & TSE1A);
+assign \-LCDRIVE  = ! (SRCLC & TSE1A);
 
 
 
 // 2A05:
-assign #1 SRCLC = ! \-SRCLC ;
+assign SRCLC = ! \-SRCLC ;
 
 
 
@@ -14956,16 +14956,16 @@ part_74S169  i_LC_2B03 (
   .CLK(CLK1A),
   .I0(OB24),
   .I1(OB25),
-  .I2(NC),
-  .I3(NC),
+  .I2(nc364),
+  .I3(nc365),
   .ENB_P_N(GND),
   .LOAD_N(\-DESTLC ),
   .ENB_T_N(\-LCRY23 ),
-  .O3(NC),
-  .O2(NC),
+  .O3(nc366),
+  .O2(nc367),
   .O1(LC25),
   .O0(LC24),
-  .CO_N(NC)
+  .CO_N(nc368)
 );
 
 
@@ -15089,7 +15089,7 @@ part_74S241  i_LC_1A16 (
   .AOUT1(MF30),
   .BIN3(LC24),
   .AOUT0(MF31),
-  .BENB_N(LCDRIVE)
+  .BENB(LCDRIVE)
 );
 
 
@@ -15113,7 +15113,7 @@ part_74S241  i_LC_1A22 (
   .AOUT1(MF22),
   .BIN3(LC16),
   .AOUT0(MF23),
-  .BENB_N(LCDRIVE)
+  .BENB(LCDRIVE)
 );
 
 
@@ -15137,7 +15137,7 @@ part_74S241  i_LC_1A24 (
   .AOUT1(MF14),
   .BIN3(LC8),
   .AOUT0(MF15),
-  .BENB_N(LCDRIVE)
+  .BENB(LCDRIVE)
 );
 
 
@@ -15161,7 +15161,7 @@ part_74S241  i_LC_1A20 (
   .AOUT1(MF6),
   .BIN3(LC0B),
   .AOUT0(MF7),
-  .BENB_N(LCDRIVE)
+  .BENB(LCDRIVE)
 );
 
 
@@ -15176,7 +15176,7 @@ part_93S48  i_L_4C03 (
   .I1(L10),
   .I0(L11),
   .PO(LPARL),
-  .PE(NC),
+  .PE(nc369),
   .I11(L0),
   .I10(L1),
   .I9(L2),
@@ -15195,7 +15195,7 @@ part_93S48  i_L_4C08 (
   .I2(L21),
   .I1(L22),
   .I0(L23),
-  .PO(NC),
+  .PO(nc370),
   .PE(\-LPARM ),
   .I11(L12),
   .I10(L13),
@@ -15466,86 +15466,86 @@ part_74S374  i_IWR_4B06 (
 
 
 // 3D06:
-ff_dsel i_IREG_3D06_1 (.q(NC), .a(NC), .b(NC), .sel(\-DESTIMOD1 ), .clk(CLK3A) );
+ff_dsel i_IREG_3D06_1 (.q(nc373), .a(nc372), .b(nc371), .sel(\-DESTIMOD1 ), .clk(CLK3A) );
 ff_dsel i_IREG_3D06_2 (.q(IR48), .a(GND), .b(I48), .sel(\-DESTIMOD1 ), .clk(CLK3A) );
-ff_dsel i_IREG_3D06_3 (.q(IOB46), .a(IOB47), .b(I47), .sel(\-DESTIMOD1 ), .clk(CLK3A) );
+ff_dsel i_IREG_3D06_3 (.q(IR47), .a(IOB47), .b(I47), .sel(\-DESTIMOD1 ), .clk(CLK3A) );
 ff_dsel i_IREG_3D06_4 (.q(IR46), .a(IOB46), .b(I46), .sel(\-DESTIMOD1 ), .clk(CLK3A) );
 
 // 3D07:
 ff_dsel i_IREG_3D07_1 (.q(IR45), .a(IOB45), .b(I45), .sel(\-DESTIMOD1 ), .clk(CLK3A) );
 ff_dsel i_IREG_3D07_2 (.q(IR44), .a(IOB44), .b(I44), .sel(\-DESTIMOD1 ), .clk(CLK3A) );
-ff_dsel i_IREG_3D07_3 (.q(IOB42), .a(IOB43), .b(I43), .sel(\-DESTIMOD1 ), .clk(CLK3A) );
+ff_dsel i_IREG_3D07_3 (.q(IR43), .a(IOB43), .b(I43), .sel(\-DESTIMOD1 ), .clk(CLK3A) );
 ff_dsel i_IREG_3D07_4 (.q(IR42), .a(IOB42), .b(I42), .sel(\-DESTIMOD1 ), .clk(CLK3A) );
 
 // 3D16:
 ff_dsel i_IREG_3D16_1 (.q(IR41), .a(IOB41), .b(I41), .sel(\-DESTIMOD1 ), .clk(CLK3B) );
 ff_dsel i_IREG_3D16_2 (.q(IR40), .a(IOB40), .b(I40), .sel(\-DESTIMOD1 ), .clk(CLK3B) );
-ff_dsel i_IREG_3D16_3 (.q(IOB38), .a(IOB39), .b(I39), .sel(\-DESTIMOD1 ), .clk(CLK3B) );
+ff_dsel i_IREG_3D16_3 (.q(IR39), .a(IOB39), .b(I39), .sel(\-DESTIMOD1 ), .clk(CLK3B) );
 ff_dsel i_IREG_3D16_4 (.q(IR38), .a(IOB38), .b(I38), .sel(\-DESTIMOD1 ), .clk(CLK3B) );
 
 // 3D17:
 ff_dsel i_IREG_3D17_1 (.q(IR37), .a(IOB37), .b(I37), .sel(\-DESTIMOD1 ), .clk(CLK3B) );
 ff_dsel i_IREG_3D17_2 (.q(IR36), .a(IOB36), .b(I36), .sel(\-DESTIMOD1 ), .clk(CLK3B) );
-ff_dsel i_IREG_3D17_3 (.q(IOB34), .a(IOB35), .b(I35), .sel(\-DESTIMOD1 ), .clk(CLK3B) );
+ff_dsel i_IREG_3D17_3 (.q(IR35), .a(IOB35), .b(I35), .sel(\-DESTIMOD1 ), .clk(CLK3B) );
 ff_dsel i_IREG_3D17_4 (.q(IR34), .a(IOB34), .b(I34), .sel(\-DESTIMOD1 ), .clk(CLK3B) );
 
 // 3D18:
 ff_dsel i_IREG_3D18_1 (.q(IR33), .a(IOB33), .b(I33), .sel(\-DESTIMOD1 ), .clk(CLK3B) );
 ff_dsel i_IREG_3D18_2 (.q(IR32), .a(IOB32), .b(I32), .sel(\-DESTIMOD1 ), .clk(CLK3B) );
-ff_dsel i_IREG_3D18_3 (.q(IOB30), .a(IOB31), .b(I31), .sel(\-DESTIMOD1 ), .clk(CLK3B) );
+ff_dsel i_IREG_3D18_3 (.q(IR31), .a(IOB31), .b(I31), .sel(\-DESTIMOD1 ), .clk(CLK3B) );
 ff_dsel i_IREG_3D18_4 (.q(IR30), .a(IOB30), .b(I30), .sel(\-DESTIMOD1 ), .clk(CLK3B) );
 
 // 3D19:
 ff_dsel i_IREG_3D19_1 (.q(IR29), .a(IOB29), .b(I29), .sel(\-DESTIMOD1 ), .clk(CLK3B) );
 ff_dsel i_IREG_3D19_2 (.q(IR28), .a(IOB28), .b(I28), .sel(\-DESTIMOD1 ), .clk(CLK3B) );
-ff_dsel i_IREG_3D19_3 (.q(IOB26), .a(IOB27), .b(I27), .sel(\-DESTIMOD1 ), .clk(CLK3B) );
+ff_dsel i_IREG_3D19_3 (.q(IR27), .a(IOB27), .b(I27), .sel(\-DESTIMOD1 ), .clk(CLK3B) );
 ff_dsel i_IREG_3D19_4 (.q(IR26), .a(IOB26), .b(I26), .sel(\-DESTIMOD1 ), .clk(CLK3B) );
 
 // 3D20:
-ff_dsel i_IREG_3D20_1 (.q(NC), .a(NC), .b(NC), .sel(\-DESTIMOD0 ), .clk(CLK3B) );
-ff_dsel i_IREG_3D20_2 (.q(NC), .a(NC), .b(NC), .sel(\-DESTIMOD0 ), .clk(CLK3B) );
-ff_dsel i_IREG_3D20_3 (.q(IOB24), .a(IOB25), .b(I25), .sel(\-DESTIMOD0 ), .clk(CLK3B) );
+ff_dsel i_IREG_3D20_1 (.q(nc376), .a(nc375), .b(nc374), .sel(\-DESTIMOD0 ), .clk(CLK3B) );
+ff_dsel i_IREG_3D20_2 (.q(nc379), .a(nc378), .b(nc377), .sel(\-DESTIMOD0 ), .clk(CLK3B) );
+ff_dsel i_IREG_3D20_3 (.q(IR25), .a(IOB25), .b(I25), .sel(\-DESTIMOD0 ), .clk(CLK3B) );
 ff_dsel i_IREG_3D20_4 (.q(IR24), .a(IOB24), .b(I24), .sel(\-DESTIMOD0 ), .clk(CLK3B) );
 
 // 3C17:
 ff_dsel i_IREG_3C17_1 (.q(IR23), .a(IOB23), .b(I23), .sel(\-DESTIMOD0 ), .clk(CLK3B) );
 ff_dsel i_IREG_3C17_2 (.q(IR22), .a(IOB22), .b(I22), .sel(\-DESTIMOD0 ), .clk(CLK3B) );
-ff_dsel i_IREG_3C17_3 (.q(IOB20), .a(IOB21), .b(I21), .sel(\-DESTIMOD0 ), .clk(CLK3B) );
+ff_dsel i_IREG_3C17_3 (.q(IR21), .a(IOB21), .b(I21), .sel(\-DESTIMOD0 ), .clk(CLK3B) );
 ff_dsel i_IREG_3C17_4 (.q(IR20), .a(IOB20), .b(I20), .sel(\-DESTIMOD0 ), .clk(CLK3B) );
 
 // 3C19:
 ff_dsel i_IREG_3C19_1 (.q(IR19), .a(IOB19), .b(I19), .sel(\-DESTIMOD0 ), .clk(CLK3B) );
 ff_dsel i_IREG_3C19_2 (.q(IR18), .a(IOB18), .b(I18), .sel(\-DESTIMOD0 ), .clk(CLK3B) );
-ff_dsel i_IREG_3C19_3 (.q(IOB16), .a(IOB17), .b(I17), .sel(\-DESTIMOD0 ), .clk(CLK3B) );
+ff_dsel i_IREG_3C19_3 (.q(IR17), .a(IOB17), .b(I17), .sel(\-DESTIMOD0 ), .clk(CLK3B) );
 ff_dsel i_IREG_3C19_4 (.q(IR16), .a(IOB16), .b(I16), .sel(\-DESTIMOD0 ), .clk(CLK3B) );
 
 // 3C01:
 ff_dsel i_IREG_3C01_1 (.q(IR15), .a(IOB15), .b(I15), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
 ff_dsel i_IREG_3C01_2 (.q(IR14), .a(IOB14), .b(I14), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
-ff_dsel i_IREG_3C01_3 (.q(IOB12), .a(IOB13), .b(I13), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
+ff_dsel i_IREG_3C01_3 (.q(IR13), .a(IOB13), .b(I13), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
 ff_dsel i_IREG_3C01_4 (.q(IR12), .a(IOB12), .b(I12), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
 
 // 3C02:
 ff_dsel i_IREG_3C02_1 (.q(IR11), .a(IOB11), .b(I11), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
 ff_dsel i_IREG_3C02_2 (.q(IR10), .a(IOB10), .b(I10), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
-ff_dsel i_IREG_3C02_3 (.q(IOB8), .a(IOB9), .b(I9), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
+ff_dsel i_IREG_3C02_3 (.q(IR9), .a(IOB9), .b(I9), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
 ff_dsel i_IREG_3C02_4 (.q(IR8), .a(IOB8), .b(I8), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
 
 // 3C03:
 ff_dsel i_IREG_3C03_1 (.q(IR7), .a(IOB7), .b(I7), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
 ff_dsel i_IREG_3C03_2 (.q(IR6), .a(IOB6), .b(I6), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
-ff_dsel i_IREG_3C03_3 (.q(IOB4), .a(IOB5), .b(I5), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
+ff_dsel i_IREG_3C03_3 (.q(IR5), .a(IOB5), .b(I5), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
 ff_dsel i_IREG_3C03_4 (.q(IR4), .a(IOB4), .b(I4), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
 
 // 3C04:
 ff_dsel i_IREG_3C04_1 (.q(IR3), .a(IOB3), .b(I3), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
 ff_dsel i_IREG_3C04_2 (.q(IR2), .a(IOB2), .b(I2), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
-ff_dsel i_IREG_3C04_3 (.q(IOB0), .a(IOB1), .b(I1), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
+ff_dsel i_IREG_3C04_3 (.q(IR1), .a(IOB1), .b(I1), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
 ff_dsel i_IREG_3C04_4 (.q(IR0), .a(IOB0), .b(I0), .sel(\-DESTIMOD0 ), .clk(CLK3A) );
 
 // 4E03:
 
-assign #1 IPAROK = IMODD | IPARITY;
+assign IPAROK = IMODD | IPARITY;
 
 
 
@@ -15560,7 +15560,7 @@ part_93S48  i_IPAR_3F22 (
   .I1(GND),
   .I0(GND),
   .PO(IPARITY),
-  .PE(NC),
+  .PE(nc380),
   .I11(IPAR0),
   .I10(IPAR1),
   .I9(IPAR2),
@@ -15580,7 +15580,7 @@ part_93S48  i_IPAR_3E02 (
   .I1(IR46),
   .I0(IR47),
   .PO(IPAR3),
-  .PE(NC),
+  .PE(nc381),
   .I11(IR36),
   .I10(IR37),
   .I9(IR38),
@@ -15600,7 +15600,7 @@ part_93S48  i_IPAR_3E21 (
   .I1(IR34),
   .I0(IR35),
   .PO(IPAR2),
-  .PE(NC),
+  .PE(nc382),
   .I11(IR24),
   .I10(IR25),
   .I9(IR26),
@@ -15620,7 +15620,7 @@ part_93S48  i_IPAR_3F24 (
   .I1(IR22),
   .I0(IR23),
   .PO(IPAR1),
-  .PE(NC),
+  .PE(nc383),
   .I11(IR12),
   .I10(IR13),
   .I9(IR14),
@@ -15640,7 +15640,7 @@ part_93S48  i_IPAR_3E04 (
   .I1(IR10),
   .I0(IR11),
   .PO(IPAR0),
-  .PE(NC),
+  .PE(nc384),
   .I11(IR0),
   .I10(IR1),
   .I9(IR2),
@@ -15650,94 +15650,94 @@ part_93S48  i_IPAR_3E04 (
 
 
 // 3D15:
-assign #1 IOB24 = I24 | OB24;
-assign #1 IOB25 = I25 | OB25;
-assign #1 IOB26 = I26 | OB0;
-assign #1 IOB27 = I27 | OB1;
+assign IOB24 = I24 | OB24;
+assign IOB25 = I25 | OB25;
+assign IOB26 = I26 | OB0;
+assign IOB27 = I27 | OB1;
 
 // 3D14:
-assign #1 IOB28 = I28 | OB2;
-assign #1 IOB29 = I29 | OB3;
-assign #1 IOB30 = I30 | OB4;
-assign #1 IOB31 = I31 | OB5;
+assign IOB28 = I28 | OB2;
+assign IOB29 = I29 | OB3;
+assign IOB30 = I30 | OB4;
+assign IOB31 = I31 | OB5;
 
 // 3D13:
-assign #1 IOB32 = I32 | OB6;
-assign #1 IOB33 = I33 | OB7;
-assign #1 IOB34 = I34 | OB8;
-assign #1 IOB35 = I35 | OB9;
+assign IOB32 = I32 | OB6;
+assign IOB33 = I33 | OB7;
+assign IOB34 = I34 | OB8;
+assign IOB35 = I35 | OB9;
 
 // 3D10:
-assign #1 IOB36 = I36 | OB10;
-assign #1 IOB37 = I37 | OB11;
-assign #1 IOB38 = I38 | OB12;
-assign #1 IOB39 = I39 | OB13;
+assign IOB36 = I36 | OB10;
+assign IOB37 = I37 | OB11;
+assign IOB38 = I38 | OB12;
+assign IOB39 = I39 | OB13;
 
 // 3D09:
-assign #1 IOB40 = I40 | OB14;
-assign #1 IOB41 = I41 | OB15;
-assign #1 IOB42 = I42 | OB16;
-assign #1 IOB43 = I43 | OB17;
+assign IOB40 = I40 | OB14;
+assign IOB41 = I41 | OB15;
+assign IOB42 = I42 | OB16;
+assign IOB43 = I43 | OB17;
 
 // 3D08:
-assign #1 IOB44 = I44 | OB18;
-assign #1 IOB45 = I45 | OB19;
-assign #1 IOB46 = I46 | OB20;
-assign #1 IOB47 = I47 | OB21;
+assign IOB44 = I44 | OB18;
+assign IOB45 = I45 | OB19;
+assign IOB46 = I46 | OB20;
+assign IOB47 = I47 | OB21;
 
 // 3C16:
-assign #1 IOB20 = I20 | OB20;
-assign #1 IOB21 = I21 | OB21;
-assign #1 IOB22 = I22 | OB22;
-assign #1 IOB23 = I23 | OB23;
+assign IOB20 = I20 | OB20;
+assign IOB21 = I21 | OB21;
+assign IOB22 = I22 | OB22;
+assign IOB23 = I23 | OB23;
 
 // 3C18:
-assign #1 IOB16 = I16 | OB16;
-assign #1 IOB17 = I17 | OB17;
-assign #1 IOB18 = I18 | OB18;
-assign #1 IOB19 = I19 | OB19;
+assign IOB16 = I16 | OB16;
+assign IOB17 = I17 | OB17;
+assign IOB18 = I18 | OB18;
+assign IOB19 = I19 | OB19;
 
 // 3C06:
-assign #1 IOB12 = I12 | OB12;
-assign #1 IOB13 = I13 | OB13;
-assign #1 IOB14 = I14 | OB14;
-assign #1 IOB15 = I15 | OB15;
+assign IOB12 = I12 | OB12;
+assign IOB13 = I13 | OB13;
+assign IOB14 = I14 | OB14;
+assign IOB15 = I15 | OB15;
 
 // 3C07:
-assign #1 IOB8 = I8 | OB8;
-assign #1 IOB9 = I9 | OB9;
-assign #1 IOB10 = I10 | OB10;
-assign #1 IOB11 = I11 | OB11;
+assign IOB8 = I8 | OB8;
+assign IOB9 = I9 | OB9;
+assign IOB10 = I10 | OB10;
+assign IOB11 = I11 | OB11;
 
 // 3C08:
-assign #1 IOB4 = I4 | OB4;
-assign #1 IOB5 = I5 | OB5;
-assign #1 IOB6 = I6 | OB6;
-assign #1 IOB7 = I7 | OB7;
+assign IOB4 = I4 | OB4;
+assign IOB5 = I5 | OB5;
+assign IOB6 = I6 | OB6;
+assign IOB7 = I7 | OB7;
 
 // 3C09:
-assign #1 IOB0 = I0 | OB0;
-assign #1 IOB1 = I1 | OB1;
-assign #1 IOB2 = I2 | OB2;
-assign #1 IOB3 = I3 | OB3;
+assign IOB0 = I0 | OB0;
+assign IOB1 = I1 | OB1;
+assign IOB2 = I2 | OB2;
+assign IOB3 = I3 | OB3;
 
 // 3E08:
 // (no code to express 25LS2519)
 part_25LS2519  i_FLAG_3E08 (
   .I0(OB29),
-  .Q0A(NC),
+  .Q0A(nc385),
   .Q0B(\LC_BYTE_MODE ),
   .I1(OB28),
-  .Q1A(NC),
+  .Q1A(nc386),
   .Q1B(\PROG.UNIBUS.RESET ),
   .O_ENB_N(HI4),
   .OUT_ENB_N(GND),
   .CLK(CLK3C),
   .Q2B(\INT.ENABLE ),
-  .Q2A(NC),
+  .Q2A(nc387),
   .I2(OB27),
   .Q3B(\SEQUENCE.BREAK ),
-  .Q3A(NC),
+  .Q3A(nc388),
   .I3(OB26),
   .CLK_ENB_N(\-DESTINTCTL ),
   .INV(HI4),
@@ -15748,14 +15748,11 @@ part_25LS2519  i_FLAG_3E08 (
 // 4D09:
 
 
-assign #1 SINT = SINTR & \INT.ENABLE ;
+assign SINT = SINTR & \INT.ENABLE ;
 
 
 // 3E07:
-//assign #1 \-ILONG  = ! (IR45 & \-NOPA );
-//hack
-assign #1 \-ILONG  = 1;
-assign \-TPDONE  = \-TPW60 ;
+assign \-ILONG  = ! (IR45 & \-NOPA );
 
 
 
@@ -15764,26 +15761,26 @@ assign \-TPDONE  = \-TPW60 ;
 
 
 
-assign #1 \-STATBIT  = ! (\-NOPA  & IR46);
+assign \-STATBIT  = ! (\-NOPA  & IR46);
 
 // 3E22:
 
 
 
-assign #1 \-ALU32  = ! ALU32;
+assign \-ALU32  = ! ALU32;
 
 
 
 // 3E18:
 
-assign #1 \PGF.OR.INT  = \-VMAOK  | SINT;
-assign #1 internal30 = \SEQUENCE.BREAK  | SINT;
-assign #1 \PGF.OR.INT.OR.SB  = internal30 | \-VMAOK ;
+assign \PGF.OR.INT  = \-VMAOK  | SINT;
+assign internal30 = \SEQUENCE.BREAK  | SINT;
+assign \PGF.OR.INT.OR.SB  = internal30 | \-VMAOK ;
 
 // 3E14:
-assign #1 CONDS2 = IR2 & IR5;
-assign #1 CONDS1 = IR1 & IR5;
-assign #1 CONDS0 = IR0 & IR5;
+assign CONDS2 = IR2 & IR5;
+assign CONDS1 = IR1 & IR5;
+assign CONDS0 = IR0 & IR5;
 
 
 // 3E13:
@@ -15810,29 +15807,29 @@ part_74S151  i_FLAG_3E13 (
 
 
 
-assign #1 ALUNEG = ! (A | \-ALU32 );
+assign ALUNEG = ! (A | \-ALU32 );
 
 // 3F11:
 // (no code to express 74S241)
 part_74S241  i_DSPCTL_3F11 (
   .AENB_N(HI4),
-  .AIN0(NC),
+  .AIN0(nc389),
   .BOUT3(AA16),
-  .AIN1(NC),
+  .AIN1(nc390),
   .BOUT2(AA17),
-  .AIN2(NC),
-  .BOUT1(NC),
-  .AIN3(NC),
-  .BOUT0(NC),
-  .BIN0(NC),
-  .AOUT3(NC),
-  .BIN1(NC),
-  .AOUT2(NC),
+  .AIN2(nc391),
+  .BOUT1(nc392),
+  .AIN3(nc393),
+  .BOUT0(nc394),
+  .BIN0(nc395),
+  .AOUT3(nc396),
+  .BIN1(nc397),
+  .AOUT2(nc398),
   .BIN2(A17),
-  .AOUT1(NC),
+  .AOUT1(nc399),
   .BIN3(A16),
-  .AOUT0(NC),
-  .BENB_N(HI4)
+  .AOUT0(nc400),
+  .BENB(HI4)
 );
 
 
@@ -15856,7 +15853,7 @@ part_74S241  i_DSPCTL_3F12 (
   .AOUT1(AA14),
   .BIN3(A8),
   .AOUT0(AA15),
-  .BENB_N(HI4)
+  .BENB(HI4)
 );
 
 
@@ -15880,12 +15877,12 @@ part_74S241  i_DSPCTL_3F13 (
   .AOUT1(AA6),
   .BIN3(A0),
   .AOUT0(AA7),
-  .BENB_N(HI4)
+  .BENB(HI4)
 );
 
 
 // 3D02:
-assign #1 DPAROK = ! (DPAREVEN & DISPENB);
+assign DPAROK = ! (DPAREVEN & DISPENB);
 
 
 
@@ -15893,7 +15890,7 @@ assign #1 DPAROK = ! (DPAREVEN & DISPENB);
 // 3E19:
 
 
-assign #1 DPAREVEN = \-DPARH  ^ DPARL;
+assign DPAREVEN = \-DPARH  ^ DPARL;
 
 
 // 4F10:
@@ -15902,7 +15899,7 @@ part_74S280  i_DSPCTL_4F10 (
   .I0(DPC0),
   .I1(DPC1),
   .I2(DPC2),
-  .EVEN(NC),
+  .EVEN(nc401),
   .ODD(DPARL),
   .I3(DPC3),
   .I4(DPC4),
@@ -15920,7 +15917,7 @@ part_74S280  i_DSPCTL_4F09 (
   .I1(DPC10),
   .I2(DPC11),
   .EVEN(\-DPARH ),
-  .ODD(NC),
+  .ODD(nc402),
   .I3(DPC12),
   .I4(DPC13),
   .I5(DN),
@@ -15931,8 +15928,8 @@ part_74S280  i_DSPCTL_4F09 (
 
 
 // 3F14:
-assign #1 \-DMAPBENB  = ! (IR8 | IR9);
-assign #1 DISPWR = ! (\-IRDISP  | \-FUNCT2 );
+assign \-DMAPBENB  = ! (IR8 | IR9);
+assign DISPWR = ! (\-IRDISP  | \-FUNCT2 );
 
 
 
@@ -15949,8 +15946,8 @@ ff_enb i_DSPCTL_3C14_1 (.q(DC6), .d(IR38), .clk(CLK3E), .enb_n(\-IRDISP ) );
 ff_enb i_DSPCTL_3C14_2 (.q(DC7), .d(IR39), .clk(CLK3E), .enb_n(\-IRDISP ) );
 ff_enb i_DSPCTL_3C14_3 (.q(DC8), .d(IR40), .clk(CLK3E), .enb_n(\-IRDISP ) );
 ff_enb i_DSPCTL_3C14_4 (.q(DC9), .d(IR41), .clk(CLK3E), .enb_n(\-IRDISP ) );
-ff_enb i_DSPCTL_3C14_5 (.q(NC), .d(NC), .clk(CLK3E), .enb_n(\-IRDISP ) );
-ff_enb i_DSPCTL_3C14_6 (.q(NC), .d(NC), .clk(CLK3E), .enb_n(\-IRDISP ) );
+ff_enb i_DSPCTL_3C14_5 (.q(nc404), .d(nc403), .clk(CLK3E), .enb_n(\-IRDISP ) );
+ff_enb i_DSPCTL_3C14_6 (.q(nc406), .d(nc405), .clk(CLK3E), .enb_n(\-IRDISP ) );
 
 // 2F22:
 // (no code to express 5610)
@@ -15962,7 +15959,7 @@ part_5610  i_DSPCTL_2F22 (
   .O4(DMASK4),
   .O5(DMASK5),
   .O6(DMASK6),
-  .O7(NC),
+  .O7(nc407),
   .A0(IR5),
   .A1(IR6),
   .A2(IR7),
@@ -15975,16 +15972,16 @@ part_5610  i_DSPCTL_2F22 (
 // 2F03:
 
 
-assign #1 \-DWEC  = ! (DISPWR & WP2);
+assign \-DWEC  = ! (DISPWR & WP2);
 
 
 // 2F02:
-assign #1 NC = ! NC;
-assign #1 DADR10C = ! \-DADR10C ;
-assign #1 \-DADR10C  = ! IR22B;
-assign #1 \-DADR9C  = ! IR21B;
-assign #1 \-DADR8C  = ! IR20B;
-assign #1 \-DADR7C  = ! IR19B;
+assign nc409 = ! nc408;
+assign DADR10C = ! \-DADR10C ;
+assign \-DADR10C  = ! IR22B;
+assign \-DADR9C  = ! IR21B;
+assign \-DADR8C  = ! IR20B;
+assign \-DADR7C  = ! IR19B;
 
 // 2F01:
 // (no code to express 74S64)
@@ -16297,38 +16294,38 @@ part_93425A  i_DRAM2_1F29 (
 part_74S241  i_DRAM1_2F23 (
   .AENB_N(GND),
   .AIN0(IR20),
-  .BOUT3(NC),
+  .BOUT3(nc410),
   .AIN1(IR21),
-  .BOUT2(NC),
+  .BOUT2(nc411),
   .AIN2(IR22),
-  .BOUT1(NC),
+  .BOUT1(nc412),
   .AIN3(IR8),
   .BOUT0(IR9B),
   .BIN0(IR9),
   .AOUT3(IR8B),
-  .BIN1(NC),
+  .BIN1(nc413),
   .AOUT2(IR22B),
-  .BIN2(NC),
+  .BIN2(nc414),
   .AOUT1(IR21B),
-  .BIN3(NC),
+  .BIN3(nc415),
   .AOUT0(IR20B),
-  .BENB_N(HI6)
+  .BENB(HI6)
 );
 
 
 // 2F03:
 
-assign #1 \-DWEB  = ! (WP2 & DISPWR);
+assign \-DWEB  = ! (WP2 & DISPWR);
 
 
 
 // 2F04:
-assign #1 NC = ! NC;
-assign #1 VMO19 = ! \-VMO19 ;
-assign #1 VMO18 = ! \-VMO18 ;
-assign #1 \-DADR9B  = ! IR21B;
-assign #1 \-DADR8B  = ! IR20B;
-assign #1 \-DADR7B  = ! IR19B;
+assign nc417 = ! nc416;
+assign VMO19 = ! \-VMO19 ;
+assign VMO18 = ! \-VMO18 ;
+assign \-DADR9B  = ! IR21B;
+assign \-DADR8B  = ! IR20B;
+assign \-DADR7B  = ! IR19B;
 
 // 2F05:
 // (no code to express 74S64)
@@ -16656,23 +16653,23 @@ part_74S241  i_DRAM0_2F25 (
   .AOUT1(IR13B),
   .BIN3(IR19),
   .AOUT0(IR12B),
-  .BENB_N(HI6)
+  .BENB(HI6)
 );
 
 
 // 2F03:
-assign #1 \-DWEA  = ! (WP2 & DISPWR);
+assign \-DWEA  = ! (WP2 & DISPWR);
 
 
 
 
 // 2F21:
-assign #1 NC = ! NC;
-assign #1 DADR10A = ! \-DADR10A ;
-assign #1 \-DADR10A  = ! IR22B;
-assign #1 \-DADR9A  = ! IR21B;
-assign #1 \-DADR8A  = ! IR20B;
-assign #1 \-DADR7A  = ! IR19B;
+assign nc419 = ! nc418;
+assign DADR10A = ! \-DADR10A ;
+assign \-DADR10A  = ! IR22B;
+assign \-DADR9A  = ! IR21B;
+assign \-DADR8A  = ! IR20B;
+assign \-DADR7A  = ! IR19B;
 
 // 2F24:
 // (no code to express 74S64)
@@ -16981,38 +16978,38 @@ part_93425A  i_DRAM0_3F09 (
 
 
 // 3E18:
-assign #1 \-IGNPOPJ  = \-IRDISP  | DR;
+assign \-IGNPOPJ  = \-IRDISP  | DR;
 
 
 
 
 // 3E29:
-assign #1 JRET = \-IR8  & IRJUMP & IR9;
-assign #1 IWRITE = IRJUMP & IR8 & IR9;
+assign JRET = \-IR8  & IRJUMP & IR9;
+assign IWRITE = IRJUMP & IR8 & IR9;
 
 
 // 3E24:
-assign #1 DISPENB = IRDISP & \-FUNCT2 ;
-assign #1 JFALSE = IRJUMP & IR6;
-assign #1 JCALF = JFALSE & IR8;
-assign #1 JRETF = JRET & IR6;
+assign DISPENB = IRDISP & \-FUNCT2 ;
+assign JFALSE = IRJUMP & IR6;
+assign JCALF = JFALSE & IR8;
+assign JRETF = JRET & IR6;
 
 // 3F20:
-assign #1 POPJ = ! \-POPJ ;
-assign #1 \-IR8  = ! IR8;
-assign #1 \-IR6  = ! IR6;
-assign #1 SPUSH = ! \-SPUSH ;
-assign #1 \-DP  = ! DP;
-assign #1 \-DR  = ! DR;
+assign POPJ = ! \-POPJ ;
+assign \-IR8  = ! IR8;
+assign \-IR6  = ! IR6;
+assign SPUSH = ! \-SPUSH ;
+assign \-DP  = ! DP;
+assign \-DR  = ! DR;
 
 // 3E09:
-assign #1 \-SRCSPCPOPREAL  = \-SRCSPCPOP  | NOP;
+assign \-SRCSPCPOPREAL  = \-SRCSPCPOP  | NOP;
 
 
 
 
 // 4D09:
-assign #1 \-SPCNT  = \-SPUSH  & \-SPOP ;
+assign \-SPCNT  = \-SPUSH  & \-SPOP ;
 
 
 
@@ -17111,44 +17108,44 @@ part_74S64  i_CONTRL_3E27 (
 
 
 
-assign #1 \-NOPA  = \-INOP  & \-NOP11 ;
+assign \-NOPA  = \-INOP  & \-NOP11 ;
 
 // 3E23:
-assign #1 \-DFALL  = ! (DR & DP);
-assign #1 N = ! (\-TRAP  & internal32);
-assign #1 internal31 = ! (\-SRCSPCPOPREAL  & \-POPJ );
-assign #1 NOP = ! (\-TRAP  & \-NOPA );
+assign \-DFALL  = ! (DR & DP);
+assign N = ! (\-TRAP  & internal32);
+assign internal31 = ! (\-SRCSPCPOPREAL  & \-POPJ );
+assign NOP = ! (\-TRAP  & \-NOPA );
 
 // 3D28:
-assign #1 SPCENB = ! (\-SRCSPC  & \-SRCSPCPOP );
-assign #1 \-SPCDRIVE  = ! (SPCENB & TSE3A);
-assign #1 \-SPCPASS  = ! (\-SPUSHD  & TSE3A);
-assign #1 \-SPCWPASS  = ! (TSE3A & SPUSHD);
+assign SPCENB = ! (\-SRCSPC  & \-SRCSPCPOP );
+assign \-SPCDRIVE  = ! (SPCENB & TSE3A);
+assign \-SPCPASS  = ! (\-SPUSHD  & TSE3A);
+assign \-SPCWPASS  = ! (TSE3A & SPUSHD);
 
 // 3E07:
 
-assign #1 \-IPOPJ  = ! (IR42 & \-NOP );
+assign \-IPOPJ  = ! (IR42 & \-NOP );
 
 
 
 // 3E22:
-assign #1 DESTSPC = ! \-DESTSPC ;
-assign #1 \-NOP  = ! NOP;
+assign DESTSPC = ! \-DESTSPC ;
+assign \-NOP  = ! NOP;
 
 
 
 
 
 // 4E30:
-assign #1 DESTSPCD = ! (\-DESTSPCD  & \-DESTSPCD );
-assign #1 \-SWPB  = ! (WP4C & SPUSHD);
-assign #1 \-SWPA  = ! (SPUSHD & WP4C);
+assign DESTSPCD = ! (\-DESTSPCD  & \-DESTSPCD );
+assign \-SWPB  = ! (WP4C & SPUSHD);
+assign \-SWPA  = ! (SPUSHD & WP4C);
 
 
 // 3D21:
-assign #1 SPCWPASS = SPUSHD & TSE3A;
-assign #1 \-POPJ  = \-IPOPJ  & \-IWRITED ;
-assign #1 SPCDRIVE = TSE3A & SPCENB;
+assign SPCWPASS = SPUSHD & TSE3A;
+assign \-POPJ  = \-IPOPJ  & \-IWRITED ;
+assign SPCDRIVE = TSE3A & SPCENB;
 
 
 // 3D26:
@@ -17158,9 +17155,9 @@ part_74S175  i_CONTRL_3D26 (
   .Q0(INOP),
   .Q0_N(\-INOP ),
   .D0(N),
-  .D1(NC),
-  .Q1_N(NC),
-  .Q1(NC),
+  .D1(nc420),
+  .Q1_N(nc421),
+  .Q1(nc422),
   .CLK(CLK3C),
   .Q2(SPUSHD),
   .Q2_N(\-SPUSHD ),
@@ -17192,80 +17189,80 @@ part_74S133  i_CLOCKD_1F05 (
 
 
 // 4D03:
-assign #1 NC = ! NC;
-assign #1 NC = ! NC;
-assign #1 TSE4B = ! \-TSE4 ;
-assign #1 TSE4A = ! \-TSE4 ;
-assign #1 SRCPDLPTR = ! \-SRCPDLPTR ;
-assign #1 SRCPDLIDX = ! \-SRCPDLIDX ;
+assign nc424 = ! nc423;
+assign nc426 = ! nc425;
+assign TSE4B = ! \-TSE4 ;
+assign TSE4A = ! \-TSE4 ;
+assign SRCPDLPTR = ! \-SRCPDLPTR ;
+assign SRCPDLIDX = ! \-SRCPDLIDX ;
 
 // 4C07:
-assign #1 CLK4D = ! (\-CLK4D  & HI2);
-assign #1 CLK4E = ! (\-CLK4D  & HI2);
-assign #1 CLK4F = ! (HI2 & \-CLK4D );
+assign CLK4D = ! (\-CLK4D  & HI2);
+assign CLK4E = ! (\-CLK4D  & HI2);
+assign CLK4F = ! (HI2 & \-CLK4D );
 
 
 // 4C02:
-assign #1 CLK4A = ! (\-CLK4A  & HI5);
-assign #1 CLK4B = ! (\-CLK4A  & HI5);
-assign #1 CLK4C = ! (HI5 & \-CLK4A );
+assign CLK4A = ! (\-CLK4A  & HI5);
+assign CLK4B = ! (\-CLK4A  & HI5);
+assign CLK4C = ! (HI5 & \-CLK4A );
 
 
 // 4C06:
-assign #1 \-CLK4E  = ! CLK4;
-assign #1 \-CLK4D  = ! CLK4;
-assign #1 \-CLK4A  = ! CLK4;
-assign #1 WP4C = ! \-WP4 ;
-assign #1 WP4B = ! \-WP4 ;
-assign #1 WP4A = ! \-WP4 ;
+assign \-CLK4E  = ! CLK4;
+assign \-CLK4D  = ! CLK4;
+assign \-CLK4A  = ! CLK4;
+assign WP4C = ! \-WP4 ;
+assign WP4B = ! \-WP4 ;
+assign WP4A = ! \-WP4 ;
 
 // 3C13:
-assign #1 CLK3D = ! (\-CLK3D  & HI5);
-assign #1 CLK3E = ! (\-CLK3D  & HI5);
-assign #1 CLK3F = ! (HI5 & \-CLK3D );
+assign CLK3D = ! (\-CLK3D  & HI5);
+assign CLK3E = ! (\-CLK3D  & HI5);
+assign CLK3F = ! (HI5 & \-CLK3D );
 
 
 // 3C11:
-assign #1 CLK3A = ! (\-CLK3A  & HI5);
-assign #1 CLK3B = ! (\-CLK3A  & HI5);
-assign #1 CLK3C = ! (HI5 & \-CLK3A );
+assign CLK3A = ! (\-CLK3A  & HI5);
+assign CLK3B = ! (\-CLK3A  & HI5);
+assign CLK3C = ! (HI5 & \-CLK3A );
 
 
 // 3C12:
-assign #1 NC = ! NC;
-assign #1 \-CLK3G  = ! CLK3;
-assign #1 \-CLK3D  = ! CLK3;
-assign #1 \-CLK3A  = ! CLK3;
-assign #1 WP3A = ! \-WP3 ;
-assign #1 TSE3A = ! \-TSE3 ;
+assign nc428 = ! nc427;
+assign \-CLK3G  = ! CLK3;
+assign \-CLK3D  = ! CLK3;
+assign \-CLK3A  = ! CLK3;
+assign WP3A = ! \-WP3 ;
+assign TSE3A = ! \-TSE3 ;
 
 // 2C03:
-assign #1 CLK2A = ! (\-CLK2A  & HI7);
-assign #1 CLK2B = ! (\-CLK2A  & HI7);
-assign #1 CLK2C = ! (HI7 & \-CLK2C );
+assign CLK2A = ! (\-CLK2A  & HI7);
+assign CLK2B = ! (\-CLK2A  & HI7);
+assign CLK2C = ! (HI7 & \-CLK2C );
 
 
 // 2C02:
-assign #1 \-LCRY3  = ! LCRY3;
-assign #1 NC = ! NC;
-assign #1 \-CLK2C  = ! CLK2;
-assign #1 \-CLK2A  = ! CLK2;
-assign #1 WP2 = ! \-WP2 ;
-assign #1 TSE2 = ! \-TSE2 ;
+assign \-LCRY3  = ! LCRY3;
+assign nc430 = ! nc429;
+assign \-CLK2C  = ! CLK2;
+assign \-CLK2A  = ! CLK2;
+assign WP2 = ! \-WP2 ;
+assign TSE2 = ! \-TSE2 ;
 
 // 1B18:
-assign #1 CLK1A = ! (\-CLK1  & HI12);
-assign #1 \-RESET  = ! (RESET & HI12);
-assign #1 MCLK1A = ! (HI12 & \-MCLK1 );
+assign CLK1A = ! (\-CLK1  & HI12);
+assign \-RESET  = ! (RESET & HI12);
+assign MCLK1A = ! (HI12 & \-MCLK1 );
 
 
 // 1B19:
-assign #1 \-MCLK1  = ! MCLK1;
-assign #1 \-CLK1  = ! CLK1;
-assign #1 WP1B = ! \-WP1 ;
-assign #1 WP1A = ! \-WP1 ;
-assign #1 TSE1B = ! \-TSE1 ;
-assign #1 TSE1A = ! \-TSE1 ;
+assign \-MCLK1  = ! MCLK1;
+assign \-CLK1  = ! CLK1;
+assign WP1B = ! \-WP1 ;
+assign WP1A = ! \-WP1 ;
+assign TSE1B = ! \-TSE1 ;
+assign TSE1A = ! \-TSE1 ;
 
 // 2C25:
 // (no code to express SIP330/470-8)
@@ -17275,7 +17272,7 @@ part_SIP330_470_8  i_BCTERM_2C25 (
   .R4(\-LOADMD ),
   .R5(\-IGNPAR ),
   .R6(\-MEMACK ),
-  .R7(NC)
+  .R7(nc431)
 );
 
 
@@ -17316,8 +17313,8 @@ part_SIP220_330_8  i_BCTERM_1B15 (
 
 
 // 4A17:
-assign #1 MMEMPAROK = ! (MPAREVEN & SRCM);
-assign #1 PDLPAROK = ! (MPAREVEN & PDLENB);
+assign MMEMPAROK = ! (MPAREVEN & SRCM);
+assign PDLPAROK = ! (MPAREVEN & PDLENB);
 
 
 
@@ -17332,7 +17329,7 @@ part_93S48  i_APAR_3A28 (
   .I1(A31B),
   .I0(APARITY),
   .PO(APAROK),
-  .PE(NC),
+  .PE(nc432),
   .I11(APARL),
   .I10(APARM),
   .I9(GND),
@@ -17352,7 +17349,7 @@ part_93S48  i_APAR_3A29 (
   .I1(A22),
   .I0(A23),
   .PO(APARM),
-  .PE(NC),
+  .PE(nc433),
   .I11(A12),
   .I10(A13),
   .I9(A14),
@@ -17372,7 +17369,7 @@ part_93S48  i_APAR_3A30 (
   .I1(A10),
   .I0(A11),
   .PO(APARL),
-  .PE(NC),
+  .PE(nc434),
   .I11(A0),
   .I10(A1),
   .I9(A2),
@@ -17392,7 +17389,7 @@ part_93S48  i_APAR_4A14 (
   .I1(M10),
   .I0(M11),
   .PO(MPARL),
-  .PE(NC),
+  .PE(nc435),
   .I11(M0),
   .I10(M1),
   .I9(M2),
@@ -17412,7 +17409,7 @@ part_93S48  i_APAR_4A12 (
   .I1(M22),
   .I0(M23),
   .PO(MPARM),
-  .PE(NC),
+  .PE(nc436),
   .I11(M12),
   .I10(M13),
   .I9(M14),
@@ -17762,58 +17759,58 @@ part_93425A  i_AMEM1_3B22 (
 
 
 // 2B20:
-assign #1 ALUMODE = ! (\-ALUMODE  & \-ALUMODE );
+assign ALUMODE = ! (\-ALUMODE  & \-ALUMODE );
 
 
 
 
 // 2C11:
-assign #1 \-A31  = ! A31B;
-assign #1 \-IR4  = ! IR4;
-assign #1 \-IR3  = ! IR3;
-assign #1 \-IR2  = ! IR2;
-assign #1 \-IR1  = ! IR1;
-assign #1 \-IR0  = ! IR0;
+assign \-A31  = ! A31B;
+assign \-IR4  = ! IR4;
+assign \-IR3  = ! IR3;
+assign \-IR2  = ! IR2;
+assign \-IR1  = ! IR1;
+assign \-IR0  = ! IR0;
 
 // 2C10:
-assign #1 internal33 = ! (IR5 | \-DIVPOSLASTTIME );
-assign #1 \-DIVPOSLASTTIME  = ! (Q0 | IR6);
-assign #1 DIVSUBCOND = ! (\-DIV  | \-DIVPOSLASTTIME );
-assign #1 DIVADDCOND = ! (\-DIV  | internal33);
+assign internal33 = ! (IR5 | \-DIVPOSLASTTIME );
+assign \-DIVPOSLASTTIME  = ! (Q0 | IR6);
+assign DIVSUBCOND = ! (\-DIV  | \-DIVPOSLASTTIME );
+assign DIVADDCOND = ! (\-DIV  | internal33);
 
 // 2D15:
 
-assign #1 \-MULNOP  = \-MUL  | Q0;
+assign \-MULNOP  = \-MUL  | Q0;
 
 
 
 // 2C15:
-assign #1 internal34 = ! (DIVADDCOND & \-A31 );
-assign #1 internal35 = ! (DIVSUBCOND & A31A);
-assign #1 internal36 = ! (\-A31  & DIVSUBCOND);
-assign #1 internal37 = ! (DIVADDCOND & A31A);
+assign internal34 = ! (DIVADDCOND & \-A31 );
+assign internal35 = ! (DIVSUBCOND & A31A);
+assign internal36 = ! (\-A31  & DIVSUBCOND);
+assign internal37 = ! (DIVADDCOND & A31A);
 
 // 2C20:
-assign #1 ALUSUB = ! (\-MULNOP  & internal36 & internal37 & \-IRJUMP );
-assign #1 ALUADD = ! (\-MUL  & HI12 & internal35 & internal34);
+assign ALUSUB = ! (\-MULNOP  & internal36 & internal37 & \-IRJUMP );
+assign ALUADD = ! (\-MUL  & HI12 & internal35 & internal34);
 
 // 2D21:
-assign #1 OSEL1A = ! (\-IR13  | \-IRALU );
-assign #1 OSEL0A = ! (\-IR12  | \-IRALU );
-assign #1 OSEL1B = ! (\-IR13  | \-IRALU );
-assign #1 OSEL0B = ! (\-IR12  | \-IRALU );
+assign OSEL1A = ! (\-IR13  | \-IRALU );
+assign OSEL0A = ! (\-IR12  | \-IRALU );
+assign OSEL1B = ! (\-IR13  | \-IRALU );
+assign OSEL0B = ! (\-IR12  | \-IRALU );
 
 // 2A16:
-assign #1 ALUF0B = ! (\-ALUF0  & \-ALUF0 );
-assign #1 ALUF1B = ! (\-ALUF1  & \-ALUF1 );
-assign #1 ALUF2B = ! (\-ALUF2  & \-ALUF2 );
-assign #1 ALUF3B = ! (\-ALUF3  & \-ALUF3 );
+assign ALUF0B = ! (\-ALUF0  & \-ALUF0 );
+assign ALUF1B = ! (\-ALUF1  & \-ALUF1 );
+assign ALUF2B = ! (\-ALUF2  & \-ALUF2 );
+assign ALUF3B = ! (\-ALUF3  & \-ALUF3 );
 
 // 2A17:
-assign #1 ALUF0A = ! (\-ALUF0  & \-ALUF0 );
-assign #1 ALUF1A = ! (\-ALUF1  & \-ALUF1 );
-assign #1 ALUF2A = ! (\-ALUF2  & \-ALUF2 );
-assign #1 ALUF3A = ! (\-ALUF3  & \-ALUF3 );
+assign ALUF0A = ! (\-ALUF0  & \-ALUF0 );
+assign ALUF1A = ! (\-ALUF1  & \-ALUF1 );
+assign ALUF2A = ! (\-ALUF2  & \-ALUF2 );
+assign ALUF3A = ! (\-ALUF3  & \-ALUF3 );
 
 // 2B18:
 // (no code to express 74S153)
@@ -17882,16 +17879,16 @@ part_74S182  i_ALUC4_2A18 (
   .X1(XX1),
   .Y0(YY0),
   .X0(XX0),
-  .Y3(NC),
-  .X3(NC),
-  .XOUT(NC),
-  .COUT2_N(NC),
-  .YOUT(NC),
+  .Y3(nc437),
+  .X3(nc438),
+  .XOUT(nc439),
+  .COUT2_N(nc440),
+  .YOUT(nc441),
   .COUT1_N(\-CIN32 ),
   .COUT0_N(\-CIN16 ),
   .CIN_N(\-CIN0 ),
-  .Y2(NC),
-  .X2(NC)
+  .Y2(nc442),
+  .X2(nc443)
 );
 
 
@@ -17936,7 +17933,7 @@ part_74S182  i_ALUC4_2A20 (
 
 
 // 2A04:
-assign #1 M31B = M31 & HI12;
+assign M31B = M31 & HI12;
 
 
 
@@ -17953,19 +17950,19 @@ part_74S181  i_ALU1_2A03 (
   .CIN_N(\-CIN32 ),
   .M(ALUMODE),
   .F0(ALU32),
-  .F1(NC),
-  .F2(NC),
-  .F3(NC),
-  .AEB(NC),
-  .X(NC),
-  .COUT_N(NC),
-  .Y(NC),
-  .B3(NC),
-  .A3(NC),
-  .B2(NC),
-  .A2(NC),
-  .B1(NC),
-  .A1(NC)
+  .F1(nc444),
+  .F2(nc445),
+  .F3(nc446),
+  .AEB(nc447),
+  .X(nc448),
+  .COUT_N(nc449),
+  .Y(nc450),
+  .B3(nc451),
+  .A3(nc452),
+  .B2(nc453),
+  .A2(nc454),
+  .B1(nc455),
+  .A1(nc456)
 );
 
 
@@ -17986,7 +17983,7 @@ part_74S181  i_ALU1_2A08 (
   .F3(ALU31),
   .AEB(A),
   .X(XOUT31),
-  .COUT_N(NC),
+  .COUT_N(nc457),
   .Y(YOUT31),
   .B3(A31B),
   .A3(M31B),
@@ -18014,7 +18011,7 @@ part_74S181  i_ALU1_2B08 (
   .F3(ALU27),
   .AEB(A),
   .X(XOUT27),
-  .COUT_N(NC),
+  .COUT_N(nc458),
   .Y(YOUT27),
   .B3(A27),
   .A3(M27),
@@ -18042,7 +18039,7 @@ part_74S181  i_ALU1_2A13 (
   .F3(ALU23),
   .AEB(A),
   .X(XOUT23),
-  .COUT_N(NC),
+  .COUT_N(nc459),
   .Y(YOUT23),
   .B3(A23),
   .A3(M23),
@@ -18070,7 +18067,7 @@ part_74S181  i_ALU1_2B13 (
   .F3(ALU19),
   .AEB(A),
   .X(XOUT19),
-  .COUT_N(NC),
+  .COUT_N(nc460),
   .Y(YOUT19),
   .B3(A19),
   .A3(M19),
@@ -18098,7 +18095,7 @@ part_74S181  i_ALU0_2A23 (
   .F3(ALU15),
   .AEB(A),
   .X(XOUT15),
-  .COUT_N(NC),
+  .COUT_N(nc461),
   .Y(YOUT15),
   .B3(A15),
   .A3(M15),
@@ -18126,7 +18123,7 @@ part_74S181  i_ALU0_2B23 (
   .F3(ALU11),
   .AEB(A),
   .X(XOUT11),
-  .COUT_N(NC),
+  .COUT_N(nc462),
   .Y(YOUT11),
   .B3(A11),
   .A3(M11),
@@ -18154,7 +18151,7 @@ part_74S181  i_ALU0_2A28 (
   .F3(ALU7),
   .AEB(A),
   .X(XOUT7),
-  .COUT_N(NC),
+  .COUT_N(nc463),
   .Y(YOUT7),
   .B3(A7),
   .A3(M7),
@@ -18182,7 +18179,7 @@ part_74S181  i_ALU0_2B28 (
   .F3(ALU3),
   .AEB(A),
   .X(XOUT3),
-  .COUT_N(NC),
+  .COUT_N(nc464),
   .Y(YOUT3),
   .B3(A3),
   .A3(M3),
@@ -18197,23 +18194,23 @@ part_74S181  i_ALU0_2B28 (
 // (no code to express 74S241)
 part_74S241  i_ALATCH_3B01 (
   .AENB_N(HI5),
-  .AIN0(NC),
+  .AIN0(nc465),
   .BOUT3(A31B),
-  .AIN1(NC),
+  .AIN1(nc466),
   .BOUT2(APARITY),
-  .AIN2(NC),
-  .BOUT1(NC),
-  .AIN3(NC),
-  .BOUT0(NC),
-  .BIN0(NC),
-  .AOUT3(NC),
-  .BIN1(NC),
-  .AOUT2(NC),
+  .AIN2(nc467),
+  .BOUT1(nc468),
+  .AIN3(nc469),
+  .BOUT0(nc470),
+  .BIN0(nc471),
+  .AOUT3(nc472),
+  .BIN1(nc473),
+  .AOUT2(nc474),
   .BIN2(LPARITY),
-  .AOUT1(NC),
+  .AOUT1(nc475),
   .BIN3(L31),
-  .AOUT0(NC),
-  .BENB_N(APASSENB)
+  .AOUT0(nc476),
+  .BENB(APASSENB)
 );
 
 
@@ -18237,7 +18234,7 @@ part_74S241  i_ALATCH_3B03 (
   .AOUT1(A30),
   .BIN3(L24),
   .AOUT0(A31A),
-  .BENB_N(APASSENB)
+  .BENB(APASSENB)
 );
 
 
@@ -18261,7 +18258,7 @@ part_74S241  i_ALATCH_3B05 (
   .AOUT1(A22),
   .BIN3(L16),
   .AOUT0(A23),
-  .BENB_N(APASSENB)
+  .BENB(APASSENB)
 );
 
 
@@ -18285,7 +18282,7 @@ part_74S241  i_ALATCH_3A02 (
   .AOUT1(A14),
   .BIN3(L8),
   .AOUT0(A15),
-  .BENB_N(APASSENB)
+  .BENB(APASSENB)
 );
 
 
@@ -18309,7 +18306,7 @@ part_74S241  i_ALATCH_3A04 (
   .AOUT1(A6),
   .BIN3(L0),
   .AOUT0(A7),
-  .BENB_N(APASSENB)
+  .BENB(APASSENB)
 );
 
 
@@ -18413,19 +18410,19 @@ part_74S373  i_ALATCH_3B04 (
 // (no code to express 74S373)
 part_74S373  i_ALATCH_3B02 (
   .OENB_N(\-AMEMENB ),
-  .O0(NC),
-  .I0(NC),
-  .I1(NC),
-  .O1(NC),
-  .O2(NC),
-  .I2(NC),
-  .I3(NC),
-  .O3(NC),
+  .O0(nc477),
+  .I0(nc478),
+  .I1(nc479),
+  .O1(nc480),
+  .O2(nc481),
+  .I2(nc482),
+  .I3(nc483),
+  .O3(nc484),
   .HOLD_N(CLK3E),
-  .O4(NC),
-  .I4(NC),
-  .I5(NC),
-  .O5(NC),
+  .O4(nc485),
+  .I4(nc486),
+  .I5(nc487),
+  .O5(nc488),
   .O6(APARITY),
   .I6(AMEMPARITY),
   .I7(AMEM31),
@@ -18435,23 +18432,23 @@ part_74S373  i_ALATCH_3B02 (
 
 // 4B11:
 
-assign #1 APASSENB = APASS1 & APASS2 & TSE4A;
+assign APASSENB = APASS1 & APASS2 & TSE4A;
 
 
 // 4B14:
 
 
-assign #1 \-APASSENB  = ! (TSE4A & APASS2 & APASS1);
+assign \-APASSENB  = ! (TSE4A & APASS2 & APASS1);
 
 // 3B30:
-assign #1 \-AWPA  = ! (WP3A & DESTD);
-assign #1 \-AWPB  = ! (WP3A & DESTD);
-assign #1 \-AWPC  = ! (DESTD & WP3A);
+assign \-AWPA  = ! (WP3A & DESTD);
+assign \-AWPB  = ! (WP3A & DESTD);
+assign \-AWPC  = ! (DESTD & WP3A);
 
 
 // 3B16:
-assign #1 \-APASS  = ! (APASS1 & APASS2);
-assign #1 \-AMEMENB  = ! (\-APASS  & TSE3A);
+assign \-APASS  = ! (APASS1 & APASS2);
+assign \-AMEMENB  = ! (\-APASS  & TSE3A);
 
 
 
@@ -18478,13 +18475,13 @@ part_74S258  i_ACTL_3A06 (
 // 3B28:
 ff_dsel i_ACTL_3B28_1 (.q(WADR7), .a(IR21), .b(GND), .sel(DESTM), .clk(CLK3D) );
 ff_dsel i_ACTL_3B28_2 (.q(WADR6), .a(IR20), .b(GND), .sel(DESTM), .clk(CLK3D) );
-ff_dsel i_ACTL_3B28_3 (.q(IR18), .a(IR19), .b(GND), .sel(DESTM), .clk(CLK3D) );
+ff_dsel i_ACTL_3B28_3 (.q(WADR5), .a(IR19), .b(GND), .sel(DESTM), .clk(CLK3D) );
 ff_dsel i_ACTL_3B28_4 (.q(WADR4), .a(IR18), .b(IR18), .sel(DESTM), .clk(CLK3D) );
 
 // 3B29:
-ff_dsel i_ACTL_3B29_1 (.q(NC), .a(NC), .b(NC), .sel(DESTM), .clk(CLK3D) );
-ff_dsel i_ACTL_3B29_2 (.q(NC), .a(NC), .b(NC), .sel(DESTM), .clk(CLK3D) );
-ff_dsel i_ACTL_3B29_3 (.q(IR22), .a(IR23), .b(GND), .sel(DESTM), .clk(CLK3D) );
+ff_dsel i_ACTL_3B29_1 (.q(nc491), .a(nc490), .b(nc489), .sel(DESTM), .clk(CLK3D) );
+ff_dsel i_ACTL_3B29_2 (.q(nc494), .a(nc493), .b(nc492), .sel(DESTM), .clk(CLK3D) );
+ff_dsel i_ACTL_3B29_3 (.q(WADR9), .a(IR23), .b(GND), .sel(DESTM), .clk(CLK3D) );
 ff_dsel i_ACTL_3B29_4 (.q(WADR8), .a(IR22), .b(GND), .sel(DESTM), .clk(CLK3D) );
 
 // 3A12:
@@ -18627,6 +18624,501 @@ part_74S174  i_ACTL_3B26 (
 );
 
 
+wire nc1 , nc2 , nc3 , nc4 , nc5 , nc6 , nc7 , nc8 , nc9 , nc10 , nc11 , nc12 , nc13 , nc14 , nc15 , nc16 , nc17 , nc18 , nc19 , nc20 , nc21 , nc22 , nc23 , nc24 , nc25 , nc26 , nc27 , nc28 , nc29 , nc30 , nc31 , nc32 , nc33 , nc34 , nc35 , nc36 , nc37 , nc38 , nc39 , nc40 , nc41 , nc42 , nc43 , nc44 , nc45 , nc46 , nc47 , nc48 , nc49 , nc50 , nc51 , nc52 , nc53 , nc54 , nc55 , nc56 , nc57 , nc58 , nc59 , nc60 , nc61 , nc62 , nc63 , nc64 , nc65 , nc66 , nc67 , nc68 , nc69 , nc70 , nc71 , nc72 , nc73 , nc74 , nc75 , nc76 , nc77 , nc78 , nc79 , nc80 , nc81 , nc82 , nc83 , nc84 , nc85 , nc86 , nc87 , nc88 , nc89 , nc90 , nc91 , nc92 , nc93 , nc94 , nc95 , nc96 , nc97 , nc98 , nc99 , nc100 , nc101 , nc102 , nc103 , nc104 , nc105 , nc106 , nc107 , nc108 , nc109 , nc110 , nc111 , nc112 , nc113 , nc114 , nc115 , nc116 , nc117 , nc118 , nc119 , nc120 , nc121 , nc122 , nc123 , nc124 , nc125 , nc126 , nc127 , nc128 , nc129 , nc130 , nc131 , nc132 , nc133 , nc134 , nc135 , nc136 , nc137 , nc138 , nc139 , nc140 , nc141 , nc142 , nc143 , nc144 , nc145 , nc146 , nc147 , nc148 , nc149 , nc150 , nc151 , nc152 , nc153 , nc154 , nc155 , nc156 , nc157 , nc158 , nc159 , nc160 , nc161 , nc162 , nc163 , nc164 , nc165 , nc166 , nc167 , nc168 , nc169 , nc170 , nc171 , nc172 , nc173 , nc174 , nc175 , nc176 , nc177 , nc178 , nc179 , nc180 , nc181 , nc182 , nc183 , nc184 , nc185 , nc186 , nc187 , nc188 , nc189 , nc190 , nc191 , nc192 , nc193 , nc194 , nc195 , nc196 , nc197 , nc198 , nc199 , nc200 , nc201 , nc202 , nc203 , nc204 , nc205 , nc206 , nc207 , nc208 , nc209 , nc210 , nc211 , nc212 , nc213 , nc214 , nc215 , nc216 , nc217 , nc218 , nc219 , nc220 , nc221 , nc222 , nc223 , nc224 , nc225 , nc226 , nc227 , nc228 , nc229 , nc230 , nc231 , nc232 , nc233 , nc234 , nc235 , nc236 , nc237 , nc238 , nc239 , nc240 , nc241 , nc242 , nc243 , nc244 , nc245 , nc246 , nc247 , nc248 , nc249 , nc250 , nc251 , nc252 , nc253 , nc254 , nc255 , nc256 , nc257 , nc258 , nc259 , nc260 , nc261 , nc262 , nc263 , nc264 , nc265 , nc266 , nc267 , nc268 , nc269 , nc270 , nc271 , nc272 , nc273 , nc274 , nc275 , nc276 , nc277 , nc278 , nc279 , nc280 , nc281 , nc282 , nc283 , nc284 , nc285 , nc286 , nc287 , nc288 , nc289 , nc290 , nc291 , nc292 , nc293 , nc294 , nc295 , nc296 , nc297 , nc298 , nc299 , nc300 , nc301 , nc302 , nc303 , nc304 , nc305 , nc306 , nc307 , nc308 , nc309 , nc310 , nc311 , nc312 , nc313 , nc314 , nc315 , nc316 , nc317 , nc318 , nc319 , nc320 , nc321 , nc322 , nc323 , nc324 , nc325 , nc326 , nc327 , nc328 , nc329 , nc330 , nc331 , nc332 , nc333 , nc334 , nc335 , nc336 , nc337 , nc338 , nc339 , nc340 , nc341 , nc342 , nc343 , nc344 , nc345 , nc346 , nc347 , nc348 , nc349 , nc350 , nc351 , nc352 , nc353 , nc354 , nc355 , nc356 , nc357 , nc358 , nc359 , nc360 , nc361 , nc362 , nc363 , nc364 , nc365 , nc366 , nc367 , nc368 , nc369 , nc370 , nc371 , nc372 , nc373 , nc374 , nc375 , nc376 , nc377 , nc378 , nc379 , nc380 , nc381 , nc382 , nc383 , nc384 , nc385 , nc386 , nc387 , nc388 , nc389 , nc390 , nc391 , nc392 , nc393 , nc394 , nc395 , nc396 , nc397 , nc398 , nc399 , nc400 , nc401 , nc402 , nc403 , nc404 , nc405 , nc406 , nc407 , nc408 , nc409 , nc410 , nc411 , nc412 , nc413 , nc414 , nc415 , nc416 , nc417 , nc418 , nc419 , nc420 , nc421 , nc422 , nc423 , nc424 , nc425 , nc426 , nc427 , nc428 , nc429 , nc430 , nc431 , nc432 , nc433 , nc434 , nc435 , nc436 , nc437 , nc438 , nc439 , nc440 , nc441 , nc442 , nc443 , nc444 , nc445 , nc446 , nc447 , nc448 , nc449 , nc450 , nc451 , nc452 , nc453 , nc454 , nc455 , nc456 , nc457 , nc458 , nc459 , nc460 , nc461 , nc462 , nc463 , nc464 , nc465 , nc466 , nc467 , nc468 , nc469 , nc470 , nc471 , nc472 , nc473 , nc474 , nc475 , nc476 , nc477 , nc478 , nc479 , nc480 , nc481 , nc482 , nc483 , nc484 , nc485 , nc486 , nc487 , nc488 , nc489 , nc490 , nc491 , nc492 , nc493 , nc494 ;
+assign nc1 = 0 ;
+assign nc2 = 0 ;
+assign nc3 = 0 ;
+assign nc4 = 0 ;
+assign nc5 = 0 ;
+assign nc6 = 0 ;
+assign nc7 = 0 ;
+assign nc8 = 0 ;
+assign nc9 = 0 ;
+assign nc10 = 0 ;
+assign nc11 = 0 ;
+assign nc12 = 0 ;
+assign nc13 = 0 ;
+assign nc14 = 0 ;
+assign nc15 = 0 ;
+assign nc16 = 0 ;
+assign nc17 = 0 ;
+assign nc18 = 0 ;
+assign nc19 = 0 ;
+assign nc20 = 0 ;
+assign nc21 = 0 ;
+assign nc22 = 0 ;
+assign nc23 = 0 ;
+assign nc24 = 0 ;
+assign nc25 = 0 ;
+assign nc26 = 0 ;
+assign nc27 = 0 ;
+assign nc28 = 0 ;
+assign nc29 = 0 ;
+assign nc30 = 0 ;
+assign nc31 = 0 ;
+assign nc32 = 0 ;
+assign nc33 = 0 ;
+assign nc34 = 0 ;
+assign nc35 = 0 ;
+assign nc36 = 0 ;
+assign nc37 = 0 ;
+assign nc38 = 0 ;
+assign nc39 = 0 ;
+assign nc40 = 0 ;
+assign nc41 = 0 ;
+assign nc42 = 0 ;
+assign nc43 = 0 ;
+assign nc44 = 0 ;
+assign nc45 = 0 ;
+assign nc46 = 0 ;
+assign nc47 = 0 ;
+assign nc48 = 0 ;
+assign nc49 = 0 ;
+assign nc50 = 0 ;
+assign nc51 = 0 ;
+assign nc52 = 0 ;
+assign nc53 = 0 ;
+assign nc54 = 0 ;
+assign nc55 = 0 ;
+assign nc56 = 0 ;
+assign nc57 = 0 ;
+assign nc58 = 0 ;
+assign nc59 = 0 ;
+assign nc60 = 0 ;
+assign nc61 = 0 ;
+assign nc62 = 0 ;
+assign nc63 = 0 ;
+assign nc64 = 0 ;
+assign nc65 = 0 ;
+assign nc66 = 0 ;
+assign nc67 = 0 ;
+assign nc68 = 0 ;
+assign nc69 = 0 ;
+assign nc70 = 0 ;
+assign nc71 = 0 ;
+assign nc72 = 0 ;
+assign nc73 = 0 ;
+assign nc74 = 0 ;
+assign nc75 = 0 ;
+assign nc76 = 0 ;
+assign nc77 = 0 ;
+assign nc78 = 0 ;
+assign nc79 = 0 ;
+assign nc80 = 0 ;
+assign nc81 = 0 ;
+assign nc82 = 0 ;
+assign nc83 = 0 ;
+assign nc84 = 0 ;
+assign nc85 = 0 ;
+assign nc86 = 0 ;
+assign nc87 = 0 ;
+assign nc88 = 0 ;
+assign nc89 = 0 ;
+assign nc90 = 0 ;
+assign nc91 = 0 ;
+assign nc92 = 0 ;
+assign nc93 = 0 ;
+assign nc94 = 0 ;
+assign nc95 = 0 ;
+assign nc96 = 0 ;
+assign nc97 = 0 ;
+assign nc98 = 0 ;
+assign nc99 = 0 ;
+assign nc100 = 0 ;
+assign nc101 = 0 ;
+assign nc102 = 0 ;
+assign nc103 = 0 ;
+assign nc104 = 0 ;
+assign nc105 = 0 ;
+assign nc106 = 0 ;
+assign nc107 = 0 ;
+assign nc108 = 0 ;
+assign nc109 = 0 ;
+assign nc110 = 0 ;
+assign nc111 = 0 ;
+assign nc112 = 0 ;
+assign nc113 = 0 ;
+assign nc114 = 0 ;
+assign nc115 = 0 ;
+assign nc116 = 0 ;
+assign nc117 = 0 ;
+assign nc118 = 0 ;
+assign nc119 = 0 ;
+assign nc120 = 0 ;
+assign nc121 = 0 ;
+assign nc122 = 0 ;
+assign nc123 = 0 ;
+assign nc124 = 0 ;
+assign nc125 = 0 ;
+assign nc126 = 0 ;
+assign nc127 = 0 ;
+assign nc128 = 0 ;
+assign nc129 = 0 ;
+assign nc130 = 0 ;
+assign nc131 = 0 ;
+assign nc132 = 0 ;
+assign nc133 = 0 ;
+assign nc134 = 0 ;
+assign nc135 = 0 ;
+assign nc136 = 0 ;
+assign nc137 = 0 ;
+assign nc138 = 0 ;
+assign nc139 = 0 ;
+assign nc140 = 0 ;
+assign nc141 = 0 ;
+assign nc142 = 0 ;
+assign nc143 = 0 ;
+assign nc144 = 0 ;
+assign nc145 = 0 ;
+assign nc146 = 0 ;
+assign nc147 = 0 ;
+assign nc148 = 0 ;
+assign nc149 = 0 ;
+assign nc150 = 0 ;
+assign nc151 = 0 ;
+assign nc152 = 0 ;
+assign nc153 = 0 ;
+assign nc154 = 0 ;
+assign nc155 = 0 ;
+assign nc156 = 0 ;
+assign nc157 = 0 ;
+assign nc158 = 0 ;
+assign nc159 = 0 ;
+assign nc160 = 0 ;
+assign nc161 = 0 ;
+assign nc162 = 0 ;
+assign nc163 = 0 ;
+assign nc164 = 0 ;
+assign nc165 = 0 ;
+assign nc166 = 0 ;
+assign nc167 = 0 ;
+assign nc168 = 0 ;
+assign nc169 = 0 ;
+assign nc170 = 0 ;
+assign nc171 = 0 ;
+assign nc172 = 0 ;
+assign nc173 = 0 ;
+assign nc174 = 0 ;
+assign nc175 = 0 ;
+assign nc176 = 0 ;
+assign nc177 = 0 ;
+assign nc178 = 0 ;
+assign nc179 = 0 ;
+assign nc180 = 0 ;
+assign nc181 = 0 ;
+assign nc182 = 0 ;
+assign nc183 = 0 ;
+assign nc184 = 0 ;
+assign nc185 = 0 ;
+assign nc186 = 0 ;
+assign nc187 = 0 ;
+assign nc188 = 0 ;
+assign nc189 = 0 ;
+assign nc190 = 0 ;
+assign nc191 = 0 ;
+assign nc192 = 0 ;
+assign nc193 = 0 ;
+assign nc194 = 0 ;
+assign nc195 = 0 ;
+assign nc196 = 0 ;
+assign nc197 = 0 ;
+assign nc198 = 0 ;
+assign nc199 = 0 ;
+assign nc200 = 0 ;
+assign nc201 = 0 ;
+assign nc202 = 0 ;
+assign nc203 = 0 ;
+assign nc204 = 0 ;
+assign nc205 = 0 ;
+assign nc206 = 0 ;
+assign nc207 = 0 ;
+assign nc208 = 0 ;
+assign nc209 = 0 ;
+assign nc210 = 0 ;
+assign nc211 = 0 ;
+assign nc212 = 0 ;
+assign nc213 = 0 ;
+assign nc214 = 0 ;
+assign nc215 = 0 ;
+assign nc216 = 0 ;
+assign nc217 = 0 ;
+assign nc218 = 0 ;
+assign nc219 = 0 ;
+assign nc220 = 0 ;
+assign nc221 = 0 ;
+assign nc222 = 0 ;
+assign nc223 = 0 ;
+assign nc224 = 0 ;
+assign nc225 = 0 ;
+assign nc226 = 0 ;
+assign nc227 = 0 ;
+assign nc228 = 0 ;
+assign nc229 = 0 ;
+assign nc230 = 0 ;
+assign nc231 = 0 ;
+assign nc232 = 0 ;
+assign nc233 = 0 ;
+assign nc234 = 0 ;
+assign nc235 = 0 ;
+assign nc236 = 0 ;
+assign nc237 = 0 ;
+assign nc238 = 0 ;
+assign nc239 = 0 ;
+assign nc240 = 0 ;
+assign nc241 = 0 ;
+assign nc242 = 0 ;
+assign nc243 = 0 ;
+assign nc244 = 0 ;
+assign nc245 = 0 ;
+assign nc246 = 0 ;
+assign nc247 = 0 ;
+assign nc248 = 0 ;
+assign nc249 = 0 ;
+assign nc250 = 0 ;
+assign nc251 = 0 ;
+assign nc252 = 0 ;
+assign nc253 = 0 ;
+assign nc254 = 0 ;
+assign nc255 = 0 ;
+assign nc256 = 0 ;
+assign nc257 = 0 ;
+assign nc258 = 0 ;
+assign nc259 = 0 ;
+assign nc260 = 0 ;
+assign nc261 = 0 ;
+assign nc262 = 0 ;
+assign nc263 = 0 ;
+assign nc264 = 0 ;
+assign nc265 = 0 ;
+assign nc266 = 0 ;
+assign nc267 = 0 ;
+assign nc268 = 0 ;
+assign nc269 = 0 ;
+assign nc270 = 0 ;
+assign nc271 = 0 ;
+assign nc272 = 0 ;
+assign nc273 = 0 ;
+assign nc274 = 0 ;
+assign nc275 = 0 ;
+assign nc276 = 0 ;
+assign nc277 = 0 ;
+assign nc278 = 0 ;
+assign nc279 = 0 ;
+assign nc280 = 0 ;
+assign nc281 = 0 ;
+assign nc282 = 0 ;
+assign nc283 = 0 ;
+assign nc284 = 0 ;
+assign nc285 = 0 ;
+assign nc286 = 0 ;
+assign nc287 = 0 ;
+assign nc288 = 0 ;
+assign nc289 = 0 ;
+assign nc290 = 0 ;
+assign nc291 = 0 ;
+assign nc292 = 0 ;
+assign nc293 = 0 ;
+assign nc294 = 0 ;
+assign nc295 = 0 ;
+assign nc296 = 0 ;
+assign nc297 = 0 ;
+assign nc298 = 0 ;
+assign nc299 = 0 ;
+assign nc300 = 0 ;
+assign nc301 = 0 ;
+assign nc302 = 0 ;
+assign nc303 = 0 ;
+assign nc304 = 0 ;
+assign nc305 = 0 ;
+assign nc306 = 0 ;
+assign nc307 = 0 ;
+assign nc308 = 0 ;
+assign nc309 = 0 ;
+assign nc310 = 0 ;
+assign nc311 = 0 ;
+assign nc312 = 0 ;
+assign nc313 = 0 ;
+assign nc314 = 0 ;
+assign nc315 = 0 ;
+assign nc316 = 0 ;
+assign nc317 = 0 ;
+assign nc318 = 0 ;
+assign nc319 = 0 ;
+assign nc320 = 0 ;
+assign nc321 = 0 ;
+assign nc322 = 0 ;
+assign nc323 = 0 ;
+assign nc324 = 0 ;
+assign nc325 = 0 ;
+assign nc326 = 0 ;
+assign nc327 = 0 ;
+assign nc328 = 0 ;
+assign nc329 = 0 ;
+assign nc330 = 0 ;
+assign nc331 = 0 ;
+assign nc332 = 0 ;
+assign nc333 = 0 ;
+assign nc334 = 0 ;
+assign nc335 = 0 ;
+assign nc336 = 0 ;
+assign nc337 = 0 ;
+assign nc338 = 0 ;
+assign nc339 = 0 ;
+assign nc340 = 0 ;
+assign nc341 = 0 ;
+assign nc342 = 0 ;
+assign nc343 = 0 ;
+assign nc344 = 0 ;
+assign nc345 = 0 ;
+assign nc346 = 0 ;
+assign nc347 = 0 ;
+assign nc348 = 0 ;
+assign nc349 = 0 ;
+assign nc350 = 0 ;
+assign nc351 = 0 ;
+assign nc352 = 0 ;
+assign nc353 = 0 ;
+assign nc354 = 0 ;
+assign nc355 = 0 ;
+assign nc356 = 0 ;
+assign nc357 = 0 ;
+assign nc358 = 0 ;
+assign nc359 = 0 ;
+assign nc360 = 0 ;
+assign nc361 = 0 ;
+assign nc362 = 0 ;
+assign nc363 = 0 ;
+assign nc364 = 0 ;
+assign nc365 = 0 ;
+assign nc366 = 0 ;
+assign nc367 = 0 ;
+assign nc368 = 0 ;
+assign nc369 = 0 ;
+assign nc370 = 0 ;
+assign nc371 = 0 ;
+assign nc372 = 0 ;
+assign nc373 = 0 ;
+assign nc374 = 0 ;
+assign nc375 = 0 ;
+assign nc376 = 0 ;
+assign nc377 = 0 ;
+assign nc378 = 0 ;
+assign nc379 = 0 ;
+assign nc380 = 0 ;
+assign nc381 = 0 ;
+assign nc382 = 0 ;
+assign nc383 = 0 ;
+assign nc384 = 0 ;
+assign nc385 = 0 ;
+assign nc386 = 0 ;
+assign nc387 = 0 ;
+assign nc388 = 0 ;
+assign nc389 = 0 ;
+assign nc390 = 0 ;
+assign nc391 = 0 ;
+assign nc392 = 0 ;
+assign nc393 = 0 ;
+assign nc394 = 0 ;
+assign nc395 = 0 ;
+assign nc396 = 0 ;
+assign nc397 = 0 ;
+assign nc398 = 0 ;
+assign nc399 = 0 ;
+assign nc400 = 0 ;
+assign nc401 = 0 ;
+assign nc402 = 0 ;
+assign nc403 = 0 ;
+assign nc404 = 0 ;
+assign nc405 = 0 ;
+assign nc406 = 0 ;
+assign nc407 = 0 ;
+assign nc408 = 0 ;
+assign nc409 = 0 ;
+assign nc410 = 0 ;
+assign nc411 = 0 ;
+assign nc412 = 0 ;
+assign nc413 = 0 ;
+assign nc414 = 0 ;
+assign nc415 = 0 ;
+assign nc416 = 0 ;
+assign nc417 = 0 ;
+assign nc418 = 0 ;
+assign nc419 = 0 ;
+assign nc420 = 0 ;
+assign nc421 = 0 ;
+assign nc422 = 0 ;
+assign nc423 = 0 ;
+assign nc424 = 0 ;
+assign nc425 = 0 ;
+assign nc426 = 0 ;
+assign nc427 = 0 ;
+assign nc428 = 0 ;
+assign nc429 = 0 ;
+assign nc430 = 0 ;
+assign nc431 = 0 ;
+assign nc432 = 0 ;
+assign nc433 = 0 ;
+assign nc434 = 0 ;
+assign nc435 = 0 ;
+assign nc436 = 0 ;
+assign nc437 = 0 ;
+assign nc438 = 0 ;
+assign nc439 = 0 ;
+assign nc440 = 0 ;
+assign nc441 = 0 ;
+assign nc442 = 0 ;
+assign nc443 = 0 ;
+assign nc444 = 0 ;
+assign nc445 = 0 ;
+assign nc446 = 0 ;
+assign nc447 = 0 ;
+assign nc448 = 0 ;
+assign nc449 = 0 ;
+assign nc450 = 0 ;
+assign nc451 = 0 ;
+assign nc452 = 0 ;
+assign nc453 = 0 ;
+assign nc454 = 0 ;
+assign nc455 = 0 ;
+assign nc456 = 0 ;
+assign nc457 = 0 ;
+assign nc458 = 0 ;
+assign nc459 = 0 ;
+assign nc460 = 0 ;
+assign nc461 = 0 ;
+assign nc462 = 0 ;
+assign nc463 = 0 ;
+assign nc464 = 0 ;
+assign nc465 = 0 ;
+assign nc466 = 0 ;
+assign nc467 = 0 ;
+assign nc468 = 0 ;
+assign nc469 = 0 ;
+assign nc470 = 0 ;
+assign nc471 = 0 ;
+assign nc472 = 0 ;
+assign nc473 = 0 ;
+assign nc474 = 0 ;
+assign nc475 = 0 ;
+assign nc476 = 0 ;
+assign nc477 = 0 ;
+assign nc478 = 0 ;
+assign nc479 = 0 ;
+assign nc480 = 0 ;
+assign nc481 = 0 ;
+assign nc482 = 0 ;
+assign nc483 = 0 ;
+assign nc484 = 0 ;
+assign nc485 = 0 ;
+assign nc486 = 0 ;
+assign nc487 = 0 ;
+assign nc488 = 0 ;
+assign nc489 = 0 ;
+assign nc490 = 0 ;
+assign nc491 = 0 ;
+assign nc492 = 0 ;
+assign nc493 = 0 ;
+assign nc494 = 0 ;
 `include "extra.v"
 
 endmodule

@@ -20,5 +20,10 @@ module part_5600 ( A0, A1, A2, A3, A4, CE_N,
 	CE_N ? 8'bzzzzzzzz : prom[ { A4, A3, A2, A1, A0} ];
 
 /* initial $readmemh("prom.dat", prom); */
+  initial
+    begin
+      prom[ 5'b0000 ] = 8'b00000000;
+      prom[ 5'b0001 ] = 8'b00000000;
+    end
 
 endmodule

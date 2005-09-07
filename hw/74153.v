@@ -4,7 +4,8 @@
 
 /* dual 4-line-to-1-line data selector/mux */
 
-`define REG_DELAY 1
+//`define REG_DELAY 1
+`define REG_DELAY 4
 
 module part_74S153 ( G1C0, G1C1, G1C2, G1C3,
 		     G2C0, G2C1, G2C2, G2C3,

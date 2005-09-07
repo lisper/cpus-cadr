@@ -2,9 +2,10 @@
  * $Id$
  */
 
-`define REG_DELAY 1
+//`define REG_DELAY 1
+`define REG_DELAY 0
 
-module dff(q,qbar,d,clock,preset,clear);
+module dff(q, qbar, d, clock, preset, clear);
 	output q, qbar;
 	input d,clock,preset,clear;
 

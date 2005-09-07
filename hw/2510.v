@@ -15,7 +15,8 @@ module part_25S10 (I3, I2, I1, I0, I_1, I_2, I_3,
   output O0, O1, O2, O3;
   reg O0, O1, O2, O3;
 
-  always @(SEL1 or SEL0)
+//  always @(SEL1 or SEL0 or CE_N)
+  always @(SEL1 or SEL0 or CE_N or I3 or I2 or I1 or I0 or I_1 or I_2 or I_3)
     if (CE_N)
       begin
 	     O3 <= 1'bz;

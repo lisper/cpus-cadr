@@ -6,6 +6,8 @@
 VERILOG=cver
 
 all: go
+#all: clockdebug
+#all: chipdebug
 
 nl: nl.c
 	cc -o nl nl.c
@@ -25,7 +27,7 @@ PARTS = 2147.v 7451.v 7464.v 7474.v \
 	5600.v 5610.v 8221.v 9328.v 9346.v 9348.v 93425.v 252519.v \
 	td25.v td50.v td100.v td250.v 942.v \
 	res20.v sip220.v til309.v dummy.v \
-	ff.v ff_enb.v ff_dsel.v ff_rs.v
+	ff_enb.v ff_dsel.v ff_rs.v ff_jk.v
 
 parts.o: $(PARTS)
 	$(VERILOG) -o parts.o $(PARTS)
@@ -36,9 +38,24 @@ run: $(PARTS) time.v cadr.v run.v extra.v nl
 	echo "exit 0" > run
 	chmod +x run
 
+clockdebug: $(PARTS) clockdebug.v
+#	$(VERILOG) -o run $(PARTS) clockdebug.v
+	$(VERILOG) +change_port_type time.v $(PARTS) clockdebug.v
+	echo "exit 0" > run
+	chmod +x run
+
+chipdebug: $(PARTS) chipdebug.v
+#	$(VERILOG) -o run $(PARTS) chipdebug.v
+	$(VERILOG) +change_port_type time.v $(PARTS) chipdebug.v
+	echo "exit 0" > run
+	chmod +x run
+
 go: run
 	./run
 
+display:
+	./maketraces.sh >traces
+	gtkwave cadr.vcd traces
 
 test:
 	$(VERILOG) ff.v ff_rs.v 74373.v 74174.v test.v; ./a.out

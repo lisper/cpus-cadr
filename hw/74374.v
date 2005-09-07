@@ -4,7 +4,8 @@
 
 /* octal d-type flipflop */
 
-`define REG_DELAY 1
+//`define REG_DELAY 1
+`define REG_DELAY 0
 
 module part_74S374 (
 	I0, I1, I2, I3, I4, I5, I6, I7,
@@ -15,6 +16,8 @@ module part_74S374 (
   input CLK, OENB_N;
   output O0, O1, O2, O3, O4, O5, O6, O7;
 //reg O0, O1, O2, O3, O4, O5, O6, O7;
+
+/*
 assign O0=0;
 assign O1=0;
 assign O2=0;
@@ -23,7 +26,7 @@ assign O4=0;
 assign O5=0;
 assign O6=0;
 assign O7=0;
-/*
+*/
 	not #(`REG_DELAY)
 		g1(l1,OENB_N);
 	buf #(`REG_DELAY)
@@ -46,5 +49,5 @@ assign O7=0;
 		g8(O5,lf5,l1),
 		g9(O6,lf6,l1),
 		g10(O7,lf7,l1);
-*/
+
 endmodule

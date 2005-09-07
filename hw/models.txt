@@ -284,19 +284,19 @@ p13=G2R_N,I
 
 model 74LS109
 (
-p1=R1
+p1=CLR1_N
 p2=J1
 p3=K1_N
 p4=CLK1
-p5=S1
+p5=PRE1_N
 p6=Q1,O
 p7=Q1_N,O
 
-p15=R2
+p15=CLR2_N
 p14=J2
 p13=K2_N
 p12=CLK2
-p11=S2
+p11=PRE2_N
 p10=Q2,O
 p9=Q2_N,O
 )
@@ -586,7 +586,7 @@ p15=BIN2
 p16=AOUT1,O
 p17=BIN3
 p18=AOUT0,O
-p19=BENB_N
+p19=BENB
 )
 
 model 74LS244

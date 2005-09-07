@@ -2,7 +2,8 @@
  * $Id$
  */
 
-`define REG_DELAY 1
+//`define REG_DELAY 1
+`define REG_DELAY 0
 
 module part_74S194 (I0, I1, I2, I3,
 	Q3, Q2, Q1, Q0,
@@ -11,6 +12,7 @@ module part_74S194 (I0, I1, I2, I3,
   input I0, I1, I2, I3;
   output Q3, Q2, Q1, Q0;
   input CLR_N, SIL, SIR, S0, S1, CLK;
+wire qb3, qb2, qb1, qb0;
 /*
   reg Q3, Q2, Q1, Q0;
 
@@ -65,10 +67,10 @@ always @(CLR_N)
 		g23(l23,l13,l14,l15,l16),
 		g24(l24,l17,l18,l19,l20);
 	dff
-		ff1(Q3,,l21,CLK,1'b1,l25),
-		ff2(Q2,,l22,CLK,1'b1,l25),
-		ff3(Q1,,l23,CLK,1'b1,l25),
-		ff4(Q0,,l24,CLK,1'b1,l25);
+		ff1(Q3,qb3,l21,CLK,1'b1,l25),
+		ff2(Q2,qb2,l22,CLK,1'b1,l25),
+		ff3(Q1,qb1,l23,CLK,1'b1,l25),
+		ff4(Q0,qb0,l24,CLK,1'b1,l25);
 
 endmodule
 
