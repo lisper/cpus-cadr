@@ -1,6 +1,7 @@
 verilog modules for cadr
 
 2147.v		ok, no delay	simple ram
+2509
 2510.v		ok, tested
 252519.v	? init ok
 5600.v		ok, needs read

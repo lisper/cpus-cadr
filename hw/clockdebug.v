@@ -23,9 +23,14 @@ assign GND = 0;
 
 //assign \-CLOCK_RESET_B = 0;
 assign \-HANG = 1;
-assign \-ILONG = 1;
-assign SSPEED1 = 0;
-assign SSPEED0 = 0;
+
+//assign \-ILONG = 1;
+//assign SSPEED1 = 0;
+//assign SSPEED0 = 0;
+
+assign \-ILONG = 0;
+assign SSPEED1 = 1;
+assign SSPEED0 = 1;
 
 // 1D08:
 // (no code to express 74S151)

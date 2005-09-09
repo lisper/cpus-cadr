@@ -9,6 +9,7 @@ module dff(q, qbar, d, clock, preset, clear);
 	output q, qbar;
 	input d,clock,preset,clear;
 
+/*
 	nand #(`REG_DELAY)
 		g1(l1,preset,l4,l2),
 		g2(l2,l1,clear,clock),
@@ -16,6 +17,48 @@ module dff(q, qbar, d, clock, preset, clear);
 		g4(l4,l3,clear,d),
 		g5(q,preset,l2,qbar),
 		g6(qbar,q,clear,l3);
+*/
+
+  reg q, qbar;
+
+  initial
+    begin
+     q <= 0; qbar <= 1;
+    end
+
+  always @(posedge clock)
+    begin
+        q <= #(`REG_DELAY) d;
+        qbar <= #(`REG_DELAY) ! d;
+    end
+
+  always @(clear or preset)
+    case( {clear,preset} )
+      2'b01: begin assign q=0; assign qbar=1; end
+      2'b10: begin assign q=1; assign qbar=0; end
+      2'b11: begin deassign q; deassign qbar; end
+      default: begin assign q=1'bx; assign qbar=1'bx; end
+    endcase
+
+endmodule
+
+module dff_no_rs(q, qbar, d, clock);
+	output q, qbar;
+	input d,clock;
+
+  reg q, qbar;
+
+  initial
+    begin
+     q <= #5 0;
+     qbar <= #5 1;
+    end
+
+  always @(posedge clock)
+    begin
+        q <= #(`REG_DELAY) d;
+        qbar <= #(`REG_DELAY) ! d;
+    end
 endmodule
 
 module part_74S169 (I0, I1, I2, I3,
@@ -78,10 +121,10 @@ module part_74S169 (I0, I1, I2, I3,
 		g26(l26,l22,lf3bar),
 		g27(l27,l23,lf2bar),
 		g28(l28,l24,lf1bar);
-	dff
-		f1(O3,lf1bar,l40,l1,1'b1,1'b1),
-		f2(O2,lf2bar,l39,l1,1'b1,1'b1),
-		f3(O1,lf3bar,l38,l1,1'b1,1'b1),
-		f4(O0,lf4bar,l37,l1,1'b1,1'b1);
+	dff_no_rs
+		f1(O3,lf1bar,l40,l1),
+		f2(O2,lf2bar,l39,l1),
+		f3(O1,lf3bar,l38,l1),
+		f4(O0,lf4bar,l37,l1);
 
 endmodule

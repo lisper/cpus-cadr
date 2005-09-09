@@ -4,8 +4,8 @@
 
 /* 1-of-8 selector/mux */
 
-`define REG_DELAY 1
-//`define REG_DELAY 0
+//`define REG_DELAY 1
+`define REG_DELAY 0
 
 module part_74S151 ( I0, I1, I2, I3, I4, I5, I6, I7,
 		     SEL0, SEL1, SEL2, CE_N,

@@ -2,10 +2,10 @@
 #
 #
 
-#VERILOG=iverilog
+IVERILOG=iverilog
 VERILOG=cver
 
-all: go
+all: igo
 #all: clockdebug
 #all: chipdebug
 
@@ -32,8 +32,10 @@ PARTS = 2147.v 7451.v 7464.v 7474.v \
 parts.o: $(PARTS)
 	$(VERILOG) -o parts.o $(PARTS)
 
-run: $(PARTS) time.v cadr.v run.v extra.v nl
-#	$(VERILOG) -o run $(PARTS) cadr.v run.v
+irun: $(PARTS) time.v cadr.v run.v extra.v nl
+	$(IVERILOG) -o run $(PARTS) cadr.v run.v
+
+crun: $(PARTS) time.v cadr.v run.v extra.v nl
 	$(VERILOG) +change_port_type time.v $(PARTS) cadr.v run.v
 	echo "exit 0" > run
 	chmod +x run
@@ -50,7 +52,10 @@ chipdebug: $(PARTS) chipdebug.v
 	echo "exit 0" > run
 	chmod +x run
 
-go: run
+go: crun
+	./run
+
+igo: irun
 	./run
 
 display:

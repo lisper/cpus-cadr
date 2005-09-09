@@ -2,7 +2,8 @@
  * $Id$
  */
 
-`define REG_DELAY 2
+//`define REG_DELAY 2
+`define REG_DELAY 0
 
 module part_74S260 (I1, I2, I3, I4, I5, O1);
 

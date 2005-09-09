@@ -4,7 +4,8 @@
 
 /* and-or-invert gates */
 
-`define REG_DELAY 2
+//`define REG_DELAY 2
+`define REG_DELAY 0
 
 module part_74S51 (G1A, G1B, G1C, G1D, G1Y,
 	G2A, G2B, G2C, G2D, G2Y);

@@ -17,6 +17,8 @@ module part_74S373 (
 
 initial
 begin
+	{ q0, q1, q2, q3, q4, q5, q6, q7} <= 8'b00000000;
+/*
         q0 <= 0;
         q1 <= 0;
         q2 <= 0;
@@ -25,11 +27,13 @@ begin
         q5 <= 0;
         q6 <= 0;
         q7 <= 0;
+*/
 end
 
   always @(OENB_N)
     if (OENB_N)
       begin
+//	assign { O0, O1, O2, O3, O4, O5, O6, O7 } = 8'bzzzzzzzz;
         assign O0 = 1'bz;
         assign O1 = 1'bz;
         assign O2 = 1'bz;
@@ -41,6 +45,8 @@ end
       end
     else
       begin
+//	assign { O0, O1, O2, O3, O4, O5, O6, O7 } = 
+//		{ q0, q1, q2, q3, q4, q5, q6, q7 };
         assign O0 = q0;
         assign O1 = q1;
         assign O2 = q2;
@@ -52,6 +58,9 @@ end
 
 	if (HOLD_N)
 	  begin
+	    { q0, q1, q2, q3, q4, q5, q6, q7 } <= 
+		{ I0, I1, I2, I3, I4, I5, I6, I7 };
+/*
 	    q0 <= I0;
 	    q1 <= I1;
 	    q2 <= I2;
@@ -60,6 +69,7 @@ end
             q5 <= I5;
             q6 <= I6;
             q7 <= I7;
+*/
           end
       end
 
@@ -67,6 +77,9 @@ end
   always @(I0 or I1 or I2 or I3 or I4 or I5 or I6 or I7 or HOLD_N or OENB_N)
     if (HOLD_N)
       begin
+	    { q0, q1, q2, q3, q4, q5, q6, q7 } <= 
+		{ I0, I1, I2, I3, I4, I5, I6, I7 };
+/*
         q0 <= I0;
         q1 <= I1;
         q2 <= I2;
@@ -75,6 +88,7 @@ end
         q5 <= I5;
         q6 <= I6;
         q7 <= I7;
+*/
       end
 
 endmodule

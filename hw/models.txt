@@ -959,7 +959,7 @@ p12=A1
 p11=A2
 p10=A3
 p4=A4
-p8=LATCH_N
+p6=STROBE
 p1=WCLK_N
 p5=CE
 )

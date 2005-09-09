@@ -12,7 +12,7 @@ module ff_enb (q, d, enb_n, clk);
   output q;
   reg q;
 
-//initial q <= 0;
+  initial q = 0;
 
   always @(posedge clk)
     if (!enb_n)
