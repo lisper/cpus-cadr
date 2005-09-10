@@ -22,7 +22,6 @@ assign { SPY0,SPY1,SPY2,SPY3,SPY4,SPY5,SPY6,SPY7 } = 8'b00000000;
 assign { SPY8,SPY9,SPY10,SPY11,SPY12,SPY13,SPY14,SPY15 } = 8'b00000000;
 
 //pullup pspy0(SPY0);
-pullup pa31a(A31A);
 pullup pmmem31(MMEM31);
 pullup pmmem30(MMEM30);
 pullup pmmem29(MMEM29);
@@ -31,12 +30,98 @@ pullup pmmem27(MMEM27);
 pullup pmmem26(MMEM26);
 pullup pmmem25(MMEM25);
 pullup pmmem24(MMEM24);
+pullup pmmem23(MMEM23);
+pullup pmmem22(MMEM22);
+pullup pmmem21(MMEM21);
+pullup pmmem20(MMEM20);
+pullup pmmem19(MMEM19);
+pullup pmmem18(MMEM18);
+pullup pmmem17(MMEM17);
+pullup pmmem16(MMEM16);
+pullup pmmem15(MMEM15);
+pullup pmmem14(MMEM14);
+pullup pmmem13(MMEM13);
+pullup pmmem12(MMEM12);
+pullup pmmem11(MMEM11);
+pullup pmmem10(MMEM10);
+pullup pmmem9(MMEM9);
+pullup pmmem8(MMEM8);
+pullup pmmem7(MMEM7);
+pullup pmmem6(MMEM6);
+pullup pmmem5(MMEM5);
+pullup pmmem4(MMEM4);
+pullup pmmem3(MMEM3);
+pullup pmmem2(MMEM2);
+pullup pmmem1(MMEM1);
 pullup pmmem0(MMEM0);
+
 pullup pm0(M0);
 pullup pdc0(DC0);
 
-pullup pspc0(SPC0);
+pullup pa31a(A31A);
+pullup pa31b(A31B);
+
+//pullup pmf31(MF31);
+//pullup pm31(M31);
+
+// address bus
+pullup pa31(A31);
+pullup pa30(A30);
+pullup pa29(A29);
+pullup pa28(A28);
+pullup pa27(A27);
+pullup pa26(A26);
+pullup pa25(A25);
+pullup pa24(A24);
+pullup pa23(A23);
+pullup pa22(A22);
+pullup pa21(A21);
+pullup pa20(A20);
+pullup pa19(A19);
+pullup pa18(A18);
+pullup pa17(A17);
+pullup pa16(A16);
+pullup pa15(A15);
+pullup pa14(A14);
+pullup pa13(A13);
+pullup pa12(A12);
+pullup pa11(A11);
+pullup pa10(A10);
+pullup pa9(A9);
+pullup pa8(A8);
+pullup pa7(A7);
+pullup pa6(A6);
+pullup pa5(A5);
+pullup pa4(A4);
+pullup pa3(A3);
+pullup pa2(A2);
+pullup pa1(A1);
+pullup pa0(A0);
+
+
+pullup pspcOpar(SPCOPAR);
+pullup pspco18(SPCO18);
+pullup pspco17(SPCO17);
+pullup pspco16(SPCO16);
+pullup pspco15(SPCO15);
+pullup pspco14(SPCO14);
+pullup pspco13(SPCO13);
+pullup pspco12(SPCO12);
+pullup pspco11(SPCO11);
+pullup pspco10(SPCO10);
+pullup pspco9(SPCO9);
+pullup pspco8(SPCO8);
+pullup pspco7(SPCO7);
+pullup pspco6(SPCO6);
+pullup pspco5(SPCO5);
+pullup pspco4(SPCO4);
+pullup pspco3(SPCO3);
+pullup pspco2(SPCO2);
+pullup pspco1(SPCO1);
+pullup pspco0(SPCO0);
+
 pullup pspc1(SPC1);
+pullup pspc0(SPC0);
 
 pullup pi48(I48);
 pullup pi47(I47);
@@ -89,8 +174,6 @@ pullup pi2(I2);
 pullup pi1(I1);
 pullup pi0(I0);
 
-pullup pa3(A3);
-
 // needed of OC proms
 pullup pmsk0(MSK0);
 pullup pmsk1(MSK1);
@@ -128,20 +211,15 @@ pullup pmsk29(MSK29);
 pullup pmsk30(MSK30);
 pullup pmsk31(MSK31);
 
-// pulled up on header
-//assign #50 \-BOOT1 = 1;
-//assign #50 \-BOOT2 = 1;
-
 // no idea
 assign STEP = 0;
-//assign \-TPDONE = 1;
 assign \-BUSINT.LM.RESET = 1;
 assign \PROG.BUS.RESET = 0;
+assign \MACHRUNA_L = 0;
+assign \-DBWRITE = 1;
 
 // added - missing 
 assign \-TPDONE = \-TPW60 ;
-
-assign \-DBWRITE = 1;
 
 // some clue
 assign \-MEMGRANT = 0;
@@ -153,9 +231,7 @@ assign \-MEMACK = 0;
 // rc network on header
 reg \lost<?> ;
 
-assign \MACHRUNA_L = 0;
-
-// spy
+// spy interface
 assign EADR0 = 0;
 assign EADR1 = 0;
 assign EADR2 = 0;
@@ -166,17 +242,20 @@ assign \-DBWRITE = 1;
 assign SSPEED0 = 0;
 assign SSPEED1 = 0;
 
+// pulled up on header
 reg resetrc;
-
 assign \-BOOT1 = resetrc ;
 assign \-BOOT2 = resetrc ;
 
 initial
   begin
+    $timeformat(-9, 2, "ns", 7);
+
     #0 begin
-$display("time 0");
+	$display("time 0");
 	assign \lost<?> = 0;
 	assign resetrc = 1;
+
 
 	// prom 40-48, ce0
 	$readmemh("../prom/cadr_1.hex", i_PROM0_1B19.prom);
@@ -214,283 +293,27 @@ $display("time 0");
 
     #250 begin
 	  assign \lost<?> = 0;
-$display("time 200");
+          $display("time ", $time);
 	 end
 
-//10
-    #1 assign \lost<?> = 1;
-$display("time 202");
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
+    #10 assign \lost<?> = 1;
 
+    // boot pulse
     #0 assign resetrc = 0;
     #10 assign resetrc = 1;
 
-//20
-$display("time 220");
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
+   //
+   #20000 $finish;
+  end
 
-//30
-$display("time 230");
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-
-//40
-$display("time 240");
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-
-//50
-$display("time 250");
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-
-//55
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-
-//60
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-
-//70
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-
-//80
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-
-//90
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-
-//100
-$display("time 300");
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-
-//110
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-
-//120
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-
-//130
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-
-//140
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-
-//150
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-
-//160
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-
-//170
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-
-//180
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-
-//190
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-
-//200
-$display("time 400");
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-    #1 assign \lost<?> = 1;
-
-   #1 begin  $display("at 500"); end
-   #1 begin  $display("at 501"); end
-   #98 begin  $display("at 500"); end
-   #100 begin  $display("at 600"); end
-   #100 begin  $display("at 700"); end
-   #100 begin  $display("at 800"); end
-   #100 begin  $display("at 900"); end
-   #100 begin  $display("at 1000"); end
-   #100 begin  $display("at 1100"); end
-   #100 begin  $display("at 1200"); end
-   #100 begin  $display("at 1300"); end
-   #100 begin  $display("at 1400"); end
-
-   #5000 $finish;
+always @(negedge CYCLECOMPLETED)
+  begin
+    $display("time ", $time, ", PC %o, code %o", 
+	     { PC13,PC12,PC11,PC10,PC9,PC8,PC7,PC6,PC5,PC4,PC3,PC2,PC1,PC0 },
+	     { 	I48,I47,I46,I45,I44,I43,I42,I41,I40,
+		I39,I38,I37,I36,I35,I34,I33,I32,
+		I31,I30,I29,I28,I27,I26,I25,I24,
+		I23,I22,I21,I20,I19,I18,I17,I16,
+		I15,I14,I13,I12,I11,I10,I9,I8,
+		I7,I6,I5,I4,I3,I2,I1,I0 });
   end

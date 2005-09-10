@@ -20,18 +20,18 @@ module part_74S157 ( A1, B1, A2, B2, A3, B3, B4, A4,
 		g4(A_select, _strobe, _select),
 		g5(B_select, _strobe, select2);
 	and #(`REG_DELAY)
-		g6(l1, A0, A_select),
-		g7(l2, A1, A_select),
-		g8(l3, A2, A_select),
-		g9(l4, A3, A_select),
-		g10(l5, B0, B_select),
-		g11(l6, B1, B_select),
-		g12(l7, B2, B_select),
-		g13(l8, B3, B_select);
+		g6(l1, A1, A_select),
+		g7(l2, A2, A_select),
+		g8(l3, A3, A_select),
+		g9(l4, A4, A_select),
+		g10(l5, B1, B_select),
+		g11(l6, B2, B_select),
+		g12(l7, B3, B_select),
+		g13(l8, B4, B_select);
 	or #(`REG_DELAY)
-		g14(Y0, l1, l5),
-		g15(Y1, l2, l6),
-		g16(Y2, l3, l7),
-		g17(Y3, l4, l8);
+		g14(Y1, l1, l5),
+		g15(Y2, l2, l6),
+		g16(Y3, l3, l7),
+		g17(Y4, l4, l8);
 
 endmodule

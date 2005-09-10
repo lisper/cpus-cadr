@@ -28,31 +28,36 @@ module part_82S21 (I0, I1, A0, A1, A2, A3, A4,
       data_reg <= 2'b00;
     end
 
-  always @(CE)
-    if (!CE)
-      begin
+  always @(CE or STROBE or A4 or A3 or A2 or A1 or A0)
+   begin
+    if (CE)
         addr_reg <= {A4,A3,A2,A1,A0};
-      end
 
-  always @(STROBE)
     if (STROBE == 1)
       begin
-	data_reg <= ram[ addr_reg ];
+//	data_reg <= ram[ addr_reg ];
+	data_reg <= 2'b00;
       end
+if (CE)
+$display("8221: addr ", {A4,A3,A2,A1,A0}, ", CE ", CE, ", DR ", data_reg);
+   end
 
   always @(negedge STROBE)
-    if (!CE)
+    if (CE)
       begin
 	data_reg <= ram[ addr_reg ];
       end
 
   assign { D1, D0 } = data_reg;
-//  assign { D1, D0 } = 2'b00;
 
   always @(CE or WE0_N or WE1_N or WCLK_N)
    begin
-    if (!CE && !WE0_N && !WE1_N)
+    if (CE && !WE0_N && !WE1_N)
+begin
+if (^A4 !== 1'bx & ^A3 !== 1'bx & ^A2 !== 1'bx & ^A1 !== 1'bx & ^A0 !== 1'bx)
       ram[ {A4,A3,A2,A1,A0} ] = { D1, D0 };
+else $display("8221: bad write ", {A4,A3,A2,A1,A0});
+end
    end
 
 endmodule

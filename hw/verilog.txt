@@ -33,8 +33,8 @@ verilog modules for cadr
 74374.v		ok
 74472.v		ok
 
-8221.v		temp
-9328.v		temp
+8221.v		ok
+9328.v		ok, needs testing
 93425.v		ok?
 9346.v		ok
 9348.v		temp
