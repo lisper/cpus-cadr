@@ -58,11 +58,13 @@ pullup pmmem0(MMEM0);
 pullup pm0(M0);
 pullup pdc0(DC0);
 
+pullup pa(A);
+
 pullup pa31a(A31A);
 pullup pa31b(A31B);
 
-//pullup pmf31(MF31);
-//pullup pm31(M31);
+pullup pmf31(MF31);
+pullup pm31(M31);
 
 // address bus
 pullup pa31(A31);
@@ -249,13 +251,12 @@ assign \-BOOT2 = resetrc ;
 
 initial
   begin
-    $timeformat(-9, 2, "ns", 7);
+    $timeformat(-9, 0, "ns", 7);
 
     #0 begin
 	$display("time 0");
 	assign \lost<?> = 0;
 	assign resetrc = 1;
-
 
 	// prom 40-48, ce0
 	$readmemh("../prom/cadr_1.hex", i_PROM0_1B19.prom);
@@ -291,7 +292,7 @@ initial
 //	$readmemh("../prom/dmask.hex", i_DSPCTL_2F22.prom);
        end
 
-    #250 begin
+    #500 begin
 	  assign \lost<?> = 0;
           $display("time ", $time);
 	 end
@@ -302,18 +303,28 @@ initial
     #0 assign resetrc = 0;
     #10 assign resetrc = 1;
 
-   //
-   #20000 $finish;
   end
 
 always @(negedge CYCLECOMPLETED)
   begin
-    $display("time ", $time, ", PC %o, code %o", 
+    $display("time %t, PC %o, code %o, A %x M %x", 
+	     $time,
 	     { PC13,PC12,PC11,PC10,PC9,PC8,PC7,PC6,PC5,PC4,PC3,PC2,PC1,PC0 },
 	     { 	I48,I47,I46,I45,I44,I43,I42,I41,I40,
 		I39,I38,I37,I36,I35,I34,I33,I32,
 		I31,I30,I29,I28,I27,I26,I25,I24,
 		I23,I22,I21,I20,I19,I18,I17,I16,
 		I15,I14,I13,I12,I11,I10,I9,I8,
-		I7,I6,I5,I4,I3,I2,I1,I0 });
+		I7,I6,I5,I4,I3,I2,I1,I0 },
+             {
+		A31B,A30,A29,A28,A27,A26,A25,A24,
+		A23,A22,A21,A20,A19,A18,A17,A16,
+		A15,A14,A13,A12,A11,A10,A9,A8,
+		A7,A6,A5,A4,A3,A2,A1,A0 },
+             {
+		M31B,M30,M29,M28,M27,M26,M25,M24,
+		M23,M22,M21,M20,M19,M18,M17,M16,
+		M15,M14,M13,M12,M11,M10,M9,M8,
+		M7,M6,M5,M4,M3,M2,M1,M0 }
+    );
   end

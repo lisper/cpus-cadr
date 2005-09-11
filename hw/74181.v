@@ -10,6 +10,8 @@
  *                                                                          *
  ****************************************************************************/
 
+// note - AEB is open collector
+
 module part_74S181 ( A0, A1, A2, A3,
 		 B0, B1, B2, B3,
 		 S0, S1, S2, S3, M, CIN_N,
@@ -199,6 +201,7 @@ module Summodule(E, D, C, M, F, AEB);
   xor F2gate(F[2], EXD[2], CM[2]);
   xor F3gate(F[3], EXD[3], CM[3]);
 
-  and AEBgate(AEB, F[0], F[1], F[2], F[3]);
+//  and AEBgate(AEB, F[0], F[1], F[2], F[3]);
+  assign (strong0, weak1) AEB = F[0] & F[1] & F[2] & F[3];
 
 endmodule /* Summodule */

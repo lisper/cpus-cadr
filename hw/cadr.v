@@ -6718,7 +6718,8 @@ assign internal10 = ! (\-TPW30  & internal7);
 // 1C06:
 assign \-TPCLK  = ! (\-TPREND  & TPCLK & \-CLOCK_RESET_B );
 assign TPTSE = ! (\-TPTSE  & \-TPR25  & \-CLOCK_RESET_B );
-assign internal7 = ! (\-CLOCK_RESET_B  & \-TPW70  & internal10);
+//assign internal7 = ! (\-CLOCK_RESET_B  & \-TPW70  & internal10);
+assign internal7 = ! (\-CLOCK_RESET_B  & \-TPW55  & internal10);
 
 // 1C10:
 

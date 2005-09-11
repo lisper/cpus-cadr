@@ -21,16 +21,15 @@ module clockdebug;
 
 assign GND = 0;
 
-//assign \-CLOCK_RESET_B = 0;
 assign \-HANG = 1;
 
-//assign \-ILONG = 1;
-//assign SSPEED1 = 0;
-//assign SSPEED0 = 0;
+assign \-ILONG = 1;
+assign SSPEED1 = 0;
+assign SSPEED0 = 0;
 
-assign \-ILONG = 0;
-assign SSPEED1 = 1;
-assign SSPEED0 = 1;
+//assign \-ILONG = 1;
+//assign SSPEED1 = 1;
+//assign SSPEED0 = 1;
 
 // 1D08:
 // (no code to express 74S151)
@@ -128,6 +127,22 @@ part_TD25  i_CLOCK1_1D14 (
   .O_15ns(\-TPR115 )
 //  .O_5ns(\-TPR105 )
 );
+
+wire \MACHRUNA_L , TPWP, internal10, internal7 ;
+
+assign \MACHRUNA_L = 0;
+
+assign TPWP = ! (internal7 | \MACHRUNA_L );
+assign internal7 = ! (\-CLOCK_RESET_B  & \-TPW55  & internal10);
+//assign internal7 = ! (\-CLOCK_RESET_B  & \-TPW70  & internal10);
+assign internal10 = ! (\-TPW30  & internal7);
+
+wire TPCLK, \-TPCLK ;
+
+assign TPCLK = ! (\-TPR0  & \-TPCLK );
+assign \-TPCLK  = ! (\-TPREND  & TPCLK & \-CLOCK_RESET_B );
+
+//---------------------------------------------------------------------
 
 initial
 begin
