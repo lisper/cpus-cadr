@@ -35,8 +35,8 @@
 // part pin already in use, 1B25, pin 7
 // page BCTERM
 // models: 75
-// pages: 96
-// signals (nets): 2251
+// pages: 97
+// signals (nets): 2252
 // signals with only one node:
 // -DBWRITE BUS.POWER.RESET L -BUSINT.LM.RESET -BUS.RESET PROG.BUS.RESET 
 // -HALT -MACHRUNA -MACHRUN -RUN -LPC.HOLD -OPCCLK OPCINH -STEP 
@@ -45,14 +45,11 @@
 // -TPR80A -TPR70 -TPR105 -TPR120A -TPR110 -TPR120 -TPR200 -TPR180 
 // -TPR20 -TPR80 -TPDONE -ADRPAR -MEMRQ -MBUSY.SYNC IWRITED L DESTIMOD0 L 
 // -FUNCT0 -FUNCT1 -FUNCT3 -IMODD PWIDX -PDLWRITED MEMPAR OUT MEMPAR IN 
-// PC12B PC13B NEWLC -LPARITY INOP MPARODD AMEM16 AMEM17 AMEM18 
-// AMEM19 AMEM20 AMEM21 AMEM22 AMEM23 AMEM24 AMEM25 AMEM26 AMEM27 
-// AMEM28 AMEM29 AMEM30 AMEMPARITY -AWPA -AADR3B -AADR2B -AADR1B 
-// -AADR0B -AADR7B -AADR6B -AADR5B -AADR4B -AADR9B -AADR8B 
-// signals with only one node: 88
+// PC12B PC13B NEWLC -LPARITY INOP MPARODD 
+// signals with only one node: 61
 // nets without models: 0
 // signals without drivers:
-// signals without drivers: 94
+// signals without drivers: 77
 module cpu;
   wire \-A31 , \-AADR0A , \-AADR0B , \-AADR1A , \-AADR1B , \-AADR2A ;
   wire \-AADR2B , \-AADR3A , \-AADR3B , \-AADR4A , \-AADR4B , \-AADR5A ;
@@ -71,37 +68,37 @@ module cpu;
   wire \-DADR6C , \-DADR7A , \-DADR7B , \-DADR7C , \-DADR8A , \-DADR8B ;
   wire \-DADR8C , \-DADR9A , \-DADR9B , \-DADR9C , \-DBREAD , \-DBWRITE ;
   wire \-DESTIMOD0 , \-DESTIMOD1 , \-DESTINTCTL , \-DESTLC , \-DESTMDR ;
-  wire \-DESTMEM , \-DESTPDL , \-DESTPDLP , \-DESTPDLTOP , \-DESTPDLX ;
-  wire \-DESTSPC , \-DESTSPCD , \-DESTVMA , \-DFALL , \-DIV , \-DIVPOSLASTTIME ;
-  wire \-DMAPBENB , \-DP , \-DPARH , \-DPE , \-DR , \-DWEA , \-DWEB ;
-  wire \-DWEC , \-ERRHALT , \-FUNCT0 , \-FUNCT1 , \-FUNCT2 , \-FUNCT3 ;
-  wire \-HALT , \-HALTED , \-HANG , \-HIGHERR , \-ICE0A , \-ICE0B , \-ICE0C ;
-  wire \-ICE0D , \-ICE1A , \-ICE1B , \-ICE1C , \-ICE1D , \-ICE2A , \-ICE2B ;
-  wire \-ICE2C , \-ICE2D , \-ICE3A , \-ICE3B , \-ICE3C , \-ICE3D , \-IDEBUG ;
-  wire \-IFETCH , \-IGNPAR , \-IGNPOPJ , \-ILONG , \-IMODD , \-INOP ;
-  wire \-IPE , \-IPOPJ , \-IR0 , \-IR1 , \-IR12 , \-IR13 , \-IR2 , \-IR22 ;
-  wire \-IR25 , \-IR3 , \-IR31 , \-IR4 , \-IR6 , \-IR8 , \-IRALU , \-IRBYTE ;
-  wire \-IRDISP , \-IRJUMP , \-IWEA , \-IWEB , \-IWEC , \-IWED , \-IWEE ;
-  wire \-IWEF , \-IWEG , \-IWEH , \-IWEI , \-IWEJ , \-IWEK , \-IWEL ;
-  wire \-IWEM , \-IWEN , \-IWEO , \-IWEP , \-IWRITED , \-IWRITEDA , \-JCOND ;
-  wire \-LC_MODIFIES_MROT , \-LCDRIVE , \-LCINC , \-LCRY11 , \-LCRY15 ;
-  wire \-LCRY19 , \-LCRY23 , \-LCRY3 , \-LCRY7 , \-LDCLK , \-LDDBIRH ;
-  wire \-LDDBIRL , \-LDDBIRM , \-LDMODE , \-LDOPC , \-LDSTAT , \-LOADMD ;
-  wire \-LOWERHIGHOK , \-LPARITY , \-LPARM , \-LPC.HOLD , \-LVMO22 , \-LVMO23 ;
-  wire \-MACHRUN , \-MACHRUNA , \-MADR0A , \-MADR0B , \-MADR1A , \-MADR1B ;
-  wire \-MADR2A , \-MADR2B , \-MADR3A , \-MADR3B , \-MADR4A , \-MADR4B ;
-  wire \-MAPDRIVE , \-MAPI10A , \-MAPI10B , \-MAPI11A , \-MAPI11B , \-MAPI12A ;
-  wire \-MAPI12B , \-MAPI23 , \-MAPI8A , \-MAPI8B , \-MAPI9A , \-MAPI9B ;
-  wire \-MBUSY.SYNC , \-MCLK0 , \-MCLK1 , \-MCLK5 , \-MD0 , \-MD1 , \-MD10 ;
-  wire \-MD11 , \-MD12 , \-MD13 , \-MD14 , \-MD15 , \-MD16 , \-MD17 ;
-  wire \-MD18 , \-MD19 , \-MD2 , \-MD20 , \-MD21 , \-MD22 , \-MD23 , \-MD24 ;
-  wire \-MD25 , \-MD26 , \-MD27 , \-MD28 , \-MD29 , \-MD3 , \-MD30 , \-MD31 ;
-  wire \-MD4 , \-MD5 , \-MD6 , \-MD7 , \-MD8 , \-MD9 , \-MDDRIVE , \-MDS0 ;
-  wire \-MDS1 , \-MDS10 , \-MDS11 , \-MDS12 , \-MDS13 , \-MDS14 , \-MDS15 ;
-  wire \-MDS16 , \-MDS17 , \-MDS18 , \-MDS19 , \-MDS2 , \-MDS20 , \-MDS21 ;
-  wire \-MDS22 , \-MDS23 , \-MDS24 , \-MDS25 , \-MDS26 , \-MDS27 , \-MDS28 ;
-  wire \-MDS29 , \-MDS3 , \-MDS30 , \-MDS31 , \-MDS4 , \-MDS5 , \-MDS6 ;
-  wire \-MDS7 , \-MDS8 , \-MDS9 , \-MEMACK , \-MEMDRIVE.A , \-MEMDRIVE.B ;
+  wire \-DESTMEM , \-DESTPDL(P) , \-DESTPDL(X) , \-DESTPDLP , \-DESTPDLTOP ;
+  wire \-DESTPDLX , \-DESTSPC , \-DESTSPCD , \-DESTVMA , \-DFALL , \-DIV ;
+  wire \-DIVPOSLASTTIME , \-DMAPBENB , \-DP , \-DPARH , \-DPE , \-DR ;
+  wire \-DWEA , \-DWEB , \-DWEC , \-ERRHALT , \-FUNCT0 , \-FUNCT1 , \-FUNCT2 ;
+  wire \-FUNCT3 , \-HALT , \-HALTED , \-HANG , \-HIGHERR , \-ICE0A , \-ICE0B ;
+  wire \-ICE0C , \-ICE0D , \-ICE1A , \-ICE1B , \-ICE1C , \-ICE1D , \-ICE2A ;
+  wire \-ICE2B , \-ICE2C , \-ICE2D , \-ICE3A , \-ICE3B , \-ICE3C , \-ICE3D ;
+  wire \-IDEBUG , \-IFETCH , \-IGNPAR , \-IGNPOPJ , \-ILONG , \-IMODD ;
+  wire \-INOP , \-IPE , \-IPOPJ , \-IR0 , \-IR1 , \-IR12 , \-IR13 , \-IR2 ;
+  wire \-IR22 , \-IR25 , \-IR3 , \-IR31 , \-IR4 , \-IR6 , \-IR8 , \-IRALU ;
+  wire \-IRBYTE , \-IRDISP , \-IRJUMP , \-IWEA , \-IWEB , \-IWEC , \-IWED ;
+  wire \-IWEE , \-IWEF , \-IWEG , \-IWEH , \-IWEI , \-IWEJ , \-IWEK ;
+  wire \-IWEL , \-IWEM , \-IWEN , \-IWEO , \-IWEP , \-IWRITED , \-IWRITEDA ;
+  wire \-JCOND , \-LC_MODIFIES_MROT , \-LCDRIVE , \-LCINC , \-LCRY11 ;
+  wire \-LCRY15 , \-LCRY19 , \-LCRY23 , \-LCRY3 , \-LCRY7 , \-LDCLK ;
+  wire \-LDDBIRH , \-LDDBIRL , \-LDDBIRM , \-LDMODE , \-LDOPC , \-LDSTAT ;
+  wire \-LOADMD , \-LOWERHIGHOK , \-LPARITY , \-LPARM , \-LPC.HOLD , \-LVMO22 ;
+  wire \-LVMO23 , \-MACHRUN , \-MACHRUNA , \-MADR0A , \-MADR0B , \-MADR1A ;
+  wire \-MADR1B , \-MADR2A , \-MADR2B , \-MADR3A , \-MADR3B , \-MADR4A ;
+  wire \-MADR4B , \-MAPDRIVE , \-MAPI10A , \-MAPI10B , \-MAPI11A , \-MAPI11B ;
+  wire \-MAPI12A , \-MAPI12B , \-MAPI23 , \-MAPI8A , \-MAPI8B , \-MAPI9A ;
+  wire \-MAPI9B , \-MBUSY.SYNC , \-MCLK0 , \-MCLK1 , \-MCLK5 , \-MD0 ;
+  wire \-MD1 , \-MD10 , \-MD11 , \-MD12 , \-MD13 , \-MD14 , \-MD15 , \-MD16 ;
+  wire \-MD17 , \-MD18 , \-MD19 , \-MD2 , \-MD20 , \-MD21 , \-MD22 , \-MD23 ;
+  wire \-MD24 , \-MD25 , \-MD26 , \-MD27 , \-MD28 , \-MD29 , \-MD3 , \-MD30 ;
+  wire \-MD31 , \-MD4 , \-MD5 , \-MD6 , \-MD7 , \-MD8 , \-MD9 , \-MDDRIVE ;
+  wire \-MDS0 , \-MDS1 , \-MDS10 , \-MDS11 , \-MDS12 , \-MDS13 , \-MDS14 ;
+  wire \-MDS15 , \-MDS16 , \-MDS17 , \-MDS18 , \-MDS19 , \-MDS2 , \-MDS20 ;
+  wire \-MDS21 , \-MDS22 , \-MDS23 , \-MDS24 , \-MDS25 , \-MDS26 , \-MDS27 ;
+  wire \-MDS28 , \-MDS29 , \-MDS3 , \-MDS30 , \-MDS31 , \-MDS4 , \-MDS5 ;
+  wire \-MDS6 , \-MDS7 , \-MDS8 , \-MDS9 , \-MEMACK , \-MEMDRIVE.A , \-MEMDRIVE.B ;
   wire \-MEMGRANT , \-MEMOP , \-MEMPAROK , \-MEMPE , \-MEMPREPARE , \-MEMRD ;
   wire \-MEMRQ , \-MEMSTART , \-MEMWR , \-MFDRIVE , \-MFINISH , \-MFINISHD ;
   wire \-MPASS , \-MPASSL , \-MPASSM , \-MPE , \-MR , \-MUL , \-MULNOP ;
@@ -10014,8 +10011,8 @@ part_74S138  i_SOURCE_3D12 (
   .Y5(\-DESTSPC ),
   .Y4(\-DESTPDLP ),
   .Y3(\-DESTPDLX ),
-  .Y2(\-DESTPDL ),
-  .Y1(\-DESTPDL ),
+  .Y2(\-DESTPDL(X) ),
+  .Y1(\-DESTPDL(P) ),
   .Y0(\-DESTPDLTOP )
 );
 
@@ -11199,7 +11196,7 @@ part_74S175  i_PDLCTL_4C11 (
   .Q0(PDLWRITED),
   .Q0_N(\-PDLWRITED ),
   .D0(PDLWRITE),
-  .D1(\-DESTPDL ),
+  .D1(\-DESTPDL(X) ),
   .Q1_N(PWIDX),
   .Q1(\-PWIDX ),
   .CLK(CLK4F),
@@ -11225,7 +11222,7 @@ assign internal19 = \-SRCPDLPOP  | NOP;
 
 
 // 4D10:
-assign PDLWRITE = ! (\-DESTPDLTOP  & \-DESTPDL  & \-DESTPDL );
+assign PDLWRITE = ! (\-DESTPDLTOP  & \-DESTPDL(X)  & \-DESTPDL(P) );
 
 
 
@@ -11237,7 +11234,7 @@ assign \-PWPC  = ! (WP4A & PDLWRITED);
 
 // 4D06:
 
-assign \-PDLCNT  = internal19 & \-DESTPDL ;
+assign \-PDLCNT  = internal19 & \-DESTPDL(P) ;
 
 
 
@@ -14291,7 +14288,6 @@ part_74S51  i_MD_1D16 (
   .G2D(LOADMD),
   .G2Y(MDCLK)
 );
-
 
 // 1E19:
 // (no code to express 74S374)
@@ -17783,6 +17779,346 @@ part_93425A  i_AMEM1_3B22 (
   .A9(\-AADR9A ),
   .WE_N(\-AWPB ),
   .DI(L15)
+);
+
+
+// 3A10:
+// (no code to express 93425A)
+part_93425A  i_AMEM0_3A10 (
+  .CE_N(GND),
+  .A0(\-AADR0B ),
+  .A1(\-AADR1B ),
+  .A2(\-AADR2B ),
+  .A3(\-AADR3B ),
+  .A4(\-AADR4B ),
+  .DO(AMEM16),
+  .A5(\-AADR5B ),
+  .A6(\-AADR6B ),
+  .A7(\-AADR7B ),
+  .A8(\-AADR8B ),
+  .A9(\-AADR9B ),
+  .WE_N(\-AWPA ),
+  .DI(L16)
+);
+
+
+// 3A15:
+// (no code to express 93425A)
+part_93425A  i_AMEM0_3A15 (
+  .CE_N(GND),
+  .A0(\-AADR0B ),
+  .A1(\-AADR1B ),
+  .A2(\-AADR2B ),
+  .A3(\-AADR3B ),
+  .A4(\-AADR4B ),
+  .DO(AMEM17),
+  .A5(\-AADR5B ),
+  .A6(\-AADR6B ),
+  .A7(\-AADR7B ),
+  .A8(\-AADR8B ),
+  .A9(\-AADR9B ),
+  .WE_N(\-AWPA ),
+  .DI(L17)
+);
+
+
+// 3A09:
+// (no code to express 93425A)
+part_93425A  i_AMEM0_3A09 (
+  .CE_N(GND),
+  .A0(\-AADR0B ),
+  .A1(\-AADR1B ),
+  .A2(\-AADR2B ),
+  .A3(\-AADR3B ),
+  .A4(\-AADR4B ),
+  .DO(AMEM18),
+  .A5(\-AADR5B ),
+  .A6(\-AADR6B ),
+  .A7(\-AADR7B ),
+  .A8(\-AADR8B ),
+  .A9(\-AADR9B ),
+  .WE_N(\-AWPA ),
+  .DI(L18)
+);
+
+
+// 3A14:
+// (no code to express 93425A)
+part_93425A  i_AMEM0_3A14 (
+  .CE_N(GND),
+  .A0(\-AADR0B ),
+  .A1(\-AADR1B ),
+  .A2(\-AADR2B ),
+  .A3(\-AADR3B ),
+  .A4(\-AADR4B ),
+  .DO(AMEM19),
+  .A5(\-AADR5B ),
+  .A6(\-AADR6B ),
+  .A7(\-AADR7B ),
+  .A8(\-AADR8B ),
+  .A9(\-AADR9B ),
+  .WE_N(\-AWPA ),
+  .DI(L19)
+);
+
+
+// 3A08:
+// (no code to express 93425A)
+part_93425A  i_AMEM0_3A08 (
+  .CE_N(GND),
+  .A0(\-AADR0B ),
+  .A1(\-AADR1B ),
+  .A2(\-AADR2B ),
+  .A3(\-AADR3B ),
+  .A4(\-AADR4B ),
+  .DO(AMEM20),
+  .A5(\-AADR5B ),
+  .A6(\-AADR6B ),
+  .A7(\-AADR7B ),
+  .A8(\-AADR8B ),
+  .A9(\-AADR9B ),
+  .WE_N(\-AWPA ),
+  .DI(L20)
+);
+
+
+// 3A13:
+// (no code to express 93425A)
+part_93425A  i_AMEM0_3A13 (
+  .CE_N(GND),
+  .A0(\-AADR0B ),
+  .A1(\-AADR1B ),
+  .A2(\-AADR2B ),
+  .A3(\-AADR3B ),
+  .A4(\-AADR4B ),
+  .DO(AMEM21),
+  .A5(\-AADR5B ),
+  .A6(\-AADR6B ),
+  .A7(\-AADR7B ),
+  .A8(\-AADR8B ),
+  .A9(\-AADR9B ),
+  .WE_N(\-AWPA ),
+  .DI(L21)
+);
+
+
+// 3A07:
+// (no code to express 93425A)
+part_93425A  i_AMEM0_3A07 (
+  .CE_N(GND),
+  .A0(\-AADR0B ),
+  .A1(\-AADR1B ),
+  .A2(\-AADR2B ),
+  .A3(\-AADR3B ),
+  .A4(\-AADR4B ),
+  .DO(AMEM22),
+  .A5(\-AADR5B ),
+  .A6(\-AADR6B ),
+  .A7(\-AADR7B ),
+  .A8(\-AADR8B ),
+  .A9(\-AADR9B ),
+  .WE_N(\-AWPA ),
+  .DI(L22)
+);
+
+
+// 3A11:
+// (no code to express 93425A)
+part_93425A  i_AMEM0_3A11 (
+  .CE_N(GND),
+  .A0(\-AADR0B ),
+  .A1(\-AADR1B ),
+  .A2(\-AADR2B ),
+  .A3(\-AADR3B ),
+  .A4(\-AADR4B ),
+  .DO(AMEM23),
+  .A5(\-AADR5B ),
+  .A6(\-AADR6B ),
+  .A7(\-AADR7B ),
+  .A8(\-AADR8B ),
+  .A9(\-AADR9B ),
+  .WE_N(\-AWPA ),
+  .DI(L23)
+);
+
+
+// 3B10:
+// (no code to express 93425A)
+part_93425A  i_AMEM0_3B10 (
+  .CE_N(GND),
+  .A0(\-AADR0B ),
+  .A1(\-AADR1B ),
+  .A2(\-AADR2B ),
+  .A3(\-AADR3B ),
+  .A4(\-AADR4B ),
+  .DO(AMEM24),
+  .A5(\-AADR5B ),
+  .A6(\-AADR6B ),
+  .A7(\-AADR7B ),
+  .A8(\-AADR8B ),
+  .A9(\-AADR9B ),
+  .WE_N(\-AWPA ),
+  .DI(L24)
+);
+
+
+// 3B14:
+// (no code to express 93425A)
+part_93425A  i_AMEM0_3B14 (
+  .CE_N(GND),
+  .A0(\-AADR0B ),
+  .A1(\-AADR1B ),
+  .A2(\-AADR2B ),
+  .A3(\-AADR3B ),
+  .A4(\-AADR4B ),
+  .DO(AMEM25),
+  .A5(\-AADR5B ),
+  .A6(\-AADR6B ),
+  .A7(\-AADR7B ),
+  .A8(\-AADR8B ),
+  .A9(\-AADR9B ),
+  .WE_N(\-AWPA ),
+  .DI(L25)
+);
+
+
+// 3B09:
+// (no code to express 93425A)
+part_93425A  i_AMEM0_3B09 (
+  .CE_N(GND),
+  .A0(\-AADR0B ),
+  .A1(\-AADR1B ),
+  .A2(\-AADR2B ),
+  .A3(\-AADR3B ),
+  .A4(\-AADR4B ),
+  .DO(AMEM26),
+  .A5(\-AADR5B ),
+  .A6(\-AADR6B ),
+  .A7(\-AADR7B ),
+  .A8(\-AADR8B ),
+  .A9(\-AADR9B ),
+  .WE_N(\-AWPA ),
+  .DI(L26)
+);
+
+
+// 3B13:
+// (no code to express 93425A)
+part_93425A  i_AMEM0_3B13 (
+  .CE_N(GND),
+  .A0(\-AADR0B ),
+  .A1(\-AADR1B ),
+  .A2(\-AADR2B ),
+  .A3(\-AADR3B ),
+  .A4(\-AADR4B ),
+  .DO(AMEM27),
+  .A5(\-AADR5B ),
+  .A6(\-AADR6B ),
+  .A7(\-AADR7B ),
+  .A8(\-AADR8B ),
+  .A9(\-AADR9B ),
+  .WE_N(\-AWPA ),
+  .DI(L27)
+);
+
+
+// 3B08:
+// (no code to express 93425A)
+part_93425A  i_AMEM0_3B08 (
+  .CE_N(GND),
+  .A0(\-AADR0B ),
+  .A1(\-AADR1B ),
+  .A2(\-AADR2B ),
+  .A3(\-AADR3B ),
+  .A4(\-AADR4B ),
+  .DO(AMEM28),
+  .A5(\-AADR5B ),
+  .A6(\-AADR6B ),
+  .A7(\-AADR7B ),
+  .A8(\-AADR8B ),
+  .A9(\-AADR9B ),
+  .WE_N(\-AWPA ),
+  .DI(L28)
+);
+
+
+// 3B12:
+// (no code to express 93425A)
+part_93425A  i_AMEM0_3B12 (
+  .CE_N(GND),
+  .A0(\-AADR0B ),
+  .A1(\-AADR1B ),
+  .A2(\-AADR2B ),
+  .A3(\-AADR3B ),
+  .A4(\-AADR4B ),
+  .DO(AMEM29),
+  .A5(\-AADR5B ),
+  .A6(\-AADR6B ),
+  .A7(\-AADR7B ),
+  .A8(\-AADR8B ),
+  .A9(\-AADR9B ),
+  .WE_N(\-AWPA ),
+  .DI(L29)
+);
+
+
+// 3B07:
+// (no code to express 93425A)
+part_93425A  i_AMEM0_3B07 (
+  .CE_N(GND),
+  .A0(\-AADR0B ),
+  .A1(\-AADR1B ),
+  .A2(\-AADR2B ),
+  .A3(\-AADR3B ),
+  .A4(\-AADR4B ),
+  .DO(AMEM30),
+  .A5(\-AADR5B ),
+  .A6(\-AADR6B ),
+  .A7(\-AADR7B ),
+  .A8(\-AADR8B ),
+  .A9(\-AADR9B ),
+  .WE_N(\-AWPA ),
+  .DI(L30)
+);
+
+
+// 3B11:
+// (no code to express 93425A)
+part_93425A  i_AMEM0_3B11 (
+  .CE_N(GND),
+  .A0(\-AADR0B ),
+  .A1(\-AADR1B ),
+  .A2(\-AADR2B ),
+  .A3(\-AADR3B ),
+  .A4(\-AADR4B ),
+  .DO(AMEM31),
+  .A5(\-AADR5B ),
+  .A6(\-AADR6B ),
+  .A7(\-AADR7B ),
+  .A8(\-AADR8B ),
+  .A9(\-AADR9B ),
+  .WE_N(\-AWPA ),
+  .DI(L31)
+);
+
+
+// 3B06:
+// (no code to express 93425A)
+part_93425A  i_AMEM0_3B06 (
+  .CE_N(GND),
+  .A0(\-AADR0B ),
+  .A1(\-AADR1B ),
+  .A2(\-AADR2B ),
+  .A3(\-AADR3B ),
+  .A4(\-AADR4B ),
+  .DO(AMEMPARITY),
+  .A5(\-AADR5B ),
+  .A6(\-AADR6B ),
+  .A7(\-AADR7B ),
+  .A8(\-AADR8B ),
+  .A9(\-AADR9B ),
+  .WE_N(\-AWPA ),
+  .DI(LPARITY)
 );
 
 

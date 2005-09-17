@@ -36,19 +36,19 @@ begin
    end
   else
 	DO <= 1'bz;
-$display("93425: %m read ", DO, "@", addr);
+//$display("93425: %m read ", DO, "@", addr);
 end
 
-always @(negedge CE_N)
-if (WE_N == 1)
-$display("93425: %m read ", DO, "@", addr);
+//always @(negedge CE_N)
+//if (WE_N == 1)
+//  $display("93425: %m read ", DO, "@", addr);
 
   always @(CE_N or WE_N)
    begin
-if (CE_N == 0)
+//if (CE_N == 0)
     if (!CE_N & !WE_N)
       begin
-$display("93425: %m write ", DI, "@", addr, ", CE_N,WE_N ", CE_N, WE_N);
+//$display("93425: %m write ", DI, "@", addr, ", CE_N,WE_N ", CE_N, WE_N);
         ram [ addr ] = DI;
       end
    end

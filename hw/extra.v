@@ -66,6 +66,40 @@ pullup pa31b(A31B);
 pullup pmf31(MF31);
 pullup pm31(M31);
 
+// mem - temp
+pullup pmem31(MEM31);
+pullup pmem30(MEM30);
+pullup pmem29(MEM29);
+pullup pmem28(MEM28);
+pullup pmem27(MEM27);
+pullup pmem26(MEM26);
+pullup pmem25(MEM25);
+pullup pmem24(MEM24);
+pullup pmem23(MEM23);
+pullup pmem22(MEM22);
+pullup pmem21(MEM21);
+pullup pmem20(MEM20);
+pullup pmem19(MEM19);
+pullup pmem18(MEM18);
+pullup pmem17(MEM17);
+pullup pmem16(MEM16);
+pullup pmem15(MEM15);
+pullup pmem14(MEM14);
+pullup pmem13(MEM13);
+pullup pmem12(MEM12);
+pullup pmem11(MEM11);
+pullup pmem10(MEM10);
+pullup pmem9(MEM9);
+pullup pmem8(MEM8);
+pullup pmem7(MEM7);
+pullup pmem6(MEM6);
+pullup pmem5(MEM5);
+pullup pmem4(MEM4);
+pullup pmem3(MEM3);
+pullup pmem2(MEM2);
+pullup pmem1(MEM1);
+pullup pmem0(MEM0);
+
 // address bus
 pullup pa31(A31);
 pullup pa30(A30);
@@ -249,15 +283,221 @@ reg resetrc;
 assign \-BOOT1 = resetrc ;
 assign \-BOOT2 = resetrc ;
 
+wire[13:0] pc;
+assign pc = {PC13,PC12,PC11,PC10,PC9,PC8,PC7,PC6,PC5,PC4,PC3,PC2,PC1,PC0};
+
+wire[13:0] lpc;
+assign lpc = {LPC13,LPC12,LPC11,LPC10,LPC9,LPC8,LPC7,LPC6,LPC5,LPC4,LPC3,LPC2,LPC1,LPC0};
+
+wire[13:0] wpc;
+assign wpc = {WPC13,WPC12,WPC11,WPC10,WPC9,WPC8,WPC7,WPC6,WPC5,WPC4,WPC3,WPC2,WPC1,WPC0};
+
+wire[48:0] ibus;
+assign ibus = {	I48,I47,I46,I45,I44,I43,I42,I41,I40,
+		I39,I38,I37,I36,I35,I34,I33,I32,
+		I31,I30,I29,I28,I27,I26,I25,I24,
+		I23,I22,I21,I20,I19,I18,I17,I16,
+		I15,I14,I13,I12,I11,I10,I9,I8,
+		I7,I6,I5,I4,I3,I2,I1,I0 };
+
+wire[48:0] ir;
+assign ir = {	IR48,IR47,IR46,IR45,IR44,IR43,IR42,IR41,IR40,
+		IR39,IR38,IR37,IR36,IR35,IR34,IR33,IR32,
+		IR31,IR30,IR29,IR28,IR27,IR26,IR25,IR24,
+		IR23,IR22,IR21,IR20,IR19,IR18,IR17,IR16,
+		IR15,IR14,IR13,IR12,IR11,IR10,IR9,IR8,
+		IR7,IR6,IR5,IR4,IR3,IR2,IR1,IR0 };
+
+wire[31:0] a;
+assign a = {A31B,A30,A29,A28,A27,A26,A25,A24,A23,A22,A21,A20,A19,A18,A17,A16,
+            A15,A14,A13,A12,A11,A10,A9,A8,A7,A6,A5,A4,A3,A2,A1,A0};
+
+wire[31:0] m;
+assign m = {M31B,M30,M29,M28,M27,M26,M25,M24,M23,M22,M21,M20,M19,M18,M17,M16,
+            M15,M14,M13,M12,M11,M10,M9,M8,M7,M6,M5,M4,M3,M2,M1,M0};
+
+wire[31:0] md_n;
+assign md_n = { \-MD31 , \-MD30 , \-MD29 , \-MD28 ,
+              \-MD27 , \-MD26 , \-MD25 , \-MD24 ,
+              \-MD23 , \-MD22 , \-MD21 , \-MD20 ,
+              \-MD19 , \-MD18 , \-MD17 , \-MD16 ,
+              \-MD15 , \-MD14 , \-MD13 , \-MD12 ,
+              \-MD11 , \-MD10 , \-MD9 , \-MD8 ,
+              \-MD7 , \-MD6 , \-MD5 , \-MD4 ,
+              \-MD3 , \-MD2 , \-MD1 , \-MD0 };
+
+wire[31:0] mds_n;
+assign mds_n = { \-MDS31 , \-MDS30 , \-MDS29 , \-MDS28 ,
+              \-MDS27 , \-MDS26 , \-MDS25 , \-MDS24 ,
+              \-MDS23 , \-MDS22 , \-MDS21 , \-MDS20 ,
+              \-MDS19 , \-MDS18 , \-MDS17 , \-MDS16 ,
+              \-MDS15 , \-MDS14 , \-MDS13 , \-MDS12 ,
+              \-MDS11 , \-MDS10 , \-MDS9 , \-MDS8 ,
+              \-MDS7 , \-MDS6 , \-MDS5 , \-MDS4 ,
+              \-MDS3 , \-MDS2 , \-MDS1 , \-MDS0 };
+
+wire[31:0] mf;
+assign mf = { MF31, MF30, MF29, MF28, MF27, MF26, MF25, MF24,
+		MF23, MF22, MF21, MF20, MF19, MF18, MF17, MF16,
+		MF15, MF14, MF13, MF12, MF11, MF10, MF9, MF8,
+		MF7, MF6, MF5, MF4, MF3, MF2, MF1, MF0 };
+
+wire[31:0] q;
+assign q = { Q31,Q30,Q29,Q28,Q27,Q26,Q25,Q24,
+		Q23,Q22,Q21,Q20,Q19,Q18,Q17,Q16,
+		Q15,Q14,Q13,Q12,Q11,Q10,Q9,Q8,
+		Q7,Q6,Q5,Q4,Q3,Q2,Q1,Q0 };
+
+wire[31:0] sa;
+assign sa = { SA31,SA30,SA29,SA28,SA27,SA26,SA25,SA24,
+		SA23,SA22,SA21,SA20,SA19,SA18,SA17,SA16,
+		SA15,SA14,SA13,SA12,SA11,SA10,SA9,SA8,
+		SA7,SA6,SA5,SA4,SA3,SA2,SA1,SA0 };
+
+wire[31:0] r;
+assign r = { R31,R30,R29,R28,R27,R26,R25,R24,
+		R23,R22,R21,R20,R19,R18,R17,R16,
+		R15,R14,R13,R12,R11,R10,R9,R8,
+		R7,R6,R5,R4,R3,R2,R1,R0 };
+
+wire[31:0] alu;
+assign alu = { ALU31,ALU30,ALU29,ALU28,ALU27,ALU26,ALU25,ALU24,
+		ALU23,ALU22,ALU21,ALU20,ALU19,ALU18,ALU17,ALU16,
+		ALU15,ALU14,ALU13,ALU12,ALU11,ALU10,ALU9,ALU8,
+		ALU7,ALU6,ALU5,ALU4,ALU3,ALU2,ALU1,ALU0 };
+
+wire[3:0] aluf;
+assign aluf = {ALUF3B,ALUF2B,ALUF1B,ALUF0B};
+
+wire[9:0] pdla_n;
+assign pdla_n = {\-PDLA9A , \-PDLA8A , \-PDLA7A , \-PDLA6A , \-PDLA5A ,
+                 \-PDLA4A , \-PDLA3A , \-PDLA2A , \-PDLA1A , \-PDLA0A };
+
+wire[9:0] pdla;
+assign pdla = {!\-PDLA9A , !\-PDLA8A , !\-PDLA7A , !\-PDLA6A , !\-PDLA5A ,
+               !\-PDLA4A , !\-PDLA3A , !\-PDLA2A , !\-PDLA1A , !\-PDLA0A };
+
+wire[31:0] pdl;
+assign pdl = {PDL31,PDL30,PDL29,PDL28,PDL27,PDL26,PDL25,PDL24,
+              PDL23,PDL22,PDL21,PDL20,PDL19,PDL18,PDL17,PDL16,
+              PDL15,PDL14,PDL13,PDL12,PDL11,PDL10,PDL9,PDL8,
+              PDL7,PDL6,PDL5,PDL4,PDL3,PDL2,PDL1,PDL0};
+
+// m-memory data bus
+wire[31:0] mmem;
+assign mmem = {MMEM31,MMEM30,MMEM29,MMEM28,MMEM27,MMEM26,MMEM25,MMEM24,
+              MMEM23,MMEM22,MMEM21,MMEM20,MMEM19,MMEM18,MMEM17,MMEM16,
+              MMEM15,MMEM14,MMEM13,MMEM12,MMEM11,MMEM10,MMEM9,MMEM8,
+              MMEM7,MMEM6,MMEM5,MMEM4,MMEM3,MMEM2,MMEM1,MMEM0};
+
+// m-memory address, as presented to ram chips
+wire[4:0] madr_n;
+assign madr_n = { \-MADR4A , \-MADR3A , \-MADR2A , \-MADR1A , \-MADR0A };
+
+wire[4:0] madr;
+assign madr = { !\-MADR4A , !\-MADR3A , !\-MADR2A , !\-MADR1A , !\-MADR0A };
+
+// a-memory data bus
+wire[31:0] amem;
+assign amem = {AMEM31,AMEM30,AMEM29,AMEM28,AMEM27,AMEM26,AMEM25,AMEM24,
+              AMEM23,AMEM22,AMEM21,AMEM20,AMEM19,AMEM18,AMEM17,AMEM16,
+              AMEM15,AMEM14,AMEM13,AMEM12,AMEM11,AMEM10,AMEM9,AMEM8,
+              AMEM7,AMEM6,AMEM5,AMEM4,AMEM3,AMEM2,AMEM1,AMEM0};
+
+// a-memory address, as presented to ram chips
+wire[9:0] aadr_n;
+assign aadr_n = { \-AADR9A , \-AADR8A , \-AADR7A , \-AADR6A , \-AADR5A ,
+               \-AADR4A , \-AADR3A , \-AADR2A , \-AADR1A , \-AADR0A };
+
+// a-memory address, for debugging only
+wire[9:0] aadr;
+assign aadr = { !\-AADR9A , !\-AADR8A , !\-AADR7A , !\-AADR6A , !\-AADR5A ,
+               !\-AADR4A , !\-AADR3A , !\-AADR2A , !\-AADR1A , !\-AADR0A };
+
+// pending write address
+wire[9:0] wadr;
+assign wadr = {WADR9,WADR8,WADR7,WADR6,WADR5,WADR4,WADR3,WADR2,WADR1,WADR0};
+
+// write pass around debug
+wire[5:0] wadr_cmpa;
+assign wadr_cmpa = {DESTMD,WADR4,WADR3,WADR2,WADR1,WADR0};
+wire[5:0] wadr_cmpb;
+assign wadr_cmpb = {HI2,IR30,IR29,IR28,IR27,IR26};
+
+wire[4:0] mskl;
+assign mskl = { MSKL4,MSKL3,MSKL3,MSKL1,MSKL0 };
+
+wire[4:0] mskr;
+assign mskr = { MSKR4,MSKR3,MSKR3,MSKR1,MSKR0 };
+
+wire[31:0] msk;
+assign msk = { MSK31,MSK30,MSK29,MSK28,MSK27,MSK26,MSK25,MSK24,
+		MSK23,MSK22,MSK21,MSK20,MSK19,MSK18,MSK17,MSK16,
+		MSK15,MSK14,MSK13,MSK12,MSK11,MSK10,MSK9,MSK8,
+		MSK7,MSK6,MSK5,MSK4,MSK3,MSK2,MSK1,MSK0 };
+
+wire[31:0] ob;
+assign ob = { OB31,OB30,OB29,OB28,OB27,OB26,OB25,OB24,
+		OB23,OB22,OB21,OB20,OB19,OB18,OB17,OB16,
+		OB15,OB14,OB13,OB12,OB11,OB10,OB9,OB8,
+		OB7,OB6,OB5,OB4,OB3,OB2,OB1,OB0 };
+
+// instruction-or-bus ireg | ao
+wire[47:0] iob;
+assign iob = { IOB47,IOB46,IOB45,IOB44,IOB43,IOB42,IOB41,IOB40,
+		IOB39,IOB38,IOB37,IOB36,IOB35,IOB34,IOB33,IOB32,
+		IOB31,IOB30,IOB29,IOB28,IOB27,IOB26,IOB25,IOB24,
+		IOB23,IOB22,IOB21,IOB20,IOB19,IOB18,IOB17,IOB16,
+		IOB15,IOB14,IOB13,IOB12,IOB11,IOB10,IOB9,IOB8,
+		IOB7,IOB6,IOB5,IOB4,IOB3,IOB2,IOB1,IOB0 };
+
+wire[31:0] l;
+assign l = {L31,L30,L29,L28,L27,L26,L25,L24,
+              L23,L22,L21,L20,L19,L18,L17,L16,
+              L15,L14,L13,L12,L11,L10,L9,L8,
+              L7,L6,L5,L4,L3,L2,L1,L0};
+
+wire[4:0] spcptr;
+assign spcptr = {SPCPTR4,SPCPTR3,SPCPTR2,SPCPTR1,SPCPTR0};
+
+wire[18:0] spcw;
+assign spcw = {SPCW18,SPCW17,SPCW16,SPCW15,SPCW14,SPCW13,
+		SPCW12,SPCW11,SPCW10,SPCW9,SPCW8,SPCW7,
+		SPCW6,SPCW5,SPCW4,SPCW3,SPCW2,SPCW1,SPCW0};
+
+wire[18:0] spco;
+assign spco = {SPCO18,SPCO17,SPCO16,SPCO15,SPCO14,SPCO13,
+		SPCO12,SPCO11,SPCO10,SPCO9,SPCO8,SPCO7,
+		SPCO6,SPCO5,SPCO4,SPCO3,SPCO2,SPCO1,SPCO0};
+
+wire[9:0] vm_ram_adr;
+assign vm_ram_adr = {\-MAPI8A , \-MAPI9A , \-MAPI10A , \-MAPI11A , \-MAPI12A ,
+			VMAP0A,VMAP1A,VMAP2A,VMAP3A,VMAP4A};
+
+wire[15:0] mapi;
+assign mapi = {MAPI23,MAPI22,MAPI21,MAPI20,MAPI19,MAPI18,
+		MAPI17,MAPI16,MAPI15,MAPI14,MAPI13,MAPI12,
+		MAPI11,MAPI10,MAPI9,MAPI8};
+
+wire[31:0] vma_n;
+assign vma_n = {\-VMA31 ,\-VMA30 ,\-VMA29 ,\-VMA28 ,
+		\-VMA27 ,\-VMA26 ,\-VMA25 ,\-VMA24 ,
+		\-VMA23 ,\-VMA22 ,\-VMA21 ,\-VMA20 ,
+		\-VMA19 ,\-VMA18 ,\-VMA17 ,\-VMA16 ,
+		\-VMA15 ,\-VMA14 ,\-VMA13 ,\-VMA12 ,
+		\-VMA11 ,\-VMA10 ,\-VMA9 ,\-VMA8 ,
+		\-VMA7 ,\-VMA6 ,\-VMA5 ,\-VMA4 ,
+		\-VMA3 ,\-VMA2 ,\-VMA1 ,\-VMA0 };
+
+integer cycle;
+
 initial
   begin
+    cycle = 0;
+
     $timeformat(-9, 0, "ns", 7);
 
     #0 begin
-	$display("time 0");
-	assign \lost<?> = 0;
-	assign resetrc = 1;
-
 	// prom 40-48, ce0
 	$readmemh("../prom/cadr_1.hex", i_PROM0_1B19.prom);
 	// prom 32-39, ce0
@@ -288,43 +528,97 @@ initial
 	// l,0,7
 	$readmemh("../prom/mask_l_7_0.hex", i_MSKG4_2E16.prom);
 
-	//
-//	$readmemh("../prom/dmask.hex", i_DSPCTL_2F22.prom);
+	// dispatch prom
+	$readmemh("../prom/dmask.hex", i_DSPCTL_2F22.prom);
        end
 
-    #500 begin
-	  assign \lost<?> = 0;
+    #0 begin
+	$display("time 0", $time);
+	\lost<?> = 1;
+	assign resetrc = 1;
+       end
+
+    #1 begin
+         $display("time 1", $time);
+         \lost<?> = 0;
+       end
+
+    #250 begin
+         $display("time 250", $time);
+	  \lost<?> = 1;
           $display("time ", $time);
 	 end
 
-    #10 assign \lost<?> = 1;
-
     // boot pulse
-    #0 assign resetrc = 0;
+    #10 assign resetrc = 0;
     #10 assign resetrc = 1;
 
   end
 
-always @(negedge CYCLECOMPLETED)
+// start of cycle
+always @(posedge CYCLECOMPLETED)
   begin
-    $display("time %t, PC %o, code %o, A %x M %x", 
-	     $time,
-	     { PC13,PC12,PC11,PC10,PC9,PC8,PC7,PC6,PC5,PC4,PC3,PC2,PC1,PC0 },
-	     { 	I48,I47,I46,I45,I44,I43,I42,I41,I40,
-		I39,I38,I37,I36,I35,I34,I33,I32,
-		I31,I30,I29,I28,I27,I26,I25,I24,
-		I23,I22,I21,I20,I19,I18,I17,I16,
-		I15,I14,I13,I12,I11,I10,I9,I8,
-		I7,I6,I5,I4,I3,I2,I1,I0 },
-             {
-		A31B,A30,A29,A28,A27,A26,A25,A24,
-		A23,A22,A21,A20,A19,A18,A17,A16,
-		A15,A14,A13,A12,A11,A10,A9,A8,
-		A7,A6,A5,A4,A3,A2,A1,A0 },
-             {
-		M31B,M30,M29,M28,M27,M26,M25,M24,
-		M23,M22,M21,M20,M19,M18,M17,M16,
-		M15,M14,M13,M12,M11,M10,M9,M8,
-		M7,M6,M5,M4,M3,M2,M1,M0 }
-    );
+    cycle = cycle + 1;
+
+    #1 $display("time %t, cycle %d, LPC %o, code %o", $time, cycle, lpc, ir);
+//    #1 $display("aadr %o[%o], madr %o[%o]", aadr, amem, madr, mmem);
+  end
+
+// end if read, start of write
+always @(negedge TPCLK)
+  begin
+//    #10 $display("A %o M %o, -MD %o, alu %o", a, m, md_n, alu);
+//    #10 $display("aadr %o, madr %o", aadr, madr);
+//    #10 $display("amem %o mmem %o", amem, mmem);
+//    #10 $display("ob %o, iob %o", ob, iob);
+//    #10 $display("mskL %o, mskR %o, msk %o", mskl, mskr, msk);
+
+//    #10 $display("Q %o SA %o R %o, alu-func %o C%o ALU %o", q, sa, r, aluf, \-CIN0 , alu);
+//    #10 $display("sel ", {ALUSUB,ALUADD}, ", Q", \-CIN0 , " ", \-IR2 , HI12, IRJUMP , GND);
+  end
+
+always @(negedge \-AWPA )
+  begin
+    $display("amem: write %o @ %o (%o)", l, aadr, aadr_n);
+  end
+
+always @(amem or \-AWPA )
+  begin
+//    if (\-AWPA != 0)
+//      $display("amem: read %o @ %o (%o)", amem, aadr, aadr_n);
+  end
+
+always @(negedge \-MWPA )
+  begin
+    $display("mmem: write %o @ %o (%o)", l, madr, madr_n);
+  end
+
+always @(mmem or \-MWPA )
+  begin
+//    if (\-MWPA != 0)
+//    $display("mmem: read %o @ %o (%o)", mmem, madr, madr_n);
+  end
+
+always @(pdla_n or \-PWPC )
+  begin
+//    if (\-PWPC == 1)
+//      $display("pdl: read %o @ %o (%o)", l, pdla, pdla_n);
+
+    if (\-PWPC == 0)
+      $display("pdl: write %o @ %o (%o)", pdl, pdla, pdla_n);
+  end
+
+always @(negedge \-SWPB )
+  begin
+      $display("spc: write %o @ %o", spcw, spcptr);
+  end
+
+always @(negedge \-VM0WPA )
+  begin
+      $display("vm0: write %o @ %o", vm_ram_adr, vma_n);
+  end
+
+always @(negedge \-VM1WPA )
+  begin
+      $display("vm1: write %o @ %o", vm_ram_adr, vma_n);
   end

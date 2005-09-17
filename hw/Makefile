@@ -52,6 +52,10 @@ chipdebug: $(PARTS) chipdebug.v
 	echo "exit 0" > run
 	chmod +x run
 
+lm2clock: $(PARTS) lm2clock.v
+#	$(VERILOG) -o run $(PARTS) lm2clock.v
+	$(VERILOG) +change_port_type lm2clock.v
+
 go: crun
 	./run
 

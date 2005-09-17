@@ -24,17 +24,17 @@ module part_74S258 (A0, A1, B0, B1, C0, C1, D0, D1,
     else
       if (SEL)
         begin
-	  assign AY = A1;
-	  assign BY = B1;
-	  assign CY = C1;
-	  assign DY = D1;
+	  assign AY = ! A1;
+	  assign BY = ! B1;
+	  assign CY = ! C1;
+	  assign DY = ! D1;
         end
       else
         begin
-	  assign AY = A0;
-	  assign BY = B0;
-	  assign CY = C0;
-	  assign DY = D0;
+	  assign AY = ! A0;
+	  assign BY = ! B0;
+	  assign CY = ! C0;
+	  assign DY = ! D0;
         end
     end
 

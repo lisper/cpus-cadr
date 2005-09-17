@@ -41,7 +41,8 @@ module part_74S151 ( I0, I1, I2, I3, I4, I5, I6, I7,
 		nr(Q,wa0,wa1,wa2,wa3,wa4,wa5,wa6,wa7);
 */
 
-  assign #(`REG_DELAY) Q =
+//  assign #(`REG_DELAY) Q =
+  assign Q =
     ( { SEL2, SEL1, SEL0 } == 3'b000 ) ? (I0 & ! CE_N) :
     ( { SEL2, SEL1, SEL0 } == 3'b001 ) ? (I1 & ! CE_N) :
     ( { SEL2, SEL1, SEL0 } == 3'b010 ) ? (I2 & ! CE_N) :
