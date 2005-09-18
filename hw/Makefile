@@ -33,7 +33,7 @@ parts.o: $(PARTS)
 	$(VERILOG) -o parts.o $(PARTS)
 
 irun: $(PARTS) time.v cadr.v run.v extra.v nl
-	$(IVERILOG) -o run $(PARTS) cadr.v run.v
+	$(IVERILOG) -o run time.v $(PARTS) cadr.v run.v
 
 crun: $(PARTS) time.v cadr.v run.v extra.v nl
 	$(VERILOG) +change_port_type time.v $(PARTS) cadr.v run.v

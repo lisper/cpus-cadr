@@ -20,7 +20,7 @@ module ff_jk_posclk( R_N, S_N, J, K, CLK, Q, Q_N );
 	case( {J, K} )
 	  2'b01: begin Q <= #(`REG_DELAY) 0;  Q_N <= #(`REG_DELAY) 1; end
 	  2'b10: begin Q <= #(`REG_DELAY) 1;  Q_N <= #(`REG_DELAY) 0; end
-	  2'b11: begin Q <= #(`REG_DELAY) ! Q; Q_N <= #(`REG_DELAY) Q; end
+	  2'b11: begin Q <= #(`REG_DELAY) !Q; Q_N <= #(`REG_DELAY) Q; end
 	endcase
     end
 

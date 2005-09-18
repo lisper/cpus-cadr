@@ -153,12 +153,12 @@ module cpu;
   wire \-VMO18 , \-VMO19 , \-VMO2 , \-VMO20 , \-VMO21 , \-VMO22 , \-VMO23 ;
   wire \-VMO3 , \-VMO4 , \-VMO5 , \-VMO6 , \-VMO7 , \-VMO8 , \-VMO9 ;
   wire \-WAIT , \-WMAP , \-WMAPD , \-WP1 , \-WP2 , \-WP3 , \-WP4 , \-WP5 ;
-  wire \-ZERO16.DRIVE , A, A0, A1, A10, A11, A12, A13, A14;
-  wire A15, A16, A17, A18, A19, A2, A20, A21, A22;
-  wire A23, A24, A25, A26, A27, A28, A29, A3, A30;
-  wire A31A, A31B, A4, A5, A6, A7, A8, A9, AA0;
-  wire AA1, AA10, AA11, AA12, AA13, AA14, AA15, AA16, AA17;
-  wire AA2, AA3, AA4, AA5, AA6, AA7, AA8, AA9, ALU0;
+  wire \-ZERO16.DRIVE , A0, A1, A10, A11, A12, A13, A14, A15;
+  wire A16, A17, A18, A19, A2, A20, A21, A22, A23;
+  wire A24, A25, A26, A27, A28, A29, A3, A30, A31A;
+  wire A31B, A4, A5, A6, A7, A8, A9, AA0, AA1;
+  wire AA10, AA11, AA12, AA13, AA14, AA15, AA16, AA17, AA2;
+  wire AA3, AA4, AA5, AA6, AA7, AA8, AA9, AEQM, ALU0;
   wire ALU1, ALU10, ALU11, ALU12, ALU13, ALU14, ALU15, ALU16, ALU17;
   wire ALU18, ALU19, ALU2, ALU20, ALU21, ALU22, ALU23, ALU24, ALU25;
   wire ALU26, ALU27, ALU28, ALU29, ALU3, ALU30, ALU31, ALU32, ALU4;
@@ -9222,8 +9222,8 @@ part_74S157  i_SPCW_4F15 (
   .A4(GND),
   .B4(L16),
   .Y4(SPCW16),
-  .B3(GND),
-  .A3(L17),
+  .A3(GND),
+  .B3(L17),
   .Y3(SPCW17),
   .Y2(SPCW18),
   .B2(L18),
@@ -9242,8 +9242,8 @@ part_74S157  i_SPCW_4E11 (
   .A4(RETA12),
   .B4(L12),
   .Y4(SPCW12),
-  .B3(RETA13),
-  .A3(L13),
+  .A3(RETA13),
+  .B3(L13),
   .Y3(SPCW13),
   .Y2(SPCW14),
   .B2(L14),
@@ -9262,8 +9262,8 @@ part_74S157  i_SPCW_4E12 (
   .A4(RETA8),
   .B4(L8),
   .Y4(SPCW8),
-  .B3(RETA9),
-  .A3(L9),
+  .A3(RETA9),
+  .B3(L9),
   .Y3(SPCW9),
   .Y2(SPCW10),
   .B2(L10),
@@ -9282,8 +9282,8 @@ part_74S157  i_SPCW_4E13 (
   .A4(RETA4),
   .B4(L4),
   .Y4(SPCW4),
-  .B3(RETA5),
-  .A3(L5),
+  .A3(RETA5),
+  .B3(L5),
   .Y3(SPCW5),
   .Y2(SPCW6),
   .B2(L6),
@@ -9302,8 +9302,8 @@ part_74S157  i_SPCW_4E14 (
   .A4(RETA0),
   .B4(L0),
   .Y4(SPCW0),
-  .B3(RETA1),
-  .A3(L1),
+  .A3(RETA1),
+  .B3(L1),
   .Y3(SPCW1),
   .Y2(SPCW2),
   .B2(L2),
@@ -12458,7 +12458,7 @@ part_74S153  i_NPC_4E02 (
 // 2E15:
 // (no code to express RES20)
 part_RES20  i_MSKG4_2E15 (
-  .R2(A),
+  .R2(AEQM),
   .R3(MSK31),
   .R4(MSK30),
   .R5(MSK29),
@@ -14289,6 +14289,7 @@ part_74S51  i_MD_1D16 (
   .G2Y(MDCLK)
 );
 
+
 // 1E19:
 // (no code to express 74S374)
 part_74S374  i_MD_1E19 (
@@ -14732,12 +14733,12 @@ assign internal23 = IRDISP & IR25;
 // 4E09:
 // (no code to express 74S157)
 part_74S157  i_LPC_4E09 (
-  .SEL(internal24),
+  .SEL(internal23),
   .A4(PC0),
   .B4(LPC0),
   .Y4(WPC0),
-  .B3(PC1),
-  .A3(LPC1),
+  .A3(PC1),
+  .B3(LPC1),
   .Y3(WPC1),
   .Y2(WPC2),
   .B2(LPC2),
@@ -14752,12 +14753,12 @@ part_74S157  i_LPC_4E09 (
 // 4E08:
 // (no code to express 74S157)
 part_74S157  i_LPC_4E08 (
-  .SEL(internal24),
+  .SEL(internal23),
   .A4(PC4),
   .B4(LPC4),
   .Y4(WPC4),
-  .B3(PC5),
-  .A3(LPC5),
+  .A3(PC5),
+  .B3(LPC5),
   .Y3(WPC5),
   .Y2(WPC6),
   .B2(LPC6),
@@ -14772,12 +14773,12 @@ part_74S157  i_LPC_4E08 (
 // 4E07:
 // (no code to express 74S157)
 part_74S157  i_LPC_4E07 (
-  .SEL(internal24),
+  .SEL(internal23),
   .A4(PC8),
   .B4(LPC8),
   .Y4(WPC8),
-  .B3(PC9),
-  .A3(LPC9),
+  .A3(PC9),
+  .B3(LPC9),
   .Y3(WPC9),
   .Y2(WPC10),
   .B2(LPC10),
@@ -14796,8 +14797,8 @@ part_74S157  i_LPC_4E06 (
   .A4(PC12),
   .B4(LPC12),
   .Y4(WPC12),
-  .B3(PC13),
-  .A3(LPC13),
+  .A3(PC13),
+  .B3(LPC13),
   .Y3(WPC13),
   .Y2(nc345),
   .B2(nc346),
@@ -15810,7 +15811,7 @@ assign CONDS0 = IR0 & IR5;
 // 3E13:
 // (no code to express 74S151)
 part_74S151  i_FLAG_3E13 (
-  .I3(A),
+  .I3(AEQM),
   .I2(ALU32),
   .I1(ALUNEG),
   .I0(R0),
@@ -15831,7 +15832,7 @@ part_74S151  i_FLAG_3E13 (
 
 
 
-assign ALUNEG = ! (A | \-ALU32 );
+assign ALUNEG = ! (AEQM | \-ALU32 );
 
 // 3F11:
 // (no code to express 74S241)
@@ -18345,7 +18346,7 @@ part_74S181  i_ALU1_2A08 (
   .F1(ALU29),
   .F2(ALU30),
   .F3(ALU31),
-  .AEB(A),
+  .AEB(AEQM),
   .X(XOUT31),
   .COUT_N(nc457),
   .Y(YOUT31),
@@ -18373,7 +18374,7 @@ part_74S181  i_ALU1_2B08 (
   .F1(ALU25),
   .F2(ALU26),
   .F3(ALU27),
-  .AEB(A),
+  .AEB(AEQM),
   .X(XOUT27),
   .COUT_N(nc458),
   .Y(YOUT27),
@@ -18401,7 +18402,7 @@ part_74S181  i_ALU1_2A13 (
   .F1(ALU21),
   .F2(ALU22),
   .F3(ALU23),
-  .AEB(A),
+  .AEB(AEQM),
   .X(XOUT23),
   .COUT_N(nc459),
   .Y(YOUT23),
@@ -18429,7 +18430,7 @@ part_74S181  i_ALU1_2B13 (
   .F1(ALU17),
   .F2(ALU18),
   .F3(ALU19),
-  .AEB(A),
+  .AEB(AEQM),
   .X(XOUT19),
   .COUT_N(nc460),
   .Y(YOUT19),
@@ -18457,7 +18458,7 @@ part_74S181  i_ALU0_2A23 (
   .F1(ALU13),
   .F2(ALU14),
   .F3(ALU15),
-  .AEB(A),
+  .AEB(AEQM),
   .X(XOUT15),
   .COUT_N(nc461),
   .Y(YOUT15),
@@ -18485,7 +18486,7 @@ part_74S181  i_ALU0_2B23 (
   .F1(ALU9),
   .F2(ALU10),
   .F3(ALU11),
-  .AEB(A),
+  .AEB(AEQM),
   .X(XOUT11),
   .COUT_N(nc462),
   .Y(YOUT11),
@@ -18513,7 +18514,7 @@ part_74S181  i_ALU0_2A28 (
   .F1(ALU5),
   .F2(ALU6),
   .F3(ALU7),
-  .AEB(A),
+  .AEB(AEQM),
   .X(XOUT7),
   .COUT_N(nc463),
   .Y(YOUT7),
@@ -18541,7 +18542,7 @@ part_74S181  i_ALU0_2B28 (
   .F1(ALU1),
   .F2(ALU2),
   .F3(ALU3),
-  .AEB(A),
+  .AEB(AEQM),
   .X(XOUT3),
   .COUT_N(nc464),
   .Y(YOUT3),

@@ -12,6 +12,12 @@ module part_74S157 ( A1, B1, A2, B2, A3, B3, B4, A4,
   output Y1, Y2, Y3, Y4;
   input SEL, ENB_N;
 
+  assign Y1 = (SEL ? B1 : A1) & !ENB_N;
+  assign Y2 = (SEL ? B2 : A2) & !ENB_N;
+  assign Y3 = (SEL ? B3 : A3) & !ENB_N;
+  assign Y4 = (SEL ? B4 : A4) & !ENB_N;
+
+/*
 	not
 		g1(_select, SEL),g2(_strobe, ENB_N);
 	buf #(`REG_DELAY)
@@ -33,5 +39,6 @@ module part_74S157 ( A1, B1, A2, B2, A3, B3, B4, A4,
 		g15(Y2, l2, l6),
 		g16(Y3, l3, l7),
 		g17(Y4, l4, l8);
+*/
 
 endmodule

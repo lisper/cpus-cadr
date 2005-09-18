@@ -15,6 +15,18 @@ module part_74S151 ( I0, I1, I2, I3, I4, I5, I6, I7,
   input SEL0, SEL1, SEL2, CE_N;
   output Q, Q_N;
 
+//  assign #(`REG_DELAY) Q =
+  assign Q =
+    ( { SEL2, SEL1, SEL0 } == 3'b000 ) ? (I0 & ! CE_N) :
+    ( { SEL2, SEL1, SEL0 } == 3'b001 ) ? (I1 & ! CE_N) :
+    ( { SEL2, SEL1, SEL0 } == 3'b010 ) ? (I2 & ! CE_N) :
+    ( { SEL2, SEL1, SEL0 } == 3'b011 ) ? (I3 & ! CE_N) :
+    ( { SEL2, SEL1, SEL0 } == 3'b100 ) ? (I4 & ! CE_N) :
+    ( { SEL2, SEL1, SEL0 } == 3'b101 ) ? (I5 & ! CE_N) :
+    ( { SEL2, SEL1, SEL0 } == 3'b110 ) ? (I6 & ! CE_N) : (I7 & ! CE_N) ;
+
+  assign Q_N = ! Q;
+
 /*
   wire[2:0] d_bar,d_sel;
 
@@ -40,17 +52,5 @@ module part_74S151 ( I0, I1, I2, I3, I4, I5, I6, I7,
 	or #(`REG_DELAY)
 		nr(Q,wa0,wa1,wa2,wa3,wa4,wa5,wa6,wa7);
 */
-
-//  assign #(`REG_DELAY) Q =
-  assign Q =
-    ( { SEL2, SEL1, SEL0 } == 3'b000 ) ? (I0 & ! CE_N) :
-    ( { SEL2, SEL1, SEL0 } == 3'b001 ) ? (I1 & ! CE_N) :
-    ( { SEL2, SEL1, SEL0 } == 3'b010 ) ? (I2 & ! CE_N) :
-    ( { SEL2, SEL1, SEL0 } == 3'b011 ) ? (I3 & ! CE_N) :
-    ( { SEL2, SEL1, SEL0 } == 3'b100 ) ? (I4 & ! CE_N) :
-    ( { SEL2, SEL1, SEL0 } == 3'b101 ) ? (I5 & ! CE_N) :
-    ( { SEL2, SEL1, SEL0 } == 3'b110 ) ? (I6 & ! CE_N) : (I7 & ! CE_N) ;
-
-  assign Q_N = ! Q;
 
 endmodule
