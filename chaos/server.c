@@ -110,84 +110,196 @@ send_resp(unsigned long id)
 }
 #endif
 
+#if 0
 int
-check_packet(char *buffer, int size)
+reply_server(char *buffer, int size)
 {
     u_short *p = (u_short *)buffer;
     u_short h[8];
     u_short d[64];
     u_short dst, did, src;
-    struct iovec iov[2];
-    int ret;
+    struct iovec iov[3];
+    unsigned char lenbytes[4];
+    int ret, plen;
+
+    dst = p[2];
+    did = p[3];
+    src = p[4];
+
+    did = 0x1234;
+
+    printf("destination %o, me %o\n", dst, chaos_addr);
+
+    if (dst != chaos_addr)
+        return 0;
+
+    h[0] = 5 << 8;
+    h[1] = 0x44;
+    h[2] = p[4];
+    h[3] = p[5];
+    h[4] = chaos_addr;
+    h[5] = did;
+    h[6] = 0;
+    h[7] = 0;
+
+    memset((char *)d, 0, sizeof(d));
+
+    strcpy((char *)d, "SERVER");
+
+    d[16] = 0400 | (chaos_addr >> 8);
+    d[17] = 16;
+
+    d[18] = 17; /* rx */
+    d[20] = 19; /* tx */
+
+    d[34] = src;
+    d[35] = chaos_addr;
+    d[36] = 0;
+
+    iov[0].iov_base = lenbytes;
+    iov[0].iov_len = 4;
+
+    iov[1].iov_base = h;
+    iov[1].iov_len = 16;
+
+    iov[2].iov_base = d;
+    iov[2].iov_len = 74;
+
+    printf("responding\n");
+
+    plen = 8*2 + 74;
+
+    lenbytes[0] = plen >> 8;
+    lenbytes[1] = plen;
+    lenbytes[2] = 0;
+    lenbytes[3] = 0;
+
+    ret = writev(fd, iov, 3);
+    if (ret <  0) {
+        perror("writev");
+    }
+
+    return 0;
+}
+#endif
+
+int
+reply_status(char *buffer, int size)
+{
+    u_short *p = (u_short *)buffer;
+    u_short h[8];
+    u_short d[64];
+    u_short dst, did, src;
+    struct iovec iov[3];
+    unsigned char lenbytes[4];
+    int ret, plen;
+
+    dst = p[2];
+    did = p[3];
+    src = p[4];
+
+    did = 0x1234;
+
+    printf("destination %o, me %o\n", dst, chaos_addr);
+
+    if (dst != chaos_addr)
+        return 0;
+
+    h[0] = 5 << 8;
+    h[1] = 0x44;
+    h[2] = p[4];
+    h[3] = p[5];
+    h[4] = chaos_addr;
+    h[5] = did;
+    h[6] = 0;
+    h[7] = 0;
+
+    memset((char *)d, 0, sizeof(d));
+
+    strcpy((char *)d, "server");
+
+    d[16] = 0400 | (chaos_addr >> 8);
+    d[17] = 16;
+
+    d[18] = 17; /* rx */
+    d[20] = 19; /* tx */
+
+    d[34] = src;
+    d[35] = chaos_addr;
+    d[36] = 0;
+
+    iov[0].iov_base = lenbytes;
+    iov[0].iov_len = 4;
+
+    iov[1].iov_base = h;
+    iov[1].iov_len = 8*2;
+
+    iov[2].iov_base = d;
+    iov[2].iov_len = 37*2;
+
+    plen = 8*2 + 37*2;
+
+    lenbytes[0] = plen >> 8;
+    lenbytes[1] = plen;
+    lenbytes[2] = 0;
+    lenbytes[3] = 0;
+
+    printf("responding\n");
+
+    ret = writev(fd, iov, 3);
+    if (ret <  0) {
+        perror("writev");
+    }
+
+    return 0;
+}
+
+int
+check_packet(char *buffer, int size)
+{
+    u_short *p = (u_short *)buffer;
 
     if ((p[0] >> 8) == 1) {
         printf("request\n");
         if (memcmp(&buffer[16], "STATUS", 6) == 0) {
             printf("STATUS:\n");
+            return reply_status(buffer, size);
         }
 
-        dst = p[2];
-        did = p[3];
-        src = p[4];
-
-        did = 0x1234;
-
-        printf("destination %o, me %o\n",
-               dst, chaos_addr);
-
-        if (dst != chaos_addr)
-            return 0;
-
-        h[0] = 5 << 8;
-        h[1] = 0x44;
-        h[2] = p[4];
-        h[3] = p[5];
-        h[4] = chaos_addr;
-        h[5] = did;
-        h[6] = 0;
-        h[7] = 0;
-
-        memset((char *)d, 0, sizeof(d));
-
-        strcpy((char *)d, "SERVER");
-
-        d[16] = 0400 | (chaos_addr >> 8);
-        d[17] = 16;
-
-        d[18] = 17; /* rx */
-        d[20] = 19; /* tx */
-
-        d[34] = src;
-        d[35] = chaos_addr;
-        d[36] = 0;
-
-        iov[0].iov_base = h;
-        iov[0].iov_len = 16;
-
-        iov[1].iov_base = d;
-        iov[1].iov_len = 74;
-
-        printf("responding\n");
-
-        ret = writev(fd, iov, 2);
-        if (ret <  0) {
-            perror("writev");
-        }
+//        if (memcmp(&buffer[16], "SERVER", 6) == 0) {
+//            printf("STATUS:\n");
+//            return reply_server(buffer, size);
+//        }
     }
+
+    return 0;
 }
 
 int
 read_chaos(void)
 {
-    int ret;
+    int ret, len;
     unsigned long id;
+    unsigned char lenbytes[4];
     u_char *data, *resp;
 
-    ret = read(fd, buffer, 4096);
+    ret = read(fd, lenbytes, 4);
+    if (ret <= 0) {
+        return -1;
+    }
+
+    len = (lenbytes[0] << 8) | lenbytes[1];
+
+    ret = read(fd, buffer, len);
     printf("read_chaos() ret=%d\n", ret);
 
     if (ret <= 0)
         return -1;
+
+    if (ret != len) {
+        printf("read_chaos() length error; len=%d\n", len);
+        return -1;
+    }
 
     check_packet(buffer, ret);
 

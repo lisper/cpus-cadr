@@ -84,9 +84,9 @@ void
 send_chaos(void)
 {
     u_short b[64];
-    u_char data[64];
-    struct iovec iov[2];
-    int ret;
+    u_char lenbytes[4], data[64];
+    struct iovec iov[3];
+    int ret, plen;
 
     memset((char *)b, 0, sizeof(b));
     b[0] = 5 << 8;
@@ -100,13 +100,23 @@ send_chaos(void)
 
     strcpy(data, "TIME");
 
-    iov[0].iov_base = b;
-    iov[0].iov_len = 16;
+    plen = 20;
 
-    iov[1].iov_base = data;
-    iov[1].iov_len = 4;
+    lenbytes[0] = plen >> 8;
+    lenbytes[1] = plen;
+    lenbytes[2] = 0;
+    lenbytes[3] = 0;
 
-    ret = writev(fd, iov, 2);
+    iov[0].iov_base = lenbytes;
+    iov[0].iov_len = 4;
+
+    iov[1].iov_base = b;
+    iov[1].iov_len = 16;
+
+    iov[2].iov_base = data;
+    iov[2].iov_len = 4;
+
+    ret = writev(fd, iov, 3);
     if (ret <  0) {
         perror("writev");
     }

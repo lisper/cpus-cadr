@@ -20,5 +20,8 @@ server: server.c
 client: client.c
 	$(CC) -o client client.c
 
+FILE: FILE.c FILE.h glob.c chlib.c
+	$(CC) -o FILE FILE.c glob.c chlib.c
+
 clean:
 	rm -f *.o chaosd listen server

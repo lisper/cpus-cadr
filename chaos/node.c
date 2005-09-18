@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <sys/types.h>
+#include <sys/uio.h>
 
 #include "chaosd.h"
 #include "log.h"
@@ -92,14 +93,29 @@ int
 node_stream_reader(int fd, void *void_node, int context)
 {
     int i, ret, size, op;
-    unsigned long id;
-    u_char msg[4096];
+    unsigned long len, id;
+    u_char lenbytes[4], msg[4096];
+    struct iovec iov[2];
+
 
     debugf(DBG_LOW, "node_stream_reader(fd=%d)\n", fd);
 
-    ret = read(fd, msg, 4096);
+    ret = read(fd, lenbytes, 4);
     if (ret <= 0) {
         debugf(DBG_INFO | DBG_ERRNO, "read data error, ret %d\n", ret);
+        return -1;
+    }
+
+    len = (lenbytes[0] << 8) | lenbytes[1];
+
+    ret = read(fd, msg, len);
+    if (ret <= 0) {
+        debugf(DBG_INFO | DBG_ERRNO, "read data error, ret %d\n", ret);
+        return -1;
+    }
+
+    if (ret != len) {
+        debugf(DBG_INFO | DBG_ERRNO, "length data error, ret %d\n", ret);
         return -1;
     }
 
@@ -118,15 +134,23 @@ node_stream_reader(int fd, void *void_node, int context)
 
     dumpbuffer(msg, size);
 
-    for (i = 0; i < node_count; i++) {
+    lenbytes[2] = 1;
+    lenbytes[3] = 0;
 
+    iov[0].iov_base = lenbytes;
+    iov[0].iov_len = 4;
+
+    iov[1].iov_base = msg;
+    iov[1].iov_len = size;
+
+    for (i = 0; i < node_count; i++) {
         debugf(DBG_LOW, "[%d] %x %x\n",
                i, void_node, (void *)nodes[i]);
 
 //        if (void_node == (void *)nodes[i])
 //            continue;
 
-        ret = write(nodes[i]->fd, msg, size);
+        ret = writev(nodes[i]->fd, iov, 2);
 
         debugf(DBG_LOW, "send to fd %d, ret=%d\n", nodes[i]->fd, ret);
     }

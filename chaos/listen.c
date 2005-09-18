@@ -103,11 +103,19 @@ node_demux(unsigned long id)
 int
 read_chaos(void)
 {
-    int ret;
+    int ret, len;
+    u_char lenbytes[4];
     u_short *p = (u_short *)buffer;
     u_short op, count, da, di, sa, si, pn, ack;
 
-    ret = read(fd, buffer, 4096);
+    ret = read(fd, lenbytes, 4);
+    if (ret <= 0) {
+        return -1;
+    }
+
+    len = (lenbytes[0] << 8) | lenbytes[1];
+
+    ret = read(fd, buffer, len);
     if (ret <= 0)
         return -1;
 
@@ -134,6 +142,10 @@ read_chaos(void)
     printf("op %04x cnt %04x dst %04x %04x; src %04x %04x pn %04x ack %04x\n",
            op, count, da, di, sa, si, pn, ack);
     printf(" %02x %02x %02x %02x %02x %02x %02x %02x\n",
+	   buffer[16], buffer[17], buffer[18], buffer[19], 
+	   buffer[20], buffer[21], buffer[22], buffer[23]);
+
+    printf(" %c%c%c%c%c%c%c%c\n",
 	   buffer[16], buffer[17], buffer[18], buffer[19], 
 	   buffer[20], buffer[21], buffer[22], buffer[23]);
 

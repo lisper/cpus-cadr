@@ -17,6 +17,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/un.h>
+#include <sys/poll.h>
 #include <netinet/in.h>
 
 //#include "list.h"
@@ -220,6 +221,7 @@ fd_except(int index)
     return 0;
 }
 
+#if 0
 /*
  * main polling routine;
  * pass a list of fd's to select() and dispatch
@@ -230,7 +232,7 @@ fd_poll(void)
     int ret, i, high_fd;
     fd_set read_fds, except_fds;
     struct timeval timeout, *timep;
-	
+
     FD_ZERO(&read_fds);
     FD_ZERO(&except_fds);
 
@@ -239,7 +241,7 @@ fd_poll(void)
     for (i = 0; i < MAX_SERVER_FDS; i++) {
         if (fd_list[i].fd == 0)
             continue;
-        
+
         FD_SET(fd_list[i].fd, &read_fds);
         FD_SET(fd_list[i].fd, &except_fds);
 
@@ -296,6 +298,83 @@ fd_poll(void)
 
     return 0;
 }
+#else
+/*
+ * main polling routine;
+ * pass a list of fd's to select() and dispatch
+ */
+int
+fd_poll(void)
+{
+    int ret, i, fd_count;
+    int timeout;
+    struct pollfd ufds[MAX_SERVER_FDS];
+    int ufds_index[MAX_SERVER_FDS];
+
+    /* build up list of file descriptors */
+    fd_count = 0;
+    for (i = 0; i < MAX_SERVER_FDS; i++) {
+        if (fd_list[i].fd == 0)
+            continue;
+
+        ufds_index[fd_count] = i;
+
+        ufds[fd_count].fd = fd_list[i].fd;
+        ufds[fd_count].events =
+            POLLIN | POLLPRI | POLLERR | /*POLLHUP |*/ POLLNVAL;
+        ufds[fd_count].revents = 0;
+        fd_count++;
+    }
+
+    timeout = 1 * 1000;
+
+    /* if debugging, don't timeout */
+    if (!flag_daemon && flag_debug_level > DBG_INFO)
+        timeout = -1;
+
+    debugf(DBG_LOW, "fd_count %d\n", fd_count);
+
+    /* wait for i/o from the list of file descriptors */
+    ret = poll(ufds, fd_count, timeout);
+    if (ret < 0) {
+        debugf(DBG_INFO | DBG_ERRNO, "fd_poll() ret < 0\n");
+// debug        
+//while (1);
+    }
+
+    if (ret == 0) {
+        debugf(DBG_LOW, "timeout\n");
+        return 0;
+    }
+
+    /* ret > 0; process i/o */
+    for (i = 0; i < MAX_SERVER_FDS && ret > 0; i++) {
+        if (ufds[i].revents == 0)
+            continue;
+
+        debugf(DBG_LOW, "ufds[%d].revents %x\n", i, ufds[i].revents);
+
+        if (ufds[i].revents & ~(POLLIN|POLLHUP)) {
+            fd_except(ufds_index[i]);
+            ret--;
+        }
+
+        if (ufds[i].revents & POLLIN) {
+            fd_read(ufds_index[i]);
+            ret--;
+        }
+    }
+
+    /* see if any fd's want to be shut down */
+    for (i = 0; i < MAX_SERVER_FDS; i++) {
+        if (fd_list[i].shutdown) {
+            fd_close(i);
+        }
+    }
+
+    return 0;
+}
+#endif
 
 	   
 
