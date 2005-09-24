@@ -116,6 +116,7 @@ node_stream_reader(int fd, void *void_node, int context)
 
     if (ret != len) {
         debugf(DBG_INFO | DBG_ERRNO, "length data error, ret %d\n", ret);
+        debugf(DBG_INFO | DBG_ERRNO, "len 0x%04x, ret 0x%04x\n", len, ret);
         return -1;
     }
 
