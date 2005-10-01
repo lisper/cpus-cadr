@@ -1,11 +1,7 @@
 /*
- * Definitions needed by user programs.
- *
- * Also by the kernel.  Turn on BSD42 here (for now). --mbm
+ * chaos.h
+ * $Id$
  */
-#ifndef BSD42
-#define BSD42
-#endif
 
 #define CHMAXDATA	488	/* Maximum data per packet */
 #define CHSTATNAME	32	/* Length of node name in STATUS protocol */
@@ -15,6 +11,7 @@
 #define CHFF	(0200|'\f')
 #define CHBS	(0200|'\b')
 #define CHLF	(0200|'\n')
+
 /*
  * These are the connection states
  */
@@ -25,6 +22,8 @@
 #define CSOPEN		4	/* Open */
 #define CSLOST		5	/* Broken by receipt of a LOS */
 #define CSINCT		6	/* Broken by incomplete transmission */
+
+#define CSUNKNOWN	-1
 
 /*
  * These are the packet opcode types
@@ -47,13 +46,6 @@
 #define DWDOP	0300		/* 16 bit word data */
 
 /*
- * Modes available in CHIOCSMODE call.
- */
-#define CHTTY		1
-#define CHSTREAM	2
-#define CHRECORD	3
-
-/*
  * This file contains known contact names.
  */
 #define CHAOS_FILE	"FILE"
@@ -74,10 +66,76 @@
 #define CHMAXPKT	488		/* Maximum data length in packet */
 #define CHMAXRFC	CHMAXPKT	/* Maximum length of a rfc string */
 #define CHMAXARGS	50		/* Maximum number of words in a RFC */
-#define	CHAOSDEV	"/dev/chaos"	/* Path name for connections */
-#define CHURFCDEV	"/dev/churfc"	/* Path name for unmatched RFC list */
-#define CHURFCMIN	120
-#define CHAOSMIN	247
+
+#define CHSHORTTIME	(250)		/* Short time for retransmits - 250ms */
+
+#define CHDRWSIZE	5		/* Default receive window size */
+
+/*
+ * A chaos network address.
+ */
+typedef	union	{
+	unsigned short 		ch_addr;	/* Address as a whole */
+	struct	{
+		unsigned char	ch_Host;	/* Host number on subnet */
+		unsigned char	ch_Subnet;	/* Subnet number */
+	}		ch_bytes;
+} chaddr;
+#define ch_subnet	ch_bytes.ch_Subnet
+#define ch_host		ch_bytes.ch_Host
+
+/*
+ * A chaos index - a hosts connection identifier
+ */
+typedef	union	{
+	unsigned short	ci_idx;		/* Index as a whole */
+	struct	{
+		unsigned char	ci_Tidx;	/* Connection table index */
+		unsigned char	ci_Uniq;	/* Uniquizer for table slot */
+	}		ci_bytes;
+} chindex;
+#define ci_uniq	ci_bytes.ci_Uniq
+#define ci_tidx	ci_bytes.ci_Tidx
+
+struct pkt_header {
+	unsigned char		ph_type;	/* Protocol type */
+	unsigned char		ph_op;		/* Opcode of the packet */
+	union {
+		unsigned short	ph_lfcwhole;
+		struct	{
+			unsigned short ph_Len:12;	/* Length of packet */
+			unsigned short ph_fcount:4;	/* Forwarding count */
+		}	ph_lfcparts;
+	}		ph_lenfc;
+	chaddr		ph_daddr;		/* Destination address */
+	chindex		ph_didx;		/* Destination index */
+	chaddr		ph_saddr;		/* Source address */
+	chindex		ph_sidx;		/* Source index */
+	unsigned short	ph_pkn;			/* Packet number */
+	unsigned short	ph_ackn;		/* Acknowledged packet number */
+};
+#define ph_len ph_lenfc.ph_lfcparts.ph_Len
+
+/*
+ * Record mode packet structure.
+ */
+struct chpacket	{
+	unsigned char	cp_op;
+	char		cp_data[CHMAXDATA];
+};
+
+/*
+ * FILE server login record structure.
+ */
+struct chlogin {
+	int	cl_pid;		/* Process id of server */
+	short	cl_cnum;	/* Chaos channel number of server */
+	short	cl_haddr;	/* Host address of other end */
+	long	cl_ltime;	/* Login time */
+	long	cl_atime;	/* Last time used. */
+	char	cl_user[8];	/* User name */
+};
+
 /*
  * This structure returned by the CHIOCGSTAT ioctl to return
  * connection status information.
@@ -93,24 +151,6 @@ struct	chstatus	{
 	short	st_cmode;		/* Mode of connection */
 	short	st_oroom;		/* Output window space left */
 	/* etc - anything else useful? */
-};
-/*
- * Record mode packet structure.
- */
-struct chpacket	{
-	unsigned char	cp_op;
-	char		cp_data[CHMAXDATA];
-};
-/*
- * FILE server login record structure.
- */
-struct chlogin {
-	int	cl_pid;		/* Process id of server */
-	short	cl_cnum;	/* Chaos channel number of server */
-	short	cl_haddr;	/* Host address of other end */
-	long	cl_ltime;	/* Login time */
-	long	cl_atime;	/* Last time used. */
-	char	cl_user[8];	/* User name */
 };
 
 /*
@@ -134,6 +174,7 @@ struct chreject {
 	int	cr_length;
 };
 
+#if 0
 /*
  * Structure for CHIOCETHER
  */
@@ -153,31 +194,4 @@ struct chiladdr {
 struct chstatname {
 	char	cn_name[CHSTATNAME];
 };
-/*
- * Chaos net io control commands
- */
-
-#include <sys/ioctl.h>
-
-#ifndef _IO
-#define _IO(x,y) (('x'<<8)|y)
-#define _IOW(x,y,t) _IO(x,y)
-#define _IOR(x,y,t) _IO(x,y)
 #endif
- 
-#define CHIOCRSKIP	_IO('c',1)	/* Skip the last read unmatched RFC */
-#define CHIOCPREAD	_IO('c',2)	/* Read my next data or control pkt */
-#define CHIOCSMODE	_IO('c',3)	/* Set the mode of this channel */
-#define CHIOCFLUSH	_IO('c',4)	/* flush current output packet */
-#define CHIOCGSTAT	_IOR('c', 5, struct chstatus)
-#define CHIOCSWAIT	_IO('c',6)	/* Wait for a different state */
-#define CHIOCANSWER	_IO('c',7)	/* Answer an RFC (in RFCRECVD state) */
-#define CHIOCREJECT	_IOW('c', 8, struct chreject)
-#define CHIOCACCEPT	_IO('c',9)	/* Accept an RFC, opening connection */
-#define CHIOCOWAIT	_IO('c',10)	/* Wait until all output acked. */
-#define CHIOCADDR	_IO('c',11)	/* Set my address */
-#define CHIOCNAME	_IOW('c', 12, struct chstatname)	/* Set my name */
-#define CHIOCILADDR	_IOW('c', 13, struct chiladdr)	/* Set chaos address for chil */
-#define CHIOCOPEN	_IOW('c', 14, struct chopen)
-#define CHIOCETHER	_IOW('c', 15, struct chether)	/* Set chaos address for ether */
-#define CHIOCGTTY	_IOR('c', 20, int) /* hook up tty and return unit */

@@ -221,84 +221,6 @@ fd_except(int index)
     return 0;
 }
 
-#if 0
-/*
- * main polling routine;
- * pass a list of fd's to select() and dispatch
- */
-int
-fd_poll(void)
-{
-    int ret, i, high_fd;
-    fd_set read_fds, except_fds;
-    struct timeval timeout, *timep;
-
-    FD_ZERO(&read_fds);
-    FD_ZERO(&except_fds);
-
-    /* build up list of file descriptors */
-    high_fd = 0;
-    for (i = 0; i < MAX_SERVER_FDS; i++) {
-        if (fd_list[i].fd == 0)
-            continue;
-
-        FD_SET(fd_list[i].fd, &read_fds);
-        FD_SET(fd_list[i].fd, &except_fds);
-
-        if (fd_list[i].fd > high_fd)
-            high_fd = fd_list[i].fd;
-    }
-
-    timeout.tv_sec = 1;
-    timeout.tv_usec = 0;
-
-    timep = &timeout;
-
-    /* if debugging, don't timeout */
-    if (!flag_daemon && flag_debug_level > DBG_INFO)
-        timep = NULL;
-
-    debugf(DBG_LOW, "high_fd %d\n", high_fd);
-
-    /* wait for i/o from the list of file descriptors */
-    ret = select(high_fd+1, &read_fds, (fd_set *)0, &except_fds, timep);
-    if (ret < 0) {
-        debugf(DBG_INFO | DBG_ERRNO, "fd_poll() ret < 0\n");
-// debug        
-//while (1);
-    }
-
-    if (ret == 0) {
-        debugf(DBG_LOW, "timeout\n");
-        return 0;
-    }
-
-    /* ret > 0; process i/o */
-    for (i = 0; i < MAX_SERVER_FDS && ret > 0; i++) {
-        if (fd_list[i].fd == 0)
-            continue;
-        
-        if (FD_ISSET(fd_list[i].fd, &except_fds)) {
-            fd_except(i);
-            ret--;
-        }
-
-        if (FD_ISSET(fd_list[i].fd, &read_fds)) {
-            fd_read(i);
-            ret--;
-        }
-    }
-
-    /* see if any fd's want to be shut down */
-    for (i = 0; i < MAX_SERVER_FDS; i++) {
-        if (fd_list[i].shutdown) {
-            fd_close(i);
-        }
-    }
-
-    return 0;
-}
-#else
 /*
  * main polling routine;
  * pass a list of fd's to select() and dispatch
@@ -374,7 +296,6 @@ fd_poll(void)
 
     return 0;
 }
-#endif
 
 	   
 

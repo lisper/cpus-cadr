@@ -35,6 +35,13 @@ node_new(node_t **pnode)
     node->index = node_count;
     nodes[node_count++] = node;
 
+    {
+        int i;
+        for (i = 0; i < node_count; i++) {
+            printf("[%d] %p\n", i, nodes[i]);
+        }
+    }
+
     *pnode = (void *)node;
     return 0;
 }
@@ -45,17 +52,19 @@ node_destroy(node_t *node)
     int i;
 
     i = node->index;
-    printf("node_destroy() removing index %d\n", i);
+    printf("node_destroy(%p) removing index %d\n", node, i);
 
     for (; i < node_count; i++) {
         nodes[i] = nodes[i+1];
+        if (nodes[i])
+            nodes[i]->index = i;
     }
 
     free((char *)node);
 
     node_count--;
 
-    for (; i < node_count; i++) {
+    for (i = 0; i < node_count; i++) {
         printf("[%d] %p\n", i, nodes[i]);
     }
 }

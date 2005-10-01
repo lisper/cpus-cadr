@@ -29,28 +29,21 @@
  */
 #include <stdio.h>
 #include <ctype.h>
+#include <fcntl.h>
 #include <sys/param.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
 #include <sys/timeb.h>
 
-#ifdef BSD42
-#include <sys/time.h>
-#include <sys/timeb.h>
-/* #include <sys/fs.h> */
-/*#include <ufs/fs.h>*/
-#include <ufs/ffs/fs.h>
-#include <sys/dir.h>
-#define FSBSIZE MAXBSIZE
-#else
 #include <time.h>
 #include <sys/dir.h>
-#ifdef linux
+
 #include <sys/vfs.h>
 #include <string.h>
 #define BSIZE 512
 #define SBLOCK 8
 #define FSBSIZE BSIZE
+
 #ifndef MIN
 #define MIN(a,b)	((a) < (b) ? (a) : (b))
 #endif
@@ -59,11 +52,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-#else
-#include <sys/filsys.h>
-#define FSBSIZE BSIZE
-#endif
-#endif
 
 #include <errno.h>
 #include <pwd.h>
@@ -73,22 +61,19 @@
 #include "chaos.h"
 #define DEFERROR
 #include "FILE.h"
-#ifdef SYSLOG
-#include <syslog.h>
-#else
+
+//#ifdef SYSLOG
+//#include <syslog.h>
+//#else
+#undef SYSLOG
 #define LOG_INFO	0
 #define LOG_ERR		1
 #define LOG_NOTICE	/* 7 */ 0
 /* VARARGS2 */
-syslog(n,a,b,c,d,e) char *a;{if (n) fprintf(stderr,a,b,c,d,e);}
-#endif
-#ifdef pdp11
-#ifndef lint
-#ifndef void
-#define void int
-#endif
-#endif
-#endif
+//syslog(n,a,b,c,d,e) char *a;{if (n) fprintf(stderr,a,b,c,d,e);}
+syslog(n,a,b,c,d,e) char *a;{fprintf(stderr, a,b,c,d,e);fflush(stderr);}
+//#endif
+
 #define tell(fd)	lseek(fd, (off_t)0, SEEK_CUR)
 
 #define FILEUTMP "/tmp/chfile.utmp"
@@ -579,6 +564,56 @@ char **glob();
 struct xfer *makexfer();
 void finish(int arg);
 
+void
+dumpbuffer(u_char *buf, int cnt)
+{
+    int i, j, offset, skipping;
+    char cbuf[17];
+    char line[80];
+	
+    offset = 0;
+    skipping = 0;
+    while (cnt > 0) {
+        if (offset > 0 && memcmp(buf, buf-16, 16) == 0) {
+            skipping = 1;
+        } else {
+            if (skipping) {
+                skipping = 0;
+                fprintf(stderr,"...\n");
+            }
+        }
+
+        if (!skipping) {
+            for (j = 0; j < 16; j++) {
+                char *pl = line+j*3;
+				
+                if (j >= cnt) {
+                    strcpy(pl, "xx ");
+                    cbuf[j] = 'x';
+                } else {
+                    sprintf(pl, "%02x ", buf[j]);
+                    cbuf[j] = buf[j] < ' ' ||
+                        buf[j] > '~' ? '.' : buf[j];
+                }
+                pl[3] = 0;
+            }
+            cbuf[16] = 0;
+
+            fprintf(stderr,"%08x %s %s\n", offset, line, cbuf);
+        }
+
+        buf += 16;
+        cnt -= 16;
+        offset += 16;
+    }
+
+    if (skipping) {
+        skipping = 0;
+        fprintf(stderr,"%08x ...\n", offset-16);
+    }
+    fflush(stderr);
+}
+
 /*
  * This server gets called from the general RFC server, who gives us control
  * with standard input and standard output set to the control connection
@@ -596,10 +631,14 @@ char **argv;
 	ftime(&timeinfo);
 #ifndef SYSLOG
 	(void)close(2);
-	(void)open("FILE.log", 1);
+	unlink("FILE.log");
+	(void)open("FILE.log", O_WRITE | O_CREAT, 0666);
 	(void)lseek(2, 0L, 2);
 	setbuf(stderr, ebuf);
 #endif
+
+	fprintf(stderr,"FILE!\n"); fflush(stderr);
+
 	if (argc > 1)
 		protocol = atoi(argv[1]);
 	if (protocol > 1) {
@@ -619,6 +658,7 @@ char **argv;
 	mylogin.cl_haddr = chst.st_fhost;
 	mylogin.cl_pid = mypid;
 	strncpy(mylogin.cl_user, "no-login", sizeof(mylogin.cl_user));
+
 	if ((ufd = open(FILEUTMP, 1)) >= 0) {
 		(void)lseek(ufd,
 			    (long)(mylogin.cl_cnum * sizeof(struct chlogin)),
@@ -628,6 +668,7 @@ char **argv;
 	}
 	(void)signal(SIGTERM, finish);
 	(void)signal(SIGHUP, SIG_IGN);
+
 	while (t = getwork())
 		if (t->t_command->c_flags & C_XFER)
 			xcommand(t);
@@ -636,6 +677,21 @@ char **argv;
 	syslog(LOG_INFO, "FILE: exiting normally\n");
 	finish(0);
 }
+
+/*
+00000000 00 80 18 00 04 01 00 01 01 01 45 37 01 00 01 00  ..........E7....
+00000010 54 31 34 33 34 20 20 4c 4f 47 49 4e 20 4c 49 53  T1434  LOGIN LIS
+00000020 50 4d 20 62 72 61 64 20 xx xx xx xx xx xx xx xx  PM brad xxxxxxxx
+*/
+unsigned char pkt[] = {
+//	0x00, 0x80, 0x18, 0x00, 0x04, 0x01, 0x00, 0x01,
+//	0x01, 0x01, 0x45, 0x37, 0x01, 0x00, 0x01, 0x00,
+	0x80,
+	0x54, 0x31, 0x34, 0x33, 0x34, 0x20, 0x20, 0x4c,
+	0x4f, 0x47, 0x49, 0x4e, 0x20, 0x4c, 0x49, 0x53,
+	0x50, 0x4d, 0x20, 0x62, 0x72, 0x61, 0x64, 0x20
+};
+
 /*
  * Getwork - read a command from the control connection (standard input),
  *	parse it, including all arguments (as much as possible),
@@ -664,7 +720,17 @@ getwork()
 #ifndef SELECT
 		xcheck();
 #endif
+
+#if 1
+syslog(LOG_INFO, "FILE: read\n");
 		length = read(0, (char *)&p, sizeof(p));
+#else
+		/* debug  */
+		memcpy((char *)&p, pkt, sizeof(pkt));
+		length = sizeof(pkt);
+#endif
+		dumpbuffer((char *)&p, length);
+
 #ifndef SELECT
 		xcheck();
 #endif
@@ -676,7 +742,7 @@ getwork()
 		}
 
 		((char *)&p)[length] = '\0';
-#if 0
+#if 1
 		syslog(LOG_INFO, "FILE: pkt(%d):%.*s\n", p.cp_op&0377, length-1,
 			p.cp_data);
 #endif
@@ -1318,6 +1384,21 @@ char *privileged_hosts[] = {"mit-tweety-pie", "mit-daffy-duck"};
 #define NUM_PRIVILEGED_HOSTS (sizeof(privileged_hosts)/sizeof(char *))
 #endif
 
+int
+pwok(struct passwd *p, char *pw)
+{
+	char *c = crypt(pw, p->pw_passwd);
+
+return 1;
+	if (c == NULL)
+		return 0;
+
+	if (strcmp(c, p->pw_passwd) != 0)
+		return 0;
+
+	return 1;
+}
+
 /*
  * Process a login command... verify the users name and
  * passwd.
@@ -1364,15 +1445,15 @@ syslog(LOG_INFO, "FILE: login() no user '%s'\n", name);
 	/* User MUST have a passwd */
 		errstring = "Invalid account";
 		error(t, "", MSC);
-	} else if (p->pw_passwd != NOSTR && *p->pw_passwd != '\0' &&
+	} else if (0 && p->pw_passwd != NOSTR && *p->pw_passwd != '\0' &&
 #ifdef PRIVHOSTS
 /*      allow logins without passwords from privileged hosts */
 		   !privileged_host &&
 #endif
-		   (a->a_strings[1] == NOSTR ||
-		    strcmp(crypt(a->a_strings[1], p->pw_passwd), p->pw_passwd)
-		     != 0)) {
+		   (a->a_strings[1] == NOSTR || pwok(p, a->a_strings[1]) == 0)) {
 syslog(LOG_INFO, "FILE: %s %s failed", name, a->a_strings[1]);
+syslog(LOG_INFO, "p->pw_passwd %p, *p->pw_passwd %02x\n",
+       p->pw_passwd, p->pw_passwd ? *p->pw_passwd : 0);
 		error(t, "", IP);
 	} else if (p->pw_uid != 0 && access(NOLOGIN, 0) == 0) {
 		errstring = "All logins are disabled, system shutting down";
@@ -3320,15 +3401,7 @@ char *cp;
 	long	used;
 	int	fd, len;
 	struct stat mstbuf;
-#ifdef linux
 	struct statfs sblock;
-#else
-#ifdef BSD42
-	struct fs sblock;
-#else
-	struct filsys sblock;
-#endif
-#endif
 	struct mtab {
 		char path[32];
 		char spec[32];
@@ -3350,34 +3423,12 @@ char *cp;
 	(void)close(fd);
 	if(len != sizeof(mtab))
 		return 0;
-#ifdef linux
+
 	if (statfs(dev, &sblock))
 		return 0;
 	total = sblock.f_bsize * (sblock.f_blocks - sblock.f_bfree);
 	free = sblock.f_bsize * sblock.f_bfree;
 	used = total - free;
-#else
-	if ((fd = open(dev, 0)) < 0)
-		return 0;
-#ifdef BSD42
-	lseek(fd, SBLOCK * DEV_BSIZE, 0);
-#else
-	lseek(fd, 1L<<BSHIFT, 0);
-#endif
-	len = read(fd, (char *)&sblock, sizeof(sblock));
-	(void)close(fd);
-	if (len != sizeof(sblock))
-		return 0;
-#ifdef BSD42
-	total = sblock.fs_dsize;
-	free = sblock.fs_cstotal.cs_nbfree * sblock.fs_frag +
-	    sblock.fs_cstotal.cs_nffree;
-#else
-	total = (long) sblock.s_fsize - (long)sblock.s_isize;
-	free = sblock.s_tfree;
-#endif
-	used = total - free;
-#endif
 
 	(void)
 	sprintf(cp, "%s (%s): %ld free, %ld/%ld used (%ld%%)", mtab.path, mtab.spec,

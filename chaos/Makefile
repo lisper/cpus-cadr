@@ -6,7 +6,7 @@ OBJ = chaosd.o transport.o node.o log.o signal.o
 
 CFLAGS = -g
 
-all: chaosd listen server client time
+all: chaosd listen server client time FILE
 
 chaosd: $(OBJ)
 	$(CC) $(CFLAGS) -o chaosd $(OBJ)
@@ -14,8 +14,8 @@ chaosd: $(OBJ)
 listen: listen.c
 	$(CC) $(CFLAGS) -o listen listen.c
 
-server: server.c
-	$(CC) $(CFLAGS) -o server server.c
+server: server.c chaos.c ncp.c rfc.c
+	$(CC) $(CFLAGS) -o server server.c chaos.c ncp.c rfc.c
 
 client: client.c
 	$(CC) $(CFLAGS) -o client client.c
