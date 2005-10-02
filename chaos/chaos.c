@@ -758,7 +758,7 @@ rcvrfc(struct packet *pkt)
 		lsnmatch(pkt, conn);
 		ch_accept(conn);
 
-		start_file(conn);
+		start_file(conn, pkt->pk_cdata, pkt->pk_len);
 		return;
 	}
 #endif
@@ -935,7 +935,7 @@ rcvpkt(struct chxcvr *xp)
 		r->rt_xcvr = xp;
 	}
 
-printf("pkt->pk_daddr %o, chaos_myaddr %o, xp->xc_addr %o\n",
+printf("rcvpkt: pkt->pk_daddr %o, chaos_myaddr %o, xp->xc_addr %o\n",
        pkt->pk_daddr, chaos_myaddr, xp->xc_addr);
 
 	if (pkt->pk_daddr != chaos_myaddr &&
@@ -1018,9 +1018,12 @@ ignore:
 	 * Process a packet for an open connection
 	 */
 	else if (conn->cn_state == CSOPEN) {
+printf("rcvpkt: conn #%x open\n", conn->cn_lidx);
 		conn->cn_active = chaos_clock;
-		if (ISDATOP(pkt))
+		if (ISDATOP(pkt)) {
+printf("rcvpkt: conn #%x open, giving it data\n", conn->cn_lidx);
 			rcvdata(conn, pkt);
+		}
 		else switch (pkt->pk_op) {
 	    	case OPNOP:
 			/*
@@ -1085,6 +1088,105 @@ ignore:
 
 
 /* --------------------------------------------------------------------------------------------- */
+
+#define E2BIG	10
+#define ENOBUFS	11
+#define ENXIO	12
+#define EIO	13
+
+/*
+ * Return a connection or return NULL and set *errnop to any error.
+ */
+struct connection *
+chopen(struct chopen *c, int wflag,int *errnop)
+{
+	struct connection *conn;
+	struct packet *pkt;
+	int rwsize, length;
+        struct chopen cho;
+
+        printf("chopen(wflag=%d)\n", wflag);
+
+	length = c->co_clength + c->co_length + (c->co_length ? 1 : 0);
+	if (length > CHMAXPKT ||
+	    c->co_clength <= 0) {
+		*errnop = -E2BIG;
+		return NOCONN;
+	}
+
+	printf("chopen: c->co_length %d, c->co_clength %d, length %d\n",
+	       c->co_length, c->co_clength, length);
+
+	pkt = ch_alloc_pkt(length);
+	if (pkt == NOPKT) {
+		*errnop = -ENOBUFS;
+		return NOCONN;
+	}
+
+	if (c->co_length)
+		pkt->pk_cdata[c->co_clength] = ' ';
+
+	memcpy(pkt->pk_cdata, c->co_contact, c->co_clength);
+	if (c->co_length)
+		memcpy(&pkt->pk_cdata[c->co_clength + 1], c->co_data,
+		       c->co_length);
+
+	rwsize = c->co_rwsize ? c->co_rwsize : CHDRWSIZE;
+	pkt->pk_lenword = length;
+
+	conn = c->co_host ? ch_open(c->co_host, rwsize, pkt) : ch_listen(pkt, rwsize);
+	if (conn == NOCONN) {
+		printf("chopen: NOCONN\n");
+		*errnop = -ENXIO;
+		return NOCONN;
+	}
+
+	printf("chopen: c->co_async %d\n", c->co_async);
+	printf("chopen: conn %p\n", conn);
+
+#if 0
+	if (!c->co_async) {
+		/*
+		 * We should hang until the connection changes from
+		 * its initial state.
+		 * If interrupted, flush the connection.
+		 */
+
+//		current->timeout = (unsigned long) -1;
+
+		*errnop = chwaitfornotstate(conn, c->co_host ?
+                                            CSRFCSENT : CSLISTEN);
+		if (*errnop) {
+			rlsconn(conn);
+			return NOCONN;
+		}
+
+		/*
+		 * If the connection is not open, the open failed.
+		 * Unless is got an ANS back.
+		 */
+		if (conn->cn_state != CSOPEN &&
+		    (conn->cn_state != CSCLOSED ||
+		     (pkt = conn->cn_rhead) == NOPKT ||
+		     pkt->pk_op != ANSOP))
+		{
+			printf("chopen: open failed; cn_state %d\n", conn->cn_state);
+			rlsconn(conn);
+			*errnop = -EIO;
+			return NOCONN;
+		}
+	}
+#endif
+
+//	if (wflag)
+//		conn->cn_sflags |= CHFWRITE;
+//	conn->cn_sflags |= CHRAW;
+
+	conn->cn_mode = CHSTREAM;
+        printf("chopen() done\n");
+
+	return conn;
+}
 
 struct chxcvr intf;
 

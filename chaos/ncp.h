@@ -113,6 +113,8 @@ struct packet {
  */
 struct connection {
 //	struct	csys_header cn_syshead;	/* System dependent info  */
+int cn_mode;
+int cn_sflags;
 	unsigned char	cn_flags;	/* Random flags */
 	unsigned char	cn_state;	/* State of the connection */
 	chtime	cn_active;		/* Last time connection was active */

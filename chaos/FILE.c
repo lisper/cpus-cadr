@@ -629,12 +629,15 @@ char **argv;
 	static char ebuf[BUFSIZ];
 
 	ftime(&timeinfo);
+#if 1
+#else
 #ifndef SYSLOG
 	(void)close(2);
 	unlink("FILE.log");
 	(void)open("FILE.log", O_WRITE | O_CREAT, 0666);
 	(void)lseek(2, 0L, 2);
 	setbuf(stderr, ebuf);
+#endif
 #endif
 
 	fprintf(stderr,"FILE!\n"); fflush(stderr);
@@ -650,8 +653,8 @@ char **argv;
 
 //	ioctl(0, CHIOCACCEPT, NOSTR);
 	mypid = getpid();
-//	ioctl(0, CHIOCSMODE, (char *)CHRECORD);
-//	ioctl(0, CHIOCGSTAT, (char *)&chst);
+	chsetmode(0, CHRECORD);
+	chstatus(0, &chst);
 	mylogin.cl_atime = timeinfo.time;
 	mylogin.cl_ltime = timeinfo.time;
 	mylogin.cl_cnum = chst.st_cnum;
@@ -1301,11 +1304,10 @@ register struct transaction *t;
 	 * is listening for, so send it.
 	 */
 	if ((fd = chopen(mylogin.cl_haddr, ofhname, 2, 1, 0, 0, 0)) < 0 ||
-//	    ioctl(fd, CHIOCSWAIT, (char *)CSRFCSENT) < 0 ||/* Hangs here */
-//	    ioctl(fd, CHIOCGSTAT, (char *)&chst) < 0 ||
-//	    chst.st_state != CSOPEN ||
-//	    ioctl(fd, CHIOCSMODE, (char *)CHRECORD
-	    1)
+	    chwaitfornotstate(fd, CSRFCSENT) < 0 ||
+	    chstatus(fd, &chst) < 0 ||
+	    chst.st_state != CSOPEN ||
+	    chsetmode(fd, CHRECORD))
 	{
 		if (fd >= 0)
 			(void)close(fd);
@@ -1455,7 +1457,7 @@ syslog(LOG_INFO, "FILE: %s %s failed", name, a->a_strings[1]);
 syslog(LOG_INFO, "p->pw_passwd %p, *p->pw_passwd %02x\n",
        p->pw_passwd, p->pw_passwd ? *p->pw_passwd : 0);
 		error(t, "", IP);
-	} else if (p->pw_uid != 0 && access(NOLOGIN, 0) == 0) {
+	} else if (p->pw_uid != 0 && access(NOLOGIN, F_OK) == 0) {
 		errstring = "All logins are disabled, system shutting down";
 		error(t, "", MSC);
 	} else {
@@ -1651,7 +1653,7 @@ register struct transaction *t;
 				errcode = DNF;
 				break;
 			case ENOENT:
-				if (access(dirname, 0) != 0)
+				if (access(dirname, F_OK) != 0)
 					errcode = DNF;
 				else
 					errcode = FNF;
@@ -1663,6 +1665,7 @@ register struct transaction *t;
 		break;
 	case O_WRITE:
 		fd = 0;	/* Impossible value */
+syslog(0, "stat(%s)\n", realname);
 		if (stat(realname, &sbuf) == 0) {
 			/*
 			 * The file exists.  Disallow writing directories.
@@ -1679,13 +1682,16 @@ register struct transaction *t;
 				break;
 			case O_XTRUNCATE:
 				fd = creat(realname, 0644);
+syslog(0, "creat(%s) fd %d\n", realname, fd);
 				break;
 			case O_XOVERWRITE:
 				fd = open(realname, 1);
+syslog(0, "open(%s) fd %d\n", realname, fd);
 				break;
 			case O_XAPPEND:
 				if ((fd = open(realname, 1)) > 0)
 					lseek(fd, 0, 2);
+syslog(0, "open(%s) fd %d\n", realname, fd);
 				break;
 			case O_XSUPERSEDE:
 			case O_XRENDEL:
@@ -1696,12 +1702,16 @@ register struct transaction *t;
 				break;
 			}
 		} else {
+syslog(0, "stat(%s) failed\n", realname);
 			/*
 			 * The stat above failed. Make sure the file really doesn't
 			 * exist. Otherwise fall through to the error processing
 			 * below.
 			 */
-			if (errno != ENOENT || access(dirname, 1) != 0)
+syslog(0, "errno %d, access() %d\n", errno, access(dirname, X_OK));
+ syslog(0, "ifnexists %d, ifexists %d\n", ifnexists, ifexists);
+
+			if (errno != ENOENT || access(dirname, X_OK) != 0)
 				fd = -1;
 			else switch (ifnexists) {
 			case O_XERROR:
@@ -1710,11 +1720,14 @@ register struct transaction *t;
 			case O_XCREATE:
 				if (ifexists == O_XAPPEND ||
 				    ifexists == O_XOVERWRITE ||
-				    ifexists == O_XTRUNCATE)
+				    ifexists == O_XTRUNCATE) {
 					fd = creat(realname, 0644);
+syslog(0, "creat('%s') %d\n", realname, fd);
+				}
 				break;
 			}
 		}
+syslog(0, "errcode %d\n", errcode);
 		if (errcode)
 			break;
 		if (fd == 0) {
@@ -1726,6 +1739,7 @@ register struct transaction *t;
 				fd = -1;
 			else
 				fd = creat(tempname, 0644);
+syslog(0, "create %s %d\n", tempname, fd);
 		}
 		/*
 		 * An error occurred either in stat, creat or open on the
@@ -1735,9 +1749,9 @@ register struct transaction *t;
 			switch (errno) {
 			case EACCES:
 				errcode = ATD;
-				if (access(dirname, 1) < 0)
+				if (access(dirname, X_OK) < 0)
 					errstring = SEARCHDIR;
-				else if (access(dirname, 2) < 0)
+				else if (access(dirname, W_OK) < 0)
 					errstring = WRITEDIR;
 				else {
 					errcode = ATF;
@@ -1774,10 +1788,12 @@ register struct transaction *t;
 			fatal(FSTAT);
 		break;
 	case O_READ:
+syslog(0, "open(%s) \n", realname, fd);
 		if ((fd = open(realname, 0)) < 0) {
+syslog(0, "open error\n");
 			switch (errno) {
 			case EACCES:
-				if (access(dirname, 1) == 0) {
+				if (access(dirname, X_OK) == 0) {
 					errcode = ATF;
 					errstring = READFILE;
 				} else {
@@ -1786,7 +1802,7 @@ register struct transaction *t;
 				}
 				break;
 			case ENOENT:
-				if (access(dirname, 0) < 0)
+				if (access(dirname, F_OK) < 0)
 					errcode = DNF;
 				else
 					errcode = FNF;
@@ -1832,6 +1848,9 @@ register struct transaction *t;
 		goto openerr;
 	}
 	tm = localtime(&sbuf.st_mtime);
+#if 1
+	if (tm->tm_year > 99) tm->tm_year = 99;
+#endif
 	nbytes = options & O_CHARACTER || bytesize <= 8 ? sbuf.st_size :
 		(sbuf.st_size + 1) / 2;
 	if (protocol > 0)
@@ -1854,6 +1873,7 @@ register struct transaction *t;
 		x->x_state = X_PROCESS;
 		x->x_bytesize = bytesize;
 		x->x_fd = fd;
+syslog(0, "xfer %p fd %d\n", x, fd);
 		x->x_realname = realname;
 		x->x_dirname = dirname;
 		x->x_atime = sbuf.st_atime;
@@ -1898,7 +1918,7 @@ char *dname;
 		if (uniq > 99)
 			uniq -= 100;
 		(void)sprintf(cp, "%s/#FILE%05d%02d", dname, mypid, uniq);
-		if (access(cp, 0) != 0)
+		if (access(cp, F_OK) != 0)
 			if (errno == ENOENT) {
 				/*
 				 * We could be losing here if the directory doesn't exist,
@@ -1957,7 +1977,7 @@ register struct transaction *t;
 				errcode = DNF;
 				break;
 			case ENOENT:
-				if (access(dirname, 0) != 0)
+				if (access(dirname, F_OK) != 0)
 					errcode = DNF;
 				else
 					errcode = FNF;
@@ -2124,14 +2144,14 @@ register struct transaction *t;
 
 						c = *cp;
 						*cp = '\0';
-						if (access(*x->x_gptr, 0) < 0) {
+						if (access(*x->x_gptr, F_OK) < 0) {
 							errcode = DNF;
 							goto derror;
 						}
 						*cp = c;
 					}
 					if (*++x->x_gptr != NOSTR)
-						access(*x->x_gptr, 0);
+						access(*x->x_gptr, F_OK);
 					break;
 				case EACCES:
 					errcode = ATD;
@@ -2465,6 +2485,9 @@ struct xfer *ax;
 				fatal("Fstat in xclose 2");
 		}
 		tm = localtime(&sbuf.st_mtime);
+#if 1
+	if (tm->tm_year > 99) tm->tm_year = 99;
+#endif
 		if (protocol > 0)
 			(void)sprintf(response,
 				"%02d/%02d/%02d %02d:%02d:%02d %ld%c%s%c",
@@ -2482,6 +2505,7 @@ struct xfer *ax;
 		respond(t, response);
 	} else
 		error(t, x->x_fh->f_name, errcode);
+syslog(0, "close fd %d\n", x->x_fd);
 	(void)close(x->x_fd);
 }
 /*
@@ -2636,7 +2660,7 @@ register struct transaction *t;
 			errstring = SEARCHDIR;
 			break;
 		case ENOENT:
-			if (access(dir, 0) == 0)
+			if (access(dir, F_OK) == 0)
 				errcode = FNF;
 			else
 				errcode = DNF;
@@ -2651,10 +2675,10 @@ register struct transaction *t;
 		}
 		error(t, "", errcode);
 	} else if ((sbuf.st_mode & S_IFMT) == S_IFDIR) {
-		if (access(dir, 2) != 0) {
+		if (access(dir, W_OK) != 0) {
 			errstring = SEARCHDIR;
 			error(t, "", ATD);
-		} else if (access(real, 3) != 0) {
+		} else if (access(real, X_OK|W_OK) != 0) {
 			errstring =
 				"No search or write permission on directory to be deleted.";
 			error(t, "", ATD);
@@ -2699,14 +2723,14 @@ register struct transaction *t;
 badunlink:
 		switch (errno) {
 		case EACCES:
-			if (access(dir, 1) == 0)
+			if (access(dir, X_OK) == 0)
 				errstring = WRITEDIR;
 			else
 				errstring = SEARCHDIR;
 			errcode = ATD;
 			break;
 		case ENOENT:
-			if (access(dir, 0) == 0)
+			if (access(dir, F_OK) == 0)
 				errcode = FNF;
 			else
 				errcode = DNF;
@@ -2757,7 +2781,7 @@ register struct transaction *t;
 			error(t, f->f_name, BUG);
 		} else {
 			if (x->x_options & O_WRITE) {	
-				if (access(dir1, 3) != 0)
+				if (access(dir1, X_OK|W_OK) != 0)
 					errcode = ATD;
 			} else
 				errcode = mv(x->x_realname,
@@ -2830,7 +2854,7 @@ fromstat:
 			errstring = SEARCHDIR;
 			return ATD;
 		case ENOENT:
-			return access(fromdir, 0) == 0 ? FNF : DNF;
+			return access(fromdir, F_OK) == 0 ? FNF : DNF;
 		case ENOTDIR:
 			errstring = PATHNOTDIR;
 			return DNF;
@@ -2841,7 +2865,7 @@ fromstat:
 	}
 	if ((sbuf.st_mode & S_IFMT) == S_IFDIR)
 		return IOD;
-	if (access(fromdir, 2) < 0) {
+	if (access(fromdir, W_OK) < 0) {
 		errstring = "No permission to modify source directory";
 		return ATD;
 	}
@@ -2855,7 +2879,7 @@ fromstat:
 		errstring = PATHNOTDIR;
 		return DNF;
 	case ENOENT:
-		if (access(todir, 0) != 0)
+		if (access(todir, F_OK) != 0)
 			return DNF;
 		/*
 		 * Everything looks ok. Look at the original errno.
@@ -3195,7 +3219,7 @@ register struct transaction *t;
 		file = NULL;
 		if (errcode = parsepath(dir, &parent, &file, 0))
 			error(t, "", errcode);
-		else if (access(parent, 3) != 0) {
+		else if (access(parent, X_OK|W_OK) != 0) {
 			if (errno == EACCES) {
 				errcode = ATD;
 				errstring =
@@ -3313,7 +3337,7 @@ register struct transaction *t;
 			errstring = SEARCHDIR;
 			break;
 		case ENOENT:
-			if (access(dir, 0) == 0)
+			if (access(dir, F_OK) == 0)
 				errcode = FNF;
 			else
 				errcode = DNF;
@@ -3478,6 +3502,9 @@ register char *cp;
 	struct tm *tm;
 
 	tm = localtime(&s->st_mtime);
+#if 1
+	if (tm->tm_year > 99) tm->tm_year = 99;
+#endif
 	(void)sprintf(cp, "%02d/%02d/%02d %02d:%02d:%02d",
 			tm->tm_mon+1, tm->tm_mday, tm->tm_year,
 			tm->tm_hour, tm->tm_min, tm->tm_sec);
@@ -3493,6 +3520,9 @@ register char *cp;
 	struct tm *tm;
 
 	tm = localtime(&s->st_atime);
+#if 1
+	if (tm->tm_year > 99) tm->tm_year = 99;
+#endif
 	(void)sprintf(cp, "%02d/%02d/%02d %02d:%02d:%02d",
 			tm->tm_mon+1, tm->tm_mday, tm->tm_year,
 			tm->tm_hour, tm->tm_min, tm->tm_sec);
@@ -4171,6 +4201,7 @@ register struct xfer *x;
 		case X_ERROR:
 			return X_HANG;
 		case X_WSYNC:
+syslog(0, "X_WSYNC");
 			switch (xpread(x)) {
 			case -1:
 				x->x_state = x->x_flags & X_CLOSE ?
@@ -4196,20 +4227,24 @@ register struct xfer *x;
 			{
 				register int n;
 				
+syslog(0, "X_PROCESS");
 				switch (n = xpread(x)) {
 				case 0:
+syslog(0, "xpread 0\n");
 					x->x_flags |= X_EOF;
 					if (xbwrite(x) < 0)
 						goto writerr;
 					x->x_state = X_WSYNC;
 					return X_CONTINUE;
 				case -1:
+syslog(0, "xpread -1\n");
 					(void)fherror(x->x_fh, NET, E_FATAL,
 						"Data connection error");
 					x->x_state = x->x_flags & X_CLOSE ?
 						     X_DONE : X_BROKEN;
 					return X_CONTINUE;
 				case -2:
+syslog(0, "xpread -2\n");
 					/*
 					 * SYNCMARK before EOF, don't bother
 					 * flushing disk buffer.
@@ -4218,6 +4253,7 @@ register struct xfer *x;
 						     X_DONE : X_RSYNC;
 					return X_CONTINUE;
 				default:
+syslog(0, "xpread default\n");
 					x->x_left = n;
 					x->x_pptr = x->x_pbuf;
 					break;
@@ -4266,6 +4302,7 @@ register struct xfer *x;
 				from_lispm(x);
 				break;
 			}
+syslog(0, "x %p, x->x_room %d\n", x, x->x_room);
 			if (x->x_room == 0)
 				if (xbwrite(x) >= 0) {
 					x->x_bptr = x->x_bbuf;
@@ -4285,6 +4322,7 @@ writerr:
 					}
 				}
 		}
+syslog(0, "X_CONTINUE\n");
 		return X_CONTINUE;
 	}
 	/* NOTREACHED */
@@ -4392,9 +4430,10 @@ register struct xfer *x;
 			ret, errno);
 		return -1;
 	}
-#ifdef LOG_VERBOSE
+//#ifdef LOG_VERBOSE
 	syslog(LOG_INFO,"FILE: wrote %d bytes to file\n", ret);
-#endif
+	syslog(LOG_INFO,"FILE: fd %d\n", x->x_fd);
+//#endif
 	return 0;
 }
 
@@ -4427,10 +4466,10 @@ register struct xfer *x;
 		return 0;
 	x->x_op = x->x_options & O_BINARY ? DWDOP : DATOP;
 	len++;
-#ifdef LOG_VERBOSE
+//#ifdef LOG_VERBOSE
 	syslog(LOG_INFO, "FILE: writing (%d) %d bytes to net\n",
 		x->x_op & 0377, len);
-#endif
+//#endif
 	if (write(x->x_fh->f_fd, (char *)&x->x_pkt, len) != len)
 		return -1;
 	return 0;
@@ -4447,10 +4486,10 @@ register struct xfer *x;
 
 loop:	
 	n = read(x->x_fh->f_fd, (char *)&x->x_pkt, sizeof(x->x_pkt));
-#ifdef LOG_VERBOSE
+//#ifdef LOG_VERBOSE
 	syslog(LOG_INFO, "FILE: read (%d) %d bytes from net\n",
 		x->x_op & 0377, n);
-#endif
+//#endif
 	if (n < 0)
 		return -1;
 	if (n == 0)

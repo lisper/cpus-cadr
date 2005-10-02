@@ -1,6 +1,8 @@
 /*
  * node.c
  *
+ * keep track of client nodes which have connected
+ *
  * $Id$
  */
 
@@ -35,12 +37,15 @@ node_new(node_t **pnode)
     node->index = node_count;
     nodes[node_count++] = node;
 
+#if 1
     {
         int i;
         for (i = 0; i < node_count; i++) {
-            printf("[%d] %p\n", i, nodes[i]);
+            printf("nodes[%d] %p, fd %d\n",
+                   i, (void *)nodes[i], nodes[i] ? nodes[i]->fd : -1);
         }
     }
+#endif
 
     *pnode = (void *)node;
     return 0;
@@ -54,19 +59,24 @@ node_destroy(node_t *node)
     i = node->index;
     printf("node_destroy(%p) removing index %d\n", node, i);
 
-    for (; i < node_count; i++) {
+    nodes[i] = 0;
+
+    /* if it's not the last one, pull up the vector */
+    for (; i < node_count-1; i++) {
         nodes[i] = nodes[i+1];
-        if (nodes[i])
-            nodes[i]->index = i;
+        nodes[i]->index = i;
     }
 
     free((char *)node);
 
     node_count--;
 
+#if 1
     for (i = 0; i < node_count; i++) {
-        printf("[%d] %p\n", i, nodes[i]);
+        printf("[%d] %p, fd %d\n",
+               i, (void *)nodes[i], nodes[i] ? nodes[i]->fd : -1);
     }
+#endif
 }
 
 /*
@@ -154,11 +164,13 @@ node_stream_reader(int fd, void *void_node, int context)
     iov[1].iov_len = size;
 
     for (i = 0; i < node_count; i++) {
-        debugf(DBG_LOW, "[%d] %x %x\n",
-               i, void_node, (void *)nodes[i]);
+        debugf(DBG_LOW, "[%d] %x %x, fd %d\n",
+               i, void_node, (void *)nodes[i], nodes[i] ? nodes[i]->fd : -1);
 
-//        if (void_node == (void *)nodes[i])
-//            continue;
+#if 0
+        if (void_node == (void *)nodes[i])
+            continue;
+#endif
 
         ret = writev(nodes[i]->fd, iov, 2);
 

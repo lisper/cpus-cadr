@@ -2,6 +2,10 @@
  * chaosd.c
  *
  * chaos lan emulator central hub
+ * accepts unix socket connections from other chaos nodes and
+ * forwards packets
+ *
+ * $Id$
  */
 
 #include <stdio.h>

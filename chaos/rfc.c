@@ -76,7 +76,7 @@ ch_time(long *tp)
 	gettimeofday(&time, NULL);
 
 	*tp = time.tv_sec;
-	*tp += 60L*60*24*((1970-1900)*365L + 1970/4 - 1900/4);
+	*tp += 60UL*60*24*((1970-1900)*365L + 1970/4 - 1900/4);
 }
 
 void

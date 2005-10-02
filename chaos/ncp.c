@@ -283,6 +283,27 @@ ch_close(struct connection *conn, struct packet *pkt, int release)
 		rlsconn(conn);
 }
 
+int
+ch_setmode(struct connection *conn, int mode)
+{
+    int ret = 0;
+
+    switch (mode) {
+    case CHTTY:
+        ret = -1;
+        break;
+    case CHSTREAM:
+    case CHRECORD:
+        if (conn->cn_mode == CHTTY)
+            ret = -1;
+        else
+            conn->cn_mode = mode;
+    }
+
+    return ret;
+}
+
+
 
 /*
  * Local Variables:

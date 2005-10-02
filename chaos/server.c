@@ -1,11 +1,18 @@
 /*
  * server.c
- * simple chaosnet test server for chaosd server
+ * chaosnet protocol server
+ *
+ * chaos node with chaos protocol processing
+ * connects to chaosd server
+ * forks servers and does protocol procesing (NCP, etc...)
+ *
+ * 
  * $Id$
  */
 
 #include <stdio.h>
 #include <unistd.h>
+//#include <stropts.h>
 
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -20,10 +27,7 @@
 #include "ncp.h"
 #include "server.h"
 
-#define UNIX_SOCKET_PATH	"/var/tmp/"
-#define UNIX_SOCKET_CLIENT_NAME	"chaosd_"
-#define UNIX_SOCKET_SERVER_NAME	"chaosd_server"
-#define UNIX_SOCKET_PERM	S_IRWXU
+#include "chaosd.h"
 
 int verbose;
 int fd;
@@ -89,7 +93,7 @@ dumpbuffer(u_char *buf, int cnt)
 }
 
 /*
- * connect to server using specificed socket type
+ * connect to chaosd network server using specificed socket type
  */
 int
 connect_to_server(void)
@@ -141,6 +145,10 @@ connect_to_server(void)
     return 0;
 }
 
+/*
+ * acting like an ethernet driver, transmit a packet
+ * to the chaosd server to be sent on the "wire"
+ */
 int
 chaos_xmit(struct chxcvr *intf,
 	   struct packet *pkt,
@@ -199,12 +207,11 @@ chaos_xmit(struct chxcvr *intf,
 			memcpy(p, iov[i].iov_base, iov[i].iov_len);
 			p += iov[i].iov_len;
 		}
-		printf("\n");
 		dumpbuffer(b, p - b);
+		printf("\n");
 	}
 #endif
 
-//	ch_free_pkt(pkt);
         xmitdone(pkt);
 
 	return 0;
@@ -311,14 +318,16 @@ reply_time(struct connection *c, char *buffer, int size)
     struct pkt_header *ph = (struct pkt_header *)buffer;
     u_short d[2];
     struct timeval time;
-    unsigned long ct;
+    unsigned long ct, offset;
 
     gettimeofday(&time, NULL);
 
     memset((char *)d, 0, sizeof(d));
 
+    offset = 60UL*60*24*(1970-1900)*365L + 1970/4 - 1900/4;
+
     ct = time.tv_sec;
-    ct += 60L*60*24*((1970-1900)*365L + 1970/4 - 1900/4);
+    ct += offset;
 
     ((unsigned long *)d)[0] = ct;
 
@@ -354,39 +363,75 @@ char *popcode_to_text(int pt)
  * servers but right now we're just supporting FILE
  */
 int child_pid;
-int child_fd_o;
-int child_fd_i;
-void *child_conn;
+//int child_fd_data_out;
+int child_fd_data_in;
+int child_fd_ctl;
+int child_fd_sctl;
+#define MAX_CHILD_CONN	10
+struct {
+    void *conn;
+    int fd_out;
+    int fd_in;
+} child_conn[MAX_CHILD_CONN];
+int child_conn_count;
 
 void
-fork_file(void)
+fork_file(char *arg)
 {
     int ret, r, i;
-    int svo[2], svi[2];
+    int svdo[2], svdi[2], svc[2], svs[2];
+    int tmp[2];
 
 #define app_name "./FILE"
 
-    printf("fork_file()\n");
+    printf("fork_file('%s')\n", arg);
+
+    ret = socketpair(AF_UNIX, SOCK_DGRAM, 0, tmp);
 
     /* create a pair of packet based local sockets */
-    ret = socketpair(AF_UNIX, SOCK_DGRAM, 0, svo);
+    ret = socketpair(AF_UNIX, SOCK_DGRAM, 0, svdo);
     if (ret) {
         perror("socketpair");
         return;
     }
 
-    ret = socketpair(AF_UNIX, SOCK_DGRAM, 0, svi);
+    ret = socketpair(AF_UNIX, SOCK_DGRAM, 0, svdi);
     if (ret) {
         perror("socketpair");
         return;
     }
+
+    ret = socketpair(AF_UNIX, SOCK_DGRAM, 0, svc);
+    if (ret) {
+        perror("socketpair");
+        return;
+    }
+
+    ret = socketpair(AF_UNIX, SOCK_STREAM, 0, svs);
+    if (ret) {
+        perror("socketpair");
+        return;
+    }
+
+    close(tmp[0]);
+    close(tmp[1]);
+
+    printf("tmp %d %d\n", tmp[0], tmp[1]);
 
     /* make a copy of ourselves */
     if ((r = fork()) != 0) {
 	    child_pid = r;
-            child_fd_o = svo[0];
-            child_fd_i = svi[0];
-            printf("fork_file() pid %d, fd_i %d, fd_o %d\n", child_pid, child_fd_o, child_fd_i);
+
+//            child_fd_data_out = svdo[0];
+            child_conn[0].fd_out = svdo[0];
+
+            child_fd_data_in = svdi[0];
+            child_conn[0].fd_in = svdi[0];
+
+            child_fd_ctl = svc[0];
+            child_fd_sctl = svs[0];
+            printf("fork_file() pid %d, fd_o %d, fd_i %d, fd_ctl %d, fd_sctl %d\n",
+                   child_pid, child_conn[0].fd_out, child_conn[0].fd_in, child_fd_ctl, child_fd_sctl);
 	    return;
     }
 
@@ -402,18 +447,23 @@ fork_file(void)
     /* close stdin, out, err, etc... */
     close(0);
     close(1);
-    close(2);
+//    close(2);
+    close(3);
+    close(4);
 
     /* and repoen as pipes */
-    dup2(svo[1], 0);
-    dup2(svi[1], 1);
+    dup2(svdo[1], 0);
+    dup2(svdi[1], 1);
+    dup2(svc[1], 3);
+    dup2(svs[1], 4);
 
-    for (i = 3; i < 256; i++) {
+    for (i = 5; i < 256; i++) {
         close(i);
     }
 
     /* exec the application */
-    r = execl(app_name, app_name, 0);
+//xxx - hack - arg should come from parsing packet
+    r = execl(app_name, app_name, "1", 0);
 
     if (r) {
 //	    syslog(LOG_WARNING, "can't exec %s; %m", app_name);
@@ -424,12 +474,31 @@ fork_file(void)
     exit(1);
 }
 
+/*
+ * send data to a captive server (like FILE)
+ */
 void
 server_input(struct connection *conn)
 {
     struct packet *pkt;
     char *ptr;
-    int len;
+    int i, conn_fd, len;
+
+    /* we should store a hint in the conn */
+//    conn_fd = child_fd_data_out;
+    conn_fd = -1;
+    for (i = 0; i < child_conn_count; i++) {
+        if (child_conn[i].conn == conn) {
+            conn_fd = child_conn[i].fd_out;
+            printf("server_input: found conn %p @ %d, fd %d\n", conn, i, conn_fd);
+            break;
+        }
+    }
+
+    if (conn_fd < 0) {
+        printf("server_input: NO CONNECTION?\n");
+        return;
+    }
 
     while ((pkt = conn->cn_rhead) != NOPKT) {
 
@@ -440,17 +509,16 @@ server_input(struct connection *conn)
         printf("server_input: pkt %d, data %d bytes\n", chlength, pkt->pk_phead.ph_len);
         dumpbuffer(pkt->pk_cdata, pkt->pk_phead.ph_len);
 
-printf("write child_fd_o %d\n", child_fd_o);
-        if (child_fd_o) {
+        if (conn_fd) {
             ptr = pkt->pk_cdata;
             len = pkt->pk_phead.ph_len;
 
             ptr--;
-            ptr[0] = DATOP;
+            ptr[0] = pkt->pk_op;
+//            ptr[0] = DATOP;
             len++;
 
-printf("write child_fd_o %d, ptr=%p, len=%d\n", child_fd_o, ptr, len);
-            write(child_fd_o, ptr, len);
+            write(conn_fd, ptr, len);
         }
 
         /* consume */
@@ -459,34 +527,205 @@ printf("write child_fd_o %d, ptr=%p, len=%d\n", child_fd_o, ptr, len);
 }
 
 int
-read_child(void)
+read_child_data(void)
 {
     struct packet *pkt;
     int ret;
     extern struct packet *ch_alloc_pkt(int size);
 
-    printf("read_child()\n");
+    printf("read_child_data()\n");
 
     pkt = ch_alloc_pkt(512);
 
     /* 1st byte is cp_op */
-    ret = read(child_fd_i, pkt->pk_cdata-1, 512);
+    ret = read(child_fd_data_in, pkt->pk_cdata-1, 512);
     pkt->pk_op = DATOP; /* pkt->pk_cdata[-1] */
     pkt->pk_phead.ph_len = ret - 1;
 
     printf("read_child: rcv data %d bytes\n", pkt->pk_phead.ph_len);
     dumpbuffer(pkt->pk_cdata, pkt->pk_phead.ph_len);
     
-    ch_write(child_conn, pkt);
+    ch_write(child_conn[0].conn, pkt);
+
+    return 0;
+}
+
+/*
+ * read control connection from child process
+ * these are messages from chlib, used to manipulate chaos connections
+ * 
+ * we send them a "connection #" along with the fd which is used as
+ * an index into the child connection table
+ *
+ */
+int
+read_child_ctl(void)
+{
+    struct packet *pkt;
+    int ret, len, req, conn_num, mode;
+    char ctlbuf[512], contact[64];
+
+    printf("read_child_ctl()\n");
+
+    /* 1st byte is cp_op */
+    ret = read(child_fd_ctl, ctlbuf, 512);
+
+    printf("read_child: ctl %d bytes\n", ret);
+    dumpbuffer(ctlbuf, ret);
+
+    req = ctlbuf[0];
+    conn_num = ctlbuf[1];
+    mode = ctlbuf[2];
+
+    printf("read_child: req %d, conn_num %d, mode %o\n", req, conn_num, mode);
+
+    switch (req) {
+    case 1: /* chstatus */
+    	{
+            struct chstatus chst;
+            struct connection *conn;
+            struct packet *pkt;
+
+            memcpy((char *)&chst, &ctlbuf[4], sizeof(struct chstatus));
+
+            conn = child_conn[conn_num].conn;
+
+            chst.st_fhost = conn->cn_faddr;
+            chst.st_cnum = conn->cn_ltidx;
+            chst.st_rwsize = conn->cn_rwsize;
+            chst.st_twsize = conn->cn_twsize;
+            chst.st_state = conn->cn_state;
+            chst.st_cmode = conn->cn_mode;
+            chst.st_oroom = conn->cn_twsize - (conn->cn_tlast - conn->cn_tacked);
+            if ((pkt = conn->cn_rhead) != NOPKT) {
+                chst.st_ptype = pkt->pk_op;
+                chst.st_plength = pkt->pk_len;
+            } else {
+                chst.st_ptype = 0;
+                chst.st_plength = 0;
+            }
+
+            ctlbuf[2] = 0;
+            ctlbuf[3] = 0;
+
+            memcpy(&ctlbuf[4], (char *)&chst, sizeof(struct chstatus));
+            len = 4 + sizeof(struct chstatus);
+            write(child_fd_ctl, ctlbuf, len);
+        }
+        break;
+    case 2: /* chopen */
+    	{
+            struct chopen rfc;
+            int sv[2];
+            char cmsgbuf[sizeof(struct cmsghdr) + sizeof(int)];
+            struct msghdr msg;
+            struct cmsghdr *cmsg;
+            struct iovec vector;
+            void *conn;
+            int err;
+            extern void *chopen(struct chopen *co, int mode, int *perr);
+
+            memcpy((char *)&rfc, &ctlbuf[4], sizeof(rfc));
+            if (rfc.co_clength > 0) {
+                memcpy(contact, &ctlbuf[4 + sizeof(rfc)], rfc.co_clength);
+                contact[rfc.co_clength] = 0;
+                rfc.co_contact = contact;
+            } else
+                rfc.co_contact = 0;
+
+            if (rfc.co_length > 0)
+                rfc.co_data = &ctlbuf[4 + sizeof(rfc) + rfc.co_clength];
+            else
+                rfc.co_data = 0;
+
+            printf("contact '%s' host %o\n", rfc.co_contact, rfc.co_host);
+
+            /* open socket */
+            conn = chopen(&rfc, mode, &err);
+
+            /* make a socket to talk to the connection */
+            ret = socketpair(AF_UNIX, SOCK_DGRAM, 0, sv);
+
+            child_conn[child_conn_count].conn = conn;
+            child_conn[child_conn_count].fd_out = sv[0];
+            child_conn[child_conn_count].fd_in = sv[0];
+            child_conn_count++;
+
+            ctlbuf[0] = 2;
+            ctlbuf[1] = child_conn_count-1;
+            ctlbuf[2] = 0;
+            ctlbuf[3] = 0;
+
+            /* send socket fd to the server */
+            printf("sending, sctl %d, fd %d, local %d\n", child_fd_sctl, sv[1], sv[0]);
+
+            memset(cmsgbuf, 0, sizeof(cmsgbuf));
+            cmsg = (struct cmsghdr *)cmsgbuf;
+            cmsg->cmsg_len = sizeof(struct cmsghdr) + sizeof(int);
+            cmsg->cmsg_level = SOL_SOCKET;
+            cmsg->cmsg_type = SCM_RIGHTS;
+
+            memcpy(CMSG_DATA(cmsg), &sv[1], sizeof(sv[1]));
+
+            /* */
+            vector.iov_base = ctlbuf;
+            vector.iov_len = 4;
+
+            /* */
+            msg.msg_flags = 0;
+            msg.msg_control = cmsg;
+            msg.msg_controllen = cmsg->cmsg_len;
+
+            msg.msg_name= NULL;
+            msg.msg_namelen = 0;
+            msg.msg_iov = &vector;
+            msg.msg_iovlen = 1;
+
+            ret = sendmsg(child_fd_sctl, &msg, 0);
+            if (ret < 0) {
+                perror("sendmsg");
+            }
+        }
+        break;
+
+    case 3: /* setmode */
+        ret= ch_setmode(child_conn[conn_num].conn);
+
+        ctlbuf[0] = 3;
+        ctlbuf[1] = ret;
+        ctlbuf[2] = 0;
+        ctlbuf[3] = 0;
+        write(child_fd_ctl, ctlbuf, 4);
+        break;
+
+    }
 
     return 0;
 }
 
 void
-start_file(void *conn)
+start_file(void *conn, char *args, int arglen)
 {
-    child_conn = conn;
-    fork_file();
+    int i;
+    char *parg;
+
+    child_conn[0].conn = conn;
+    child_conn[0].fd_out = -1;
+    child_conn[0].fd_in = -1;
+    child_conn_count = 1;
+
+    /* skip over RFC name */
+    for (i = 0; i < arglen; i++) {
+        if (args[i] == ' ')
+            break;
+    }
+    parg = 0;
+    if (args[i] == ' ') {
+        args[arglen] = 0;
+        parg = &args[i+1];
+    }
+
+    fork_file(parg);
 }
 
 
@@ -585,7 +824,7 @@ read_chaos(void)
 int
 poll_chaos(void)
 {
-    struct pollfd ufds[2];
+    struct pollfd ufds[3];
     int n = 1;
     int ret, timeout;
 
@@ -594,10 +833,17 @@ poll_chaos(void)
     ufds[0].revents = 0;
 
     ufds[1].revents = 0;
+    ufds[2].revents = 0;
 
-    if (child_fd_i) {
-        ufds[1].fd = child_fd_i;
-        ufds[1].events = POLLIN;
+//XXX need to listen to all child in fd's
+
+    if (child_fd_data_in) {
+        ufds[n].fd = child_fd_data_in;
+        ufds[n].events = POLLIN;
+        n++;
+
+        ufds[n].fd = child_fd_ctl;
+        ufds[n].events = POLLIN;
         n++;
     }
 
@@ -605,55 +851,29 @@ poll_chaos(void)
 
     ret = poll(ufds, n, timeout);
     if (ret < 0) {
+        return -1;
     }
 
     if (ret == 0) {
     } else {
         if (ufds[0].revents) {
+            /* notice when choasd dies */
+            if (ufds[0].revents & POLLHUP) {
+                return -1;
+            }
+
             read_chaos();
         }
         if (ufds[1].revents) {
-            read_child();
+            read_child_data();
+        }
+        if (ufds[2].revents) {
+            read_child_ctl();
         }
     }
 
     return 0;
 }
-
-/*
-00000000 00 5a 00 00 00 05 44 00 01 01 44 36 04 01 34 12  .Z....D...D6..4.
-00000010 00 00 00 00 73 65 72 76 65 72 00 00 00 00 00 00  ....server......
-00000020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-00000030 00 00 00 00 01 01 00 10 00 11 00 00 00 13 00 00  ................
-00000040 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-00000050 00 00 00 00 00 00 00 00 01 01 04 01 00 00 xx xx  ..............xx
-*/
-
-unsigned char pkt1[] = {
-    0x00, 0x01, 0x06, 0x00, 0x04, 0x01, 0x00, 0x00, 0x01,
-    0x01, 0xc7, 0x37, 0x00, 0x00, 0xff, 0xff, 0x46, 0x49,
-    0x4c, 0x45, 0x20, 0x31, 0x04, 0x01
-};
-
-unsigned char pkt2[] = {
-    0x00, 0x01, 0x06, 0x00, 0x04, 0x01, 0x00, 0x00, 0x01,
-    0x01, 0x44, 0x36, 0x00, 0x00, 0x00, 0x00, 0x53, 0x54,
-    0x41, 0x54, 0x55, 0x53, 0x04, 0x01, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00
-};
-
-unsigned char pkt3[] = {
-    0x00, 0x06, 0x00, 0x00, 0x04, 0x01, 0x00, 0x01, 0x01,
-    0x01, 0x46, 0x87, 0x01, 0x00, 0x01, 0x00, 0x04, 0x01,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-};
-
-unsigned char pkt4[] = {
-    0x00, 0x80, 0x1b, 0x00, 0x04, 0x01, 0x00, 0x01, 0x01, 0x01, 0x45, 0x37, 0x01, 0x00, 0x01, 0x00,
-    0x54, 0x31, 0x34, 0x33, 0x34, 0x20, 0x20, 0x4c, 0x4f, 0x47, 0x49, 0x4e, 0x20, 0x42, 0x52, 0x41,
-    0x44, 0x20, 0x6b, 0x6b, 0x6b, 0x6b, 0x6b, 0x6b, 0x6b, 0x6b, 0x20, 0x66, 0x04, 0x01, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00
-};
 
 main()
 {
@@ -665,11 +885,7 @@ main()
     }
 
 #if 0
-#define check_packet ch_rcv_pkt_buffer
-    check_packet(pkt2, sizeof(pkt2));
-    check_packet(pkt1, sizeof(pkt1));
-    check_packet(pkt3, sizeof(pkt3));
-    check_packet(pkt4, sizeof(pkt4));
+    send_testpackets();
 #endif
 
     while (1) {

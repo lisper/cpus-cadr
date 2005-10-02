@@ -1,5 +1,6 @@
 /*
  * basic listening node for chaosd server
+ * decodes protocol and prints out packets
  *
  * $Id$
  */
@@ -18,31 +19,13 @@
 #include <sys/uio.h>
 
 #include "chaos.h"
-
-#define UNIX_SOCKET_PATH	"/var/tmp/"
-#define UNIX_SOCKET_CLIENT_NAME	"chaosd_"
-#define UNIX_SOCKET_SERVER_NAME	"chaosd_server"
-#define UNIX_SOCKET_PERM	S_IRWXU
+#include "chaosd.h"
 
 int verbose;
 int fd;
 struct sockaddr_un unix_addr;
 u_char buffer[4096];
 u_char *msg, resp[8];
-
-void node_demux(unsigned long id);
-
-#define CAN_MSG_LENGTH 8
-
-typedef struct {
-    /** flags, indicating or controlling special message properties */
-    int             flags;
-    int             cob;	 /**< CAN object number, used in Full CAN  */
-    unsigned   long id;		 /**< CAN message ID, 4 bytes  */
-    struct timeval  timestamp;	 /**< time stamp for received messages */
-    short      int  length;	 /**< number of bytes in the CAN message */
-    unsigned   char data[CAN_MSG_LENGTH]; /**< data, 0...8 bytes */
-} canmsg_t;
 
 /*
  * connect to server using specificed socket type
@@ -96,11 +79,6 @@ connect_to_server(void)
         
     return 0;
 }
-
-//void
-//node_demux(unsigned long id)
-//{
-//}
 
 char *popcode_to_text(int pt)
 {

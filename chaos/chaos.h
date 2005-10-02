@@ -46,6 +46,13 @@
 #define DWDOP	0300		/* 16 bit word data */
 
 /*
+ * Modes available in CHIOCSMODE call.
+ */
+#define CHTTY		1
+#define CHSTREAM	2
+#define CHRECORD	3
+
+/*
  * This file contains known contact names.
  */
 #define CHAOS_FILE	"FILE"

@@ -1,7 +1,7 @@
 /*
  * transport.c
  *
- * simple machinery to listen to a list of fd's via select()
+ * simple machinery to listen to a list of fd's via poll()
  * and dispatch when something needs to be done.
  *
  * main poll routine (fd_poll) is called from main server loop
@@ -68,6 +68,17 @@ fd_add(int fd)
     fd_count++;
     
     debugf(DBG_LOW, "fd_add(fd=%d) index %d\n", fd, i);
+
+#if 1
+    {
+        int i;
+        for (i = 0; i < MAX_SERVER_FDS; i++) {
+            if (fd_list[i].fd == 0)
+                continue;
+            printf("fd [%d] = %d, shutdown %d\n", i, fd_list[i].fd, fd_list[i].shutdown);
+        }
+    }
+#endif
 
     return i;
 }
@@ -223,7 +234,7 @@ fd_except(int index)
 
 /*
  * main polling routine;
- * pass a list of fd's to select() and dispatch
+ * pass a list of fd's to poll() and dispatch
  */
 int
 fd_poll(void)

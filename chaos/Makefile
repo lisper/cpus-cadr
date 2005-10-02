@@ -2,20 +2,22 @@
 #
 # $Id$
 
-OBJ = chaosd.o transport.o node.o log.o signal.o
+CHAOSD_OBJ = chaosd.o transport.o node.o log.o signal.o
+
+SERVER_OBJ = server.o chaos.o ncp.o rfc.o testpackets.o
 
 CFLAGS = -g
 
 all: chaosd listen server client time FILE
 
-chaosd: $(OBJ)
-	$(CC) $(CFLAGS) -o chaosd $(OBJ)
+chaosd: $(CHAOSD_OBJ)
+	$(CC) $(CFLAGS) -o chaosd $(CHAOSD_OBJ)
 
 listen: listen.c
 	$(CC) $(CFLAGS) -o listen listen.c
 
-server: server.c chaos.c ncp.c rfc.c
-	$(CC) $(CFLAGS) -o server server.c chaos.c ncp.c rfc.c
+server: $(SERVER_OBJ)
+	$(CC) $(CFLAGS) -o server $(SERVER_OBJ)
 
 client: client.c
 	$(CC) $(CFLAGS) -o client client.c
