@@ -18,6 +18,8 @@
 int node_count;
 node_t *nodes[MAX_NODES];
 
+extern int flag_debug_level;
+
 int
 node_new(node_t **pnode)
 {
@@ -32,16 +34,17 @@ node_new(node_t **pnode)
 
     memset((char *)node, 0, sizeof(node_t));
 
-    printf("node_new() [%d] = %p\n", node_count, node);
+    debugf(DBG_LOW, "node_new() [%d] = %p\n", node_count, node);
 
     node->index = node_count;
     nodes[node_count++] = node;
 
 #if 1
+    if (flag_debug_level > 5)
     {
         int i;
         for (i = 0; i < node_count; i++) {
-            printf("nodes[%d] %p, fd %d\n",
+            debugf(DBG_LOW, "nodes[%d] %p, fd %d\n",
                    i, (void *)nodes[i], nodes[i] ? nodes[i]->fd : -1);
         }
     }
@@ -57,7 +60,7 @@ node_destroy(node_t *node)
     int i;
 
     i = node->index;
-    printf("node_destroy(%p) removing index %d\n", node, i);
+    debugf(DBG_LOW, "node_destroy(%p) removing index %d\n", node, i);
 
     nodes[i] = 0;
 
@@ -72,9 +75,11 @@ node_destroy(node_t *node)
     node_count--;
 
 #if 1
-    for (i = 0; i < node_count; i++) {
-        printf("[%d] %p, fd %d\n",
-               i, (void *)nodes[i], nodes[i] ? nodes[i]->fd : -1);
+    if (flag_debug_level > 5) {
+        for (i = 0; i < node_count; i++) {
+            debugf(DBG_LOW, "[%d] %p, fd %d\n",
+                   i, (void *)nodes[i], nodes[i] ? nodes[i]->fd : -1);
+        }
     }
 #endif
 }
@@ -152,7 +157,10 @@ node_stream_reader(int fd, void *void_node, int context)
            msg[16], msg[17], msg[18], msg[19],
            msg[20], msg[21], msg[22], msg[23]);
 
-    dumpbuffer(msg, size);
+    if (flag_debug_level > 2) {
+        printf("\n");
+        dumpbuffer(msg, size);
+    }
 
     lenbytes[2] = 1;
     lenbytes[3] = 0;
@@ -173,6 +181,11 @@ node_stream_reader(int fd, void *void_node, int context)
 #endif
 
         ret = writev(nodes[i]->fd, iov, 2);
+
+        if (ret < 0) {
+            debugf(DBG_WARN, "writev() failed, fd %d, ret=%d, size=%d\n", nodes[i]->fd, ret, size);
+            perror("writev");
+        }
 
         debugf(DBG_LOW, "send to fd %d, ret=%d\n", nodes[i]->fd, ret);
     }

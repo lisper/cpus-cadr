@@ -203,6 +203,8 @@ decode_chaos(char *buffer, int len)
                ph->ph_saddr.ch_addr, ph->ph_saddr.ch_subnet, ph->ph_saddr.ch_host,
                ph->ph_sidx.ci_tidx, ph->ph_sidx.ci_uniq);
     }
+
+    fflush(stdout);
 }
 
 int
@@ -210,8 +212,6 @@ read_chaos(void)
 {
     int ret, len;
     u_char lenbytes[4];
-    u_short *p = (u_short *)buffer;
-    u_short op, count, da, di, sa, si, pn, ack;
 
     ret = read(fd, lenbytes, 4);
     if (ret <= 0) {
@@ -225,38 +225,6 @@ read_chaos(void)
         return -1;
 
     decode_chaos(buffer, len);
-
-#if 0
-    /*
-     */
-    op = p[0];
-    count = p[1];
-    da = p[2];
-    di = p[3];
-    sa = p[4];
-    si = p[5];
-    pn = p[6];
-    ack = p[7];
-
-    if (1) {
-        time_t t;
-        struct tm *tm;
-        t = time(NULL);
-        tm = localtime(&t);
-        printf("%02d:%02d:%02d ",
-               tm->tm_hour, tm->tm_min, tm->tm_sec);
-    }
-
-    printf("op %04x cnt %04x dst %04x %04x; src %04x %04x pn %04x ack %04x\n",
-           op, count, da, di, sa, si, pn, ack);
-    printf(" %02x %02x %02x %02x %02x %02x %02x %02x\n",
-	   buffer[16], buffer[17], buffer[18], buffer[19], 
-	   buffer[20], buffer[21], buffer[22], buffer[23]);
-
-    printf(" %c%c%c%c%c%c%c%c\n",
-	   buffer[16], buffer[17], buffer[18], buffer[19], 
-	   buffer[20], buffer[21], buffer[22], buffer[23]);
-#endif
 
     return 0;
 }

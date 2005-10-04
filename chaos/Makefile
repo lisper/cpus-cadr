@@ -4,7 +4,7 @@
 
 CHAOSD_OBJ = chaosd.o transport.o node.o log.o signal.o
 
-SERVER_OBJ = server.o chaos.o ncp.o rfc.o testpackets.o
+SERVER_OBJ = server.o chaos.o ncp.o rfc.o testpackets.o log.o signal.o
 
 CFLAGS = -g
 

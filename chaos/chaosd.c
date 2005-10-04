@@ -309,7 +309,7 @@ void
 usage(void)
 {
     fprintf(stderr, "chaos lan emulator v%d.%d\n",
-            SERVER_VERSION / 100, SERVER_VERSION % 100);
+            CHAOSD_SERVER_VERSION / 100, CHAOSD_SERVER_VERSION % 100);
 
     fprintf(stderr, "usage:\n");
     fprintf(stderr, "-s        run as a background daemon\n");

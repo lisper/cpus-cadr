@@ -629,7 +629,7 @@ char **argv;
 	static char ebuf[BUFSIZ];
 
 	ftime(&timeinfo);
-#if 1
+#if 0
 #else
 #ifndef SYSLOG
 	(void)close(2);
@@ -732,7 +732,7 @@ syslog(LOG_INFO, "FILE: read\n");
 		memcpy((char *)&p, pkt, sizeof(pkt));
 		length = sizeof(pkt);
 #endif
-		dumpbuffer((char *)&p, length);
+		if (0) dumpbuffer((char *)&p, length);
 
 #ifndef SELECT
 		xcheck();
@@ -4447,9 +4447,9 @@ register struct xfer *x;
 
 	if (write(x->x_fh->f_fd, &op, 1) != 1)
 		return -1;
-#ifdef LOG_VERBOSE
+//#ifdef LOG_VERBOSE
 	syslog(LOG_INFO, "FILE: wrote EOF to net\n");
-#endif
+//#endif
 	return 0;
 }
 

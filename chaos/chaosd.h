@@ -2,7 +2,7 @@
  * $Id$
  */
 
-#define SERVER_VERSION 100
+#define CHAOSD_SERVER_VERSION 003
 
 #define UNIX_SOCKET_PATH	"/var/tmp/"
 #define UNIX_SOCKET_CLIENT_NAME	"chaosd_"

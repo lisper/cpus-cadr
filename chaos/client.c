@@ -78,7 +78,7 @@ connect_to_server(void)
 }
 
 void
-send_chaos(void)
+send_chaos(int n)
 {
     u_short b[64];
     u_char lenbytes[4], data[64];
@@ -93,7 +93,7 @@ send_chaos(void)
     b[4] = 0402;
     b[5] = 0;
     b[6] = 0;
-    b[7] = 0;
+    b[7] = n;
 
     strcpy(data, "TIME");
 
@@ -122,12 +122,19 @@ send_chaos(void)
 main()
 {
   int waiting;
+  int n = 0;
 
   if (connect_to_server()) {
     exit(1);
   }
 
-  send_chaos();
+  while (1) {
+      int i;
+      for (i = 0; i < 5; i++) {
+          send_chaos(n++);
+      }
+      sleep(1);
+  }
 
   exit(0);
 }

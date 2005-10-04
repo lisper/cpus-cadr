@@ -236,7 +236,7 @@ unsigned char pkt17[] = {
 void
 send_testpackets(void)
 {
-#define P(n)	ch_rcv_pkt_buffer(n, sizeof(n)); sleep(1); poll_chaos(); sleep(1); poll_chaos(); sleep(1); poll_chaos();
+#define P(n)	ch_rcv_pkt_buffer(n, sizeof(n)); sleep(1); chaos_poll(); sleep(1); chaos_poll(); sleep(1); chaos_poll();
 
 #if 0
     P(pkt2);

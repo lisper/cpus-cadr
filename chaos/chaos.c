@@ -13,6 +13,7 @@
 #include "chaos.h"
 #include "ncp.h"
 #include "server.h"
+#include "log.h"
 
 struct chroute chaos_routetab[256];
 struct connection *chaos_conntab[256];
@@ -82,7 +83,7 @@ ch_alloc_pkt(int data_size)
 	struct packet *pkt;
 	int alloc_size = sizeof(struct packet) + data_size;
 
-	printf("ch_alloc_pkt(size=%d)\n", data_size);
+	tracef(TRACE_LOW, "ch_alloc_pkt(size=%d)", data_size);
 
 	pkt = (struct packet *)malloc(alloc_size);
 	if (pkt == 0)
@@ -140,6 +141,8 @@ pktstr(struct packet *pkt, char *str, int len)
 	return(pkt);
 }
 
+static int uniq;
+
 /*
  * Allocate a connection and return it, also allocating a slot in Chconntab
  */
@@ -148,10 +151,10 @@ allconn(void)
 {
 	struct connection *conn;
 	struct connection **cptr;
-	static int uniq;
+//	static int uniq;
 
 	if ((conn = (struct connection *)malloc(sizeof(struct connection))) == NOCONN) {
-		printf("allconn: alloc failed (connection)\n");
+		debugf(DBG_WARN, "allconn: alloc failed (connection)");
 		chaos_error = CHNOPKT;
 		return(NOCONN);
 	}
@@ -164,13 +167,14 @@ allconn(void)
 		if (++uniq == 0)
 			uniq = 1;
 		conn->cn_luniq = uniq;
-		printf("allconn: alloc #%x\n", conn->cn_lidx);
+		debugf(DBG_LOW, "allconn: alloc #%x", conn->cn_lidx);
 		return(conn);
 	}
 
 	free((char *)conn);
 	chaos_error = CHNOCONN;
-	printf("allconn: alloc failed (table)\n");
+	debugf(DBG_WARN, "allconn: alloc failed (table)");
+
 	return(NOCONN);
 }
 
@@ -184,7 +188,7 @@ clsconn(struct connection *conn, int state, struct packet *pkt)
 	freelist(conn->cn_thead);
 	conn->cn_thead = conn->cn_ttail = NOPKT;
 	conn->cn_state = state;
-	printf("clsconn: Conn #%x: CLOSED: state: %d\n",
+	debugf(DBG_LOW, "clsconn: Conn #%x: CLOSED: state: %d",
 	       conn->cn_lidx, state);
 	if (pkt != NOPKT) {
 		pkt->pk_next = NOPKT;
@@ -210,14 +214,14 @@ rlsconn(struct connection *conn)
 	freelist(conn->cn_rhead);
 	freelist(conn->cn_thead);
 
-	printf("rlsconn: release #%x\n", conn->cn_lidx);
+	debugf(DBG_LOW, "rlsconn: release #%x", conn->cn_lidx);
 	free((char *)conn);
 }
 
 void
 prpkt(struct packet *pkt, char *str)
 {
-	printf("op=%s(%o) len=%d fc=%d; dhost=%o didx=%x; shost=%o sidx=%x\npkn=%d ackn=%d\n",
+	debugf(DBG_LOW, "op=%s(%o) len=%d fc=%d; dhost=%o didx=%x; shost=%o sidx=%x\npkn=%d ackn=%d",
 		str, pkt->pk_op, pkt->pk_len, pkt->pk_fc, pkt->pk_dhost,
 		pkt->pk_didx, pkt->pk_shost, pkt->pk_sidx,
 		(unsigned)pkt->pk_pkn, (unsigned)pkt->pk_ackn);
@@ -269,7 +273,8 @@ receipt(struct connection *conn, unsigned short acknum, unsigned short recnum)
 	 */
 	if (cmp_gt(acknum, conn->cn_tacked))
 		if (cmp_gt(acknum, conn->cn_tlast))
-			printf("receipt: Invalid acknowledgment(%d,%d)\n",
+			debugf(DBG_WARN,
+			       "receipt: Invalid acknowledgment(%d,%d)",
 			       acknum, conn->cn_tlast);
 		else {
 			conn->cn_tacked = acknum;
@@ -354,7 +359,7 @@ chretran(struct connection *conn, int age)
 			opkt = &pkt->pk_next;
 
 	if (firstpkt != NOPKT) {
-		printf("chretran: Conn #%x: Rexmit (op:%d, pkn:%d)\n",
+		debugf(DBG_LOW, "chretran: Conn #%x: Rexmit (op:%d, pkn:%d)",
 		       conn->cn_lidx, firstpkt->pk_op,
 		       firstpkt->pk_pkn);
 		senddata(firstpkt);
@@ -370,7 +375,8 @@ sendtome(register struct packet *pkt)
 	struct packet *rpkt, *npkt;
 	static struct chxcvr fakexcvr;
 
-	printf("sendtome()\n");
+	tracef(TRACE_LOW, "sendtome()");
+
 	/*
 	 * Static structure is used to economize on stack space.
 	 * We are careful to use it very locally so that recursion still
@@ -436,9 +442,9 @@ sendctl(struct packet *pkt)
 	struct chroute *r;
 
 	if (1) {
-		printf("chaos: Sending: %d ", pkt->pk_op);
+		debugf(DBG_LOW, "chaos: Sending: %d ", pkt->pk_op);
 		prpkt(pkt, "ctl");
-		printf("\n");
+		debugf(DBG_LOW, "\n");
 	}
 	if (pkt->pk_daddr == chaos_myaddr)
 		sendtome(pkt);
@@ -471,20 +477,20 @@ senddata(struct packet *pkt)
 	struct chroute *r;
 
 	if (1) {
-		printf("Sending: %d ", pkt->pk_op);
+		debugf(DBG_LOW, "Sending: %d ", pkt->pk_op);
 		prpkt(pkt, "data");
-		printf("\n");
+		debugf(DBG_LOW, "\n");
 	}
 
 	if (pkt->pk_daddr == chaos_myaddr) {
-		printf("to me\n");
+		debugf(DBG_LOW, "to me");
 		sendtome(pkt);
         }
 	else if (pkt->pk_dsubnet >= CHNSUBNET ||
 	    (r = &chaos_routetab[pkt->pk_dsubnet])->rt_type == CHNOPATH ||
 	     r->rt_cost >= CHHCOST) {
 		struct packet *npkt;
-		printf("no path to 0%x\n", pkt->pk_daddr);
+		debugf(DBG_LOW, "no path to 0%x", pkt->pk_daddr);
 		do {
 			npkt = pkt->pk_next;
 			pkt->pk_next = NOPKT;
@@ -543,7 +549,7 @@ reflect(struct packet *pkt)
 void
 sendlos(struct packet *pkt, char *str, int len)
 {
-	printf("sendlos() %s\n", str);
+	debugf(DBG_INFO, "sendlos() %s", str);
 
 	if (pkt->pk_op == LOSOP || pkt->pk_op == CLSOP)
 		ch_free_pkt(pkt);
@@ -573,7 +579,8 @@ sendlos(struct packet *pkt, char *str, int len)
 void
 lsnmatch(struct packet *rfcpkt, struct connection *conn)
 {
-	printf("lsnmatch: Conn #%x: LISTEN matched \n", conn->cn_lidx);
+	debugf(DBG_INFO, "lsnmatch: Conn #%x: LISTEN matched", conn->cn_lidx);
+
 	/*
 	 * Initialize the conection
 	 */
@@ -626,7 +633,8 @@ concmp(struct packet *rfcpkt, char *lsnstr, int lsnlen)
 	char *rfcstr = rfcpkt->pk_cdata;
 	int rfclen;
 
-	printf("Rcvrfc: Comparing %s and %s\n", rfcstr, lsnstr);
+	debugf(DBG_LOW, "Rcvrfc: Comparing %s and %s", rfcstr, lsnstr);
+
 	for (rfclen = rfcpkt->pk_len; rfclen; rfclen--, lsnlen--)
 		if (lsnlen <= 0)
 			return ((*rfcstr == ' ') ? 1 : 0);
@@ -647,18 +655,19 @@ rcvrut(struct packet *pkt)
 
 	if (1) {
 		prpkt(pkt,"RUT");
-		printf("\n");
+		debugf(DBG_LOW, "\n");
 	}
 
 	rd = pkt->pk_rutdata;
 	if (pkt->pk_ssubnet >= CHNSUBNET)
-		printf("CHAOS: bad subnet %d in RUT pkt\n", pkt->pk_ssubnet);
+		debugf(DBG_LOW, "CHAOS: bad subnet %d in RUT pkt",
+		       pkt->pk_ssubnet);
 	else if (chaos_routetab[pkt->pk_ssubnet].rt_type != CHDIRECT)
-		printf("CHAOS: RUT pkt from unconnected subnet %d\n",
+		debugf(DBG_LOW, "CHAOS: RUT pkt from unconnected subnet %d",
 			pkt->pk_ssubnet);
 	else for (i = pkt->pk_len; i; i -= sizeof(struct rut_data), rd++) {
 		if (rd->pk_subnet >= CHNSUBNET) {
-			printf("CHAOS: bad subnet %d in RUT pkt\n",
+			debugf(DBG_LOW, "CHAOS: bad subnet %d in RUT pkt",
 			       rd->pk_subnet);
 			continue;
 		}
@@ -676,8 +685,9 @@ rcvrut(struct packet *pkt)
 		case CHFIXED:
 			break;
 		default:
-			printf("CHAOS: Illegal chaos routing table entry %d",
-				r->rt_type);
+			debugf(DBG_WARN,
+			       "CHAOS: Illegal chaos routing table entry %d",
+			       r->rt_type);
 		}
 	}
 	ch_free_pkt(pkt);
@@ -694,7 +704,7 @@ rcvrfc(struct packet *pkt)
 
 	if (1) {
 		prpkt(pkt,"RFC/BRD");
-		printf("contact = %s\n", pkt->pk_cdata);
+		debugf(DBG_LOW, "contact = %s", pkt->pk_cdata);
 	}
 
 	/*
@@ -707,12 +717,13 @@ rcvrfc(struct packet *pkt)
 		    conn->cn_faddr == pkt->pk_saddr)
 		{
 			if (conn->cn_state == CSOPEN) {
-				printf("rcvrfc: Retransmitting open chan #%x\n",
+				debugf(DBG_LOW,
+				       "rcvrfc: Retransmitting open chan #%x",
 				       conn->cn_lidx);
 				if (conn->cn_thead != NOPKT)
 					chretran(conn, CHSHORTTIME);
 			} else {
-				printf("rcvrfc: Duplicate RFC: %x\n",
+				debugf(DBG_LOW, "rcvrfc: Duplicate RFC: %x",
 				       conn->cn_lidx);
 			}
 			ch_free_pkt(pkt);
@@ -780,7 +791,8 @@ rcvrfc(struct packet *pkt)
 		do {
 			if (pktl->pk_sidx == pkt->pk_sidx &&
 			    pktl->pk_saddr == pkt->pk_saddr) {
-				printf("rcvrfc: Discarding duplicate Rfc on Chrfclist\n");
+				debugf(DBG_LOW,
+				       "rcvrfc: Discarding duplicate Rfc on Chrfclist");
 				ch_free_pkt(pkt);
 				return;
 			}
@@ -789,7 +801,7 @@ rcvrfc(struct packet *pkt)
 		chaos_rfctail = pkt;
 	}
 
-	printf("rcvrfc: Queued Rfc on chaos_rfclist: '%c%c%c%c'\n",
+	debugf(DBG_INFO, "rcvrfc: Queued Rfc on chaos_rfclist: '%c%c%c%c'",
 		pkt->pk_cdata[0], pkt->pk_cdata[1], pkt->pk_cdata[2],
 		pkt->pk_cdata[3]);
 
@@ -822,11 +834,11 @@ rcvdata(struct connection *conn, struct packet *pkt)
 
 	if (1) {
 		prpkt(pkt,"DATA");
-		printf("\n");
+		debugf(DBG_LOW, "\n");
 	}
 
 	if (cmp_gt(pkt->pk_pkn, conn->cn_rread + conn->cn_rwsize)) {
-		printf("rcvdata: Discarding data out of window\n");
+		debugf(DBG_WARN, "rcvdata: Discarding data out of window");
 		ch_free_pkt(pkt);
 		return;
 	}
@@ -834,7 +846,7 @@ rcvdata(struct connection *conn, struct packet *pkt)
 	receipt(conn, pkt->pk_ackn, pkt->pk_ackn);
 
 	if (cmp_le(pkt->pk_pkn, conn->cn_rlast)) {
-		printf("rcvdata: Duplicate data packet\n");
+		debugf(DBG_WARN, "rcvdata: Duplicate data packet");
 		makests(conn, pkt);
 		reflect(pkt);
 		return;
@@ -867,7 +879,7 @@ rcvdata(struct connection *conn, struct packet *pkt)
 	 * If we queued up any in-order pkts, check if spontaneous STS is needed
 	 */
 	if (pkt != npkt) {
-		printf("rcvdata: new ordered data packet\n");
+		debugf(DBG_INFO, "rcvdata: new ordered data packet");
 		conn->cn_rtail->pk_next = NOPKT;
 		conn->cn_routorder = npkt;
 		if (conn->cn_rhead == pkt)
@@ -894,7 +906,8 @@ rcvdata(struct connection *conn, struct packet *pkt)
 			pkt->pk_next = npkt;	/* save the last pkt here */
 
 		if (npkt != NOPKT && pkt->pk_pkn == npkt->pk_pkn) {
-			printf("rcvdata: Duplicate out of order packet\n");
+			debugf(DBG_INFO,
+			       "rcvdata: Duplicate out of order packet");
 			pkt->pk_next = NOPKT;
 			makests(conn, pkt);
 			reflect(pkt);
@@ -906,7 +919,7 @@ rcvdata(struct connection *conn, struct packet *pkt)
 
 			pkt->pk_next = npkt;
 
-			printf("rcvdata: New out of order packet\n");
+			debugf(DBG_INFO, "rcvdata: New out of order packet");
 		}
 	}
 }
@@ -923,7 +936,8 @@ rcvpkt(struct chxcvr *xp)
 	struct connection *conn;
 	unsigned index;
 
-	printf("rcvpkt:\n");
+	tracef(TRACE_LOW, "rcvpkt:");
+
 	xp->xc_rcvd++;
 	pkt->pk_next = NOPKT;
 	if (xp->xc_addr) {
@@ -935,24 +949,26 @@ rcvpkt(struct chxcvr *xp)
 		r->rt_xcvr = xp;
 	}
 
-printf("rcvpkt: pkt->pk_daddr %o, chaos_myaddr %o, xp->xc_addr %o\n",
-       pkt->pk_daddr, chaos_myaddr, xp->xc_addr);
+	debugf(DBG_LOW,
+	       "rcvpkt: pkt->pk_daddr %o, chaos_myaddr %o, xp->xc_addr %o",
+	       pkt->pk_daddr, chaos_myaddr, xp->xc_addr);
 
 	if (pkt->pk_daddr != chaos_myaddr &&
 	    pkt->pk_daddr != xp->xc_addr &&
 	    pkt->pk_daddr != 0)
 		if ((++pkt->pk_fc) == 0) {
-			printf("rcvpkt: Overforwarded packet\n");
+			debugf(DBG_WARN, "rcvpkt: Overforwarded packet");
 ignore:
 			ch_free_pkt(pkt);
 		} else if (pkt->pk_saddr == chaos_myaddr ||
 			   pkt->pk_saddr == xp->xc_addr) {
-			printf("rcvpkt: Got my own packet back\n");
+			debugf(DBG_LOW, "rcvpkt: Got my own packet back");
 			ch_free_pkt(pkt);
 		} else if (chaos_myaddr == -1)
 			ch_free_pkt(pkt);
 		else {
-			printf("rcvpkt: Forwarding pkt daddr=%x\n", pkt->pk_daddr);
+			debugf(DBG_LOW, "rcvpkt: Forwarding pkt daddr=%x",
+			       pkt->pk_daddr);
 			sendctl(pkt);
 		}
 	else if (pkt->pk_op == RUTOP)
@@ -971,7 +987,7 @@ ignore:
 		 ((conn = chaos_conntab[index]) == NOCONN) ||
 		 conn->cn_lidx != pkt->pk_didx)
 	{
-		printf("rcvpkt: Packet with bad index: %x, op:%d\n",
+		debugf(DBG_WARN, "rcvpkt: Packet with bad index: %x, op:%d",
 		       pkt->pk_didx, pkt->pk_op);
 		send_los(pkt, "Connection doesn't exist");
 
@@ -981,7 +997,10 @@ ignore:
 	} else if (conn->cn_state == CSRFCSENT)
 		switch(pkt->pk_op) {
 		case OPNOP:
-			printf("rcvpkt: Conn #%x: OPEN received\n", conn->cn_lidx);
+			debugf(DBG_INFO,
+			       "rcvpkt: Conn #%x: OPEN received",
+			       conn->cn_lidx);
+
 			/*
 			 * Make the connection open, taking his index
 			 */
@@ -1006,11 +1025,15 @@ ignore:
 		case CLSOP:
 		case ANSOP:
 		case FWDOP:
-			printf("rcvpkt: Conn #%x: CLOSE/ANS received for RFC\n", conn->cn_lidx);
+			debugf(DBG_LOW,
+			       "rcvpkt: Conn #%x: CLOSE/ANS received for RFC",
+			       conn->cn_lidx);
 			clsconn(conn, CSCLOSED, pkt);
 			break;
 		default:
-			printf("rcvpkt: bad packet type for conn #%x in CSRFCSENT: %d\n",
+			debugf(DBG_LOW,
+			       "rcvpkt: bad packet type "
+			       "for conn #%x in CSRFCSENT: %d",
 			       conn->cn_lidx, pkt->pk_op);
 			send_los(pkt, "Bad packet type reponse to RFC");
 		}
@@ -1018,10 +1041,12 @@ ignore:
 	 * Process a packet for an open connection
 	 */
 	else if (conn->cn_state == CSOPEN) {
-printf("rcvpkt: conn #%x open\n", conn->cn_lidx);
+		debugf(DBG_LOW, "rcvpkt: conn #%x open", conn->cn_lidx);
 		conn->cn_active = chaos_clock;
 		if (ISDATOP(pkt)) {
-printf("rcvpkt: conn #%x open, giving it data\n", conn->cn_lidx);
+			debugf(DBG_LOW,
+			       "rcvpkt: conn #%x open, giving it data",
+			       conn->cn_lidx);
 			rcvdata(conn, pkt);
 		}
 		else switch (pkt->pk_op) {
@@ -1029,7 +1054,7 @@ printf("rcvpkt: conn #%x open, giving it data\n", conn->cn_lidx);
 			/*
 			 * Ignore duplicate opens.
 			 */
-			printf("rcvpkt: Duplicate open received\n");
+			debugf(DBG_LOW, "rcvpkt: Duplicate open received");
 			ch_free_pkt(pkt);
 			break;
 		case SNSOP:
@@ -1043,7 +1068,8 @@ printf("rcvpkt: conn #%x open, giving it data\n", conn->cn_lidx);
 			break;
 	    	case LOSOP:
 		case CLSOP:
-			printf("rcvpkt: Close rcvd on %x\n", conn->cn_lidx);
+			debugf(DBG_LOW,
+			       "rcvpkt: Close rcvd on %x", conn->cn_lidx);
 			clsconn(conn, pkt->pk_op == CLSOP ? CSCLOSED : CSLOST, pkt);
 			break;
 			/*
@@ -1060,7 +1086,7 @@ printf("rcvpkt: conn #%x open, giving it data\n", conn->cn_lidx);
 	    	case STSOP:
 #if 1
 			prpkt(pkt, "STS");
-			printf("Receipt=%d, Trans Window=%d\n",
+			debugf(DBG_LOW, "Receipt=%d, Trans Window=%d",
 			       (unsigned)pkt->pk_idata[0], pkt->pk_idata[1]);
 #endif
 			if (pkt->pk_rwsize > conn->cn_twsize)
@@ -1072,7 +1098,7 @@ printf("rcvpkt: conn #%x open, giving it data\n", conn->cn_lidx);
 				chretran(conn, CHSHORTTIME);
 			break;
 		default:
-			printf("rcvpkt: bad opcode:%d\n", pkt->pk_op);
+			debugf(DBG_LOW, "rcvpkt: bad opcode:%d", pkt->pk_op);
 			send_los(pkt, "Bad opcode");
 			/* should we do clsconn here? */
 		}
@@ -1080,14 +1106,16 @@ printf("rcvpkt: conn #%x open, giving it data\n", conn->cn_lidx);
 	 * Connection is neither waiting for an OPEN nor OPEN.
 	 */
 	} else {
-		printf("rcvpkt: Packet for conn #%x (not open) state=%d, op:%d\n",
+		debugf(DBG_LOW,
+		       "rcvpkt: Packet for conn #%x (not open) "
+		       "state=%d, op:%d",
 		       conn->cn_lidx, conn->cn_state, pkt->pk_op);
 		send_los(pkt, "Connection is closed");
 	}
 }
 
 
-/* --------------------------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------- */
 
 #define E2BIG	10
 #define ENOBUFS	11
@@ -1105,7 +1133,7 @@ chopen(struct chopen *c, int wflag,int *errnop)
 	int rwsize, length;
         struct chopen cho;
 
-        printf("chopen(wflag=%d)\n", wflag);
+        tracef(TRACE_LOW, "chopen(wflag=%d)", wflag);
 
 	length = c->co_clength + c->co_length + (c->co_length ? 1 : 0);
 	if (length > CHMAXPKT ||
@@ -1114,7 +1142,8 @@ chopen(struct chopen *c, int wflag,int *errnop)
 		return NOCONN;
 	}
 
-	printf("chopen: c->co_length %d, c->co_clength %d, length %d\n",
+	debugf(DBG_LOW,
+	       "chopen: c->co_length %d, c->co_clength %d, length %d",
 	       c->co_length, c->co_clength, length);
 
 	pkt = ch_alloc_pkt(length);
@@ -1134,15 +1163,18 @@ chopen(struct chopen *c, int wflag,int *errnop)
 	rwsize = c->co_rwsize ? c->co_rwsize : CHDRWSIZE;
 	pkt->pk_lenword = length;
 
-	conn = c->co_host ? ch_open(c->co_host, rwsize, pkt) : ch_listen(pkt, rwsize);
+	conn = c->co_host ?
+		ch_open(c->co_host, rwsize, pkt) :
+		ch_listen(pkt, rwsize);
+
 	if (conn == NOCONN) {
-		printf("chopen: NOCONN\n");
+		debugf(DBG_LOW, "chopen: NOCONN");
 		*errnop = -ENXIO;
 		return NOCONN;
 	}
 
-	printf("chopen: c->co_async %d\n", c->co_async);
-	printf("chopen: conn %p\n", conn);
+	debugf(DBG_LOW, "chopen: c->co_async %d", c->co_async);
+	debugf(DBG_LOW, "chopen: conn %p", conn);
 
 #if 0
 	if (!c->co_async) {
@@ -1170,7 +1202,9 @@ chopen(struct chopen *c, int wflag,int *errnop)
 		     (pkt = conn->cn_rhead) == NOPKT ||
 		     pkt->pk_op != ANSOP))
 		{
-			printf("chopen: open failed; cn_state %d\n", conn->cn_state);
+			debugf(DBG_LOW,
+			       "chopen: open failed; cn_state %d",
+			       conn->cn_state);
 			rlsconn(conn);
 			*errnop = -EIO;
 			return NOCONN;
@@ -1183,7 +1217,7 @@ chopen(struct chopen *c, int wflag,int *errnop)
 //	conn->cn_sflags |= CHRAW;
 
 	conn->cn_mode = CHSTREAM;
-        printf("chopen() done\n");
+        debugf(DBG_LOW, "chopen() done");
 
 	return conn;
 }
@@ -1220,6 +1254,12 @@ chaos_init(void)
 	intf.xc_addr = chaos_myaddr;
 
 	chaos_routetab[1].rt_type = 0;
+
+#if 1
+	/* pick random uniq so a restarted server doesn't reuse old ids */
+	srand(time(0L));
+	uniq = rand();
+#endif
 
 	return 0;
 }

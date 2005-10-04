@@ -7,6 +7,7 @@
 #include "chaos.h"
 #include "server.h"
 #include "ncp.h"
+#include "log.h"
 
 extern int chaos_myaddr;
 extern int chaos_clock;
@@ -35,7 +36,7 @@ setpkt(struct connection *conn, struct packet *pkt)
 	pkt->pk_fc = 0;
 }
 
-/* --------------------------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------ */
 
 /*
  * Send a new data packet on a connection.
@@ -44,7 +45,7 @@ setpkt(struct connection *conn, struct packet *pkt)
 int
 ch_write(struct connection *conn, struct packet *pkt)
 {
-	printf("ch_write(pkt=%x)\n", pkt);
+	tracef(TRACE_MED, "ch_write(pkt=%x)\n", pkt);
 
 	switch (pkt->pk_op) {
 	case ANSOP:
@@ -77,11 +78,11 @@ ch_write(struct connection *conn, struct packet *pkt)
 	setpkt(conn, pkt);
 	pkt->pk_pkn = ++conn->cn_tlast;
 	senddata(pkt);
-	printf("ch_write: done\n");
+	debugf(DBG_LOW, "ch_write: done");
 	return 0;
 err:
 	ch_free_pkt(pkt);
-	printf("ch_write: error\n");
+	debugf(DBG_LOW, "ch_write: error");
 	return CHERROR;
 }
 
@@ -94,7 +95,7 @@ ch_read(struct connection *conn)
 {
 	struct packet *pkt;
 
-        printf("ch_read:\n");
+        tracef(TRACE_MED, "ch_read:\n");
 	if ((pkt = conn->cn_rhead) == NOPKT)
 		return;
 	conn->cn_rhead = pkt->pk_next;
@@ -105,7 +106,8 @@ ch_read(struct connection *conn)
 		if (pkt->pk_op == EOFOP ||
 		    3 * (short)(conn->cn_rread - conn->cn_racked) > conn->cn_rwsize) {
 
-			printf("ch_read: Conn#%x: rread=%d rackd=%d rsts=%d\n",
+			debugf(DBG_LOW,
+                               "ch_read: Conn#%x: rread=%d rackd=%d rsts=%d\n",
 			       conn->cn_lidx, conn->cn_rread,
 			       conn->cn_racked, conn->cn_rsts);
 
@@ -130,7 +132,7 @@ ch_open(int destaddr, int rwsize, struct packet *pkt)
 {
 	struct connection *conn;
 
-	printf("ch_open:\n");
+	tracef(TRACE_MED, "ch_open:\n");
 
 	if ((conn = allconn()) == NOCONN) {
 		ch_free_pkt(pkt);
@@ -154,7 +156,7 @@ ch_open(int destaddr, int rwsize, struct packet *pkt)
 	pkt->pk_fc = 0;
 	pkt->pk_ackn = 0;
 
-	printf("ch_open: Conn #%x: RFCS state\n", conn->cn_lidx);
+	debugf(DBG_LOW, "ch_open: Conn #%x: RFCS state\n", conn->cn_lidx);
 
 	/*
 	 * By making the RFC packet written like a data packet,
@@ -167,7 +169,7 @@ ch_open(int destaddr, int rwsize, struct packet *pkt)
 
 	ch_write(conn, pkt);	/* No errors possible */
 
-	printf("ch_open: done\n");
+	debugf(DBG_LOW, "ch_open: done\n");
 	return(conn);
 }
 
@@ -182,7 +184,8 @@ ch_listen(struct packet *pkt, int rwsize)
 	struct connection *conn;
 	struct packet *pktl, *opkt;
 
-        printf("ch_listen()\n");
+        tracef(TRACE_MED, "ch_listen()");
+
 	if ((conn = allconn()) == NOCONN) {
 		ch_free_pkt(pkt);
 		return(NOCONN);
@@ -217,7 +220,7 @@ ch_listen(struct packet *pkt, int rwsize)
 	 */
 	pkt->pk_next = chaos_lsnlist;
 	chaos_lsnlist = pkt;
-	printf("ch_listne: Conn #%x: LISTEN state\n", conn->cn_lidx);
+	debugf(DBG_LOW, "ch_listen: Conn #%x: LISTEN state\n", conn->cn_lidx);
 
 	return(conn);
 }
@@ -230,7 +233,8 @@ ch_accept(struct connection *conn)
 {
 	struct packet *pkt = ch_alloc_pkt(sizeof(struct sts_data));
 
-	printf("ch_accept: state %o, want %o\n", conn->cn_state, CSRFCRCVD);
+	tracef(TRACE_MED, "ch_accept: state %o, want %o\n",
+               conn->cn_state, CSRFCRCVD);
 
 	if (conn->cn_state != CSRFCRCVD)
 		ch_free_pkt(pkt);
@@ -244,7 +248,10 @@ ch_accept(struct connection *conn)
 		pkt->pk_len = sizeof(struct sts_data);
 		pkt->pk_receipt = conn->cn_rlast;
 		pkt->pk_rwsize = conn->cn_rwsize;
-		printf("ch_accept: Conn #%o: open sent\n", conn->cn_lidx);
+
+		debugf(DBG_LOW, "ch_accept: Conn #%o: open sent\n",
+                       conn->cn_lidx);
+
 		ch_write(conn, pkt);
 	}
 }
@@ -255,7 +262,7 @@ ch_accept(struct connection *conn)
 void
 ch_close(struct connection *conn, struct packet *pkt, int release)
 {
-        printf("ch_close()\n");
+        tracef(TRACE_MED, "ch_close()\n");
 
 	switch (conn->cn_state) {
 	    case CSOPEN:

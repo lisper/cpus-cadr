@@ -70,12 +70,14 @@ fd_add(int fd)
     debugf(DBG_LOW, "fd_add(fd=%d) index %d\n", fd, i);
 
 #if 1
+    if (flag_debug_level > 5)
     {
         int i;
         for (i = 0; i < MAX_SERVER_FDS; i++) {
             if (fd_list[i].fd == 0)
                 continue;
-            printf("fd [%d] = %d, shutdown %d\n", i, fd_list[i].fd, fd_list[i].shutdown);
+            debugf(DBG_LOW, "fd [%d] = %d, shutdown %d\n",
+                   i, fd_list[i].fd, fd_list[i].shutdown);
         }
     }
 #endif
