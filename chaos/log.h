@@ -18,6 +18,8 @@ enum {
 	TRACE_LOW
 };
 
+void log(int level, char *fmt, ...);
+
 
 /*
  * Local Variables:

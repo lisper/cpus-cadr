@@ -1,4 +1,6 @@
 /*
+ * listen.c
+ *
  * basic listening node for chaosd server
  * decodes protocol and prints out packets
  *
@@ -22,6 +24,9 @@
 #include "chaosd.h"
 
 int verbose;
+int show_contents;
+int relative_time;
+
 int fd;
 struct sockaddr_un unix_addr;
 u_char buffer[4096];
@@ -161,13 +166,46 @@ decode_chaos(char *buffer, int len)
     struct pkt_header *ph = (struct pkt_header *)buffer;
     time_t t;
     struct tm *tm;
+    struct timeval tv;
+    int ms;
 
 //    setcolor_green();
     setcolor_red();
 
-    t = time(NULL);
-    tm = localtime(&t);
-    printf("%02d:%02d:%02d ", tm->tm_hour, tm->tm_min, tm->tm_sec);
+    if (!relative_time) {
+#if 0
+        t = time(NULL);
+        ms = 0;
+#else
+        gettimeofday(&tv, NULL);
+        t = tv.tv_sec;
+        ms = tv.tv_usec / 1000;
+#endif
+
+        tm = localtime(&t);
+
+        printf("%02d:%02d:%02d.%03d ",
+               tm->tm_hour, tm->tm_min, tm->tm_sec, ms);
+    } else {
+        /* relative time */
+        static struct timeval tv_last;
+        struct timeval tv1, tv2;
+        gettimeofday(&tv1, NULL);
+        if (tv_last.tv_sec == 0) {
+            tv2.tv_sec = tv2.tv_usec = 0;
+        } else {
+            if (tv_last.tv_usec <= tv1.tv_usec) {
+                tv2.tv_usec = tv1.tv_usec - tv_last.tv_usec;
+                tv2.tv_sec = tv1.tv_sec - tv_last.tv_sec;
+            } else {
+                tv2.tv_usec = (tv1.tv_usec + 1 * 1000 * 1000)
+                    - tv_last.tv_usec;
+                tv2.tv_sec = (tv1.tv_sec - 1) - tv_last.tv_sec;
+            }
+        }
+        printf("%4d:%06d ", tv2.tv_sec, tv2.tv_usec);
+        tv_last = tv1;
+    }
 
     if (ph->ph_op > 0 && ph->ph_op <= BRDOP)
         printf("%s ", popcode_to_text(ph->ph_op));
@@ -190,7 +228,7 @@ decode_chaos(char *buffer, int len)
 
     setcolor_normal();
 
-    dump_contents(buffer, len);
+    if (show_contents) dump_contents(buffer, len);
 
     if (0) {
         printf("  opcode %04x %s\n", ph->ph_op, popcode_to_text(ph->ph_op));
@@ -229,20 +267,52 @@ read_chaos(void)
     return 0;
 }
 
-main()
+void
+usage(void)
 {
-  int waiting;
-
-  if (connect_to_server()) {
+    fprintf(stderr, "listen - display chaosnet traffic\n");
+    fprintf(stderr, "usage:\n");
+    fprintf(stderr, "-a         show absolute time\n");
+    fprintf(stderr, "-v         verbose mode\n");
+    fprintf(stderr, "-s         show packet contents\n");
     exit(1);
-  }
+}
 
-  while (1) {
-      if (read_chaos())
-          break;
-  }
+extern char *optarg;
 
-  exit(0);
+int
+main(int argc, char *argv[])
+{
+    int c, waiting;
+
+    relative_time = 1;
+
+    while ((c = getopt(argc, argv, "asv")) != -1) {
+        switch (c) {
+        case 'a':
+            relative_time = 0;
+            break;
+        case 's':
+            show_contents++;
+            break;
+        case 'v':
+            verbose++;
+            break;
+        default:
+            usage();
+        }
+    }
+
+    if (connect_to_server()) {
+        exit(1);
+    }
+
+    while (1) {
+        if (read_chaos())
+            break;
+    }
+
+    exit(0);
 }
 
 

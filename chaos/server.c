@@ -444,9 +444,14 @@ read_child_data(int conn_num)
 {
     struct packet *pkt;
     int ret;
+    void *conn;
     extern struct packet *ch_alloc_pkt(int size);
 
-    tracef(TRACE_MED, "read_child_data()");
+    tracef(TRACE_LOW, "read_child_data()");
+
+    /* blocking */
+    if (ch_full(child_conn[conn_num].conn))
+        return 0;
 
     pkt = ch_alloc_pkt(512);
 
@@ -732,7 +737,8 @@ chaos_poll(void)
         n++;
     }
 
-    timeout = 250;
+//    timeout = 250;
+    timeout = 10;
 
     ret = poll(ufds, n, timeout);
     if (ret < 0) {
@@ -806,6 +812,11 @@ daemonize(char *what)
     debugf(DBG_INFO, "%s", rcs_id);
 
     return 0;
+}
+
+void
+restart_child(void)
+{
 }
 
 void

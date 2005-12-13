@@ -19,6 +19,7 @@
 
 int got_sighup;
 int got_sigterm;
+int got_sigchld;
 
 void sighup_handler(int sig)
 {
@@ -33,6 +34,12 @@ void sigterm_handler(int sig)
 void sigpipe_handler(int sig)
 {
     printf("sigpipe!\n");
+}
+
+void sigchld_handler(int sig)
+{
+    printf("sigchld!\n");
+    got_sigchld++;
 }
 
 int
@@ -52,6 +59,10 @@ signal_init(void)
     new.sa_handler = sigpipe_handler;
     sigaction(SIGPIPE, &new, &old);
 
+    memset((char *)&new, 0, sizeof(new));
+    new.sa_handler = sigchld_handler;
+    sigaction(SIGCHLD, &new, &old);
+
     return 0;
 }
 
@@ -65,6 +76,11 @@ signal_poll(void)
     if (got_sigterm) {
         debugf(DBG_WARN, "got signal SIGTERM; shutting down\n");
         server_shutdown();
+    }
+
+    if (got_sigchld) {
+        debugf(DBG_WARN, "got signal SIGCHLD; child died\n");
+        restart_child();
     }
 }
 

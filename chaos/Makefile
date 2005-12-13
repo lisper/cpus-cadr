@@ -1,6 +1,7 @@
 #
 #
 # $Id$
+#
 
 CHAOSD_OBJ = chaosd.o transport.o node.o log.o signal.o
 

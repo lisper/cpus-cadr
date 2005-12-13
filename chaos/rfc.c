@@ -11,6 +11,7 @@
 #include "chaos.h"
 #include "ncp.h"
 #include "server.h"
+#include "log.h"
 
 extern struct chroute chaos_routetab[];
 extern char chaos_myname[];
@@ -31,6 +32,8 @@ statusrfc(struct packet *pkt)
 	int sidx = pkt->pk_sidx;
 	int daddr = pkt->pk_daddr;
 	
+	debugf(DBG_LOW, "statusrfc:");
+
 	ch_free_pkt(pkt);
 	for (i = 0, r = chaos_routetab; r < &chaos_routetab[CHNSUBNET]; r++)
 		if (r->rt_type == CHDIRECT)
@@ -60,6 +63,8 @@ statusrfc(struct packet *pkt)
 				sizeof(struct statxcvr));
 		}
 	}
+
+	debugf(DBG_LOW, "statusrfc: answering");
 
 	sendctl(pkt);
 }

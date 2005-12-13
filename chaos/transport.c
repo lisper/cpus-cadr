@@ -263,9 +263,11 @@ fd_poll(void)
 
     timeout = 1 * 1000;
 
+#if 0
     /* if debugging, don't timeout */
     if (!flag_daemon && flag_debug_level > DBG_INFO)
         timeout = -1;
+#endif
 
     debugf(DBG_LOW, "fd_count %d\n", fd_count);
 

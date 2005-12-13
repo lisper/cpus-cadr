@@ -9,6 +9,9 @@
  */
 
 #include <stdio.h>
+#include <fcntl.h>
+#include <signal.h>
+
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <sys/un.h>
@@ -25,6 +28,7 @@ static char rcs_id[] = "$Id$";
 int server_running;
 
 int flag_daemon;
+int flag_start_serverd;
 int flag_debug_level;
 int flag_trace_level;
 int flag_debug_time;
@@ -252,6 +256,55 @@ server_init(void)
 }
 
 int
+start_serverd(void)
+{
+    int r, i;
+
+    if ((r = fork()) > 0)
+        return 0;
+
+    /* child */
+
+    if (r == -1) {
+	fprintf(stderr,"unable to fork new process\n");
+	perror("fork");
+	exit(1);
+    }
+
+    for (i = 0; i < 256; i++) {
+        close(i);
+    }
+
+    /* repoen stdin, stdout, stderr as bit buckets */
+    open("/dev/null", O_RDONLY);
+    open("/dev/null", O_WRONLY);
+    open("/dev/null", O_WRONLY);
+
+    execl("./server", "server", 0);
+
+    fprintf(stderr,"exec of ./server failed\n");
+    
+    return 0;
+}
+
+void
+restart_child(void)
+{
+    fprintf(stderr, "restart_child\n");
+//    flag_start_serverd = 1;
+}
+
+void
+serverd_poll(void)
+{
+    if (flag_start_serverd) {
+        flag_start_serverd = 0;
+        debugf(DBG_LOW, "serverd_poll() starting serverd\n");
+        start_serverd();
+    }
+}
+
+int
 server(void)
 {
     /* init server machinery */
@@ -269,6 +322,7 @@ server(void)
         fd_poll();
         node_poll();
         signal_poll();
+        serverd_poll();
     }
 
     return 0;
@@ -312,6 +366,7 @@ usage(void)
             CHAOSD_SERVER_VERSION / 100, CHAOSD_SERVER_VERSION % 100);
 
     fprintf(stderr, "usage:\n");
+    fprintf(stderr, "-n        don't start chaos server\n");
     fprintf(stderr, "-s        run as a background daemon\n");
     fprintf(stderr, "-d        increment debug level\n");
     fprintf(stderr, "-t        increment trace level\n");
@@ -329,7 +384,9 @@ main(int argc, char *argv[])
 {
     int c;
 
-    while ((c = getopt(argc, argv, "sdD:tT:")) != -1) {
+    flag_start_serverd = 1;
+
+    while ((c = getopt(argc, argv, "sdD:ntT:")) != -1) {
         switch (c) {
         case 's':
             flag_daemon++;
@@ -339,6 +396,9 @@ main(int argc, char *argv[])
             break;
         case 't':
             flag_debug_time++;
+            break;
+        case 'n':
+            flag_start_serverd = 0;
             break;
         case 'D':
             flag_debug_level = atoi(optarg);

@@ -1,5 +1,11 @@
 /*
+ * chaosnet FILE protocol server
+ *
  * Adapted from MIT UNIX chaosnet code
+ *
+ * modified to be used from userland chaos server instead of via kernel
+ * chaos sockets.  a bit of a hack, but it does work.
+ *
  * 10/2004 brad@heeltoe.com
  */
 
@@ -27,6 +33,7 @@
  *      ifdef out cory's code of 4/29/85 for privileged hosts
  *	Conditional on PRIVHOSTS
  */
+
 #include <stdio.h>
 #include <ctype.h>
 #include <fcntl.h>
@@ -51,28 +58,38 @@
 #define _XOPEN_SOURCE
 #include <unistd.h>
 #include <stdlib.h>
-
+#include <stdarg.h>
 
 #include <errno.h>
 #include <pwd.h>
 #include <setjmp.h>
 #include <signal.h>
-//#include <sys/chaos.h>
 #include "chaos.h"
 #define DEFERROR
 #include "FILE.h"
 
-//#ifdef SYSLOG
-//#include <syslog.h>
-//#else
-#undef SYSLOG
 #define LOG_INFO	0
 #define LOG_ERR		1
-#define LOG_NOTICE	/* 7 */ 0
-/* VARARGS2 */
-//syslog(n,a,b,c,d,e) char *a;{if (n) fprintf(stderr,a,b,c,d,e);}
-syslog(n,a,b,c,d,e) char *a;{fprintf(stderr, a,b,c,d,e);fflush(stderr);}
-//#endif
+#define LOG_NOTICE      2
+
+int log_verbose = 0;
+int log_stderr_tofile = 0;
+
+void
+log(int level, char *fmt, ...)
+{
+	char string[512];
+	va_list ap;
+
+	if (log_stderr_tofile == 0) return;
+
+	va_start(ap, fmt);
+	vfprintf(stderr, fmt, ap);
+	va_end(ap);
+
+	fflush(stderr);
+}
+
 
 #define tell(fd)	lseek(fd, (off_t)0, SEEK_CUR)
 
@@ -629,23 +646,31 @@ char **argv;
 	static char ebuf[BUFSIZ];
 
 	ftime(&timeinfo);
-#if 0
-#else
-#ifndef SYSLOG
-	(void)close(2);
-	unlink("FILE.log");
-	(void)open("FILE.log", O_WRITE | O_CREAT, 0666);
-	(void)lseek(2, 0L, 2);
-	setbuf(stderr, ebuf);
-#endif
-#endif
 
-	fprintf(stderr,"FILE!\n"); fflush(stderr);
+	if (log_stderr_tofile) {
+		/* stderr */
+		char logfilename[256];
+		(void)close(2);
+#if 0
+		unlink("FILE.log");
+		strcpy(logfilename, "FILE.log");
+#else
+		sprintf(logfilename, "FILE.%d.log", getpid());
+#endif
+		(void)open(logfilename, O_WRITE | O_CREAT, 0666);
+		(void)lseek(2, 0L, 2);
+		setbuf(stderr, ebuf);
+
+		fprintf(stderr,"FILE!\n"); fflush(stderr);
+	} else {
+		(void)close(2);
+		(void)open("/dev/null", O_WRITE);
+	}
 
 	if (argc > 1)
 		protocol = atoi(argv[1]);
 	if (protocol > 1) {
-		syslog(LOG_ERR, "FILE: protocol I can't handle: %d\n",
+		log(LOG_ERR, "FILE: protocol I can't handle: %d\n",
 			protocol);
 		chreject(0, "Unknown FILE protocol version");
 		exit(1);
@@ -677,7 +702,7 @@ char **argv;
 			xcommand(t);
 		else
 			(*t->t_command->c_func)(t);
-	syslog(LOG_INFO, "FILE: exiting normally\n");
+	log(LOG_INFO, "FILE: exiting normally\n");
 	finish(0);
 }
 
@@ -725,7 +750,7 @@ getwork()
 #endif
 
 #if 1
-syslog(LOG_INFO, "FILE: read\n");
+		log(LOG_INFO, "FILE: read\n");
 		length = read(0, (char *)&p, sizeof(p));
 #else
 		/* debug  */
@@ -738,7 +763,7 @@ syslog(LOG_INFO, "FILE: read\n");
 		xcheck();
 #endif
 		if (length <= 0) {
-			syslog(LOG_INFO, "FILE: Ctl connection broken(%d,%d)\n",
+			log(LOG_INFO, "FILE: Ctl connection broken(%d,%d)\n",
 				length, errno);
 			tfree(t);
 			return (TNULL);
@@ -746,7 +771,7 @@ syslog(LOG_INFO, "FILE: read\n");
 
 		((char *)&p)[length] = '\0';
 #if 1
-		syslog(LOG_INFO, "FILE: pkt(%d):%.*s\n", p.cp_op&0377, length-1,
+		log(LOG_INFO, "FILE: pkt(%d):%.*s\n", p.cp_op&0377, length-1,
 			p.cp_data);
 #endif
 		switch(p.cp_op) {
@@ -755,7 +780,7 @@ syslog(LOG_INFO, "FILE: read\n");
 			return TNULL;
 		case CLSOP:
 		case LOSOP:
-			syslog(LOG_INFO, "FILE: Close pkt: '%s'\n", p.cp_data);
+			log(LOG_INFO, "FILE: Close pkt: '%s'\n", p.cp_data);
 			tfree(t);
 			return TNULL;
 		case RFCOP:
@@ -763,7 +788,7 @@ syslog(LOG_INFO, "FILE: read\n");
 		case DATOP:
 			break;
 		default:
-			syslog(LOG_ERR, "FILE: Bad op: 0%o\n", p.cp_op);
+			log(LOG_ERR, "FILE: Bad op: 0%o\n", p.cp_op);
 			tfree(t);
 			return TNULL;
 		}
@@ -803,7 +828,8 @@ syslog(LOG_INFO, "FILE: read\n");
 			errstring = "Null command name";
 			goto cmderr;
 		}
-syslog(LOG_INFO, "FILE: command %s\n", cname);
+
+		log(LOG_INFO, "FILE: command %s\n", cname);
 		for (c = commands; c->c_name; c++)
 			if (strcmp(cname, c->c_name) == 0)
 				break;
@@ -845,7 +871,7 @@ syslog(LOG_INFO, "FILE: command %s\n", cname);
 		if ((errcode = parseargs(cp, c, t)) == 0)
 			break;
 	cmderr:
-syslog(LOG_INFO, "FILE: %s\n", errstring);
+		log(LOG_INFO, "FILE: %s\n", errstring);
 		error(t, fhname, errcode);
 	}
 	return t;
@@ -971,7 +997,7 @@ register struct transaction *t;
 						break;
 				free(oname);
 				if (o->o_name == NOSTR) {
-					syslog(LOG_ERR, "FILE: UOO:'%s'\n",
+					log(LOG_ERR, "FILE: UOO:'%s'\n",
 						oname);
 					(void)sprintf(errstring = errbuf,
 						"Unknown open option: %s",
@@ -1187,9 +1213,9 @@ register struct cmdargs *a;
 fatal(s, a1, a2, a3)
 char *s;
 {
-	syslog(LOG_ERR, "Fatal error in chaos file server: ");
-	syslog(LOG_ERR, s, a1, a2, a3);
-	syslog(LOG_ERR, "\n");
+	log(LOG_ERR, "Fatal error in chaos file server: ");
+	log(LOG_ERR, s, a1, a2, a3);
+	log(LOG_ERR, "\n");
 	if (getpid() != mypid)
 		(void)kill(mypid, SIGTERM);
 
@@ -1236,7 +1262,7 @@ char *fh;
 		e->e_code, errtype ? errtype : E_COMMAND,
 		errstring ? errstring : e->e_string);
 #if 1
-	syslog(LOG_INFO, "FILE: %s\n", p.cp_data);
+	log(LOG_INFO, "FILE: error; %s\n", p.cp_data);
 #endif
 	errstring = NOSTR;
 	errtype = 0;
@@ -1259,9 +1285,9 @@ register struct file_handle *f;
 	op = SYNOP;
 	if (write(f->f_fd, &op, 1) != 1)
 		return -1;
-#ifdef LOG_VERBOSE
-	syslog(LOG_INFO, "FILE: wrote syncmark to net\n");
-#endif
+	if (log_verbose) {
+		log(LOG_INFO, "FILE: wrote syncmark to net\n");
+	}
 	return 0;
 }
 
@@ -1414,7 +1440,7 @@ register struct transaction *t;
 	char *name;
 	char response[CHMAXDATA];
 
-syslog(LOG_INFO, "FILE: login()\n");
+log(LOG_INFO, "FILE: login()\n");
 
 #ifdef PRIVHOSTS
 /* 4/29/85 Cory Myers
@@ -1434,13 +1460,13 @@ syslog(LOG_INFO, "FILE: login()\n");
 
 	a = t->t_args;
 	if ((name = a->a_strings[0]) == NOSTR) {
-		syslog(LOG_INFO, "FILE exiting due to logout\n");
+		log(LOG_INFO, "FILE exiting due to logout\n");
 		finish(0);
 	} else if (home != NOSTR) {
 		errstring = "You are already logged in.";
 		error(t, "", BUG);
 	} else if (*name == '\0' || (p = getpwnam(downcase(name))) == (struct passwd *)0) {
-syslog(LOG_INFO, "FILE: login() no user '%s'\n", name);
+log(LOG_INFO, "FILE: login() no user '%s'\n", name);
 		errstring = "Login incorrect.";
 		error(t, "", UNK);
 	} else if (p->pw_passwd == NOSTR || *p->pw_passwd == '\0') {
@@ -1453,15 +1479,15 @@ syslog(LOG_INFO, "FILE: login() no user '%s'\n", name);
 		   !privileged_host &&
 #endif
 		   (a->a_strings[1] == NOSTR || pwok(p, a->a_strings[1]) == 0)) {
-syslog(LOG_INFO, "FILE: %s %s failed", name, a->a_strings[1]);
-syslog(LOG_INFO, "p->pw_passwd %p, *p->pw_passwd %02x\n",
+log(LOG_INFO, "FILE: %s %s failed", name, a->a_strings[1]);
+log(LOG_INFO, "p->pw_passwd %p, *p->pw_passwd %02x\n",
        p->pw_passwd, p->pw_passwd ? *p->pw_passwd : 0);
 		error(t, "", IP);
 	} else if (p->pw_uid != 0 && access(NOLOGIN, F_OK) == 0) {
 		errstring = "All logins are disabled, system shutting down";
 		error(t, "", MSC);
 	} else {
-syslog(LOG_INFO, "FILE: login() pw ok\n");
+log(LOG_INFO, "FILE: login() pw ok\n");
 		home = savestr(p->pw_dir);
 		cwd = savestr(home);
 		umask(0);
@@ -1482,9 +1508,9 @@ syslog(LOG_INFO, "FILE: login() pw ok\n");
 			(void)write(ufd, (char *)&mylogin, sizeof(mylogin));
 			(void)close(ufd);
 		}
-syslog(LOG_INFO, "FILE: login() responding\n");
+log(LOG_INFO, "FILE: login() responding\n");
 		respond(t, response);
-		syslog(LOG_NOTICE, "FILE: logged in as %s from host %s\n",
+		log(LOG_NOTICE, "FILE: logged in as %s from host %s\n",
 		  p->pw_name, chaos_name(mylogin.cl_haddr));
 #if 0
 		{
@@ -1498,7 +1524,7 @@ syslog(LOG_INFO, "FILE: login() responding\n");
 		}
 #endif
 	}
-syslog(LOG_INFO, "FILE: login() done\n");
+log(LOG_INFO, "FILE: login() done\n");
 }
 /*
  * Generate the full name from the password file entry, according to
@@ -1582,7 +1608,7 @@ register struct transaction *t;
 	if (options & ~
 	    (O_RAW|O_READ|O_WRITE|O_PROBE|O_DEFAULT|O_PRESERVE|O_BINARY|O_CHARACTER|O_PROBEDIR)
 	    ) {
-		syslog(LOG_ERR, "FILE:UOO: 0%O\n", options);
+		log(LOG_ERR, "FILE:UOO: 0%O\n", options);
 		errcode = ICO;
 		goto openerr;
 	}
@@ -1665,7 +1691,7 @@ register struct transaction *t;
 		break;
 	case O_WRITE:
 		fd = 0;	/* Impossible value */
-syslog(0, "stat(%s)\n", realname);
+log(0, "stat(%s)\n", realname);
 		if (stat(realname, &sbuf) == 0) {
 			/*
 			 * The file exists.  Disallow writing directories.
@@ -1682,16 +1708,16 @@ syslog(0, "stat(%s)\n", realname);
 				break;
 			case O_XTRUNCATE:
 				fd = creat(realname, 0644);
-syslog(0, "creat(%s) fd %d\n", realname, fd);
+log(0, "creat(%s) fd %d\n", realname, fd);
 				break;
 			case O_XOVERWRITE:
 				fd = open(realname, 1);
-syslog(0, "open(%s) fd %d\n", realname, fd);
+log(0, "open(%s) fd %d\n", realname, fd);
 				break;
 			case O_XAPPEND:
 				if ((fd = open(realname, 1)) > 0)
 					lseek(fd, 0, 2);
-syslog(0, "open(%s) fd %d\n", realname, fd);
+log(0, "open(%s) fd %d\n", realname, fd);
 				break;
 			case O_XSUPERSEDE:
 			case O_XRENDEL:
@@ -1702,14 +1728,14 @@ syslog(0, "open(%s) fd %d\n", realname, fd);
 				break;
 			}
 		} else {
-syslog(0, "stat(%s) failed\n", realname);
+log(0, "stat(%s) failed\n", realname);
 			/*
 			 * The stat above failed. Make sure the file really doesn't
 			 * exist. Otherwise fall through to the error processing
 			 * below.
 			 */
-syslog(0, "errno %d, access() %d\n", errno, access(dirname, X_OK));
- syslog(0, "ifnexists %d, ifexists %d\n", ifnexists, ifexists);
+log(0, "errno %d, access() %d\n", errno, access(dirname, X_OK));
+ log(0, "ifnexists %d, ifexists %d\n", ifnexists, ifexists);
 
 			if (errno != ENOENT || access(dirname, X_OK) != 0)
 				fd = -1;
@@ -1722,12 +1748,12 @@ syslog(0, "errno %d, access() %d\n", errno, access(dirname, X_OK));
 				    ifexists == O_XOVERWRITE ||
 				    ifexists == O_XTRUNCATE) {
 					fd = creat(realname, 0644);
-syslog(0, "creat('%s') %d\n", realname, fd);
+log(0, "creat('%s') %d\n", realname, fd);
 				}
 				break;
 			}
 		}
-syslog(0, "errcode %d\n", errcode);
+log(0, "errcode %d\n", errcode);
 		if (errcode)
 			break;
 		if (fd == 0) {
@@ -1739,7 +1765,7 @@ syslog(0, "errcode %d\n", errcode);
 				fd = -1;
 			else
 				fd = creat(tempname, 0644);
-syslog(0, "create %s %d\n", tempname, fd);
+log(0, "create %s %d\n", tempname, fd);
 		}
 		/*
 		 * An error occurred either in stat, creat or open on the
@@ -1788,9 +1814,9 @@ syslog(0, "create %s %d\n", tempname, fd);
 			fatal(FSTAT);
 		break;
 	case O_READ:
-syslog(0, "open(%s) \n", realname, fd);
+log(0, "open(%s) \n", realname, fd);
 		if ((fd = open(realname, 0)) < 0) {
-syslog(0, "open error\n");
+log(0, "open error\n");
 			switch (errno) {
 			case EACCES:
 				if (access(dirname, X_OK) == 0) {
@@ -1873,7 +1899,7 @@ syslog(0, "open error\n");
 		x->x_state = X_PROCESS;
 		x->x_bytesize = bytesize;
 		x->x_fd = fd;
-syslog(0, "xfer %p fd %d\n", x, fd);
+log(0, "xfer %p fd %d\n", x, fd);
 		x->x_realname = realname;
 		x->x_dirname = dirname;
 		x->x_atime = sbuf.st_atime;
@@ -2072,7 +2098,7 @@ register struct transaction *t;
 	char *dirname, *realname;
 
 	if (a->a_options & ~(O_DELETED|O_FAST|O_SORTED)) {
-		syslog(LOG_ERR, "FILE:UOO: 0%o\n", a->a_options);
+		log(LOG_ERR, "FILE:UOO: 0%o\n", a->a_options);
 		errcode = ICO;
 	} else if (t->t_fh->f_xfer != XNULL) {
 		errstring = "File handle already in use";
@@ -2283,7 +2309,7 @@ register struct transaction *t;
 	register struct file_handle *f;
 	register struct xfer *x;
 
-	syslog(LOG_INFO, "FILE: transfer command: %s\n", t->t_command->c_name);
+	log(LOG_INFO, "FILE: transfer command: %s\n", t->t_command->c_name);
 	if ((f = t->t_fh) == FNULL || (x = f->f_xfer) == XNULL) {
 		errstring = "No transfer in progress on this file handle";
 		error(t, f->f_name, BUG);
@@ -2462,7 +2488,7 @@ struct xfer *ax;
 	}
 	if (errcode == 0) {
 		if (fstat(x->x_fd, &sbuf) < 0) {
-			syslog(LOG_ERR, "fd:%d, pid:%d, mypid:%d, errno:%d\n", x->x_fd,
+			log(LOG_ERR, "fd:%d, pid:%d, mypid:%d, errno:%d\n", x->x_fd,
 					getpid(), mypid, errno);
 			fatal("Fstat in xclose 1");
 		}
@@ -2505,7 +2531,7 @@ struct xfer *ax;
 		respond(t, response);
 	} else
 		error(t, x->x_fh->f_name, errcode);
-syslog(0, "close fd %d\n", x->x_fd);
+log(0, "close fd %d\n", x->x_fd);
 	(void)close(x->x_fd);
 }
 /*
@@ -2579,11 +2605,13 @@ register struct transaction *t;
 			respond(t, NOSTR);
 			if (syncmark(x->x_fh) < 0)
 				fatal("Broken data connection");
-#ifdef LOG_VERBOSE
-			syslog(LOG_INFO,
-			       "pid: %ld, x: %X, fd: %ld, size: %ld, old: %ld, new: %ld, pos: %ld\n",
-			       getpid(), x, x->x_fd, size, old, new, tell(x->x_fd));
-#endif
+			if (log_verbose) {
+				log(LOG_INFO,
+				    "pid: %ld, x: %X, fd: %ld, size: %ld, "
+				    "old: %ld, new: %ld, pos: %ld\n",
+				    getpid(), x, x->x_fd, size,
+				    old, new, tell(x->x_fd));
+			}
 		}
 	}
 }
@@ -2987,29 +3015,30 @@ register struct transaction *t;
 				itype = savestr(tp + 1);
 				*tp = '.';
 			}
-#ifdef LOG_VERBOSE
-		syslog(LOG_INFO, "ifile:'%s'\nireal:'%s'\nidir:'%s'\n",
-				ifile ? ifile : "!",
-				ireal ? ireal : "!",
-				idir ? idir : "!");
-		syslog(LOG_INFO, "dfile:'%s'\ndreal:'%s'\nddir:'%s'\n",
-				dfile ? dfile : "!",
-				dreal ? dreal : "!",
-				ddir ? ddir : "!");
-		syslog(LOG_INFO, "iname:'%s'\nitype:'%s'\n",
-				iname ? iname : "!",
-				itype ? itype : "!");
-		syslog(LOG_INFO, "dname:'%s'\ndtype:'%s'\n",
-				dname ? dname : "!",
-				dtype ? dtype : "!");
-		syslog(LOG_INFO, "adir:'%s'\n",
-				adir ? adir : "!");
-#endif
+		if (log_verbose) {
+			log(LOG_INFO, "ifile:'%s'\nireal:'%s'\nidir:'%s'\n",
+			    ifile ? ifile : "!",
+			    ireal ? ireal : "!",
+			    idir ? idir : "!");
+			log(LOG_INFO, "dfile:'%s'\ndreal:'%s'\nddir:'%s'\n",
+			    dfile ? dfile : "!",
+			    dreal ? dreal : "!",
+			    ddir ? ddir : "!");
+			log(LOG_INFO, "iname:'%s'\nitype:'%s'\n",
+			    iname ? iname : "!",
+			    itype ? itype : "!");
+			log(LOG_INFO, "dname:'%s'\ndtype:'%s'\n",
+			    dname ? dname : "!",
+			    dtype ? dtype : "!");
+			log(LOG_INFO, "adir:'%s'\n",
+			    adir ? adir : "!");
+		}
 #if !defined(BSD42) && !defined(linux)
 		if ((dfd = open(adir, 0)) < 0) {
 #else
 		if( (dfd = opendir(adir)) == NULL ) {
 #endif
+
 			switch(errno) {
 			case ENOENT:
 				errcode = DNF;
@@ -3034,9 +3063,11 @@ register struct transaction *t;
 			error(t, "", errcode);
 			goto freeall;
 		}
+
 		nstate = tstate = SNONE;
 #if !defined(BSD42) && !defined(linux)
-		while (read(dfd, (char *)&d.de, sizeof(d.de)) == sizeof(d.de)) { 
+		while (read(dfd, (char *)&d.de, sizeof(d.de)) == sizeof(d.de))
+		{ 
 			char *ename, *etype;
 			int namematch, typematch;
 
@@ -3051,6 +3082,11 @@ register struct transaction *t;
 			char *ename, *etype;
 			int namematch, typematch;
 
+			if (log_verbose) {
+				log(LOG_INFO, "top of readdir loop; '%s'\n",
+				    dirp->d_name);
+			}
+
 			if (dirp->d_ino == 0 ||
 			    (dirp->d_name[0] == '.' &&
 			     (dirp->d_name[1] == '\0' ||
@@ -3063,13 +3099,13 @@ register struct transaction *t;
 			if ((namematch = prefix(iname, ename)) == SNONE ||
 			    (typematch = prefix(itype, etype)) == SNONE)
 				continue;
-#ifdef LOG_VERBOSE
-			syslog(LOG_INFO, "ename:'%s'\netype:'%s'\n",
-				ename ? ename : "!",
-				etype ? etype : "!");
-			syslog(LOG_INFO, "nm:%d, tm:%d, ns:%d, ts:%d\n",
-				namematch, typematch, nstate, tstate);
-#endif
+			if (log_verbose) {
+				log(LOG_INFO, "ename:'%s' etype:'%s'\n",
+				    ename ? ename : "!",
+				    etype ? etype : "!");
+				log(LOG_INFO, "nm:%d, tm:%d, ns:%d, ts:%d\n",
+				    namematch, typematch, nstate, tstate);
+			}
 			if (namematch == SEXACT) {
 				if (typematch == SEXACT) {
 					nstate = tstate = SEXACT;
@@ -3105,7 +3141,7 @@ register struct transaction *t;
 				replace(aname, ename);
 				tstate = SEXACT;
 				nstate = SPREFIX;
-			} else if (dtype && strcmp(etype, dtype) == 0)
+			} else if (dtype && etype && strcmp(etype, dtype) == 0) {
 				if (tstate == SDEFAULT) {
 					incommon(aname, ename);
 					nstate = SMANY;
@@ -3114,7 +3150,7 @@ register struct transaction *t;
 					tstate = SDEFAULT;
 					nstate = SPREFIX;
 				}
-			else if (tstate != SDEFAULT)
+			} else if (tstate != SDEFAULT) {
 				if (nstate == SPREFIX) {
 					if (tstate != SDEFAULT) {
 						incommon(aname, ename);
@@ -3125,13 +3161,15 @@ register struct transaction *t;
 					tstate = SMANY;
 					incommon(atype, etype);
 				}
-#ifdef LOG_VERBOSE
-		syslog(LOG_INFO, "aname:'%s'\natype:'%s'\n",
-				aname ? aname : "!",
-				atype ? atype : "!");
-		syslog(LOG_INFO, "nstate: %d\n, tstate: %d\n", nstate, tstate);
-#endif
-		}	
+			}
+			if (log_verbose) {
+				log(LOG_INFO, "aname:'%s', atype:'%s'\n",
+				    aname ? aname : "!",
+				    atype ? atype : "!");
+				log(LOG_INFO, "nstate: %d, tstate: %d\n",
+				    nstate, tstate);
+			}
+		}
 gotit:
 #if !defined(BSD42) && !defined(linux)
 		(void)close(dfd);
@@ -3162,10 +3200,11 @@ gotit:
 		    stat(errbuf, &sbuf) == 0 &&
 		    (sbuf.st_mode & S_IFMT) == S_IFDIR)
 			strcat(errbuf, "/");
-		respond(t, sprintf(response, "%s%c%s%c",
+		sprintf(response, "%s%c%s%c",
 			nstate == SNONE || nstate == SMANY || tstate == SMANY ?
-				"NIL" : "OLD",
-			CHNL, errbuf, CHNL));
+			"NIL" : "OLD",
+			CHNL, errbuf, CHNL);
+		respond(t, response);
 	}
 freeall:
 	if (iname) free(iname);
@@ -4118,17 +4157,21 @@ register struct xfer *x;
 				long pos = tell(x->x_fd);
 				register int n;
 
-#ifdef LOG_VERBOSE
-				syslog(LOG_INFO, "Before read pos: %ld\n", tell(x->x_fd));
-#endif
+				if (log_verbose) {
+					log(LOG_INFO,
+					    "Before read pos: %ld\n",
+					    tell(x->x_fd));
+				}
 				n = x->x_options & O_DIRECTORY ? dirread(x) :
 					    x->x_options & O_PROPERTIES ? propread(x) :
 					    read(x->x_fd, x->x_bbuf, FSBSIZE);
 				
-#ifdef LOG_VERBOSE
-				syslog(LOG_INFO, "pid: %ld, x: %X, fd: %ld, Read: %ld\n",
-					getpid(), x, x->x_fd, n);
-#endif
+				if (log_verbose) {
+					log(LOG_INFO,
+					    "pid: %ld, x: %X, fd: %ld, "
+					    "Read: %ld\n",
+					    getpid(), x, x->x_fd, n);
+				}
 				switch (n) {
 				case 0:
 					if (xpwrite(x) < 0)
@@ -4201,7 +4244,7 @@ register struct xfer *x;
 		case X_ERROR:
 			return X_HANG;
 		case X_WSYNC:
-syslog(0, "X_WSYNC");
+log(0, "X_WSYNC");
 			switch (xpread(x)) {
 			case -1:
 				x->x_state = x->x_flags & X_CLOSE ?
@@ -4227,24 +4270,24 @@ syslog(0, "X_WSYNC");
 			{
 				register int n;
 				
-syslog(0, "X_PROCESS");
+log(0, "X_PROCESS");
 				switch (n = xpread(x)) {
 				case 0:
-syslog(0, "xpread 0\n");
+log(0, "xpread 0\n");
 					x->x_flags |= X_EOF;
 					if (xbwrite(x) < 0)
 						goto writerr;
 					x->x_state = X_WSYNC;
 					return X_CONTINUE;
 				case -1:
-syslog(0, "xpread -1\n");
+log(0, "xpread -1\n");
 					(void)fherror(x->x_fh, NET, E_FATAL,
 						"Data connection error");
 					x->x_state = x->x_flags & X_CLOSE ?
 						     X_DONE : X_BROKEN;
 					return X_CONTINUE;
 				case -2:
-syslog(0, "xpread -2\n");
+log(0, "xpread -2\n");
 					/*
 					 * SYNCMARK before EOF, don't bother
 					 * flushing disk buffer.
@@ -4253,7 +4296,7 @@ syslog(0, "xpread -2\n");
 						     X_DONE : X_RSYNC;
 					return X_CONTINUE;
 				default:
-syslog(0, "xpread default\n");
+log(0, "xpread default\n");
 					x->x_left = n;
 					x->x_pptr = x->x_pbuf;
 					break;
@@ -4302,7 +4345,7 @@ syslog(0, "xpread default\n");
 				from_lispm(x);
 				break;
 			}
-syslog(0, "x %p, x->x_room %d\n", x, x->x_room);
+log(0, "x %p, x->x_room %d\n", x, x->x_room);
 			if (x->x_room == 0)
 				if (xbwrite(x) >= 0) {
 					x->x_bptr = x->x_bbuf;
@@ -4322,7 +4365,7 @@ writerr:
 					}
 				}
 		}
-syslog(0, "X_CONTINUE\n");
+log(0, "X_CONTINUE\n");
 		return X_CONTINUE;
 	}
 	/* NOTREACHED */
@@ -4426,14 +4469,14 @@ register struct xfer *x;
 	if ((n = x->x_bptr - x->x_bbuf) == 0)
 		return 0;
 	if ((ret = write(x->x_fd, x->x_bbuf, n)) <= 0) {
-		syslog(LOG_ERR, "FILE: write error %d (%d) to file\n",
+		log(LOG_ERR, "FILE: write error %d (%d) to file\n",
 			ret, errno);
 		return -1;
 	}
-//#ifdef LOG_VERBOSE
-	syslog(LOG_INFO,"FILE: wrote %d bytes to file\n", ret);
-	syslog(LOG_INFO,"FILE: fd %d\n", x->x_fd);
-//#endif
+	if (log_verbose) {
+		log(LOG_INFO,"FILE: wrote %d bytes to file\n", ret);
+		log(LOG_INFO,"FILE: fd %d\n", x->x_fd);
+	}
 	return 0;
 }
 
@@ -4447,9 +4490,9 @@ register struct xfer *x;
 
 	if (write(x->x_fh->f_fd, &op, 1) != 1)
 		return -1;
-//#ifdef LOG_VERBOSE
-	syslog(LOG_INFO, "FILE: wrote EOF to net\n");
-//#endif
+	if (log_verbose) {
+		log(LOG_INFO, "FILE: wrote EOF to net\n");
+	}
 	return 0;
 }
 
@@ -4466,10 +4509,10 @@ register struct xfer *x;
 		return 0;
 	x->x_op = x->x_options & O_BINARY ? DWDOP : DATOP;
 	len++;
-//#ifdef LOG_VERBOSE
-	syslog(LOG_INFO, "FILE: writing (%d) %d bytes to net\n",
-		x->x_op & 0377, len);
-//#endif
+	if (log_verbose) {
+		log(LOG_INFO, "FILE: writing (%d) %d bytes to net\n",
+		    x->x_op & 0377, len);
+	}
 	if (write(x->x_fh->f_fd, (char *)&x->x_pkt, len) != len)
 		return -1;
 	return 0;
@@ -4486,10 +4529,10 @@ register struct xfer *x;
 
 loop:	
 	n = read(x->x_fh->f_fd, (char *)&x->x_pkt, sizeof(x->x_pkt));
-//#ifdef LOG_VERBOSE
-	syslog(LOG_INFO, "FILE: read (%d) %d bytes from net\n",
-		x->x_op & 0377, n);
-//#endif
+	if (log_verbose) {
+		log(LOG_INFO, "FILE: read (%d) %d bytes from net\n",
+		    x->x_op & 0377, n);
+	}
 	if (n < 0)
 		return -1;
 	if (n == 0)
@@ -4502,12 +4545,12 @@ loop:
 	case DATOP:
 	case DWDOP:
 		if (n == 1) {
-			syslog(LOG_ERR, "FILE: zero size data packet\n");
+			log(LOG_ERR, "FILE: zero size data packet\n");
 			goto loop;	/* Zero size data packet!? */
 		}
 		return n - 1;
 	default:
-		syslog(LOG_ERR, "FILE: bad opcode in data connection: %d\n",
+		log(LOG_ERR, "FILE: bad opcode in data connection: %d\n",
 			x->x_op & 0377);
 		fatal("Bad opcode on data connection");
 		/* NOTREACHED */
@@ -4586,10 +4629,10 @@ put on runq or something, set up which fd and why to wait....
 				(void)signal(SIGHUP, SIG_IGN);
 				rcvcmd(x);
 			}
-#ifdef LOG_VERBOSE
-			syslog(LOG_INFO, "Switch pos: %ld, status: %ld\n",
-			       tell(x->x_fd), x->x_state);
-#endif
+			if (log_verbose) {
+				log(LOG_INFO, "Switch pos: %ld, status: %ld\n",
+				    tell(x->x_fd), x->x_state);
+			}
 			switch (dowork(x)) {
 			case X_SYNCMARK:
 				syncmark(x->x_fh);	/* Ignore errors */
@@ -4601,10 +4644,10 @@ put on runq or something, set up which fd and why to wait....
 			case X_HANG:		/* Need more instructions */
 				(void)signal(SIGHUP, SIG_IGN);
 				rcvcmd(x);
-				syslog(LOG_INFO, "Hang pos: %ld\n", tell(x->x_fd));
+				log(LOG_INFO, "Hang pos: %ld\n", tell(x->x_fd));
 				continue;
 			}
-			syslog(LOG_INFO, "FILE: subproc exiting\n");
+			log(LOG_INFO, "FILE: subproc exiting\n");
 			exit(0);
 		}
 	}
@@ -4729,7 +4772,7 @@ register struct xfer *x;
 		if ((t->t_command->c_func == fileclose ||
 		     t->t_command->c_func == filepos) && x->x_options & O_READ)
 			(void)kill(x->x_pid, SIGHUP);
-		syslog(LOG_INFO, "FILE: send %s command\n", t->t_command->c_name);
+		log(LOG_INFO, "FILE: send %s command\n", t->t_command->c_name);
 		tfree(t);
 	}
 }
@@ -4767,7 +4810,7 @@ register struct xfer *x;
 		}
 	} else
 		t->t_args = ANULL;
-	syslog(LOG_INFO, "FILE: rcvd %s command\n", t->t_command->c_name);
+	log(LOG_INFO, "FILE: rcvd %s command\n", t->t_command->c_name);
 	(*t->t_command->c_func)(x, t);
 }
 
@@ -4782,7 +4825,7 @@ void interrupt(int arg)
 #if !defined(BSD42) && !defined(linux)
 	(void)signal(SIGHUP, interrupt);
 #endif
-	syslog(LOG_INFO, "Interrupt!\n");
+	log(LOG_INFO, "Interrupt!\n");
 	if (ioctl(myxfer->x_pfd, FIONREAD, (char *)&nread) < 0)
 		fatal("Failing FIONREAD");
 	if (nread != 0)

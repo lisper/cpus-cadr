@@ -36,6 +36,18 @@ setpkt(struct connection *conn, struct packet *pkt)
 	pkt->pk_fc = 0;
 }
 
+int
+ch_full(struct connection *conn)
+{
+    return chtfull(conn);
+}
+
+int
+ch_empty(struct connection *conn)
+{
+    return chtempty(conn);
+}
+
 /* ------------------------------------------------------------------------ */
 
 /*

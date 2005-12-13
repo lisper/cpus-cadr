@@ -221,7 +221,9 @@ rlsconn(struct connection *conn)
 void
 prpkt(struct packet *pkt, char *str)
 {
-	debugf(DBG_LOW, "op=%s(%o) len=%d fc=%d; dhost=%o didx=%x; shost=%o sidx=%x\npkn=%d ackn=%d",
+	debugf(DBG_INFO,
+	       "op=%s(%o) len=%d fc=%d; dhost=%o didx=%x; shost=%o sidx=%x\n"
+	       "         pkn=%d ackn=%d",
 		str, pkt->pk_op, pkt->pk_len, pkt->pk_fc, pkt->pk_dhost,
 		pkt->pk_didx, pkt->pk_shost, pkt->pk_sidx,
 		(unsigned)pkt->pk_pkn, (unsigned)pkt->pk_ackn);
@@ -446,13 +448,15 @@ sendctl(struct packet *pkt)
 		prpkt(pkt, "ctl");
 		debugf(DBG_LOW, "\n");
 	}
-	if (pkt->pk_daddr == chaos_myaddr)
+	if (pkt->pk_daddr == chaos_myaddr) {
+		debugf(DBG_LOW, "to me");
 		sendtome(pkt);
-	else if (pkt->pk_dsubnet >= CHNSUBNET ||
+	} else if (pkt->pk_dsubnet >= CHNSUBNET ||
 	    (r = &chaos_routetab[pkt->pk_dsubnet])->rt_type == CHNOPATH ||
-	     r->rt_cost >= CHHCOST)
+	     r->rt_cost >= CHHCOST) {
+		debugf(DBG_LOW, "chaos: Dropping, no route");
 		ch_free_pkt(pkt);
-	else {
+	} else {
 		if (r->rt_type == CHFIXED || r->rt_type == CHBRIDGE) {
 			pkt->pk_xdest = r->rt_addr;
 			r = &chaos_routetab[r->rt_subnet];
@@ -1086,7 +1090,9 @@ ignore:
 	    	case STSOP:
 #if 1
 			prpkt(pkt, "STS");
-			debugf(DBG_LOW, "Receipt=%d, Trans Window=%d",
+			debugf(DBG_INFO,
+			       "Conn #%x, Receipt=%d, Trans Window=%d",
+			       conn->cn_lidx,
 			       (unsigned)pkt->pk_idata[0], pkt->pk_idata[1]);
 #endif
 			if (pkt->pk_rwsize > conn->cn_twsize)
