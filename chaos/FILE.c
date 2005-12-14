@@ -45,7 +45,7 @@
 #include <time.h>
 #include <sys/dir.h>
 
-#include <sys/vfs.h>
+//#include <sys/vfs.h>
 #include <string.h>
 #define BSIZE 512
 #define SBLOCK 8
@@ -67,6 +67,11 @@
 #include "chaos.h"
 #define DEFERROR
 #include "FILE.h"
+
+#ifdef OSX
+#include <sys/param.h>
+#include <sys/mount.h>
+#endif
 
 #define LOG_INFO	0
 #define LOG_ERR		1
@@ -519,9 +524,11 @@ struct command
  * Property definitions for change-properties.
  */
 char	*getname(), *getdev(), *getprot(), *getblock(), *getspace(),
-	*getbyte(), *getbsize(), *getsize(), *getcdate(), *getmdate(),
+	*getbyte(), *getsize(), *getcdate(), *getmdate(),
 	*getrdate(), *getsprops(), *getdir();
 int 	putname(), putprot(), putmdate(), putrdate();
+
+static char *xgetbsize(struct stat *s, char *cp);
 
 #define P_GET		1
 #define P_DELAY		2
@@ -540,7 +547,7 @@ struct property {
 {	"DISK-SPACE-DESCRIPTION",	P_GLOBAL,	getspace,	0,		},
 {	"BLOCK-SIZE",			P_GLOBAL,	getblock,	0,		},
 {	"BYTE-SIZE",			P_GET,		getbyte,	0,		},
-{	"LENGTH-IN-BLOCKS",		P_GET,		getbsize,	0,		},
+{	"LENGTH-IN-BLOCKS",		P_GET,		xgetbsize,	0,		},
 {	"LENGTH-IN-BYTES",		P_GET,		getsize,	0,		},
 {	"CREATION-DATE",		P_GET,		getmdate,	putmdate,	},
 {	"MODIFICATION-DATE",		P_GET|P_DELAY,	getmdate,	putmdate,	},
@@ -757,7 +764,7 @@ getwork()
 		memcpy((char *)&p, pkt, sizeof(pkt));
 		length = sizeof(pkt);
 #endif
-		if (0) dumpbuffer((char *)&p, length);
+		if (0) dumpbuffer((u_char *)&p, length);
 
 #ifndef SELECT
 		xcheck();
@@ -1491,7 +1498,7 @@ log(LOG_INFO, "FILE: login() pw ok\n");
 		home = savestr(p->pw_dir);
 		cwd = savestr(home);
 		umask(0);
-#if defined(BSD42) || defined(linux)
+#if defined(BSD42) || defined(linux) || defined(OSX)
 		(void)initgroups(p->pw_name, p->pw_gid);
 #else /*!BSD42*/
 		(void)setgid(p->pw_gid);
@@ -2552,7 +2559,7 @@ register char *file;
 	if ((back = malloc((unsigned)(strlen(file) + 2))) == NOSTR)
 		fatal(NOMEM);
 	strcpy(back, file);
-#if !defined(BSD42) && !defined(linux)
+#if !defined(BSD42) && !defined(linux) && !defined(OSX)
 	if (end - name >= DIRSIZ - 1)
 		back[name - file + DIRSIZ - 1] = '\0';
 #endif
@@ -2938,7 +2945,7 @@ register struct transaction *t;
 {
 	register char *cp, *tp;
 	int errcode, nstate, tstate;
-#if !defined(BSD42) && !defined(linux)
+#if !defined(BSD42) && !defined(linux) && !defined(OSX)
 	int dfd;
 #else
 	DIR *dfd;
@@ -3033,7 +3040,7 @@ register struct transaction *t;
 			log(LOG_INFO, "adir:'%s'\n",
 			    adir ? adir : "!");
 		}
-#if !defined(BSD42) && !defined(linux)
+#if !defined(BSD42) && !defined(linux) && !defined(OSX)
 		if ((dfd = open(adir, 0)) < 0) {
 #else
 		if( (dfd = opendir(adir)) == NULL ) {
@@ -3065,7 +3072,7 @@ register struct transaction *t;
 		}
 
 		nstate = tstate = SNONE;
-#if !defined(BSD42) && !defined(linux)
+#if !defined(BSD42) && !defined(linux) && !defined(OSX)
 		while (read(dfd, (char *)&d.de, sizeof(d.de)) == sizeof(d.de))
 		{ 
 			char *ename, *etype;
@@ -3171,7 +3178,7 @@ register struct transaction *t;
 			}
 		}
 gotit:
-#if !defined(BSD42) && !defined(linux)
+#if !defined(BSD42) && !defined(linux) && !defined(OSX)
 		(void)close(dfd);
 #else
 		closedir(dfd);
@@ -3503,10 +3510,8 @@ char *cp;
 /*
  * We don't account for indirect blocks...
  */
-char *
-getbsize(s, cp)
-register struct stat *s;
-register char *cp;	
+static char *
+xgetbsize(struct stat *s, char *cp)
 {
 	(void)sprintf(cp, "%ld", (s->st_size + FSBSIZE - 1) / FSBSIZE);
 	while (*cp)
@@ -4822,7 +4827,7 @@ void interrupt(int arg)
 {
 	off_t nread;
 
-#if !defined(BSD42) && !defined(linux)
+#if !defined(BSD42) && !defined(linux) && !defined(OSX)
 	(void)signal(SIGHUP, interrupt);
 #endif
 	log(LOG_INFO, "Interrupt!\n");

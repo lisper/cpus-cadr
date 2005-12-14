@@ -2,17 +2,21 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <sys/param.h>
 #include <sys/stat.h>
 #include <sys/dir.h>
 #include <errno.h>
 #include <pwd.h>
-#ifdef linux
+
+#include "FILE.h"
+
+#if defined(linux) || defined(OSX)
 #include <dirent.h>
 #include <stdlib.h>
 #endif
 
-#include "FILE.h"
 #define QUOTE 0200
 #define TRIM 0177
 #define eq(a,b) (strcmp(a, b)==0)
@@ -28,7 +32,8 @@ int globerr;
 char *home;
 struct passwd *getpwnam();
 extern int errno;
-char *strspl(), **copyblk(), *strend(), **blkcpy();
+char **copyblk(), **blkcpy();
+static char *strend();
 /*char *malloc(), *strcpy(), *strcat(), *sprintf();*/
 
 static void ginit();
@@ -198,12 +203,12 @@ matchdir(pattern)
 	struct stat stb;
 	register int dirf;
 	register struct direct *dp;
-#if defined(BSD42) || defined(linux)
+#if defined(BSD42) || defined(linux) || defined(OSX)
 	DIR *dirp;
 
 	dirp = opendir(gpath);
 	if (dirp != NULL)
-#ifdef linux
+#if defined(linux) || defined(OSX)
 		dirf = dirfd(dirp);
 #else
 		dirf = ((struct DIR *)dirp)->dd_fd;
@@ -241,7 +246,7 @@ matchdir(pattern)
 		errstring = PATHNOTDIR;
 		return;
 	}
-#if defined(BSD42) || defined(linux)
+#if defined(BSD42) || defined(linux) || defined(OSX)
 	while ((dp = readdir(dirp)) != NULL)
 #else
 	while ((cnt = read(dirf, (char *)dirbuf, sizeof dirbuf)) >= sizeof dirbuf[0])
@@ -253,7 +258,7 @@ matchdir(pattern)
 		     dp->d_name[1] == '.' && dp->d_name[2] == '\0'))
 			continue;
 		else {
-#if defined(BSD42) || defined(linux)
+#if defined(BSD42) || defined(linux) || defined(OSX)
 			if (match(dp->d_name, pattern)) {
 				Gcat(gpath, dp->d_name);
 #else
@@ -268,7 +273,7 @@ matchdir(pattern)
 				goto out;
 		}
 out:
-#if defined(BSD42) || defined(linux)
+#if defined(BSD42) || defined(linux) || defined(OSX)
 	(void)closedir(dirp);
 #else
 	(void)close(dirf);

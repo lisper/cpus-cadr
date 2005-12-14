@@ -9,6 +9,8 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <fcntl.h>
 #include <signal.h>
 
@@ -130,7 +132,8 @@ server_accept(int listenfd, int *newfd)
 {
     struct sockaddr_un unix_addr;
     struct stat statbuf;
-    int len, fd;
+    socklen_t len;
+    int fd;
     char text[32];
     
     debugf(DBG_LOW, "server_accept()\n");

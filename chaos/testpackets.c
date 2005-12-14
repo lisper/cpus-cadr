@@ -4,6 +4,8 @@
  * test packets for server testing
  */
 
+#include <stdio.h>
+
 #if 0
 /*
 00000000 00 5a 00 00 00 05 44 00 01 01 44 36 04 01 34 12  .Z....D...D6..4.

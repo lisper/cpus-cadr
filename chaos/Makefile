@@ -30,4 +30,5 @@ FILE: FILE.c FILE.h glob.c chlib.c
 	$(CC) $(CFLAGS) -o FILE FILE.c glob.c chlib.c
 
 clean:
-	rm -f *.o chaosd listen server
+	rm -f *.o chaosd listen server FILE time client
+

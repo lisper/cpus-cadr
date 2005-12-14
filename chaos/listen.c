@@ -8,6 +8,8 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <time.h>
 
@@ -228,7 +230,7 @@ decode_chaos(char *buffer, int len)
 
     setcolor_normal();
 
-    if (show_contents) dump_contents(buffer, len);
+    if (show_contents) dump_contents((u_char *)buffer, len);
 
     if (0) {
         printf("  opcode %04x %s\n", ph->ph_op, popcode_to_text(ph->ph_op));
@@ -262,7 +264,7 @@ read_chaos(void)
     if (ret <= 0)
         return -1;
 
-    decode_chaos(buffer, len);
+    decode_chaos((char *)buffer, len);
 
     return 0;
 }

@@ -3,6 +3,8 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 #include <sys/types.h>
@@ -95,7 +97,7 @@ send_chaos(int n)
     b[6] = 0;
     b[7] = n;
 
-    strcpy(data, "TIME");
+    strcpy((char *)data, "TIME");
 
     plen = 20;
 

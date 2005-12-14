@@ -11,6 +11,8 @@
  */
 
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <syslog.h>
 
@@ -420,7 +422,7 @@ server_input(struct connection *conn)
         debugf(DBG_LOW, "server_input: pkt %d, data %d bytes\n",
                chlength, pkt->pk_phead.ph_len);
         if (flag_debug_level > 5) {
-            dumpbuffer(pkt->pk_cdata, pkt->pk_phead.ph_len);
+            dumpbuffer((u_char *)pkt->pk_cdata, pkt->pk_phead.ph_len);
         }
 
         if (conn_fd) {
@@ -463,7 +465,7 @@ read_child_data(int conn_num)
 
     debugf(DBG_INFO, "read_child: rcv data %d bytes", pkt->pk_phead.ph_len);
     if (flag_debug_level > 5) {
-        dumpbuffer(pkt->pk_cdata, pkt->pk_phead.ph_len);
+        dumpbuffer((u_char *)pkt->pk_cdata, pkt->pk_phead.ph_len);
     }
     
     ch_write(child_conn[conn_num].conn, pkt);
@@ -493,7 +495,7 @@ read_child_ctl(void)
 
     debugf(DBG_INFO, "read_child: ctl %d bytes\n", ret);
     if (flag_debug_level > 5) {
-        dumpbuffer(ctlbuf, ret);
+        dumpbuffer((u_char *)ctlbuf, ret);
     }
 
     req = ctlbuf[0];
