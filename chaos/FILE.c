@@ -45,7 +45,6 @@
 #include <time.h>
 #include <sys/dir.h>
 
-//#include <sys/vfs.h>
 #include <string.h>
 #define BSIZE 512
 #define SBLOCK 8
@@ -67,6 +66,10 @@
 #include "chaos.h"
 #define DEFERROR
 #include "FILE.h"
+
+#ifdef linux
+#include <sys/vfs.h>
+#endif
 
 #ifdef OSX
 #include <sys/param.h>
