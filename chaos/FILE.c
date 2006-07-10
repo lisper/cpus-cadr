@@ -3878,6 +3878,18 @@ int *ip;
 }
 		
 
+void
+jamlower(char *s)
+{
+  int i, l;
+
+  if (s == 0) return;
+  if (s[0] == 0) return;
+  l = strlen(s);
+  for (i = 0; i < l; i++)
+    s[i] = tolower(s[i]);
+}
+
 /*
  * Parse the pathname into directory and full name parts.
  * Returns text messages if anything is wrong.
@@ -3936,6 +3948,7 @@ int blankok;
 		return errcode;
 	}
 	*real = cp;
+jamlower(*real);
 	if ((cp = rindex(cp, '/')) == NOSTR)
 		fatal("Parsepath");
 	if (cp == *real)
@@ -3943,6 +3956,7 @@ int blankok;
 	save = *cp;
 	*cp = '\0';
 	*dir = savestr(*real);
+jamlower(*dir);
 	*cp = save;
 	return 0;
 }
