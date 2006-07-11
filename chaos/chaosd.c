@@ -105,7 +105,8 @@ server_listen(int *newfd)
     memset(&unix_addr, 0, sizeof(unix_addr));
     unix_addr.sun_family = AF_UNIX;
     strcpy(unix_addr.sun_path, name);
-    len = strlen(unix_addr.sun_path) + sizeof(unix_addr.sun_family);
+//    len = strlen(unix_addr.sun_path) + sizeof(unix_addr.sun_family);
+    len = strlen(unix_addr.sun_path) + sizeof unix_addr - sizeof unix_addr.sun_path;
 
     debugf(DBG_INFO, "bind to node %s\n", name);
 
@@ -144,7 +145,8 @@ server_accept(int listenfd, int *newfd)
         return -1;
     }
 
-    len -= sizeof(unix_addr.sun_family);
+//    len -= sizeof(unix_addr.sun_family);
+    len -= sizeof unix_addr - sizeof unix_addr.sun_path;
     unix_addr.sun_path[len] = 0;
 
     debugf(DBG_INFO, "server_accept() "

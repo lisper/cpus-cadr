@@ -128,7 +128,14 @@ node_stream_reader(int fd, void *void_node, int context)
 
     ret = read(fd, lenbytes, 4);
     if (ret <= 0) {
-        debugf(DBG_INFO | DBG_ERRNO, "read data error, ret %d\n", ret);
+        debugf(DBG_INFO | DBG_ERRNO, "read header error, ret %d\n", ret);
+        return -1;
+    }
+
+    if (ret != 4) {
+        debugf(DBG_INFO | DBG_ERRNO,
+               "length data error, ret %d != 4: %04X %04X %04X %04X\n",
+               ret, lenbytes[0], lenbytes[1], lenbytes[2], lenbytes[3]);
         return -1;
     }
 
@@ -141,8 +148,12 @@ node_stream_reader(int fd, void *void_node, int context)
     }
 
     if (ret != len) {
-        debugf(DBG_INFO | DBG_ERRNO, "length data error, ret %d\n", ret);
-        debugf(DBG_INFO | DBG_ERRNO, "len 0x%04x, ret 0x%04x\n", len, ret);
+        debugf(DBG_INFO | DBG_ERRNO,
+               "length data error, ret %d != len %d: "
+               "%04X %04X %04X %04X %04X %04X %04X ...\n",
+               ret, len,
+               lenbytes[0], lenbytes[1], lenbytes[2], lenbytes[3],
+               lenbytes[4], lenbytes[5], lenbytes[6]);
         return -1;
     }
 
@@ -151,7 +162,7 @@ node_stream_reader(int fd, void *void_node, int context)
     debugf(DBG_LOW, "node_stream_reader(fd=%d) node_count %d\n",
            fd, node_count);
 
-    op = *(u_short *)msg;
+    op = msg[0] | (msg[1] << 8);
 
     debugf(DBG_LOW,
            "op %04x data %02x%02x%02x%02x%02x%02x%02x%02x\n",

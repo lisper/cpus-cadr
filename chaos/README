@@ -53,7 +53,7 @@ Once the CADR is running type this
 
 Note this command will take a little while to complete.
 
-Then get into zwie (emacs) with F2-e and type ^X^F (find file) and
+Then get into zwei (emacs) with F2-e and type ^X^F (find file) and
 then type "server:/path/to/a/text/file".  The file will appear in the
 emacs buffer.  Viola.  It's not fast but it works.
 

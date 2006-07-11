@@ -47,7 +47,8 @@ connect_to_server(void)
 	    UNIX_SOCKET_PATH, UNIX_SOCKET_CLIENT_NAME, getpid());
 
     unix_addr.sun_family = AF_UNIX;
-    len = strlen(unix_addr.sun_path) + sizeof(unix_addr.sun_family);
+//    len = strlen(unix_addr.sun_path) + sizeof(unix_addr.sun_family);
+    len = strlen(unix_addr.sun_path) + sizeof unix_addr - sizeof unix_addr.sun_path;
 
     unlink(unix_addr.sun_path);
 

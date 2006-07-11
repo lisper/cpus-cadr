@@ -125,7 +125,8 @@ connect_to_server(void)
 	    UNIX_SOCKET_PATH, UNIX_SOCKET_CLIENT_NAME, getpid());
 
     unix_addr.sun_family = AF_UNIX;
-    len = strlen(unix_addr.sun_path) + sizeof(unix_addr.sun_family);
+//    len = strlen(unix_addr.sun_path) + sizeof(unix_addr.sun_family);
+    len = strlen(unix_addr.sun_path) + sizeof unix_addr - sizeof unix_addr.sun_path;
 
     unlink(unix_addr.sun_path);
 
@@ -145,7 +146,8 @@ connect_to_server(void)
     sprintf(unix_addr.sun_path, "%s%s",
 	    UNIX_SOCKET_PATH, UNIX_SOCKET_SERVER_NAME);
     unix_addr.sun_family = AF_UNIX;
-    len = strlen(unix_addr.sun_path) + sizeof(unix_addr.sun_family);
+//    len = strlen(unix_addr.sun_path) + sizeof(unix_addr.sun_family);
+    len = strlen(unix_addr.sun_path) + sizeof unix_addr - sizeof unix_addr.sun_path;
 
     if (connect(fd, (struct sockaddr *)&unix_addr, len) < 0) {
       perror("connect(AF_UNIX)");
@@ -241,7 +243,7 @@ char *popcode_to_text(int pt)
     switch (pt) {
     case RFCOP: return "RFC";
     case OPNOP: return "OPN";
-    case CLSOP: return "OPN";
+    case CLSOP: return "CLS";
     case FWDOP: return "FWD";
     case ANSOP: return "ANS";
     case SNSOP: return "SNS";
