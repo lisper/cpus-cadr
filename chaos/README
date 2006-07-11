@@ -1,8 +1,18 @@
 CADR Chaosnet README
 brad@heeltoe.com
-12/13/05
+07/11/06
 
 Chaosnet simulator for CADR simulator
+
+Updates
+-------
+
+07/11/06 fixed FILE server to force everything to lower case
+         (still a bug in close - don't open multiple files)
+         some macos fixes, doesnt' work yet in big endian
+	 works well enough to support (si:recompile-world)
+
+12/13/05 original release
 
 What the heck is this?
 ----------------------
@@ -41,6 +51,20 @@ can watch the packet flow by running "listen".
 usim will automatically reconnect to the server if the server is
 killed or dies.  In theory you can start usim first.
 
+Quick Start
+-----------
+
+	run chaosd in one window
+	run usim in another
+	wait for the lispm to ask you for the date & time
+	type
+
+	  (si:set-sys-host "server" ':unix 404)
+	  (load "server://path-to-file//tv.lisp")
+	  (tv:set-tv-lines 640.)
+
+	This will change the screen to be 640 lines.
+
 What's the point?
 -----------------
 
@@ -57,8 +81,8 @@ Then get into zwei (emacs) with F2-e and type ^X^F (find file) and
 then type "server:/path/to/a/text/file".  The file will appear in the
 emacs buffer.  Viola.  It's not fast but it works.
 
-The evential goal is to set up a valid site file and recompile the source
-base.  One step at a time...
+At this point the system is stable enough that it can recompile the
+entire source tree.  I hope to make a cold load band soon.
 
 
 Chaosnet addressing
