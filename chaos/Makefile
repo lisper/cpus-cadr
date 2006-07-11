@@ -3,11 +3,32 @@
 # $Id$
 #
 
+#---------- figure out what we are runnign on ---------
+
+OS_NAME = $(shell uname)
+MACH_NAME = $(shell uname -m)
+
+ifeq ($(OS_NAME), Darwin)
+OS = OSX
+endif
+
+ifeq ($(OS_NAME), Linux)
+OS = LINUX
+endif
+
+#----------- code ------------
+
 CHAOSD_OBJ = chaosd.o transport.o node.o log.o signal.o
 
 SERVER_OBJ = server.o chaos.o ncp.o rfc.o testpackets.o log.o signal.o
 
 CFLAGS = -g -fno-builtin-log
+
+# if 64 bit
+ifeq ($(MACH_NAME), x86_64)
+CFLAGS += -m32
+endif
+
 
 all: chaosd listen server client time FILE
 
