@@ -521,16 +521,16 @@ read_child_ctl(void)
 
             chst.st_fhost = CH_ADDR_SHORT(conn->cn_faddr);
             chst.st_cnum = conn->cn_ltidx;
-            chst.st_rwsize = conn->cn_rwsize;
-            chst.st_twsize = conn->cn_twsize;
+            chst.st_rwsize = SHORT_TO_LE(conn->cn_rwsize);
+            chst.st_twsize = SHORT_TO_LE(conn->cn_twsize);
             chst.st_state = conn->cn_state;
             chst.st_cmode = conn->cn_mode;
-            chst.st_oroom = conn->cn_twsize -
-                (conn->cn_tlast - conn->cn_tacked);
+            chst.st_oroom = SHORT_TO_LE(conn->cn_twsize -
+                (conn->cn_tlast - conn->cn_tacked));
 
             if ((pkt = conn->cn_rhead) != NOPKT) {
                 chst.st_ptype = pkt->pk_op;
-                chst.st_plength = PH_LEN(pkt->pk_phead);
+                chst.st_plength = SHORT_TO_LE(PH_LEN(pkt->pk_phead));
             } else {
                 chst.st_ptype = 0;
                 chst.st_plength = 0;

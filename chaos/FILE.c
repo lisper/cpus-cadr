@@ -2558,22 +2558,14 @@ struct xfer *ax;
 #endif
 		if (protocol > 0)
 			(void)sprintf(response,
-#ifdef OSX
 				"%02d/%02d/%02d %02d:%02d:%02d %lld%c%s%c",
-#else
-				"%02d/%02d/%02d %02d:%02d:%02d %ld%c%s%c",
-#endif
 				tm->tm_mon+1, tm->tm_mday, tm->tm_year,
 				tm->tm_hour, tm->tm_min, tm->tm_sec,
 				sbuf.st_size, CHNL,
 				x->x_realname, CHNL);
 		else
 			(void)sprintf(response,
-#ifdef OSX
 				"%d %02d/%02d/%02d %02d:%02d:%02d %lld%c%s%c",
-#else
-				"%d %02d/%02d/%02d %02d:%02d:%02d %ld%c%s%c",
-#endif
 				-1, tm->tm_mon+1, tm->tm_mday,
 				tm->tm_year, tm->tm_hour, tm->tm_min,
 				tm->tm_sec, sbuf.st_size, CHNL,
@@ -3556,11 +3548,7 @@ char *cp;
 static char *
 xgetbsize(struct stat *s, char *cp)
 {
-#ifdef OSX
 	(void)sprintf(cp, "%lld", (s->st_size + FSBSIZE - 1) / FSBSIZE);
-#else
-	(void)sprintf(cp, "%ld", (s->st_size + FSBSIZE - 1) / FSBSIZE);
-#endif
 
 	while (*cp)
 		cp++;
@@ -3581,11 +3569,7 @@ getsize(s, cp)
 register struct stat *s;
 register char *cp;	
 {
-#ifdef OSX
 	(void)sprintf(cp, "%lld", s->st_size);
-#else
-	(void)sprintf(cp, "%ld", s->st_size);
-#endif
 	while (*cp)
 		cp++;
 	return cp;

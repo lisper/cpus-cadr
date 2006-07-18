@@ -136,7 +136,7 @@ main()
       for (i = 0; i < 5; i++) {
           send_chaos(n++);
       }
-      sleep(1);
+      sleep(5);
   }
 
   exit(0);

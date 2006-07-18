@@ -28,9 +28,13 @@
 #ifdef __BIG_ENDIAN__
 #define LE_TO_SHORT(s) (SWAP_SHORT(s))
 #define LE_TO_LONG(l) (SWAP_LONG(l))
+#define SHORT_TO_LE(s) (SWAP_SHORT(s))
+#define LONG_TO_LE(l) (SWAP_LONG(l))
 #elif defined(__LITTLE_ENDIAN__)
 #define LE_TO_SHORT(s) (s)
 #define LE_TO_LONG(l) (l)
+#define SHORT_TO_LE(s) (s)
+#define LONG_TO_LE(l) (l)
 #else
 #error "No _ENDIAN__ macro defined."
 #endif
