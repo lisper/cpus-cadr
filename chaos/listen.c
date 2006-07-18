@@ -55,8 +55,7 @@ connect_to_server(void)
 	    UNIX_SOCKET_PATH, UNIX_SOCKET_CLIENT_NAME, getpid());
 
     unix_addr.sun_family = AF_UNIX;
-//    len = strlen(unix_addr.sun_path) + sizeof(unix_addr.sun_family);
-    len = strlen(unix_addr.sun_path) + sizeof unix_addr - sizeof unix_addr.sun_path;
+    len = SUN_LEN(&unix_addr);
 
     unlink(unix_addr.sun_path);
 
@@ -70,14 +69,11 @@ connect_to_server(void)
       return -1;
     }
 
-//    sleep(1);
-        
     memset(&unix_addr, 0, sizeof(unix_addr));
     sprintf(unix_addr.sun_path, "%s%s",
 	    UNIX_SOCKET_PATH, UNIX_SOCKET_SERVER_NAME);
     unix_addr.sun_family = AF_UNIX;
-//    len = strlen(unix_addr.sun_path) + sizeof(unix_addr.sun_family);
-    len = strlen(unix_addr.sun_path) + sizeof unix_addr - sizeof unix_addr.sun_path;
+    len = SUN_LEN(&unix_addr);
 
     if (connect(fd, (struct sockaddr *)&unix_addr, len) < 0) {
       perror("connect(AF_UNIX)");
@@ -94,7 +90,7 @@ char *popcode_to_text(int pt)
     switch (pt) {
     case RFCOP: return "RFC";
     case OPNOP: return "OPN";
-    case CLSOP: return "OPN";
+    case CLSOP: return "CLS";
     case FWDOP: return "FWD";
     case ANSOP: return "ANS";
     case SNSOP: return "SNS";
@@ -217,15 +213,16 @@ decode_chaos(char *buffer, int len)
         printf("%02x ", ph->ph_op);
 
     printf("to (%o %o:%d,%d) ",
-           ph->ph_daddr.ch_subnet, ph->ph_daddr.ch_host,
-           ph->ph_didx.ci_tidx, ph->ph_didx.ci_uniq);
+           ph->ph_daddr.subnet, ph->ph_daddr.host,
+           ph->ph_didx.tidx, ph->ph_didx.uniq);
 
     printf("from (%o %o:%d,%d) ",
-           ph->ph_saddr.ch_subnet, ph->ph_saddr.ch_host,
-           ph->ph_sidx.ci_tidx, ph->ph_sidx.ci_uniq);
+           ph->ph_saddr.subnet, ph->ph_saddr.host,
+           ph->ph_sidx.tidx, ph->ph_sidx.uniq);
 
     printf("pkn %o ackn %o ",
-           ph->ph_pkn, ph->ph_ackn);
+           LE_TO_SHORT(ph->LE_ph_pkn), 
+           LE_TO_SHORT(ph->LE_ph_ackn));
 
     printf("len %d ", len);
     printf("\n");
@@ -238,19 +235,21 @@ decode_chaos(char *buffer, int len)
         printf("  opcode %04x %s\n", ph->ph_op, popcode_to_text(ph->ph_op));
 
         printf("  daddr %o (%o %o), tidx %d, unique %d\n",
-               ph->ph_daddr.ch_addr, ph->ph_daddr.ch_subnet, ph->ph_daddr.ch_host,
-               ph->ph_didx.ci_tidx, ph->ph_didx.ci_uniq);
+               CH_ADDR_SHORT(ph->ph_daddr), 
+               ph->ph_daddr.subnet, ph->ph_daddr.host,
+               ph->ph_didx.tidx, ph->ph_didx.uniq);
 
         printf("  saddr %o (%o %o), tidx %d, uniq %d\n",
-               ph->ph_saddr.ch_addr, ph->ph_saddr.ch_subnet, ph->ph_saddr.ch_host,
-               ph->ph_sidx.ci_tidx, ph->ph_sidx.ci_uniq);
+               CH_ADDR_SHORT(ph->ph_saddr), 
+               ph->ph_saddr.subnet, ph->ph_saddr.host,
+               ph->ph_sidx.tidx, ph->ph_sidx.uniq);
     }
 
     fflush(stdout);
 }
 
 int
-read_chaos(void)
+read_chaos(int fd)
 {
     int ret, len;
     u_char lenbytes[4];
@@ -312,7 +311,7 @@ main(int argc, char *argv[])
     }
 
     while (1) {
-        if (read_chaos())
+        if (read_chaos(fd))
             break;
     }
 

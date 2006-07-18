@@ -7,6 +7,7 @@
  * chaos sockets.  a bit of a hack, but it does work.
  *
  * 10/2004 brad@heeltoe.com
+ * byte order cleanups; Joseph Oswald <josephoswald@gmail.com>
  */
 
 /* NOTES
@@ -74,6 +75,8 @@
 #ifdef OSX
 #include <sys/param.h>
 #include <sys/mount.h>
+#include <sys/time.h> 
+/* use utimes instead of "outmoded" utime */
 #endif
 
 #define LOG_INFO	0
@@ -2504,6 +2507,22 @@ struct xfer *ax;
 		}
 		if (x->x_options & O_PRESERVE ||
 		    x->x_flags & (X_ATIME|X_MTIME)) {
+			
+			log(LOG_INFO, "xclose (3b)\n");
+			
+#ifdef OSX
+			struct timeval timep[2];
+
+			timep[0].tv_sec = (x->x_options&O_PRESERVE ||
+				    x->x_flags&X_ATIME) ? x->x_atime :
+				    sbuf.st_atime;
+			timep[1].tv_sec = (x->x_options&O_PRESERVE ||
+				    x->x_flags&X_MTIME) ? x->x_mtime :
+				    sbuf.st_mtime;
+		/*	timep[0].tv_nsec = 0; */
+		/*	timep[1].tv_nsec = 0; */
+
+#else
 			time_t timep[2];
 
 			timep[0] = (x->x_options&O_PRESERVE ||
@@ -2512,11 +2531,24 @@ struct xfer *ax;
 			timep[1] = (x->x_options&O_PRESERVE ||
 				    x->x_flags&X_MTIME) ? x->x_mtime :
 				    sbuf.st_mtime;
+#endif
 			/*
 			 * No error checking is done here since CLOSE
 			 * can't really fail anyway.
 			 */
+			 
+			log(LOG_INFO, "xclose (3c)\n");
+
+#ifdef OSX
+			if (utimes(x->x_realname, timep)) {
+			   log(LOG_INFO, "error from utimes: errno = %d %s\n", errno, strerror(errno));
+			}
+#else
 			utime(x->x_realname, timep);
+#endif
+			
+			log(LOG_INFO, "xclose (3d)\n");
+			
 			if (fstat(x->x_fd, &sbuf) < 0)
 				fatal("Fstat in xclose 2");
 		}
@@ -2526,14 +2558,22 @@ struct xfer *ax;
 #endif
 		if (protocol > 0)
 			(void)sprintf(response,
+#ifdef OSX
+				"%02d/%02d/%02d %02d:%02d:%02d %lld%c%s%c",
+#else
 				"%02d/%02d/%02d %02d:%02d:%02d %ld%c%s%c",
+#endif
 				tm->tm_mon+1, tm->tm_mday, tm->tm_year,
 				tm->tm_hour, tm->tm_min, tm->tm_sec,
 				sbuf.st_size, CHNL,
 				x->x_realname, CHNL);
 		else
 			(void)sprintf(response,
+#ifdef OSX
+				"%d %02d/%02d/%02d %02d:%02d:%02d %lld%c%s%c",
+#else
 				"%d %02d/%02d/%02d %02d:%02d:%02d %ld%c%s%c",
+#endif
 				-1, tm->tm_mon+1, tm->tm_mday,
 				tm->tm_year, tm->tm_hour, tm->tm_min,
 				tm->tm_sec, sbuf.st_size, CHNL,
@@ -3516,7 +3556,12 @@ char *cp;
 static char *
 xgetbsize(struct stat *s, char *cp)
 {
+#ifdef OSX
+	(void)sprintf(cp, "%lld", (s->st_size + FSBSIZE - 1) / FSBSIZE);
+#else
 	(void)sprintf(cp, "%ld", (s->st_size + FSBSIZE - 1) / FSBSIZE);
+#endif
+
 	while (*cp)
 		cp++;
 	return cp;
@@ -3536,7 +3581,11 @@ getsize(s, cp)
 register struct stat *s;
 register char *cp;	
 {
+#ifdef OSX
+	(void)sprintf(cp, "%lld", s->st_size);
+#else
 	(void)sprintf(cp, "%ld", s->st_size);
+#endif
 	while (*cp)
 		cp++;
 	return cp;

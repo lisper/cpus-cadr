@@ -1,6 +1,10 @@
 /*
  * chaos.c
  * userspace chaos protocol implementation
+ *
+ * original; Brad Parker <brad@heeltoe.com>
+ * byte order cleanups; Joseph Oswald <josephoswald@gmail.com>
+ *
  * $Id$
  */
 
@@ -60,7 +64,8 @@ movepkt(struct packet *opkt, struct packet *npkt)
 {
 	short *nptr, *optr, n;
 
-	n = (CHHEADSIZE + opkt->pk_len + sizeof(short) - 1) / sizeof(short);
+	n = (CHHEADSIZE + PH_LEN(opkt->pk_phead) + 
+	     sizeof(short) - 1) / sizeof(short);
 	nptr = (short *)npkt;
 	optr = (short *)opkt;
 	do {
@@ -131,14 +136,14 @@ pktstr(struct packet *pkt, char *str, int len)
 		if ((npkt = ch_alloc_pkt(len)) == NOPKT)
 			return(NOPKT);
 		if (pkt != NOPKT) {
-			pkt->pk_len = 0;
+		  SET_PH_LEN(pkt->pk_phead,0);
 			movepkt(pkt, npkt);
 			ch_free_pkt(pkt);
 		}
 		pkt = npkt;
 	}
 	odata = pkt->pk_cdata;
-	pkt->pk_len = len;
+	SET_PH_LEN(pkt->pk_phead,len);
 	if (len) do *odata++ = *str; while (*str++ && --len);
 	return(pkt);
 }
@@ -165,11 +170,12 @@ allconn(void)
 		if(*cptr != NOCONN) continue;
 		*cptr = conn;
 		clear((char *)conn, sizeof(struct connection));
-		conn->cn_ltidx = cptr - &chaos_conntab[0];
+		SET_CH_INDEX(conn->cn_Lidx,cptr - &chaos_conntab[0]);
 		if (++uniq == 0)
 			uniq = 1;
 		conn->cn_luniq = uniq;
-		debugf(DBG_LOW, "allconn: alloc #%x", conn->cn_lidx);
+		debugf(DBG_LOW, "allconn: alloc #%x", 
+		       CH_INDEX_SHORT(conn->cn_Lidx));
 		return(conn);
 	}
 
@@ -191,7 +197,7 @@ clsconn(struct connection *conn, int state, struct packet *pkt)
 	conn->cn_thead = conn->cn_ttail = NOPKT;
 	conn->cn_state = state;
 	debugf(DBG_LOW, "clsconn: Conn #%x: CLOSED: state: %d",
-	       conn->cn_lidx, state);
+	       CH_INDEX_SHORT(conn->cn_Lidx), state);
 	if (pkt != NOPKT) {
 		pkt->pk_next = NOPKT;
 		if (conn->cn_rhead != NOPKT)
@@ -216,19 +222,20 @@ rlsconn(struct connection *conn)
 	freelist(conn->cn_rhead);
 	freelist(conn->cn_thead);
 
-	debugf(DBG_LOW, "rlsconn: release #%x", conn->cn_lidx);
+	debugf(DBG_LOW, "rlsconn: release #%x", CH_INDEX_SHORT(conn->cn_Lidx));
 	free((char *)conn);
 }
 
 void
 prpkt(struct packet *pkt, char *str)
 {
-	debugf(DBG_INFO,
-	       "op=%s(%o) len=%d fc=%d; dhost=%o didx=%x; shost=%o sidx=%x\n"
-	       "         pkn=%d ackn=%d",
-		str, pkt->pk_op, pkt->pk_len, pkt->pk_fc, pkt->pk_dhost,
-		pkt->pk_didx, pkt->pk_shost, pkt->pk_sidx,
-		(unsigned)pkt->pk_pkn, (unsigned)pkt->pk_ackn);
+	debugf(DBG_LOW, "op=%s(%o) len=%d fc=%d; dhost=%o didx=%x; shost=%o sidx=%x\npkn=%d ackn=%d",
+		str, pkt->pk_op, PH_LEN(pkt->pk_phead), 
+	        PH_FC(pkt->pk_phead), pkt->pk_dhost,
+		CH_INDEX_SHORT(pkt->pk_phead.ph_didx), pkt->pk_shost, 
+	        CH_INDEX_SHORT(pkt->pk_phead.ph_sidx),
+	       (unsigned)LE_TO_SHORT(pkt->LE_pk_pkn), 
+	       (unsigned)LE_TO_SHORT(pkt->LE_pk_ackn));
 }
 
 /*
@@ -238,10 +245,10 @@ void
 makests(struct connection *conn, struct packet *pkt)
 {
 	pkt->pk_op = STSOP;
-	pkt->pk_lenword = sizeof(struct sts_data);
+	SET_PH_LEN(pkt->pk_phead, sizeof(struct sts_data));
 	setack(conn, pkt);
-	pkt->pk_receipt = conn->cn_rlast;
-	pkt->pk_rwsize = conn->cn_rwsize;
+	pkt->LE_pk_receipt = LE_TO_SHORT(conn->cn_rlast);
+	pkt->LE_pk_rwsize = LE_TO_SHORT(conn->cn_rwsize);
 }
 
 
@@ -259,7 +266,8 @@ receipt(struct connection *conn, unsigned short acknum, unsigned short recnum)
 	 */
 	if (cmp_gt(recnum, conn->cn_trecvd)) {
 		for (pktl = conn->cn_thead;
-		     pktl != NOPKT && cmp_le(pktl->pk_pkn, recnum);
+		     pktl != NOPKT && cmp_le(LE_TO_SHORT(pktl->LE_pk_pkn), 
+					     recnum);
 		     pktl = pkt)
 		{
 			pkt = pktl->pk_next;
@@ -297,23 +305,26 @@ xmitdone(struct packet *pkt)
 	struct connection *conn;
 	struct packet *npkt;
 
-	if (pkt->pk_fc == 0 && CONTPKT(pkt) &&
+	if (PH_FC(pkt->pk_phead) == 0 && CONTPKT(pkt) &&
 	    pkt->pk_stindex < CHNCONNS &&
 	    (conn = chaos_conntab[pkt->pk_stindex]) != NOCONN &&
-	    pkt->pk_sidx == conn->cn_lidx &&
+	    CH_INDEX_SHORT(pkt->pk_sidx) == 
+	    CH_INDEX_SHORT(conn->cn_Lidx) &&
 	    (conn->cn_state == CSOPEN || conn->cn_state == CSRFCSENT) &&
-	    cmp_gt(pkt->pk_pkn, conn->cn_trecvd))
+	    cmp_gt(LE_TO_SHORT(pkt->LE_pk_pkn), conn->cn_trecvd))
 	{
 		pkt->pk_time = chaos_clock;
 
 		if ((npkt = conn->cn_thead) == NOPKT || 
-		    cmp_lt(pkt->pk_pkn, npkt->pk_pkn))
+		    cmp_lt(LE_TO_SHORT(pkt->LE_pk_pkn), 
+			   LE_TO_SHORT(npkt->LE_pk_pkn)))
 		{
 			pkt->pk_next = npkt;
 			conn->cn_thead = pkt;
 		} else {
 			for( ; npkt->pk_next != NOPKT; npkt = npkt->pk_next)
-				if(cmp_lt(pkt->pk_pkn, npkt->pk_next->pk_pkn))
+				if(cmp_lt(LE_TO_SHORT(pkt->LE_pk_pkn), 
+					  LE_TO_SHORT(npkt->pk_next->LE_pk_pkn)))
 					break;
 			pkt->pk_next = npkt->pk_next;
 			npkt->pk_next = pkt;
@@ -364,8 +375,8 @@ chretran(struct connection *conn, int age)
 
 	if (firstpkt != NOPKT) {
 		debugf(DBG_LOW, "chretran: Conn #%x: Rexmit (op:%d, pkn:%d)",
-		       conn->cn_lidx, firstpkt->pk_op,
-		       firstpkt->pk_pkn);
+		       CH_INDEX_SHORT(conn->cn_Lidx), firstpkt->pk_op,
+		       LE_TO_SHORT(firstpkt->LE_pk_pkn));
 		senddata(firstpkt);
 	}
 }
@@ -413,7 +424,8 @@ sendtome(register struct packet *pkt)
 			 * So it really should be sent.
 			 * First make a copy for the receiving side in rpkt.
 			 */
-			if ((rpkt = ch_alloc_pkt(pkt->pk_len)) != NOPKT)
+			if ((rpkt = ch_alloc_pkt(PH_LEN(pkt->pk_phead))) 
+			    != NOPKT)
 				movepkt(pkt, rpkt);
 			/*
 			 * This xmitdone just completes transmission.
@@ -446,11 +458,11 @@ sendctl(struct packet *pkt)
 	struct chroute *r;
 
 	if (1) {
-		debugf(DBG_LOW, "chaos: Sending: %d ", pkt->pk_op);
+		debugf(DBG_LOW, "chaos: sendctl: Sending: %d ", pkt->pk_op);
 		prpkt(pkt, "ctl");
 		debugf(DBG_LOW, "\n");
 	}
-	if (pkt->pk_daddr == chaos_myaddr) {
+	if (CH_ADDR_SHORT(pkt->pk_daddr) == chaos_myaddr) {
 		debugf(DBG_LOW, "to me");
 		sendtome(pkt);
 	} else if (pkt->pk_dsubnet >= CHNSUBNET ||
@@ -488,7 +500,7 @@ senddata(struct packet *pkt)
 		debugf(DBG_LOW, "\n");
 	}
 
-	if (pkt->pk_daddr == chaos_myaddr) {
+	if (CH_ADDR_SHORT(pkt->pk_daddr) == chaos_myaddr) {
 		debugf(DBG_LOW, "to me");
 		sendtome(pkt);
         }
@@ -496,7 +508,7 @@ senddata(struct packet *pkt)
 	    (r = &chaos_routetab[pkt->pk_dsubnet])->rt_type == CHNOPATH ||
 	     r->rt_cost >= CHHCOST) {
 		struct packet *npkt;
-		debugf(DBG_LOW, "no path to 0%x", pkt->pk_daddr);
+		debugf(DBG_LOW, "no path to 0%x", CH_ADDR_SHORT(pkt->pk_daddr));
 		do {
 			npkt = pkt->pk_next;
 			pkt->pk_next = NOPKT;
@@ -507,17 +519,17 @@ senddata(struct packet *pkt)
 		unsigned short dest;
 
 		if (r->rt_type == CHFIXED || r->rt_type == CHBRIDGE) {
-			dest = r->rt_addr;
+			dest = CH_ADDR_SHORT(r->rt_addr);
 			r = &chaos_routetab[r->rt_subnet];
 		} else
-			dest = pkt->pk_daddr;
+			dest = CH_ADDR_SHORT(pkt->pk_daddr);
 		
 		xcvr = r->rt_xcvr;
 		for (;;) {
 			struct packet *next;
 
 			pkt->pk_time = chaos_clock;
-			pkt->pk_xdest = dest;
+			SET_CH_ADDR(pkt->pk_xdest,dest);
 			next = pkt->pk_next;
 			(*xcvr->xc_xmit)(xcvr, pkt, 0);
 			if ((pkt = next) == NOPKT)
@@ -532,14 +544,28 @@ senddata(struct packet *pkt)
 void
 reflect(struct packet *pkt)
 {
-	short temp;
+	chindex temp_idx;
+        chaddr temp_addr;
 
-	temp = pkt->pk_sidx;
+	temp_idx = pkt->pk_sidx;
 	pkt->pk_sidx = pkt->pk_didx;
-	pkt->pk_didx = temp;
-	temp = pkt->pk_saddr;
+	pkt->pk_didx = temp_idx;
+	temp_addr = pkt->pk_saddr;
 	pkt->pk_saddr = pkt->pk_daddr;
-	pkt->pk_daddr = temp;
+	pkt->pk_daddr = temp_addr;
+
+#if 1
+	struct pkt_header *ph = (struct pkt_header *)&pkt->pk_phead;
+
+	debugf(DBG_LOW,
+	       "reflect: to (%o %o:%d,%d) from (%o %o:%d,%d) pkn %o ackn %o\n",
+	       ph->ph_daddr.subnet, ph->ph_daddr.host,
+	       ph->ph_didx.tidx, ph->ph_didx.uniq,
+	       ph->ph_saddr.subnet, ph->ph_saddr.host,
+	       ph->ph_sidx.tidx, ph->ph_sidx.uniq,
+	       LE_TO_SHORT(ph->LE_ph_pkn), 
+	       LE_TO_SHORT(ph->LE_ph_ackn));
+#endif
 
 	sendctl(pkt);
 }
@@ -585,7 +611,8 @@ sendlos(struct packet *pkt, char *str, int len)
 void
 lsnmatch(struct packet *rfcpkt, struct connection *conn)
 {
-	debugf(DBG_INFO, "lsnmatch: Conn #%x: LISTEN matched", conn->cn_lidx);
+	debugf(DBG_INFO, "lsnmatch: Conn #%x: LISTEN matched", 
+	       CH_INDEX_SHORT(conn->cn_Lidx));
 
 	/*
 	 * Initialize the conection
@@ -595,8 +622,13 @@ lsnmatch(struct packet *rfcpkt, struct connection *conn)
 	if (conn->cn_rwsize == 0)
 		conn->cn_rwsize = CHDRWSIZE;
 	conn->cn_faddr = rfcpkt->pk_saddr;
-	conn->cn_fidx = rfcpkt->pk_sidx;
-	conn->cn_laddr = rfcpkt->pk_daddr ? rfcpkt->pk_daddr : chaos_myaddr;
+	conn->cn_Fidx = rfcpkt->pk_sidx;
+	if (CH_ADDR_SHORT(rfcpkt->pk_daddr) == 0) {
+	  conn->cn_laddr = rfcpkt->pk_daddr;
+	} else {
+	  SET_CH_ADDR(conn->cn_laddr,chaos_myaddr);
+	}
+
 	/*
 	 * Queue up the RFC for the user to read if he wants it.
 	 */
@@ -606,7 +638,7 @@ lsnmatch(struct packet *rfcpkt, struct connection *conn)
 	 * Indicate to the other end that we have received and "read"
 	 * the RFC so that the open will truly acknowledge it.
 	 */
-	conn->cn_rlast = conn->cn_rread = rfcpkt->pk_pkn;
+	conn->cn_rlast = conn->cn_rread = LE_TO_SHORT(rfcpkt->LE_pk_pkn);
 }
 
 /*
@@ -640,12 +672,25 @@ concmp(struct packet *rfcpkt, char *lsnstr, int lsnlen)
 	int rfclen;
 
 	debugf(DBG_LOW, "Rcvrfc: Comparing %s and %s", rfcstr, lsnstr);
+	debugf(DBG_LOW, "rfcpkt->pk_len = %d lsnlen = %d", 
+	       PH_LEN(rfcpkt->pk_phead),
+	       lsnlen);
 
-	for (rfclen = rfcpkt->pk_len; rfclen; rfclen--, lsnlen--)
-		if (lsnlen <= 0)
-			return ((*rfcstr == ' ') ? 1 : 0);
-		else if (*rfcstr++ != *lsnstr++)
-			return(0);
+	for (rfclen = PH_LEN(rfcpkt->pk_phead); rfclen; rfclen--, lsnlen--) {
+	  if (lsnlen <= 0) {
+	    debugf(DBG_LOW, "reached lsnlen = %d *rfcstr is '%c' %x", lsnlen,
+		   *rfcstr, *rfcstr);
+	    debugf(DBG_LOW, "returning 1");
+	    return 1;
+	    /* return ((*rfcstr == ' ') ? 1 : 0); */
+	  }
+	  else if (*rfcstr++ != *lsnstr++) {
+	    debugf(DBG_LOW, "failed to match character %x and %x",
+		   *(rfcstr-1), *(lsnstr-1));
+	    return(0);
+	  }
+	}
+
 	return (lsnlen == 0);
 }
 
@@ -671,19 +716,19 @@ rcvrut(struct packet *pkt)
 	else if (chaos_routetab[pkt->pk_ssubnet].rt_type != CHDIRECT)
 		debugf(DBG_LOW, "CHAOS: RUT pkt from unconnected subnet %d",
 			pkt->pk_ssubnet);
-	else for (i = pkt->pk_len; i; i -= sizeof(struct rut_data), rd++) {
-		if (rd->pk_subnet >= CHNSUBNET) {
+	else for (i = PH_LEN(pkt->pk_phead); i; i -= sizeof(struct rut_data), rd++) {
+		if (LE_TO_SHORT(rd->LE_pk_subnet) >= CHNSUBNET) {
 			debugf(DBG_LOW, "CHAOS: bad subnet %d in RUT pkt",
-			       rd->pk_subnet);
+			       LE_TO_SHORT(rd->LE_pk_subnet));
 			continue;
 		}
-		r = &chaos_routetab[rd->pk_subnet];
+		r = &chaos_routetab[LE_TO_SHORT(rd->LE_pk_subnet)];
 		switch (r->rt_type) {
 		case CHNOPATH:
 		case CHBRIDGE:
 		case CHDIRECT:
-			if (rd->pk_cost < r->rt_cost) {
-				r->rt_cost = rd->pk_cost;
+			if (LE_TO_SHORT(rd->LE_pk_cost) < r->rt_cost) {
+				r->rt_cost = LE_TO_SHORT(rd->LE_pk_cost);
 				r->rt_type = CHBRIDGE;
 				r->rt_addr = pkt->pk_saddr;
 			}
@@ -711,6 +756,10 @@ rcvrfc(struct packet *pkt)
 	if (1) {
 		prpkt(pkt,"RFC/BRD");
 		debugf(DBG_LOW, "contact = %s", pkt->pk_cdata);
+		extern int flag_debug_level;
+		if (flag_debug_level > 2) {
+			dumpbuffer((u_char *)pkt, 64);
+		}
 	}
 
 	/*
@@ -719,18 +768,20 @@ rcvrfc(struct packet *pkt)
 	 */
 	for (conptr = &chaos_conntab[0]; conptr < &chaos_conntab[CHNCONNS];)
 		if ((conn = *conptr++) != NOCONN &&
-		    conn->cn_fidx == pkt->pk_sidx &&
-		    conn->cn_faddr == pkt->pk_saddr)
+		    CH_INDEX_SHORT(conn->cn_Fidx) == 
+		    CH_INDEX_SHORT(pkt->pk_sidx) &&
+		    CH_ADDR_SHORT(conn->cn_faddr) == 
+		    CH_ADDR_SHORT(pkt->pk_saddr))
 		{
 			if (conn->cn_state == CSOPEN) {
 				debugf(DBG_LOW,
 				       "rcvrfc: Retransmitting open chan #%x",
-				       conn->cn_lidx);
+				       CH_INDEX_SHORT(conn->cn_Lidx));
 				if (conn->cn_thead != NOPKT)
 					chretran(conn, CHSHORTTIME);
 			} else {
 				debugf(DBG_LOW, "rcvrfc: Duplicate RFC: %x",
-				       conn->cn_lidx);
+				       CH_INDEX_SHORT(conn->cn_Lidx));
 			}
 			ch_free_pkt(pkt);
 			return;
@@ -741,10 +792,11 @@ rcvrfc(struct packet *pkt)
 	 * open the connection and remove the listen packet from the
 	 * listen list.
 	 */
-	for (opkt = &chaos_lsnlist; (pktl = *opkt) != NOPKT; opkt = &pktl->pk_next)
-		if(concmp(pkt, pktl->pk_cdata, (int)pktl->pk_len)) {
-			conn = chaos_conntab[pktl->pk_stindex];
-			*opkt = pktl->pk_next;
+	for (opkt = &chaos_lsnlist; (pktl = *opkt) != NOPKT; 
+	     opkt = &pktl->pk_next)
+	  if(concmp(pkt, pktl->pk_cdata, PH_LEN(pktl->pk_phead))) {
+	    conn = chaos_conntab[pktl->pk_stindex];
+	    *opkt = pktl->pk_next;
 			ch_free_pkt(pktl);
 			lsnmatch(pkt, conn);
 			NEWSTATE(conn);
@@ -775,7 +827,7 @@ rcvrfc(struct packet *pkt)
 		lsnmatch(pkt, conn);
 		ch_accept(conn);
 
-		start_file(conn, pkt->pk_cdata, pkt->pk_len);
+		start_file(conn, pkt->pk_cdata, PH_LEN(pkt->pk_phead));
 		return;
 	}
 #endif
@@ -789,14 +841,16 @@ rcvrfc(struct packet *pkt)
 	 * There was no listener, so queue the RFC on the unmatched RFC list
 	 * again checking for duplicates.
 	 */
-	pkt->pk_ackn = 0;	/* this is for ch_rskip */
+	pkt->LE_pk_ackn = 0;	/* this is for ch_rskip */
 	pkt->pk_next = NOPKT;
 	if ((pktl = chaos_rfclist) == NOPKT) 
 		chaos_rfclist = chaos_rfctail = pkt;
 	else {
 		do {
-			if (pktl->pk_sidx == pkt->pk_sidx &&
-			    pktl->pk_saddr == pkt->pk_saddr) {
+			if (CH_INDEX_SHORT(pktl->pk_sidx) == 
+			    CH_INDEX_SHORT(pkt->pk_sidx) &&
+			    CH_ADDR_SHORT(pktl->pk_saddr) == 
+			    CH_ADDR_SHORT(pkt->pk_saddr)) {
 				debugf(DBG_LOW,
 				       "rcvrfc: Discarding duplicate Rfc on Chrfclist");
 				ch_free_pkt(pkt);
@@ -820,12 +874,12 @@ rcvrfc(struct packet *pkt)
 void
 rcvbrd(struct packet *pkt)
 {
-	int bitlen = pkt->pk_ackn;
+	int bitlen = LE_TO_SHORT(pkt->LE_pk_ackn);
 	
-	pkt->pk_daddr = chaos_myaddr;
+	SET_CH_ADDR(pkt->pk_daddr,chaos_myaddr);
 	chmove(&pkt->pk_cdata[bitlen], pkt->pk_cdata, bitlen);
-	pkt->pk_lenword = pkt->pk_len - bitlen;
-	pkt->pk_ackn = 0;
+	SET_PH_LEN(pkt->pk_phead,PH_LEN(pkt->pk_phead)-bitlen);
+	pkt->LE_pk_ackn = 0;
 	rcvrfc(pkt);
 }
 
@@ -843,15 +897,21 @@ rcvdata(struct connection *conn, struct packet *pkt)
 		debugf(DBG_LOW, "\n");
 	}
 
-	if (cmp_gt(pkt->pk_pkn, conn->cn_rread + conn->cn_rwsize)) {
+	if (cmp_gt(LE_TO_SHORT(pkt->LE_pk_pkn), 
+		   conn->cn_rread + conn->cn_rwsize)) {
 		debugf(DBG_WARN, "rcvdata: Discarding data out of window");
+		debugf(DBG_WARN, "pkt->pkn is %x conn->cn_rread %x",
+		       LE_TO_SHORT(pkt->LE_pk_pkn), conn->cn_rread);
+		debugf(DBG_WARN, "conn->cn_rwsize is %x sum %x",
+		       conn->cn_rread, conn->cn_rread + conn->cn_rwsize);
 		ch_free_pkt(pkt);
 		return;
 	}
 
-	receipt(conn, pkt->pk_ackn, pkt->pk_ackn);
+	receipt(conn, LE_TO_SHORT(pkt->LE_pk_ackn), 
+		LE_TO_SHORT(pkt->LE_pk_ackn));
 
-	if (cmp_le(pkt->pk_pkn, conn->cn_rlast)) {
+	if (cmp_le(LE_TO_SHORT(pkt->LE_pk_pkn), conn->cn_rlast)) {
 		debugf(DBG_WARN, "rcvdata: Duplicate data packet");
 		makests(conn, pkt);
 		reflect(pkt);
@@ -871,7 +931,8 @@ rcvdata(struct connection *conn, struct packet *pkt)
 	 */
 	for (npkt = pkt;
 	     npkt != NOPKT &&
-	     	npkt->pk_pkn == (unsigned short)(conn->cn_rlast + 1);
+	     	LE_TO_SHORT(npkt->LE_pk_pkn)
+	       == (unsigned short)(conn->cn_rlast + 1);
 	     npkt = npkt->pk_next) {
 		if (conn->cn_rhead == NOPKT)
 			conn->cn_rhead = npkt;
@@ -907,11 +968,13 @@ rcvdata(struct connection *conn, struct packet *pkt)
 	 */
 	} else {
 		for (npkt = pkt; (npkt = npkt->pk_next) != NOPKT &&
-				 cmp_gt(pkt->pk_pkn, npkt->pk_pkn); )
+				 cmp_gt(LE_TO_SHORT(pkt->LE_pk_pkn), 
+					LE_TO_SHORT(npkt->LE_pk_pkn)); )
 
 			pkt->pk_next = npkt;	/* save the last pkt here */
 
-		if (npkt != NOPKT && pkt->pk_pkn == npkt->pk_pkn) {
+		if (npkt != NOPKT && LE_TO_SHORT(pkt->LE_pk_pkn) == 
+		    LE_TO_SHORT(npkt->LE_pk_pkn)) {
 			debugf(DBG_INFO,
 			       "rcvdata: Duplicate out of order packet");
 			pkt->pk_next = NOPKT;
@@ -938,15 +1001,17 @@ void
 rcvpkt(struct chxcvr *xp)
 {
 	int i;
+	int fwdcnt;
 	struct packet *pkt = (struct packet *)xp->xc_rpkt;
 	struct connection *conn;
 	unsigned index;
 
 	tracef(TRACE_LOW, "rcvpkt:");
-
-	xp->xc_rcvd++;
+	
+	/* xp->xc_rcvd++ */
+	xp->LELNG_xc_rcvd = LE_TO_LONG(LE_TO_LONG(xp->LELNG_xc_rcvd) + 1);
 	pkt->pk_next = NOPKT;
-	if (xp->xc_addr) {
+	if (CH_ADDR_SHORT(xp->xc_addr)) {
 		struct chroute *r;
 			
 		r = &chaos_routetab[xp->xc_subnet];
@@ -957,32 +1022,48 @@ rcvpkt(struct chxcvr *xp)
 
 	debugf(DBG_LOW,
 	       "rcvpkt: pkt->pk_daddr %o, chaos_myaddr %o, xp->xc_addr %o",
-	       pkt->pk_daddr, chaos_myaddr, xp->xc_addr);
+	       CH_ADDR_SHORT(pkt->pk_daddr), chaos_myaddr, 
+	       CH_ADDR_SHORT(xp->xc_addr));
 
-	if (pkt->pk_daddr != chaos_myaddr &&
-	    pkt->pk_daddr != xp->xc_addr &&
-	    pkt->pk_daddr != 0)
-		if ((++pkt->pk_fc) == 0) {
+	if (CH_ADDR_SHORT(pkt->pk_daddr) != chaos_myaddr &&
+	    CH_ADDR_SHORT(pkt->pk_daddr) != CH_ADDR_SHORT(xp->xc_addr) &&
+	    CH_ADDR_SHORT(pkt->pk_daddr) != 0) {
+		
+ 
+/* JAO: forwarding doesn't make sense unless we are a bridge, and have another subnet to transmit on. 
+   As it is, this simply makes a lot of noise duplicating packets on the subnet that already have a
+   receiver ready to receive them. */
+   
+	  /* increment forwarding count in packet */
+	  fwdcnt = PH_FC(pkt->pk_phead);
+	  SET_PH_FC(pkt->pk_phead,fwdcnt+1);
+		if (((fwdcnt+1) & 0x0f) == 0) {
 			debugf(DBG_WARN, "rcvpkt: Overforwarded packet");
 ignore:
 			ch_free_pkt(pkt);
-		} else if (pkt->pk_saddr == chaos_myaddr ||
-			   pkt->pk_saddr == xp->xc_addr) {
+		} else if (CH_ADDR_SHORT(pkt->pk_saddr) == chaos_myaddr ||
+			   CH_ADDR_SHORT(pkt->pk_saddr) == 
+			   CH_ADDR_SHORT(xp->xc_addr)) {
 			debugf(DBG_LOW, "rcvpkt: Got my own packet back");
 			ch_free_pkt(pkt);
 		} else if (chaos_myaddr == -1)
 			ch_free_pkt(pkt);
 		else {
-			debugf(DBG_LOW, "rcvpkt: Forwarding pkt daddr=%x",
-			       pkt->pk_daddr);
+			debugf(DBG_LOW, "rcvpkt: NOT Forwarding pkt daddr=%x", /* JAO */
+			       CH_ADDR_SHORT(pkt->pk_daddr));
+#if(0) /* JAO */
 			sendctl(pkt);
+#endif 
 		}
+	}
 	else if (pkt->pk_op == RUTOP)
 		rcvrut(pkt);
 	else if (pkt->pk_op == MNTOP)
 		goto ignore;
-	else if (pkt->pk_op == RFCOP)
+	else if (pkt->pk_op == RFCOP) {
+	  debugf(DBG_LOW, "identified RFC op");
 		rcvrfc(pkt);
+	}
 	else if (pkt->pk_op == BRDOP)
 		rcvbrd(pkt);
 
@@ -991,10 +1072,10 @@ ignore:
 	 */
 	else if ((index = pkt->pk_dtindex) >= CHNCONNS ||
 		 ((conn = chaos_conntab[index]) == NOCONN) ||
-		 conn->cn_lidx != pkt->pk_didx)
+		 CH_INDEX_SHORT(conn->cn_Lidx) != CH_INDEX_SHORT(pkt->pk_didx))
 	{
 		debugf(DBG_WARN, "rcvpkt: Packet with bad index: %x, op:%d",
-		       pkt->pk_didx, pkt->pk_op);
+		       CH_INDEX_SHORT(pkt->pk_didx), pkt->pk_op);
 		send_los(pkt, "Connection doesn't exist");
 
 	/*
@@ -1005,22 +1086,24 @@ ignore:
 		case OPNOP:
 			debugf(DBG_INFO,
 			       "rcvpkt: Conn #%x: OPEN received",
-			       conn->cn_lidx);
+			       CH_INDEX_SHORT(conn->cn_Lidx));
 
 			/*
 			 * Make the connection open, taking his index
 			 */
 			conn->cn_state = CSOPEN;
-			conn->cn_fidx = pkt->pk_sidx;
+			conn->cn_Fidx = pkt->pk_sidx;
 			conn->cn_active = chaos_clock;
 			/*
 			 * Indicate we have received AND "read" the OPEN
 			 * Read his window size, indicate that he has
 			 * received and acked the RFC, and acknowledge the OPN
 			 */
-			conn->cn_rread = conn->cn_rlast = pkt->pk_pkn;
-			conn->cn_twsize = pkt->pk_rwsize;
-			receipt(conn, pkt->pk_ackn, pkt->pk_ackn);
+			conn->cn_rread = conn->cn_rlast = 
+			  LE_TO_SHORT(pkt->LE_pk_pkn);
+			conn->cn_twsize = LE_TO_SHORT(pkt->LE_pk_rwsize);
+			receipt(conn, LE_TO_SHORT(pkt->LE_pk_ackn), 
+				LE_TO_SHORT(pkt->LE_pk_ackn));
 			/*
 			 * Wakeup the user waiting for the connection to open.
 			 */
@@ -1033,26 +1116,27 @@ ignore:
 		case FWDOP:
 			debugf(DBG_LOW,
 			       "rcvpkt: Conn #%x: CLOSE/ANS received for RFC",
-			       conn->cn_lidx);
+			       CH_INDEX_SHORT(conn->cn_Lidx));
 			clsconn(conn, CSCLOSED, pkt);
 			break;
 		default:
 			debugf(DBG_LOW,
 			       "rcvpkt: bad packet type "
 			       "for conn #%x in CSRFCSENT: %d",
-			       conn->cn_lidx, pkt->pk_op);
+			       CH_INDEX_SHORT(conn->cn_Lidx), pkt->pk_op);
 			send_los(pkt, "Bad packet type reponse to RFC");
 		}
 	/*
 	 * Process a packet for an open connection
 	 */
 	else if (conn->cn_state == CSOPEN) {
-		debugf(DBG_LOW, "rcvpkt: conn #%x open", conn->cn_lidx);
+		debugf(DBG_LOW, "rcvpkt: conn #%x open", 
+		       CH_INDEX_SHORT(conn->cn_Lidx));
 		conn->cn_active = chaos_clock;
 		if (ISDATOP(pkt)) {
 			debugf(DBG_LOW,
 			       "rcvpkt: conn #%x open, giving it data",
-			       conn->cn_lidx);
+			       CH_INDEX_SHORT(conn->cn_Lidx));
 			rcvdata(conn, pkt);
 		}
 		else switch (pkt->pk_op) {
@@ -1065,7 +1149,8 @@ ignore:
 			break;
 		case SNSOP:
 			if (1) prpkt(pkt, "SNS");
-			receipt(conn, pkt->pk_ackn, pkt->pk_ackn);
+			receipt(conn, LE_TO_SHORT(pkt->LE_pk_ackn), 
+				LE_TO_SHORT(pkt->LE_pk_ackn));
 			makests(conn, pkt);
 			reflect(pkt);
 			break;
@@ -1075,7 +1160,8 @@ ignore:
 	    	case LOSOP:
 		case CLSOP:
 			debugf(DBG_LOW,
-			       "rcvpkt: Close rcvd on %x", conn->cn_lidx);
+			       "rcvpkt: Close rcvd on %x", 
+			       CH_INDEX_SHORT(conn->cn_Lidx));
 			clsconn(conn, pkt->pk_op == CLSOP ? CSCLOSED : CSLOST, pkt);
 			break;
 			/*
@@ -1087,20 +1173,23 @@ ignore:
 			conn->cn_rhead = pkt;
 			if (pkt == conn->cn_rtail)
 				INPUT(conn);
-			receipt(conn, pkt->pk_ackn, pkt->pk_ackn);
+			receipt(conn, LE_TO_SHORT(pkt->LE_pk_ackn), 
+				LE_TO_SHORT(pkt->LE_pk_ackn));
 			break;
 	    	case STSOP:
 #if 1
 			prpkt(pkt, "STS");
-			debugf(DBG_INFO,
+			debugf(DBG_INFO, 
 			       "Conn #%x, Receipt=%d, Trans Window=%d",
-			       conn->cn_lidx,
-			       (unsigned)pkt->pk_idata[0], pkt->pk_idata[1]);
+			       conn->cn_Lidx,
+			       LE_TO_SHORT(pkt->pk_idata[0]), 
+			       LE_TO_SHORT(pkt->pk_idata[1]));
 #endif
-			if (pkt->pk_rwsize > conn->cn_twsize)
+			if (LE_TO_SHORT(pkt->LE_pk_rwsize) > conn->cn_twsize)
 				OUTPUT(conn);
-			conn->cn_twsize = pkt->pk_rwsize;
-			receipt(conn, pkt->pk_ackn, pkt->pk_receipt);
+			conn->cn_twsize = LE_TO_SHORT(pkt->LE_pk_rwsize);
+			receipt(conn, LE_TO_SHORT(pkt->LE_pk_ackn), 
+				LE_TO_SHORT(pkt->LE_pk_receipt));
 			ch_free_pkt(pkt);
 			if (conn->cn_thead != NOPKT)
 				chretran(conn, CHSHORTTIME);
@@ -1117,9 +1206,11 @@ ignore:
 		debugf(DBG_LOW,
 		       "rcvpkt: Packet for conn #%x (not open) "
 		       "state=%d, op:%d",
-		       conn->cn_lidx, conn->cn_state, pkt->pk_op);
+		       CH_INDEX_SHORT(conn->cn_Lidx), 
+		       conn->cn_state, pkt->pk_op);
 		send_los(pkt, "Connection is closed");
 	}
+	debugf(DBG_LOW, "rcvpkt: at end");
 }
 
 
@@ -1169,7 +1260,7 @@ chopen(struct chopen *c, int wflag,int *errnop)
 		       c->co_length);
 
 	rwsize = c->co_rwsize ? c->co_rwsize : CHDRWSIZE;
-	pkt->pk_lenword = length;
+	SET_PH_LEN(pkt->pk_phead,length);
 
 	conn = c->co_host ?
 		ch_open(c->co_host, rwsize, pkt) :
@@ -1242,7 +1333,7 @@ ch_rcv_pkt_buffer(char *buffer, int size)
 	if (pkt == 0)
 		return;
 
-	memcpy((char *)&pkt->pk_phead, buffer, size);
+	memcpy((char *)&pkt->pk_phead, buffer, size); 
 	intf.xc_rpkt = pkt;
 
 	rcvpkt(&intf);
@@ -1259,7 +1350,7 @@ chaos_init(void)
 	chaos_rfcrcv = 1;
 
 	intf.xc_xmit = chaos_xmit;
-	intf.xc_addr = chaos_myaddr;
+	SET_CH_ADDR(intf.xc_addr,chaos_myaddr);
 
 	chaos_routetab[1].rt_type = 0;
 

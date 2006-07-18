@@ -7,6 +7,8 @@
  * main poll routine (fd_poll) is called from main server loop
  *
  * Brad Parker <brad@@heeltoe.com>
+ * byte order cleanups; Joseph Oswald <josephoswald@gmail.com>
+ *
  * $Id$
  */
 
@@ -269,7 +271,7 @@ fd_poll(void)
         timeout = -1;
 #endif
 
-    debugf(DBG_LOW, "fd_count %d\n", fd_count);
+    // debugf(DBG_LOW, "fd_count %d\n", fd_count);
 
     /* wait for i/o from the list of file descriptors */
     ret = poll(ufds, fd_count, timeout);
@@ -280,7 +282,7 @@ fd_poll(void)
     }
 
     if (ret == 0) {
-        debugf(DBG_LOW, "timeout\n");
+//        debugf(DBG_LOW, "timeout\n");
         return 0;
     }
 
@@ -289,7 +291,7 @@ fd_poll(void)
         if (ufds[i].revents == 0)
             continue;
 
-        debugf(DBG_LOW, "ufds[%d].revents %x\n", i, ufds[i].revents);
+        debugf(DBG_LOW, "ufds[%d].revents 0x%x\n", i, ufds[i].revents);
 
         if (ufds[i].revents & ~(POLLIN|POLLHUP)) {
             fd_except(ufds_index[i]);

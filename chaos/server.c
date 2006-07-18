@@ -6,6 +6,8 @@
  * connects to chaosd server
  * forks servers and does protocol procesing (NCP, etc...)
  *
+ * original; Brad Parker <brad@heeltoe.com>
+ * byte order cleanups; Joseph Oswald <josephoswald@gmail.com>
  * 
  * $Id$
  */
@@ -125,8 +127,7 @@ connect_to_server(void)
 	    UNIX_SOCKET_PATH, UNIX_SOCKET_CLIENT_NAME, getpid());
 
     unix_addr.sun_family = AF_UNIX;
-//    len = strlen(unix_addr.sun_path) + sizeof(unix_addr.sun_family);
-    len = strlen(unix_addr.sun_path) + sizeof unix_addr - sizeof unix_addr.sun_path;
+    len = SUN_LEN(&unix_addr);
 
     unlink(unix_addr.sun_path);
 
@@ -140,14 +141,11 @@ connect_to_server(void)
       return -1;
     }
 
-//    sleep(1);
-        
     memset(&unix_addr, 0, sizeof(unix_addr));
     sprintf(unix_addr.sun_path, "%s%s",
 	    UNIX_SOCKET_PATH, UNIX_SOCKET_SERVER_NAME);
     unix_addr.sun_family = AF_UNIX;
-//    len = strlen(unix_addr.sun_path) + sizeof(unix_addr.sun_family);
-    len = strlen(unix_addr.sun_path) + sizeof unix_addr - sizeof unix_addr.sun_path;
+    len = SUN_LEN(&unix_addr);
 
     if (connect(fd, (struct sockaddr *)&unix_addr, len) < 0) {
       perror("connect(AF_UNIX)");
@@ -170,11 +168,11 @@ chaos_xmit(struct chxcvr *intf,
 	   struct packet *pkt,
 	   int at_head_p)
 {
-	int chlength = pkt->pk_len + sizeof(struct pkt_header);
+	int chlength = PH_LEN(pkt->pk_phead) + sizeof(struct pkt_header);
 	char *ptr = (char *)&pkt->pk_phead;
 
 	struct iovec iov[3];
-	u_short t[3];
+	u_short LE_t[3];
 	unsigned char lenbytes[4];
 	int ret, plen;
 
@@ -186,7 +184,7 @@ chaos_xmit(struct chxcvr *intf,
 
 	plen = chlength + 6;
 
-	/* chaosd header */
+	/* chaosd header BIG ENDIAN? */
 	lenbytes[0] = plen >> 8;
 	lenbytes[1] = plen;
 	lenbytes[2] = 0;
@@ -196,10 +194,13 @@ chaos_xmit(struct chxcvr *intf,
 	lenbytes[3] = ++pkt_num;
 #endif
 
-	/* network header (at end of pkt) */
-	t[0] = pkt->pk_phead.ph_daddr.ch_addr;
-	t[1] = pkt->pk_phead.ph_saddr.ch_addr;
-	t[2] = 0;
+	/*
+         * network header (at end of pkt)
+         * note: needs to be in network byte order
+         */
+	LE_t[0] = LE_TO_SHORT(CH_ADDR_SHORT(pkt->pk_phead.ph_daddr));
+	LE_t[1] = LE_TO_SHORT(CH_ADDR_SHORT(pkt->pk_phead.ph_saddr));
+	LE_t[2] = 0;
 
 	iov[0].iov_base = lenbytes;
 	iov[0].iov_len = 4;
@@ -207,7 +208,7 @@ chaos_xmit(struct chxcvr *intf,
 	iov[1].iov_base = ptr;
 	iov[1].iov_len = chlength;
 
-	iov[2].iov_base = t;
+	iov[2].iov_base = LE_t;
 	iov[2].iov_len = 6;
 
 	stats.tx++;
@@ -335,7 +336,7 @@ fork_file(char *arg)
     /* make a copy of ourselves */
     if ((r = fork()) != 0) {
 	    child_pid = r;
-
+            debugf(DBG_LOW,"child pid is %d\n",child_pid);
             child_conn[0].fd_out = svdo[0];
 
             child_fd_data_in = svdi[0];
@@ -368,7 +369,7 @@ fork_file(char *arg)
     close(4);
 
     /* and repoen as pipes */
-    dup2(svdo[1], 0);
+    dup2(svdo[1], 0); /* stdin */
     dup2(svdi[1], 1);
     dup2(svc[1], 3);
     dup2(svs[1], 4);
@@ -417,19 +418,19 @@ server_input(struct connection *conn)
 
     while ((pkt = conn->cn_rhead) != NOPKT) {
 
-	int chlength = pkt->pk_len + sizeof(struct pkt_header);
+	int chlength = PH_LEN(pkt->pk_phead) + sizeof(struct pkt_header);
 	char *ptr = (char *)&pkt->pk_phead;
 
         /* show data */
         debugf(DBG_LOW, "server_input: pkt %d, data %d bytes\n",
-               chlength, pkt->pk_phead.ph_len);
+               chlength, PH_LEN(pkt->pk_phead));
         if (flag_debug_level > 5) {
-            dumpbuffer((u_char *)pkt->pk_cdata, pkt->pk_phead.ph_len);
+            dumpbuffer((u_char *)pkt->pk_cdata, PH_LEN(pkt->pk_phead));
         }
 
         if (conn_fd) {
             ptr = pkt->pk_cdata;
-            len = pkt->pk_phead.ph_len;
+            len = PH_LEN(pkt->pk_phead);
 
             ptr--;
             ptr[0] = pkt->pk_op;
@@ -463,11 +464,11 @@ read_child_data(int conn_num)
     ret = read(child_conn[conn_num].fd_in, pkt->pk_cdata-1, 512);
 
     pkt->pk_op = /*DATOP*/ pkt->pk_cdata[-1];
-    pkt->pk_phead.ph_len = ret - 1;
+    SET_PH_LEN(pkt->pk_phead,ret - 1);
 
-    debugf(DBG_INFO, "read_child: rcv data %d bytes", pkt->pk_phead.ph_len);
+    debugf(DBG_INFO, "read_child: rcv data %d bytes", PH_LEN(pkt->pk_phead));
     if (flag_debug_level > 5) {
-        dumpbuffer((u_char *)pkt->pk_cdata, pkt->pk_phead.ph_len);
+        dumpbuffer((u_char *)pkt->pk_cdata, PH_LEN(pkt->pk_phead));
     }
     
     ch_write(child_conn[conn_num].conn, pkt);
@@ -518,7 +519,7 @@ read_child_ctl(void)
 
             conn = child_conn[conn_num].conn;
 
-            chst.st_fhost = conn->cn_faddr;
+            chst.st_fhost = CH_ADDR_SHORT(conn->cn_faddr);
             chst.st_cnum = conn->cn_ltidx;
             chst.st_rwsize = conn->cn_rwsize;
             chst.st_twsize = conn->cn_twsize;
@@ -529,7 +530,7 @@ read_child_ctl(void)
 
             if ((pkt = conn->cn_rhead) != NOPKT) {
                 chst.st_ptype = pkt->pk_op;
-                chst.st_plength = pkt->pk_len;
+                chst.st_plength = PH_LEN(pkt->pk_phead);
             } else {
                 chst.st_ptype = 0;
                 chst.st_plength = 0;
@@ -746,6 +747,7 @@ chaos_poll(void)
 
     ret = poll(ufds, n, timeout);
     if (ret < 0) {
+        perror("poll:");
         return -1;
     }
 
@@ -758,7 +760,7 @@ chaos_poll(void)
 
             switch (ufds_type[i]) {
             case 1:
-                /* notice when choasd dies */
+                /* notice when chaosd dies */
                 if (ufds[i].revents & POLLHUP) {
                     return -1;
                 }
@@ -874,7 +876,8 @@ main(int argc, char *argv[])
     signal_init();
     chaos_init();
 
-    if (connect_to_server()) {
+    // printf("server: connect_to_server\n");
+    if (connect_to_server() == -1) {
         exit(1);
     }
 

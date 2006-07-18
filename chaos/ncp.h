@@ -1,7 +1,13 @@
 /*
  * ncp.h
+ *
+ * original; Brad Parker <brad@heeltoe.com>
+ * byte order cleanups; Joseph Oswald <josephoswald@gmail.com>
+ *
  * $Id$
  */
+
+#include "endian.h"
 
 #define CHNCONNS	256
 #define CHNSUBNET	128
@@ -34,30 +40,30 @@ struct packet {
 		short		pk_Idata[1];	/* word data */
 		long		pk_Ldata[1];	/* long data */
 		struct sts_data {		/* data of STS packets */
-			unsigned short	pk_Receipt;
-			unsigned short	pk_Rwsize;
+			unsigned short	LE_pk_Receipt;
+			unsigned short	LE_pk_Rwsize;
 		}		pk_stsdata;
 		struct rut_data {		/* data of RUT packets */
-			unsigned short	pk_subnet;
-			unsigned short	pk_cost;
+			unsigned short	LE_pk_subnet;
+			unsigned short	LE_pk_cost;
 		}		pk_Rutdata[1];
-		struct status	{
+	  struct status	{ /* JAO: ANS packet for STATUS protocol? */
 			char	sb_name[CHSTATNAME];
 			struct	statdata {
 				struct stathead {
-					unsigned short	sb_Ident;
-					unsigned short	sb_Nshorts;
+					unsigned short	LE_sb_Ident;
+					unsigned short	LE_sb_Nshorts;
 				}		sb_head;
 				union {
 					struct statxcvr {
-						long	sx_Rcvd;
-						long	sx_Xmtd;
-						long	sx_Abrt;
-						long	sx_Lost;
-						long	sx_Crcr;
-						long	sx_Crci;
-						long	sx_Leng;
-						long	sx_Rej;
+						long	LELNG_sx_Rcvd;
+						long	LELNG_sx_Xmtd;
+						long	LELNG_sx_Abrt;
+						long	LELNG_sx_Lost;
+						long	LELNG_sx_Crcr;
+						long	LELNG_sx_Crci;
+						long	LELNG_sx_Leng;
+						long	LELNG_sx_Rej;
 					}		sb_Xstat;
 				}			sb_union;
 			}				sb_data[1];
@@ -71,34 +77,38 @@ struct packet {
 /* macros for accessing packets fields */
 #define pk_next		pk_nhead.nh_next
 #define pk_time		pk_nhead.nh_time
-#define pk_xdest	pk_nhead.nh_xdest.ch_addr
+#define pk_xdest	pk_nhead.nh_xdest
 #define pk_type		pk_phead.ph_type
 #define pk_op		pk_phead.ph_op
+
+#if(0) /* JAO: endianness */
 #define pk_len		pk_phead.ph_len
 #define pk_fc		pk_phead.ph_lenfc.ph_lfcparts.ph_fcount
 #define pk_lenword	pk_phead.ph_lenfc.ph_lfcwhole
-#define pk_daddr	pk_phead.ph_daddr.ch_addr
-#define pk_dhost	pk_phead.ph_daddr.ch_host
-#define pk_dsubnet	pk_phead.ph_daddr.ch_subnet
-#define pk_didx		pk_phead.ph_didx.ci_idx
-#define pk_dtindex	pk_phead.ph_didx.ci_tidx
-#define pk_saddr	pk_phead.ph_saddr.ch_addr
-#define pk_shost	pk_phead.ph_saddr.ch_host
-#define pk_ssubnet	pk_phead.ph_saddr.ch_subnet
-#define pk_sidx		pk_phead.ph_sidx.ci_idx
-#define pk_stindex	pk_phead.ph_sidx.ci_tidx
-#define pk_suniq	pk_phead.ph_sidx.ci_uniq
-#define pk_pkn		pk_phead.ph_pkn
-#define pk_ackn		pk_phead.ph_ackn
+#endif
+
+#define pk_daddr	pk_phead.ph_daddr
+#define pk_dhost	pk_phead.ph_daddr.host
+#define pk_dsubnet	pk_phead.ph_daddr.subnet
+#define pk_didx		pk_phead.ph_didx
+#define pk_dtindex	pk_phead.ph_didx.tidx
+#define pk_saddr	pk_phead.ph_saddr
+#define pk_shost	pk_phead.ph_saddr.host
+#define pk_ssubnet	pk_phead.ph_saddr.subnet
+#define pk_sidx		pk_phead.ph_sidx
+#define pk_stindex	pk_phead.ph_sidx.tidx
+#define pk_suniq	pk_phead.ph_sidx.uniq
+#define LE_pk_pkn	pk_phead.LE_ph_pkn
+#define LE_pk_ackn	pk_phead.LE_ph_ackn
 #define pk_cdata	pk_data.pk_Cdata
 #define pk_idata	pk_data.pk_Idata
 #define pk_ldata	pk_data.pk_Ldata
-#define pk_receipt	pk_data.pk_stsdata.pk_Receipt
-#define pk_rwsize	pk_data.pk_stsdata.pk_Rwsize
+#define LE_pk_receipt	pk_data.pk_stsdata.LE_pk_Receipt
+#define LE_pk_rwsize	pk_data.pk_stsdata.LE_pk_Rwsize
 #define pk_rutdata	pk_data.pk_Rutdata
 #define pk_status	pk_data.pk_Status
-#define sb_ident	sb_head.sb_Ident
-#define sb_nshorts	sb_head.sb_Nshorts
+#define LE_sb_ident	sb_head.LE_sb_Ident
+#define LE_sb_nshorts	sb_head.LE_sb_Nshorts
 #define sb_xstat	sb_union.sb_Xstat
 
 #define ISDATOP(pkt)	(((pkt)->pk_op & DATOP) != 0)
@@ -111,6 +121,9 @@ struct packet {
  * This is the connection structure. These are allocated in a packet of the
  * appropriate size
  */
+
+/* JAO: all connection entries are in native byte order. */
+
 struct connection {
 //	struct	csys_header cn_syshead;	/* System dependent info  */
 int cn_mode;
@@ -157,16 +170,15 @@ int cn_sflags;
 };
 
 #define setack(connection, packet) \
-	packet->pk_ackn = connection->cn_racked = connection->cn_rread
+do {	connection->cn_racked = connection->cn_rread; \
+ packet->LE_pk_ackn = LE_TO_SHORT(connection->cn_racked); } while (0)
 
-#define cn_fidx			cn_Fidx.ci_idx
-#define cn_faddr		cn_Faddr.ch_addr
-#define cn_fhost		cn_Faddr.ch_host
-#define cn_fsubnet		cn_Faddr.ch_subnet
-#define cn_lidx			cn_Lidx.ci_idx
-#define cn_ltidx		cn_Lidx.ci_tidx
-#define cn_luniq		cn_Lidx.ci_uniq
-#define cn_laddr		cn_Laddr.ch_addr
+#define cn_faddr		cn_Faddr
+#define cn_fhost		cn_Faddr.host
+#define cn_fsubnet		cn_Faddr.subnet
+#define cn_ltidx		cn_Lidx.tidx
+#define cn_luniq		cn_Lidx.uniq
+#define cn_laddr		cn_Laddr
 
 /* bit values for cn_flags */
 #ifdef	CHSTRCODE
@@ -243,10 +255,10 @@ struct	chxcvr	{
 	struct statxcvr	xc_xstat;	/* Xcvr metering */
 //	union xcinfo	xc_info;	/* Device dependent info */
 };
-#define xc_addr		xc_Addr.ch_addr
-#define xc_subnet	xc_Addr.ch_subnet
-#define xc_host		xc_Addr.ch_host
-#define xc_rcvd		xc_xstat.sx_Rcvd
+#define xc_addr		xc_Addr
+#define xc_subnet	xc_Addr.subnet
+#define xc_host		xc_Addr.host
+#define LELNG_xc_rcvd		xc_xstat.LELNG_sx_Rcvd
 #define xc_xmtd		xc_xstat.sx_Xmtd
 #define xc_crcr		xc_xstat.sx_Crcr
 #define xc_crci		xc_xstat.sx_Crci
@@ -273,9 +285,9 @@ struct chroute	{
 	unsigned short		rt_cost;	/* cost of access path */
 };
 #define rt_xcvr		rt_u.rt_Xcvr
-#define rt_addr		rt_u.rt_Addr.ch_addr
-#define rt_host		rt_u.rt_Addr.ch_host
-#define rt_subnet	rt_u.rt_Addr.ch_subnet
+#define rt_addr		rt_u.rt_Addr
+#define rt_host		rt_u.rt_Addr.host
+#define rt_subnet	rt_u.rt_Addr.subnet
 
 /* values for rt_type */
 #define CHNOPATH	0	/* No path to this subnet yet (now) */

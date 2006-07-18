@@ -14,6 +14,8 @@
 #include <fcntl.h>
 #include <signal.h>
 
+#include <stddef.h>
+
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <sys/un.h>
@@ -105,8 +107,7 @@ server_listen(int *newfd)
     memset(&unix_addr, 0, sizeof(unix_addr));
     unix_addr.sun_family = AF_UNIX;
     strcpy(unix_addr.sun_path, name);
-//    len = strlen(unix_addr.sun_path) + sizeof(unix_addr.sun_family);
-    len = strlen(unix_addr.sun_path) + sizeof unix_addr - sizeof unix_addr.sun_path;
+    len = SUN_LEN(&unix_addr);
 
     debugf(DBG_INFO, "bind to node %s\n", name);
 
@@ -137,16 +138,16 @@ server_accept(int listenfd, int *newfd)
     int fd;
     char text[32];
     
-    debugf(DBG_LOW, "server_accept()\n");
+    debugf(DBG_LOW, "server_accept(listenfd %d)\n", listenfd);
 
     len = sizeof(unix_addr);
+    memset(&unix_addr, 0, len);
+
     if ((fd = accept(listenfd, (struct sockaddr *)&unix_addr, &len)) < 0) {
         perror("accept(listenfd)");
         return -1;
     }
 
-//    len -= sizeof(unix_addr.sun_family);
-    len -= sizeof unix_addr - sizeof unix_addr.sun_path;
     unix_addr.sun_path[len] = 0;
 
     debugf(DBG_INFO, "server_accept() "

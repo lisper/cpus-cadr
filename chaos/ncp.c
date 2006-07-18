@@ -1,6 +1,10 @@
 /*
  * ncp.c
  * userspace NCP protocol implementation
+ *
+ * original; Brad Parker <brad@heeltoe.com>
+ * byte order cleanups; Joseph Oswald <josephoswald@gmail.com>
+ *
  * $Id$
  */
 
@@ -28,12 +32,12 @@ void
 setpkt(struct connection *conn, struct packet *pkt)
 {
 	pkt->pk_daddr = conn->cn_faddr;
-	pkt->pk_didx = conn->cn_fidx;
+	pkt->pk_didx = conn->cn_Fidx;
 	pkt->pk_saddr = conn->cn_laddr;
-	pkt->pk_sidx = conn->cn_lidx;
+	pkt->pk_sidx = conn->cn_Lidx;
 	pkt->pk_type = 0;
 	pkt->pk_next = NOPKT;
-	pkt->pk_fc = 0;
+	SET_PH_FC(pkt->pk_phead,0);
 }
 
 int
@@ -73,7 +77,7 @@ ch_write(struct connection *conn, struct packet *pkt)
 			goto err;
 		break;
 	case UNCOP:
-		pkt->pk_pkn = 0;
+		pkt->LE_pk_pkn = 0;
 		setpkt(conn, pkt);
 		senddata(pkt);
 		return 0;
@@ -88,7 +92,8 @@ ch_write(struct connection *conn, struct packet *pkt)
 		break;
 	}
 	setpkt(conn, pkt);
-	pkt->pk_pkn = ++conn->cn_tlast;
+        ++conn->cn_tlast;
+	pkt->LE_pk_pkn = LE_TO_SHORT(conn->cn_tlast);
 	senddata(pkt);
 	debugf(DBG_LOW, "ch_write: done");
 	return 0;
@@ -114,13 +119,13 @@ ch_read(struct connection *conn)
 	if (conn->cn_rtail == pkt)
 		conn->cn_rtail = NOPKT;
 	if (CONTPKT(pkt)) {
-		conn->cn_rread = pkt->pk_pkn;
+		conn->cn_rread = LE_TO_SHORT(pkt->LE_pk_pkn);
 		if (pkt->pk_op == EOFOP ||
 		    3 * (short)(conn->cn_rread - conn->cn_racked) > conn->cn_rwsize) {
 
 			debugf(DBG_LOW,
                                "ch_read: Conn#%x: rread=%d rackd=%d rsts=%d\n",
-			       conn->cn_lidx, conn->cn_rread,
+			       conn->cn_Lidx, conn->cn_rread,
 			       conn->cn_racked, conn->cn_rsts);
 
 			pkt->pk_next = NOPKT;
@@ -157,18 +162,19 @@ ch_open(int destaddr, int rwsize, struct packet *pkt)
 	 * local addresses - which we don't currently maintain in a
 	 * convenient form.
 	 */
-	conn->cn_laddr = chaos_myaddr;
-	conn->cn_faddr = destaddr;
+	SET_CH_ADDR(conn->cn_laddr,chaos_myaddr);
+	SET_CH_ADDR(conn->cn_faddr,destaddr);
 	conn->cn_state = CSRFCSENT;
-	conn->cn_fidx = 0;
+	SET_CH_INDEX(conn->cn_Fidx,0);
 	conn->cn_rwsize = rwsize;
 	conn->cn_rsts = rwsize / 2;
 	conn->cn_active = chaos_clock;
 	pkt->pk_op = RFCOP;
-	pkt->pk_fc = 0;
-	pkt->pk_ackn = 0;
+	SET_PH_FC(pkt->pk_phead,0);
+	pkt->LE_pk_ackn = 0;
 
-	debugf(DBG_LOW, "ch_open: Conn #%x: RFCS state\n", conn->cn_lidx);
+	debugf(DBG_LOW, "ch_open: Conn #%x: RFCS state\n", 
+               CH_INDEX_SHORT(conn->cn_Lidx));
 
 	/*
 	 * By making the RFC packet written like a data packet,
@@ -210,7 +216,7 @@ ch_listen(struct packet *pkt, int rwsize)
 
 	opkt = NOPKT;
 	for (pktl = chaos_rfclist; pktl != NOPKT; pktl = (opkt = pktl)->pk_next)
-		if (concmp(pktl, pkt->pk_cdata, (int)pkt->pk_len)) {
+		if (concmp(pktl, pkt->pk_cdata, (int)(PH_LEN(pkt->pk_phead)))) {
 			if(opkt == NOPKT)
 				chaos_rfclist = pktl->pk_next;
 			else
@@ -232,7 +238,8 @@ ch_listen(struct packet *pkt, int rwsize)
 	 */
 	pkt->pk_next = chaos_lsnlist;
 	chaos_lsnlist = pkt;
-	debugf(DBG_LOW, "ch_listen: Conn #%x: LISTEN state\n", conn->cn_lidx);
+	debugf(DBG_LOW, "ch_listen: Conn #%x: LISTEN state\n", 
+               CH_INDEX_SHORT(conn->cn_Lidx));
 
 	return(conn);
 }
@@ -257,12 +264,12 @@ ch_accept(struct connection *conn)
 		conn->cn_tlast = 0;
 		conn->cn_rsts = conn->cn_rwsize >> 1;
 		pkt->pk_op = OPNOP;
-		pkt->pk_len = sizeof(struct sts_data);
-		pkt->pk_receipt = conn->cn_rlast;
-		pkt->pk_rwsize = conn->cn_rwsize;
+		SET_PH_LEN(pkt->pk_phead,sizeof(struct sts_data));
+		pkt->LE_pk_receipt = LE_TO_SHORT(conn->cn_rlast);
+		pkt->LE_pk_rwsize = LE_TO_SHORT(conn->cn_rwsize);
 
 		debugf(DBG_LOW, "ch_accept: Conn #%o: open sent\n",
-                       conn->cn_lidx);
+                       CH_INDEX_SHORT(conn->cn_Lidx));
 
 		ch_write(conn, pkt);
 	}
@@ -281,7 +288,7 @@ ch_close(struct connection *conn, struct packet *pkt, int release)
 	    case CSRFCRCVD:
 		if (pkt != NOPKT) {
 			setpkt(conn, pkt);
-			pkt->pk_ackn = pkt->pk_pkn = 0;
+			pkt->LE_pk_ackn = pkt->LE_pk_pkn = 0;
 			sendctl(pkt);
 			pkt = NOPKT;
 		}

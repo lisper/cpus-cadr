@@ -1,5 +1,9 @@
 /*
  * rfc.c
+ *
+ * original; Brad Parker <brad@heeltoe.com>
+ * byte order cleanups; Joseph Oswald <josephoswald@gmail.com>
+ *
  * $Id$
  */
 
@@ -28,9 +32,9 @@ statusrfc(struct packet *pkt)
 	struct chxcvr *xp;
 	struct statdata *sp;
 	int i;
-	int saddr = pkt->pk_saddr;
-	int sidx = pkt->pk_sidx;
-	int daddr = pkt->pk_daddr;
+	int saddr = CH_ADDR_SHORT(pkt->pk_saddr);
+	int sidx = CH_INDEX_SHORT(pkt->pk_sidx);
+	int daddr = CH_ADDR_SHORT(pkt->pk_daddr);
 	
 	debugf(DBG_LOW, "statusrfc:");
 
@@ -42,21 +46,24 @@ statusrfc(struct packet *pkt)
 	i += CHSTATNAME;
 	if ((pkt = ch_alloc_pkt(i)) == NOPKT)
 		return;
-	pkt->pk_daddr = saddr;
-	pkt->pk_didx = sidx;
+	SET_CH_ADDR(pkt->pk_daddr,saddr);
+	SET_CH_INDEX(pkt->pk_didx,sidx);
 	pkt->pk_type = 0;
 	pkt->pk_op = ANSOP;
 	pkt->pk_next = NOPKT;
-	pkt->pk_saddr = daddr;
-	pkt->pk_sidx = pkt->pk_pkn = pkt->pk_ackn = 0;
-	pkt->pk_lenword = i;
+	SET_CH_ADDR(pkt->pk_saddr,daddr);
+	SET_CH_INDEX(pkt->pk_sidx,0);
+	pkt->LE_pk_pkn = pkt->LE_pk_ackn = 0;
+	SET_PH_LEN(pkt->pk_phead,i); 	  /* pkt->pk_lenword = i; */
+
 	chmove(chaos_myname, pkt->pk_status.sb_name, CHSTATNAME);
 	sp = &pkt->pk_status.sb_data[0];
 	for (r = chaos_routetab; r < &chaos_routetab[CHNSUBNET]; r++) {
 		if (r->rt_type == CHDIRECT) {
 			xp = r->rt_xcvr;
-			sp->sb_ident = 0400 + xp->xc_subnet;
-			sp->sb_nshorts = sizeof(struct statxcvr) / sizeof(short);
+			sp->LE_sb_ident = LE_TO_SHORT(0400 + xp->xc_subnet);
+			sp->LE_sb_nshorts = 
+			  LE_TO_SHORT(sizeof(struct statxcvr) / sizeof(short));
 			sp->sb_xstat = xp->xc_xstat;
 			sp = (struct statdata *)((char *)sp +
 				sizeof(struct stathead) +
@@ -99,12 +106,14 @@ timerfc(struct packet *pkt)
 {
 	long t;
 
+	debugf(DBG_LOW, "timerfc: answering");
+
 	pkt->pk_op = ANSOP;
 	pkt->pk_next = NOPKT;
-	pkt->pk_pkn = pkt->pk_ackn = 0;
-	pkt->pk_lenword = sizeof(long);
+	pkt->LE_pk_pkn = pkt->LE_pk_ackn = 0;
+	SET_PH_LEN(pkt->pk_phead, sizeof(long));
 	ch_time(&t);
-	pkt->pk_ldata[0] = t;
+	pkt->pk_ldata[0] = LE_TO_LONG(t);
 	reflect(pkt);
 }
 
@@ -115,10 +124,10 @@ uptimerfc(struct packet *pkt)
 
 	pkt->pk_op = ANSOP;
 	pkt->pk_next = NOPKT;
-	pkt->pk_pkn = pkt->pk_ackn = 0;
-	pkt->pk_lenword = sizeof(long);
+	pkt->LE_pk_pkn = pkt->LE_pk_ackn = 0;
+	SET_PH_LEN(pkt->pk_phead, sizeof(long));
 	ch_uptime(&t);
-	pkt->pk_ldata[0] = t;
+	pkt->pk_ldata[0] = LE_TO_LONG(t);
 	reflect(pkt);
 }
 
@@ -128,9 +137,9 @@ dumprtrfc(struct packet *pkt)
 	struct chroute *r;
 	short *wp;
 	int ndirect, i;
-	int saddr = pkt->pk_saddr;
-	int sidx = pkt->pk_sidx;
-	int daddr = pkt->pk_daddr;
+	int saddr = CH_ADDR_SHORT(pkt->pk_saddr);
+	int sidx = CH_INDEX_SHORT(pkt->pk_sidx);
+	int daddr = CH_ADDR_SHORT(pkt->pk_daddr);
 	
 	ch_free_pkt(pkt);
 	if ((pkt = ch_alloc_pkt(CHNSUBNET * 4)) != NOPKT) {
@@ -141,17 +150,18 @@ dumprtrfc(struct packet *pkt)
 				*wp++ = (ndirect++ << 1) + 1;
 				*wp++ = i;
 			} else {
-				*wp++ = r->rt_addr;
+				*wp++ = CH_ADDR_SHORT(r->rt_addr);
 				*wp++ = r->rt_cost;
 			}
-		pkt->pk_daddr = saddr;
-		pkt->pk_didx = sidx;
+		SET_CH_ADDR(pkt->pk_daddr,saddr);
+		SET_CH_INDEX(pkt->pk_didx,sidx);
 		pkt->pk_type = 0;
 		pkt->pk_op = ANSOP;
 		pkt->pk_next = NOPKT;
-		pkt->pk_saddr = daddr;
-		pkt->pk_sidx = pkt->pk_pkn = pkt->pk_ackn = 0;
-		pkt->pk_lenword = CHNSUBNET * 4;
+		SET_CH_ADDR(pkt->pk_saddr,daddr);
+		SET_CH_INDEX(pkt->pk_sidx,0);
+		pkt->LE_pk_pkn = pkt->LE_pk_ackn = 0;
+		SET_PH_LEN(pkt->pk_phead,CHNSUBNET * 4);
 		sendctl(pkt);
 	}
 }

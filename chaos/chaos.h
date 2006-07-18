@@ -1,16 +1,22 @@
 /*
  * chaos.h
+ *
+ * original; Brad Parker <brad@heeltoe.com>
+ * byte order cleanups; Joseph Oswald <josephoswald@gmail.com>
+ *
  * $Id$
  */
+
+#include "endian.h"
 
 #define CHMAXDATA	488	/* Maximum data per packet */
 #define CHSTATNAME	32	/* Length of node name in STATUS protocol */
 #define CHSP	(040)
-#define CHNL	(0200|'\r')
-#define CHTAB	(0200|'\t')
-#define CHFF	(0200|'\f')
-#define CHBS	(0200|'\b')
-#define CHLF	(0200|'\n')
+#define CHNL	(0200|015)
+#define CHTAB	(0200|011)
+#define CHFF	(0200|014)
+#define CHBS	(0200|010)
+#define CHLF	(0200|012) 
 
 /*
  * These are the connection states
@@ -80,48 +86,69 @@
 
 /*
  * A chaos network address.
+ * JAO: By convention, the subnet is the MSB and the host the LSB
+ * of the 16-bit (short) address. On the network, and in memory, 
+ * LSB comes first.
  */
-typedef	union	{
-	unsigned short 		ch_addr;	/* Address as a whole */
-	struct	{
-		unsigned char	ch_Host;	/* Host number on subnet */
-		unsigned char	ch_Subnet;	/* Subnet number */
-	}		ch_bytes;
+ 
+typedef	struct {
+  unsigned char	host;	/* Host number on subnet */
+  unsigned char	subnet;	/* Subnet number */
 } chaddr;
-#define ch_subnet	ch_bytes.ch_Subnet
-#define ch_host		ch_bytes.ch_Host
+
+#define CH_ADDR_SHORT(ch) ((ch).host | ((ch).subnet << 8))
+#define SET_CH_ADDR(ch,short) do { \
+ch.host = (short & 0xff); \
+ch.subnet = (short & 0xff00) >> 8; \
+} while (0)
 
 /*
  * A chaos index - a hosts connection identifier
+ * JAO: by convention, the LSB are used as an index into a table
+ * (ci_Tidx), and the MSB is incremented to keep connection indices
+ * unique to avoid collisions.
  */
-typedef	union	{
-	unsigned short	ci_idx;		/* Index as a whole */
-	struct	{
-		unsigned char	ci_Tidx;	/* Connection table index */
-		unsigned char	ci_Uniq;	/* Uniquizer for table slot */
-	}		ci_bytes;
+
+typedef	struct	{
+  unsigned char	tidx;	/* Connection table index */
+  unsigned char	uniq;	/* Uniquizer for table slot */
 } chindex;
-#define ci_uniq	ci_bytes.ci_Uniq
-#define ci_tidx	ci_bytes.ci_Tidx
+
+#define CH_INDEX_SHORT(ci) ((ci).tidx | ((ci).uniq << 8))
+#define SET_CH_INDEX(ci,short) do { ci.tidx = (short & 0xff); ci.uniq = (short & 0xff00) >> 8; } while (0)
+
+/* The packet length is 16 bits, but only the lowest 12 bits denote
+   an actual length; the MSB 4 bits are a forwarding count. We store them
+   in CHAOS network order, LSB first. */
+   
+typedef struct {
+  unsigned char lsb;
+  unsigned char msb;
+} chpklenfc;
+
+#define LENFC_LEN(lenfc) ((lenfc).lsb | (((lenfc).msb & 0x0f) << 8))
+#define LENFC_FC(lenfc) (((lenfc).msb & 0xf0) >> 4)
+#define SET_LENFC_LEN(lenfc,len) do {  (lenfc).lsb = (len) & 0xff; \
+(lenfc).msb = ((lenfc).msb & 0xf0) & (((len) & 0x0f00) >> 8); } while(0)
+#define SET_LENFC_FC(lenfc,fc) (lenfc).msb = (((lenfc).msb & 0x0f) | ((fc & 0xf) << 4))
+
+#define PH_LEN(ph) (LENFC_LEN(ph.ph_lenfc))
+#define PH_FC(ph)  (LENFC_FC(ph.ph_lenfc))
+#define SET_PH_LEN(ph,len) SET_LENFC_LEN(ph.ph_lenfc,len)
+#define SET_PH_FC(ph,fc) SET_LENFC_FC(ph.ph_lenfc,fc)
 
 struct pkt_header {
-	unsigned char		ph_type;	/* Protocol type */
-	unsigned char		ph_op;		/* Opcode of the packet */
-	union {
-		unsigned short	ph_lfcwhole;
-		struct	{
-			unsigned short ph_Len:12;	/* Length of packet */
-			unsigned short ph_fcount:4;	/* Forwarding count */
-		}	ph_lfcparts;
-	}		ph_lenfc;
+  unsigned char		ph_type;	/* Protocol type */
+  unsigned char		ph_op;		/* Opcode of the packet */
+  chpklenfc             ph_lenfc;
+  
 	chaddr		ph_daddr;		/* Destination address */
 	chindex		ph_didx;		/* Destination index */
 	chaddr		ph_saddr;		/* Source address */
 	chindex		ph_sidx;		/* Source index */
-	unsigned short	ph_pkn;			/* Packet number */
-	unsigned short	ph_ackn;		/* Acknowledged packet number */
+  unsigned short	LE_ph_pkn; 		/* Packet number */
+  unsigned short	LE_ph_ackn; 	/* Acknowledged packet number */
 };
-#define ph_len ph_lenfc.ph_lfcparts.ph_Len
 
 /*
  * Record mode packet structure.
