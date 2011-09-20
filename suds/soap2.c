@@ -1,5 +1,5 @@
 /*
- * soap.c
+ * soap2.c
  *
  * try and decode SUDS data files into an intermediate netlist
  *
@@ -32,6 +32,8 @@ int up_size;
 int show_suds;
 int show_follow;
 int do_netlist;
+int do_drawing;
+int do_draw_defs;
 int dump_flag;
 int debug;
 
@@ -68,7 +70,7 @@ struct prop_s {
 };
 
 #define MAX_BODY_DEF_PROPS 100
-#define MAX_BODY_DEF_LINES 100
+#define MAX_BODY_DEF_LINES 500
 #define MAX_BODY_DEF_PINS 100
 
 struct body_def_s {
@@ -136,13 +138,6 @@ struct point_s {
 	int named_pin_index;
 };
 
-#define MAX_POINTS (50*1000)
-#define MID_POINTS (MAX_POINTS / 2)
-int point_count;
-int zero_point_max;
-int mixed_point_count;
-struct point_s points[MAX_POINTS];
-
 struct signal_s {
 	struct signal_s *next;
 	char *name;
@@ -151,10 +146,21 @@ struct signal_s {
 	struct body_s *body;
 };
 
+#define MAX_POINTS (50*1000)
+#define MID_POINTS (MAX_POINTS / 2)
+int point_count;
+int zero_point_max;
+int mixed_point_count;
+struct point_s points[MAX_POINTS];
+
 struct signal_s *signals;
 
 struct header_s header;
 struct trailer_s trailer;
+
+#define MAX_BODY_DEFS 1000
+int body_def_count;
+struct body_def_s body_defs[MAX_BODY_DEFS];
 
 #define MAX_BODIES 100
 int body_count;
@@ -168,6 +174,74 @@ struct set_center_s set_centers[MAX_SET_CENTERS];
 extern char *strdup();
 
 /* ---------------------------------------------------------------- */
+
+int plot_body_def(struct body_def_s *bd, int xoff, int yoff);
+
+/* sign extend an 18 bit signed int */
+int
+int18(int n)
+{
+n &= 0x3ffff;
+	if (n & 0x20000)
+//	if (n & (1 << 17))
+		return n | 0xfffc0000;
+	return n;
+}
+
+struct body_def_s *
+find_body_def(char *name)
+{
+	int i;
+
+	for (i = 0; i < body_def_count; i++) {
+		struct body_def_s *bd = &body_defs[i];
+		if (strcmp(bd->name_of_body_def, name) == 0)
+			return bd;
+	}
+
+	return NULL;
+}
+
+int
+plot_body(struct body_s *bdy)
+{
+	int x, y;
+	int fx, fy, font, size;
+	struct body_def_s *bd;
+
+	x = bdy->loc[0];
+	y = bdy->loc[1];
+
+	font = 0;
+	size = 10;
+
+	printf("body: const off (%d, %d)\n", 
+	       bdy->xy_const_offset[0],
+	       bdy->xy_const_offset[1]);
+
+	if (0) {
+		fx = x + bdy->xy_const_offset[0];
+		fy = y + bdy->xy_const_offset[1];
+		draw_text(fx, fy+8, font, size, bdy->name_of_body);
+	}
+
+y -= 10;
+	if (1) {
+		fx = x + bdy->xy_const_offset[0];
+		fy = y + bdy->xy_const_offset[1];
+		draw_text(fx, fy, font, size, bdy->refdes);
+	}
+
+	fx = x - bdy->xy_const_offset[0];
+//	fy = y + bdy->xy_const_offset[1]/2;
+	fy = y;
+//if (y > 0) fy += 10;
+
+	bd = find_body_def(bdy->name_of_body);
+	if (bd) {
+		plot_body_def(bd, fx, fy);
+	}
+}
 
 int
 add_body(struct body_s *bdy)
@@ -205,14 +279,6 @@ show_point_dir(struct point_s *pnt, char *dir, int id0, int id1)
 	}
 }
 
-int
-n18(int n)
-{
-	if (n & 0x20000)
-		n |= 0xfffc0000;
-	return n;
-}
-
 void
 show_point(struct point_s *pnt)
 {
@@ -236,8 +302,8 @@ show_point(struct point_s *pnt)
 	
 	if (pnt->xy_const_offset[0] || pnt->xy_const_offset[1])
 		printf("xy_const_offset %d %d ",
-		       n18(pnt->xy_const_offset[0]),
-		       n18(pnt->xy_const_offset[1]));
+		       pnt->xy_const_offset[0],
+		       pnt->xy_const_offset[1]);
 	
 	if (pnt->id[0] != 0) {
 		printf("%s ", bodies[pnt->id[1]].refdes);
@@ -249,6 +315,82 @@ show_point(struct point_s *pnt)
 	show_point_dir(pnt, "r", pnt->r[0],pnt->r[1]);
 
 	printf("\n");
+}
+
+void
+plot_line_2p(struct point_s *p1, struct point_s *p2)
+{
+	int x1, x2, y1, y2;
+
+	x1 = p1->loc[0];
+	y1 = p1->loc[1];
+	x2 = p2->loc[0];
+	y2 = p2->loc[1];
+	draw_line_color(x1, y1, x2, y2);
+}
+
+void
+plot_point(struct point_s *pnt)
+{
+	int x, y, font, size;
+	int index_r, index_l, index_u, index_d;
+
+	x = pnt->loc[0];
+	y = pnt->loc[1];
+
+	font = 0;
+	size = pnt->text_size[1];
+
+	x += pnt->xy_const_offset[0];
+	y += pnt->xy_const_offset[1];
+
+	draw_text(x, y/*+8*/, font, size, pnt->name_of_pin);
+
+	printf("pin '%s': u(%d,%d) d(%d,%d) r(%d %d) l(%d %d)\n",
+	       pnt->name_of_pin,
+	       pnt->u[0], pnt->u[1],
+	       pnt->d[0], pnt->d[1],
+	       pnt->r[0], pnt->r[1],
+	       pnt->l[0], pnt->l[1]);
+
+
+	index_u = find_id(pnt->u[0], pnt->u[1]);
+	index_d = find_id(pnt->d[0], pnt->d[1]);
+	index_r = find_id(pnt->r[0], pnt->r[1]);
+	index_l = find_id(pnt->l[0], pnt->l[1]);
+
+	if (index_u < 0)
+		printf("u: could not find %d %d\n", pnt->u[0], pnt->u[1]);
+	if (index_d < 0)
+		printf("u: could not find %d %d\n", pnt->d[0], pnt->d[1]);
+	if (index_r < 0)
+		printf("u: could not find %d %d\n", pnt->r[0], pnt->r[1]);
+	if (index_l < 0)
+		printf("u: could not find %d %d\n", pnt->l[0], pnt->l[1]);
+
+	if (1) printf("index u %d, d %d, r %d, l %d\n",
+		      index_u, index_d, index_r, index_l);
+
+	if (index_u > 0) {
+		plot_line_2p(pnt, &points[index_u]);
+		show_point(&points[index_u]);
+	}
+
+	if (index_d > 0) {
+		plot_line_2p(pnt, &points[index_d]);
+		show_point(&points[index_d]);
+	}
+
+	if (index_r > 0) {
+		plot_line_2p(pnt, &points[index_r]);
+		show_point(&points[index_r]);
+	}
+
+	if (index_l > 0) {
+		plot_line_2p(pnt, &points[index_l]);
+		show_point(&points[index_l]);
+	}
+
 }
 
 int
@@ -569,7 +711,7 @@ parse_header(int p, struct header_s *h)
 
 		p = grab_6bit_ascii(p, l_filespec);
 		if (show_suds)
-			printf("filespec '%s'\n", l_filespec);
+			printf("library filespec '%s'\n", l_filespec);
 
 		h->h_file_specs[h->h_file_spec_count++] = strdup(l_type_names);
 	}
@@ -578,15 +720,155 @@ parse_header(int p, struct header_s *h)
 }
 
 int
+plot_body_def(struct body_def_s *bd, int xoff, int yoff)
+{
+	int x, y, font, size;
+	int i;
+	int x1, x2, y1, y2;
+
+	if (debug && 0)
+		printf("plot_body_def(%p) name: '%s'\n",
+		       bd, bd->name_of_body_def);
+
+	printf("body_def: loc char off (%d,%d), loc off (%d,%d)\n",
+	       bd->loc_char_offset[0], bd->loc_char_offset[1],
+	       bd->loc_offset[0], bd->loc_offset[1]);
+
+	font = 1;
+	size = 8;
+
+	x = xoff + bd->loc_char_offset[0];
+	y = yoff + bd->loc_char_offset[1];
+	draw_text(x, y, font, size, bd->name_of_body_def);
+
+
+	x = xoff + bd->loc_offset[0];
+	y = yoff + bd->loc_offset[1];
+
+	/* plot property text */
+	for (i = 0; i < bd->prop_count; i++) {
+		char *tn;
+		int ts;
+		struct prop_s *p;
+
+		p = bd->props[i];
+		if (debug) {
+			printf("prop %d: name '%s', value '%s' "
+			       "loc (%d, %d) offset (%d, %d)\n",
+			       i, p->prop_name_text, p->value_text,
+			       p->text_loc[0], p->text_loc[1],
+			       p->xy_const_offset[0], p->xy_const_offset[1]);
+		}
+
+		if (p->prop_name_text[0])
+			continue;
+
+		tn = p->value_text;
+		ts = p->text_size;
+		if (ts <= 1) ts = 8;
+
+		printf("prop %s offset (%d,%d)\n",
+		       p->value_text,
+		       p->xy_const_offset[0], p->xy_const_offset[1]);
+
+		x1 = x + p->text_loc[0] + p->xy_const_offset[0];
+		y1 = y + p->text_loc[1] + p->xy_const_offset[1];
+		y1 += 8;
+
+		/* check for ^W */
+		if (strchr(tn, 'W'-'@') == 0) {
+			draw_text(x1, y1, font, ts, tn);
+		} else {
+			char line[512];
+			char *p, *last;
+
+			x1 += ts*2;
+			y1 -= ts;
+
+			strcpy(line, tn);
+			for (p = line; p;) {
+				last = p;
+				p = strchr(p, 'W'-'@');
+				if (p) {
+					*p++ = 0;
+				}
+
+				draw_text(x1, y1, font, ts, last);
+				y1 -= ts+2;
+			}
+		}
+
+	}
+
+	x = xoff + bd->loc_offset[0];
+	y = yoff + bd->loc_offset[1];
+
+	/* plot pins */
+	for (i = 0; i < bd->pin_count; i++) {
+		int n;
+		char txt[16];
+
+		x1 = x + bd->pins[i].loc[0];
+		y1 = y + bd->pins[i].loc[1];
+
+		if (debug) {
+			printf("pin %d: pin# %d, pos %d, bits %o\n",
+			       i, bd->pins[i].name,
+			       bd->pins[i].pos, bd->pins[i].bits);
+		}
+
+		if (bd->pins[i].bits & 0400000)
+			continue;
+
+		n = bd->pins[i].name;
+		sprintf(txt, "%d", n);
+
+		switch (bd->pins[i].pos & 0777)
+		{
+		case 0:
+		case 3:
+		case 6:
+			draw_line(x1, y1, x1+15, y1);
+			draw_text(x1+5, y1+6, font, 8, txt);
+			break;
+		case 2:
+		case 7:
+			draw_line(x1, y1, x1-15, y1);
+			draw_text(x1-15, y1+6, font, 8, txt);
+			break;
+		}
+	}
+
+	x = xoff + bd->loc_offset[0];
+	y = yoff + bd->loc_offset[1];
+
+	/* plot lines */
+	x1 = 0;
+	y1 = 0;
+	for (i = 0; i < bd->line_count; i++) {
+		x2 = x + bd->lines[i][0];
+		y2 = y + (bd->lines[i][1] & ~1);
+		if ((bd->lines[i][1] & 1) == 0) {
+			draw_line(x1, y1, x2, y2);
+		}
+		x1 = x2;
+		y1 = y2;
+	}
+
+}
+
+int
 parse_body_def(int p)
 {
-	struct body_def_s body_def;
-	struct body_def_s *bd = &body_def;
+	struct body_def_s *bd;
 
 	if (debug) printf("parse_body_def(%d)\n", p);
 
 	while (1) {
-		if (debug) printf("top %d\n", p);
+		if (debug) printf("top %d; body_def_count %d\n",
+				  p, body_def_count);
+
+		bd = &body_defs[body_def_count++];
 
 		if (up[p] == 0 && up[p+1] == 0) {
 			p += 2;
@@ -606,40 +888,62 @@ parse_body_def(int p)
 		bd->bits = up[p];
 		p += 2;
 
-		bd->loc_offset[0] = up[p++];
-		bd->loc_offset[1] = up[p++];
+		bd->loc_offset[0] = int18(up[p++]);
+		bd->loc_offset[1] = int18(up[p++]);
 
-		bd->loc_char_offset[0] = up[p++];
-		bd->loc_char_offset[1] = up[p++];
+		bd->loc_char_offset[0] = int18(up[p++]);
+		bd->loc_char_offset[1] = int18(up[p++]);
 
 		if (show_suds) printf("body def '%s'\n", bd->name_of_body_def);
 
 		while (1) {
-			if (debug) printf("loop1 top, p %d\n", p);
+			//if (debug) printf("loop1 top, p %d\n", p);
 
 			if (up[p] == 0 && up[p+1] == 0400000) {
 				p += 2;
 				break;
 			}
 
-			bd->pins[bd->pin_count].loc[0] = up[p++];
-			bd->pins[bd->pin_count].loc[1] = up[p++];
+			bd->pins[bd->pin_count].loc[0] = int18(up[p++]);
+			bd->pins[bd->pin_count].loc[1] = int18(up[p++]);
 			bd->pins[bd->pin_count].bits = up[p++];
 			bd->pins[bd->pin_count].pinid = up[p++];
 			bd->pins[bd->pin_count].pos = up[p++];
 			bd->pins[bd->pin_count].name = up[p++];
+
+			if (debug) {
+				printf("pin %d: (%d, %d) bits 0%o "
+				       "pin id %d, pos 0%2o, name %d\n",
+				       bd->pin_count,
+				       bd->pins[bd->pin_count].loc[0],
+				       bd->pins[bd->pin_count].loc[1],
+				       bd->pins[bd->pin_count].bits,
+				       bd->pins[bd->pin_count].pinid,
+				       bd->pins[bd->pin_count].pos,
+				       bd->pins[bd->pin_count].name);
+			}
+
+			bd->pin_count++;
 		}
 
 		while (1) {
-			if (debug) printf("loop2 top, p %d\n", p);
+			//if (debug) printf("loop2 top, p %d\n", p);
 
 			if (up[p] == 0 && up[p+1] == 0400000) {
 				p += 2;
 				break;
 			}
 
-			bd->lines[bd->line_count][0] = up[p++];
-			bd->lines[bd->line_count][1] = up[p++];
+			bd->lines[bd->line_count][0] = int18(up[p++]);
+			bd->lines[bd->line_count][1] = int18(up[p++]);
+
+			if (debug) {
+				printf("line %d: (%d, %d)\n",
+				       bd->line_count,
+				       bd->lines[bd->line_count][0],
+				       bd->lines[bd->line_count][1]);
+			}
+
 			bd->line_count++;
 		}
 
@@ -661,15 +965,15 @@ parse_body_def(int p)
 
 			pp->text_size = up[p+1]; p += 2;
 
-			pp->text_loc[0] = up[p++];
-			pp->text_loc[1] = up[p++];
+			pp->text_loc[0] = int18(up[p++]);
+			pp->text_loc[1] = int18(up[p++]);
 
-			pp->xy_const_offset[0] = up[p++];
-			pp->xy_const_offset[1] = up[p++];
+			pp->xy_const_offset[0] = int18(up[p++]);
+			pp->xy_const_offset[1] = int18(up[p++]);
 
 			if (show_suds) {
-				printf("value '%s'\n", pp->value_text);
 				printf("prop name '%s'\n", pp->prop_name_text);
+				printf("value '%s'\n", pp->value_text);
 			}
 		}
 	}
@@ -698,15 +1002,6 @@ parse_macro(int p)
 	}
 
 	return p;
-}
-
-/* sign extend an 18 bit signed int */
-int
-int18(int n)
-{
-	if (n & (1 << 17))
-		return n | 0xfffc0000;
-	return n;
 }
 
 int
@@ -738,11 +1033,11 @@ parse_body(int p)
 		p++;
 		b->card_body_loc = up[p++];
 
-		b->xy_const_offset[0] = up[p++];
-		b->xy_const_offset[1] = up[p++];
+		b->xy_const_offset[0] = int18(up[p++]);
+		b->xy_const_offset[1] = int18(up[p++]);
 
-		b->xy_char_offset[0] = up[p++];
-		b->xy_char_offset[1] = up[p++];
+		b->xy_char_offset[0] = int18(up[p++]);
+		b->xy_char_offset[1] = int18(up[p++]);
 
 	no_xy:
 		b->body_bits = up[p++];
@@ -767,11 +1062,11 @@ parse_body(int p)
 			pp->text_size = up[p+1];
 			p += 2;
 
-			pp->text_loc[0] = up[p++];
-			pp->text_loc[1] = up[p++];
+			pp->text_loc[0] = int18(up[p++]);
+			pp->text_loc[1] = int18(up[p++]);
 
-			pp->xy_const_offset[0] = up[p++];
-			pp->xy_const_offset[1] = up[p++];
+			pp->xy_const_offset[0] = int18(up[p++]);
+			pp->xy_const_offset[1] = int18(up[p++]);
 
 			if (show_suds) {
 				printf("value_text '%s'\n", pp->value_text);
@@ -817,8 +1112,9 @@ parse_set_center(int p)
 		sc = &set_centers[set_center_count++];
 
 		/* loc of set center */
-		sc->loc[0] = up[p++];
-		sc->loc[1] = up[p++];
+		sc->loc[0] = int18(up[p++]);
+		sc->loc[1] = int18(up[p++]);
+ printf("center %d %d\n", sc->loc[0], sc->loc[1]);
 
 		/* body id's */
 		while (1) {
@@ -829,6 +1125,7 @@ parse_set_center(int p)
 
 			sc->body_id[sc->body_id_count][0] = up[p++];
 			sc->body_id[sc->body_id_count][1] = up[p++];
+printf("id %d %d\n", sc->body_id[sc->body_id_count][0], sc->body_id[sc->body_id_count][1]);
 			sc->body_id_count++;
 		}
 
@@ -841,6 +1138,7 @@ parse_set_center(int p)
 
 			sc->point_id[sc->point_id_count][0] = up[p++];
 			sc->point_id[sc->point_id_count][1] = up[p++];
+printf("id %d %d\n", sc->point_id[sc->point_id_count][0], sc->point_id[sc->point_id_count][1]);
 			sc->point_id_count++;
 		}
 	}
@@ -895,38 +1193,41 @@ parse_pins(int p)
 		pnt->text_size[1] = up[p++];
 
 		pnt->name_of_pin[0] = 0;
+
+		//if (debug) printf("pnt bits 0%o\n", pnt->bits);
 				
 		switch (pnt->bits) {
 		case 0:
 			if (debug) printf("bits 0\n");
 			if (pnt->text_size[1]) {
-				pnt->xy_const_offset[0] = up[p++];
-				pnt->xy_const_offset[1] = up[p++];
+				pnt->xy_const_offset[0] = int18(up[p++]);
+				pnt->xy_const_offset[1] = int18(up[p++]);
 				p = grab_7bit_ascii(p, pnt->name_of_pin);
 			}
 			break;
 		case 011000:
 		case 001000:
+			if (debug) printf("bits 01/11\n");
 			p += 2;
 			p += 2;
 			break;
-		case 200000:
-			if (debug) printf("bits 20\n");
+		case 040000:
+			if (debug) printf("bits 40\n");
+
+			pnt->xy_const_offset[0] = int18(up[p++]);
+			pnt->xy_const_offset[1] = int18(up[p++]);
+
+			p = grab_7bit_ascii(p, pnt->name_of_pin);
+			break;
+		case 0200000:
+			if (debug) printf("bits 200\n");
 			if (pnt->text_size[0] == 0 && pnt->text_size[1] == 0) {
 				pnt->ioloc[0] = up[p++];
 				pnt->ioloc[1] = up[p++];
 
-				pnt->xy_const_offset[0] = up[p++];
-				pnt->xy_const_offset[1] = up[p++];
+				pnt->xy_const_offset[0] = int18(up[p++]);
+				pnt->xy_const_offset[1] = int18(up[p++]);
 			}
-			break;
-		case 040000:
-			if (debug) printf("bits 04\n");
-
-			pnt->xy_const_offset[0] = up[p++];
-			pnt->xy_const_offset[1] = up[p++];
-
-			p = grab_7bit_ascii(p, pnt->name_of_pin);
 			break;
 		}
 
@@ -942,13 +1243,14 @@ parse_pins(int p)
 			printf("pin '%s'\n", pnt->name_of_pin);
 			printf("loc (%d, %d)\n", pnt->loc[0], pnt->loc[1]);
 			printf("id (%d, %d) ", pnt->id[0], pnt->id[1]);
-			if (pnt->id[0] && pnt->id[1])
+			if (pnt->id[0] && pnt->id[1]) {
 				printf("%s ",
 				       bodies[pnt->id[1]].name_of_body);
-			printf("%s\n",
-			       bodies[pnt->id[1]].refdes);
+				printf("%s\n",
+				       bodies[pnt->id[1]].refdes);
+			}
 
-			printf("bits %d, pin name %d\n",
+			printf("bits 0%o, pin name %d\n",
 			       pnt->bits, pnt->pinname);
 		}
 
@@ -978,7 +1280,8 @@ parse_pins(int p)
 			id1 = pnt->r[1];
 		}
 		
-		if (id1 && show_suds) {
+		if (id0 && id1 && show_suds) {
+			//printf("id1 %d %08x\n", id1, id1);
 			printf("%s ", bodies[id1].name_of_body);
 			printf("%s ", bodies[id1].refdes);
 			printf("\n");
@@ -1081,8 +1384,9 @@ parse_suds()
 */
 
 	if (show_suds) {
-		printf("bodies %d\n", body_count);
-		printf("points %d\n", point_count);
+		printf("body definitions %d\n", body_def_count);
+		printf("bodies           %d\n", body_count);
+		printf("points           %d\n", point_count);
 	}
 }
 
@@ -1906,7 +2210,7 @@ format_bodies(void)
 }
 
 void
-draw_all(void)
+draw_points(void)
 {
 	int i;
 
@@ -1921,8 +2225,106 @@ draw_all(void)
 		if (p->name_of_pin[0] == 0)
 			continue;
 
-		show_point(p);
+		if (0) show_point(p);
+		plot_point(p);
 	}
+}
+
+void
+draw_bodies(void)
+{
+	int i;
+
+	for (i = 1; i < MAX_BODIES; i++) {
+		struct body_s *b = &bodies[i];
+
+		if (b->body_id == 0) {
+			continue;
+		}
+
+		plot_body(b);
+	}
+}
+
+void
+draw_body_defs(void)
+{
+	int i, xoff, yoff;
+
+	if (debug) printf("draw_body_defs() count %d\n", body_def_count);
+
+	xoff = 0;
+	yoff = -100;
+
+	if (0) {
+		xoff = -400;
+		yoff = -300;
+	}
+
+	for (i = 0; i < body_def_count; i++) {
+		struct body_def_s *b = &body_defs[i];
+
+		plot_body_def(b, xoff, yoff);
+
+		if (1) {
+			draw_update();
+			getchar();
+			draw_clear();
+		}
+
+		if (0) {
+			xoff += 100;
+			if (xoff >= 300) {
+				xoff = -300;
+				yoff += 100;
+			}
+		}
+	}
+}
+
+void
+draw_defs(void)
+{
+	draw_body_defs();
+}
+
+void
+draw_all(void)
+{
+	draw_bodies();
+	draw_points();
+}
+
+int
+process_library(char *filename, int show, int dump)
+{
+	if (show) printf("unpack: %s\n", filename);
+
+	unpack(filename);
+	parse_suds();
+
+	return 0;
+}
+
+int
+process_suds_file(char *filename, int show, int dump)
+{
+	set_name(filename);
+
+	if (show) printf("unpack: %s\n", filename);
+
+	unpack(filename);
+
+	if (show || dump) {
+		printf("%d words (18 bit)\n", up_size);
+	}
+
+	if (dump) {
+		dump_raw();
+		exit(0);
+	}
+
+	parse_suds();
 }
 
 void
@@ -1932,6 +2334,7 @@ usage(void)
 	fprintf(stderr, "-d	debug output\n");
 	fprintf(stderr, "-s	show SUDS data\n");
 	fprintf(stderr, "-r	dump raw 18-bit words\n");
+	fprintf(stderr, "-p	plot\n");
 	exit(0);
 }
 
@@ -1941,17 +2344,27 @@ extern int optind;
 main(int argc, char *argv[])
 {
 	int c, i;
+	char *library_filename = NULL;
 
-	while ((c = getopt(argc, argv, "dfnrs")) != -1) {
+	while ((c = getopt(argc, argv, "dDfl:nprs")) != -1) {
 		switch (c) {
 		case 'd':
 			debug++;
 			break;
+		case 'D':
+			do_draw_defs++;
+			break;
 		case 'f':
 			show_follow = 1;
 			break;
+		case 'l':
+			library_filename = strdup(optarg);
+			break;
 		case 'n':
 			do_netlist = 1;
+			break;
+		case 'p':
+			do_drawing = 1;
 			break;
 		case 'r':
 			dump_flag = 1;
@@ -1970,21 +2383,13 @@ main(int argc, char *argv[])
 	up = (unsigned int *)malloc(1024*1024);
 	up_size = 0;
 
-	set_name(argv[optind]);
-
-	unpack(argv[optind]);
-
-	if (show_suds || dump_flag) {
-		printf("%d words (18 bit)\n", up_size);
+	if (library_filename) {
+		process_library(library_filename, show_suds, dump_flag);
 	}
 
-	if (dump_flag) {
-		dump_raw();
-		exit(0);
-	}
+	process_suds_file(argv[optind], show_suds, dump_flag);
 
-	parse_suds();
-
+	/* */
 	if (body_count == 0 && point_count == 0)
 		do_netlist = 0;
 
@@ -1992,6 +2397,17 @@ main(int argc, char *argv[])
 //		follow_points();
 		find_all_net_names();
 		format_bodies();
+	}
+
+	if (do_drawing) {
+		draw_init();
+		draw_all();
+
+		if (do_draw_defs) {
+			draw_defs();
+		}
+
+		draw_wait();
 	}
 
 	exit(0);

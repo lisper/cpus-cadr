@@ -18,6 +18,8 @@
 #include <sys/wait.h>
 #include <time.h>
 #include <string.h>
+#include <unistd.h>
+#include <stdlib.h>
 
 FILE *in, *out;
 
@@ -213,6 +215,8 @@ unpack(char *file)
 	register int i;
 	static unsigned long word[5];
 	static unsigned long incnt;
+
+	up_size = 0;
 
 	in=fopen(file,"rb");	/* uncompress/open file */
 	if(in==NULL) {
