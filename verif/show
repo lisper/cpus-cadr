@@ -1,0 +1,5 @@
+#!/bin/sh
+./maketraces.sh >traces
+#gtkwave cadr.vcd traces
+/usr/local/src/gtkwave-2.0.0pre5/src/gtkwave cadr.vcd traces
+
