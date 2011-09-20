@@ -4,88 +4,83 @@
  */
 
 module chipdebug;
-  reg a0, a1, a2, a3, b0, b1, b2, b3;
-  reg m, cin_n, s0, s1, s2, s3;
-  wire f0, f1, f2, f3;
-  wire x, y, cout_n, aeb;
+  reg sel, enb_n, a0, a1, b0, b1, c0, c1, d0, d1;
+  wire ay, by, cy, dy;
 
-part_74S181  a_74S181 (
-  .S3(s3),
-  .S2(s2),
-  .S1(s1),
-  .S0(s0),
-  .CIN_N(cin_n),
-  .M(m),
-  .F0(f0),
-  .F1(f1),
-  .F2(f2),
-  .F3(f3),
-  .AEB(aeb),
-  .X(x),
-  .COUT_N(cout_n),
-  .Y(y),
-  .B3(b3),
-  .A3(a3),
-  .B2(b2),
-  .A2(a2),
+part_74S258  a_74S258 (
+  .SEL(sel),
+  .D0(d0),
+  .D1(d1),
+  .DY(dy ),
+  .C0(c0),
+  .C1(c1),
+  .CY(cy ),
+  .BY(by ),
   .B1(b1),
-  .A1(a1),
   .B0(b0),
-  .A0(a0)
+  .AY(ay ),
+  .A1(a1),
+  .A0(a0),
+  .ENB_N(enb_n)
 );
 
 initial
 begin
 #0  begin
-        cin_n <= 1; m <= 0;
-	a0 <= 1; a1 <= 1; a2 <= 1; a3 <= 1;
-	b0 <= 0; b1 <= 0; b2 <= 0; b3 <= 0;
-	s0 <= 0; s1 <= 0; s2 <= 0; s3 <= 0;
+        {a0,b0,c0,d0} <= 4'b0000; {a1,b1,c1,d1} <= 4'b0000; sel <= 0; enb_n = 1;
     end
 
-#5 {s3,s2,s1,s0} <= 4'b0000;
-#5 {s3,s2,s1,s0} <= 4'b0001;
-#5 {s3,s2,s1,s0} <= 4'b0010;
-#5 {s3,s2,s1,s0} <= 4'b0011;
-#5 {s3,s2,s1,s0} <= 4'b0100;
-#5 {s3,s2,s1,s0} <= 4'b0101;
-#5 {s3,s2,s1,s0} <= 4'b0110;
-#5 {s3,s2,s1,s0} <= 4'b0111;
-#5 {s3,s2,s1,s0} <= 4'b1000;
-#5 {s3,s2,s1,s0} <= 4'b1001;
-#5 {s3,s2,s1,s0} <= 4'b1010;
-#5 {s3,s2,s1,s0} <= 4'b1011;
-#5 {s3,s2,s1,s0} <= 4'b1100;
-#5 {s3,s2,s1,s0} <= 4'b1101;
-#5 {s3,s2,s1,s0} <= 4'b1110;
-#5 {s3,s2,s1,s0} <= 4'b1111;
-   
-#5 begin m <= 1; end
+#5 {a0,b0,c0,d0} <= 4'b0101; {a1,b1,c1,d1} <= 4'b1010; sel <= 0; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b0101; {a1,b1,c1,d1} <= 4'b1010; sel <= 1; enb_n = 0;
 
-#5 {s3,s2,s1,s0} <= 4'b0000;
-#5 {s3,s2,s1,s0} <= 4'b0001;
-#5 {s3,s2,s1,s0} <= 4'b0010;
-#5 {s3,s2,s1,s0} <= 4'b0011;
-#5 {s3,s2,s1,s0} <= 4'b0100;
-#5 {s3,s2,s1,s0} <= 4'b0101;
-#5 {s3,s2,s1,s0} <= 4'b0110;
-#5 {s3,s2,s1,s0} <= 4'b0111;
-#5 {s3,s2,s1,s0} <= 4'b1000;
-#5 {s3,s2,s1,s0} <= 4'b1001;
-#5 {s3,s2,s1,s0} <= 4'b1010;
-#5 {s3,s2,s1,s0} <= 4'b1011;
-#5 {s3,s2,s1,s0} <= 4'b1100;
-#5 {s3,s2,s1,s0} <= 4'b1101;
-#5 {s3,s2,s1,s0} <= 4'b1110;
-#5 {s3,s2,s1,s0} <= 4'b1111;
+#5 {a0,b0,c0,d0} <= 4'b0000; {a1,b1,c1,d1} <= 4'b0000; sel <= 0; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b0001; {a1,b1,c1,d1} <= 4'b0000; sel <= 0; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b0010; {a1,b1,c1,d1} <= 4'b0000; sel <= 0; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b0011; {a1,b1,c1,d1} <= 4'b0000; sel <= 0; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b0100; {a1,b1,c1,d1} <= 4'b0000; sel <= 0; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b0101; {a1,b1,c1,d1} <= 4'b0000; sel <= 0; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b0110; {a1,b1,c1,d1} <= 4'b0000; sel <= 0; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b0111; {a1,b1,c1,d1} <= 4'b0000; sel <= 0; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b1000; {a1,b1,c1,d1} <= 4'b0000; sel <= 0; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b1001; {a1,b1,c1,d1} <= 4'b0000; sel <= 0; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b1010; {a1,b1,c1,d1} <= 4'b0000; sel <= 0; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b1011; {a1,b1,c1,d1} <= 4'b0000; sel <= 0; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b1100; {a1,b1,c1,d1} <= 4'b0000; sel <= 0; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b1101; {a1,b1,c1,d1} <= 4'b0000; sel <= 0; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b1110; {a1,b1,c1,d1} <= 4'b0000; sel <= 0; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b1111; {a1,b1,c1,d1} <= 4'b0000; sel <= 0; enb_n = 0;
+
+#5 {a0,b0,c0,d0} <= 4'b0; {a1,b1,c1,d1} <= 4'b0000; sel <= 1; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b0; {a1,b1,c1,d1} <= 4'b0001; sel <= 1; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b0; {a1,b1,c1,d1} <= 4'b0010; sel <= 1; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b0; {a1,b1,c1,d1} <= 4'b0011; sel <= 1; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b0; {a1,b1,c1,d1} <= 4'b0100; sel <= 1; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b0; {a1,b1,c1,d1} <= 4'b0101; sel <= 1; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b0; {a1,b1,c1,d1} <= 4'b0110; sel <= 1; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b0; {a1,b1,c1,d1} <= 4'b0111; sel <= 1; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b0; {a1,b1,c1,d1} <= 4'b1000; sel <= 1; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b0; {a1,b1,c1,d1} <= 4'b1001; sel <= 1; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b0; {a1,b1,c1,d1} <= 4'b1010; sel <= 1; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b0; {a1,b1,c1,d1} <= 4'b1011; sel <= 1; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b0; {a1,b1,c1,d1} <= 4'b1100; sel <= 1; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b0; {a1,b1,c1,d1} <= 4'b1101; sel <= 1; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b0; {a1,b1,c1,d1} <= 4'b1110; sel <= 1; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b0; {a1,b1,c1,d1} <= 4'b1111; sel <= 1; enb_n = 0;
+
+#5 {a0,b0,c0,d0} <= 4'b0; {a1,b1,c1,d1} <= 4'b1111; sel <= 1; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b0; {a1,b1,c1,d1} <= 4'b1111; sel <= 0; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b0; {a1,b1,c1,d1} <= 4'b1111; sel <= 1; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b0; {a1,b1,c1,d1} <= 4'b1111; sel <= 0; enb_n = 0;
+#5 {a0,b0,c0,d0} <= 4'b0; {a1,b1,c1,d1} <= 4'b1111; sel <= 0; enb_n = 0;
    
+#5 begin enb_n <= 1; end
+
 end
 
-always @(s0 or s1 or s2 or s3 or f0 or f1 or f2 or f3 or m)
-begin
-  $display("s=", {s3,s2,s1,s0}, " m=", m, " -> ",
-           " x=", x, " y=", y, " aeb=", aeb, " cout_n=", cout_n,
-           " f=", {f3,f2,f1,f0});
+always @(a0 or b0 or c0 or d0 or a1 or b1 or c1 or d1 or ay or by or cy or dy or sel or enb_n)
+  begin
+  $display("%t: sel=%b enb_n=%b, 0=%b 1=%b y=%b",
+	$time, sel, enb_n, {a0,b0,c0,d0}, {a1,b1,c1,d1}, {ay,by,cy,dy});
 end
 
 endmodule
@@ -95,13 +90,14 @@ module testchip;
 
   initial
     begin
+      $timeformat(-9, 0, "ns", 7);
       $dumpfile("chipdebug.vcd");
       $dumpvars(0, testchip.chipdebug);
     end
 
   initial
     begin
-      #300 $finish;
+      #350 $finish;
     end
  
 endmodule

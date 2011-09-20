@@ -14,27 +14,6 @@ module part_74S283 (C0, A0, A1, A2, A3, B0, B1, B2, B3, S0, S1, S2, S3, C4);
   input C0, A0, A1, A2, A3, B0, B1, B2, B3;
   output S0, S1, S2, S3, C4;
 
-/*
-  wire[3:0]  AA, BB, SS;
-
-  assign AA[0] = A0;
-  assign AA[1] = A1;
-  assign AA[2] = A2;
-  assign AA[3] = A3;
-
-  assign BB[0] = B0;
-  assign BB[1] = B1;
-  assign BB[2] = B2;
-  assign BB[3] = B3;
-
-  ic_74S283 blah (C0, AA, BB, SS, C4);
-
-  assign S0 = SS[0];
-  assign S1 = SS[1];
-  assign S2 = SS[2];
-  assign S3 = SS[3];
-*/
-
   ic_74S283 add (C0, {A3,A2,A1,A0}, {B3,B2,B1,B0}, {S3,S2,S1,S0}, C4);
 
 endmodule

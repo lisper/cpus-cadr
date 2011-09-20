@@ -886,7 +886,7 @@ p1=INPUT,I
 p12=O_10ns,O
 p4=O_20ns,O
 p10=O_30ns,O
-p5=O_40ns,O
+p6=O_40ns,O
 p8=O_50ns,O
 )
 

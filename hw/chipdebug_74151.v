@@ -26,6 +26,7 @@ part_74S151  a_74S151 (
 
 initial
 begin
+$timeformat(-9, 0, "ns", 7);
 #0 begin
 	sel2 <= 0; sel1 <= 0; sel0 <= 0;
 	ce_n <= 1;
@@ -43,6 +44,13 @@ begin
 #10 i7 <= 1;
 #10 begin ce_n <= 1; end
 end
+
+always @(sel2 or sel1 or sel0 or 
+         i0 or i1 or i2 or i3 or i4 or i5 or i6 or i7 or q or q_n)
+  begin
+    $display("%t: sel=%b, i=%b, q=%b, q_n=%b",
+		$time, {sel2,sel1,sel0}, {i0,i1,i2,i3,i4,i5,i6,i7}, q, q_n);
+  end
 
 endmodule
 

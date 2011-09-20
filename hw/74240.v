@@ -13,14 +13,15 @@ module part_74S240(AIN0, AIN1, AIN2, AIN3,
 
   input AIN0, AIN1, AIN2, AIN3;
   output AOUT0, AOUT1, AOUT2, AOUT3;
-  reg AOUT0, AOUT1, AOUT2, AOUT3;
+//  reg AOUT0, AOUT1, AOUT2, AOUT3;
   input AENB_N;
 
   input BIN0, BIN1, BIN2, BIN3;
   output BOUT0, BOUT1, BOUT2, BOUT3;
-  reg BOUT0, BOUT1, BOUT2, BOUT3;
+//  reg BOUT0, BOUT1, BOUT2, BOUT3;
   input BENB_N;
 
+/*
   always @(AENB_N)
     begin
     if (AENB_N)
@@ -60,5 +61,16 @@ module part_74S240(AIN0, AIN1, AIN2, AIN3,
 //      assign {BOUT0, BOUT1, BOUT2, BOUT3} = ! {BIN0, BIN1, BIN2, BIN3};
       end
     end
+*/
+
+assign AOUT0 = AENB_N ? 1'bz : !AIN0;
+assign AOUT1 = AENB_N ? 1'bz : !AIN1;
+assign AOUT2 = AENB_N ? 1'bz : !AIN2;
+assign AOUT3 = AENB_N ? 1'bz : !AIN3;
+
+assign BOUT0 = BENB_N ? 1'bz : !BIN0;
+assign BOUT1 = BENB_N ? 1'bz : !BIN1;
+assign BOUT2 = BENB_N ? 1'bz : !BIN2;
+assign BOUT3 = BENB_N ? 1'bz : !BIN3;
 
 endmodule

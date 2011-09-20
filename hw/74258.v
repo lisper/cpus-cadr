@@ -10,32 +10,39 @@ module part_74S258 (A0, A1, B0, B1, C0, C1, D0, D1,
   input A0, A1, B0, B1, C0, C1, D0, D1;
   input SEL, ENB_N;
   output AY, BY, CY, DY;
-  reg AY, BY, CY, DY;
 
-  always @(ENB_N or SEL)
+  reg AY, BY, CY, DY;
+  always @(ENB_N or SEL or A0 or A1 or B0 or B1 or C0 or C1 or D0 or D1)
     begin
     if (ENB_N)
       begin
-	assign AY = 1'bz;
-	assign BY = 1'bz;
-	assign CY = 1'bz;
-	assign DY = 1'bz;
+	AY = 1'bz;
+	BY = 1'bz;
+	CY = 1'bz;
+	DY = 1'bz;
       end
     else
       if (SEL)
         begin
-	  assign AY = ! A1;
-	  assign BY = ! B1;
-	  assign CY = ! C1;
-	  assign DY = ! D1;
+	  AY = ! A1;
+	  BY = ! B1;
+	  CY = ! C1;
+	  DY = ! D1;
         end
       else
         begin
-	  assign AY = ! A0;
-	  assign BY = ! B0;
-	  assign CY = ! C0;
-	  assign DY = ! D0;
+	  AY = ! A0;
+	  BY = ! B0;
+	  CY = ! C0;
+	  DY = ! D0;
         end
     end
+
+/*
+  assign AY = ENB_N ? 1'bz : (SEL ? !A1 : !A0);
+  assign BY = ENB_N ? 1'bz : (SEL ? !B1 : !B0);
+  assign CY = ENB_N ? 1'bz : (SEL ? !C1 : !C0);
+  assign DY = ENB_N ? 1'bz : (SEL ? !D1 : !D0);
+*/
 
 endmodule

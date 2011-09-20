@@ -59,7 +59,7 @@ pullup pmmem0(MMEM0);
 pullup pmempar_in(\MEMPAR_IN );
 pullup pmemgrant(\-MEMGRANT );
 pullup pint(INT);
-pullup ploadme(\-LOADMD );
+pullup ploadmd(\-LOADMD );
 pullup pignpar(\-IGNPAR );
 pullup pmemack(\-MEMACK );
 
@@ -336,7 +336,7 @@ assign a = {A31B,A30,A29,A28,A27,A26,A25,A24,A23,A22,A21,A20,A19,A18,A17,A16,
             A15,A14,A13,A12,A11,A10,A9,A8,A7,A6,A5,A4,A3,A2,A1,A0};
 
 wire[31:0] m;
-assign m = {M31B,M30,M29,M28,M27,M26,M25,M24,M23,M22,M21,M20,M19,M18,M17,M16,
+assign m = {M31,M30,M29,M28,M27,M26,M25,M24,M23,M22,M21,M20,M19,M18,M17,M16,
             M15,M14,M13,M12,M11,M10,M9,M8,M7,M6,M5,M4,M3,M2,M1,M0};
 
 wire[31:0] md_n;
@@ -348,6 +348,10 @@ assign md_n = { \-MD31 , \-MD30 , \-MD29 , \-MD28 ,
               \-MD11 , \-MD10 , \-MD9 , \-MD8 ,
               \-MD7 , \-MD6 , \-MD5 , \-MD4 ,
               \-MD3 , \-MD2 , \-MD1 , \-MD0 };
+
+// for debugging only
+wire[31:0] md;
+assign md = ~md_n;
 
 wire[31:0] mds_n;
 assign mds_n = { \-MDS31 , \-MDS30 , \-MDS29 , \-MDS28 ,
@@ -434,8 +438,7 @@ assign aadr_n = { \-AADR9A , \-AADR8A , \-AADR7A , \-AADR6A , \-AADR5A ,
 
 // a-memory address, for debugging only
 wire[9:0] aadr;
-assign aadr = { !\-AADR9A , !\-AADR8A , !\-AADR7A , !\-AADR6A , !\-AADR5A ,
-               !\-AADR4A , !\-AADR3A , !\-AADR2A , !\-AADR1A , !\-AADR0A };
+assign aadr = ~aadr_n;
 
 // pending write address
 wire[9:0] wadr;
@@ -540,6 +543,14 @@ assign vma_n = {\-VMA31 ,\-VMA30 ,\-VMA29 ,\-VMA28 ,
 		\-VMA7 ,\-VMA6 ,\-VMA5 ,\-VMA4 ,
 		\-VMA3 ,\-VMA2 ,\-VMA1 ,\-VMA0 };
 
+wire[21:0] busint_vma_n;
+assign busint_vma_n = {\-PMA21 ,\-PMA20 ,
+			\-PMA19 ,\-PMA18 ,\-PMA17 ,\-PMA16 ,
+			\-PMA15 ,\-PMA14 ,\-PMA13 ,\-PMA12 ,
+			\-PMA11 ,\-PMA10 ,\-PMA9 ,\-PMA8 ,
+			\-VMA7 ,\-VMA6 ,\-VMA5 ,\-VMA4 ,
+			\-VMA3 ,\-VMA2 ,\-VMA1 ,\-VMA0 };
+
 wire[23:0] vmo_n;
 assign vmo_n = {\-VMO23 ,\-VMO22 ,\-VMO21 ,\-VMO20 ,
 		\-VMO19 ,\-VMO18 ,\-VMO17 ,\-VMO16 ,
@@ -548,7 +559,36 @@ assign vmo_n = {\-VMO23 ,\-VMO22 ,\-VMO21 ,\-VMO20 ,
 		\-VMO7 ,\-VMO6 ,\-VMO5 ,\-VMO4 ,
 		\-VMO3 ,\-VMO2 ,\-VMO1 ,\-VMO0 };
 
-integer cycle, addr;
+// xbus data
+wire[31:0] mem;
+assign mem = {MEM31,MEM30,MEM29,MEM28,MEM27,MEM26,MEM25,MEM24,
+              MEM23,MEM22,MEM21,MEM20,MEM19,MEM18,MEM17,MEM16,
+              MEM15,MEM14,MEM13,MEM12,MEM11,MEM10,MEM9,MEM8,
+              MEM7,MEM6,MEM5,MEM4,MEM3,MEM2,MEM1,MEM0};
+
+
+wire[15:0] spy;
+assign spy = {SPY15,SPY14,SPY13,SPY12,SPY11,SPY10,SPY9,SPY8,
+		SPY7,SPY6,SPY5,SPY4,SPY3,SPY2,SPY1,SPY0};
+
+integer cycle, addr, addr2;
+
+
+busint busint(
+	.bus(mem),
+	.adr_n(busint_vma_n),
+	.spy(spy),
+	.mclk(MCLK7),
+	.mempar_in(MEMPAR_IN),
+	.adrpar_n(\-ADRPAR ),
+	.rq_n(\-MEMRQ ),
+	.ack_n(\-MEMACK ),
+	.loadmd_n(\-LOADMD ),
+	.ignpar(\-IGNPAR ),
+	.memgrant_n(\-MEMGRANT ),
+	.wrcyc(WRCYC),
+	.int(INT),
+	.mempar_out(MEMPAR_OUT));
 
 initial
   begin
@@ -603,70 +643,7 @@ initial
          $display("time 1", $time);
          \lost<?> = 0;
 
-// 175
-addr = ~9'o175 & 9'h1ff;
-i_PROM0_1B19.prom[addr] = 0;
-i_PROM0_1B17.prom[addr] = 0;
-i_PROM0_1C20.prom[addr] = 0;
-i_PROM0_1D16.prom[addr] = 0;
-i_PROM0_1E19.prom[addr] = 16;
-i_PROM0_1E17.prom[addr] = 0;
-
-addr = ~9'o202 & 9'h1ff;
-i_PROM0_1B19.prom[addr] = 0;
-i_PROM0_1B17.prom[addr] = 0;
-i_PROM0_1C20.prom[addr] = 0;
-i_PROM0_1D16.prom[addr] = 0;
-i_PROM0_1E19.prom[addr] = 16;
-i_PROM0_1E17.prom[addr] = 0;
-
-addr = ~9'o226 & 9'h1ff;
-i_PROM0_1B19.prom[addr] = 0;
-i_PROM0_1B17.prom[addr] = 0;
-i_PROM0_1C20.prom[addr] = 0;
-i_PROM0_1D16.prom[addr] = 0;
-i_PROM0_1E19.prom[addr] = 16;
-i_PROM0_1E17.prom[addr] = 0;
-
-addr = ~9'o232 & 9'h1ff;
-i_PROM0_1B19.prom[addr] = 0;
-i_PROM0_1B17.prom[addr] = 0;
-i_PROM0_1C20.prom[addr] = 0;
-i_PROM0_1D16.prom[addr] = 0;
-i_PROM0_1E19.prom[addr] = 16;
-i_PROM0_1E17.prom[addr] = 0;
-
-addr = ~9'o236 & 9'h1ff;
-i_PROM0_1B19.prom[addr] = 0;
-i_PROM0_1B17.prom[addr] = 0;
-i_PROM0_1C20.prom[addr] = 0;
-i_PROM0_1D16.prom[addr] = 0;
-i_PROM0_1E19.prom[addr] = 16;
-i_PROM0_1E17.prom[addr] = 0;
-
-addr = ~9'o244 & 9'h1ff;
-i_PROM0_1B19.prom[addr] = 0;
-i_PROM0_1B17.prom[addr] = 0;
-i_PROM0_1C20.prom[addr] = 0;
-i_PROM0_1D16.prom[addr] = 0;
-i_PROM0_1E19.prom[addr] = 16;
-i_PROM0_1E17.prom[addr] = 0;
-
-addr = ~9'o251 & 9'h1ff;
-i_PROM0_1B19.prom[addr] = 0;
-i_PROM0_1B17.prom[addr] = 0;
-i_PROM0_1C20.prom[addr] = 0;
-i_PROM0_1D16.prom[addr] = 0;
-i_PROM0_1E19.prom[addr] = 16;
-i_PROM0_1E17.prom[addr] = 0;
-
-addr = ~9'o256 & 9'h1ff;
-i_PROM0_1B19.prom[addr] = 0;
-i_PROM0_1B17.prom[addr] = 0;
-i_PROM0_1C20.prom[addr] = 0;
-i_PROM0_1D16.prom[addr] = 0;
-i_PROM0_1E19.prom[addr] = 16;
-i_PROM0_1E17.prom[addr] = 0;
+`include "rompatch.v"
 
        end
 
@@ -688,21 +665,34 @@ always @(posedge CYCLECOMPLETED)
   begin
     cycle = cycle + 1;
 
-    #1 $display("\ntime %t, cycle %d, LPC %o, code %o", $time, cycle, lpc, ir);
+    #5 $display("\ntime %t, cycle %d, LPC %o, code %o", $time, cycle, lpc, ir);
 //    $display("prompc_n 0%o 0x%x %d", prompc_n, prompc_n, prompc_n);
-//    $display("aadr %o[%o], madr %o[%o]", aadr, amem, madr, mmem);
-    $display("aadr %o, madr %o", aadr, madr);
-    $display("amem %o mmem %o", amem, mmem);
+//    $display("aadr %o[%o], madr %o[%o]", ~aadr_n, amem, madr, mmem);
+
+    $display("aadr %o, madr %o", ~aadr_n, madr);
+//    $display("amem %o mmem %o", amem, mmem);
+
+    $display("vma %o, md %o", ~vma_n, ~md_n);
   end
+
+// end if read, start of write
+always @(negedge \-LOADMD )
+  begin
+//    #1 $display("A %o M %o, AEQM %d, MD %o, alu %o", a, m, AEQM, ~md_n, alu);
+    #5 $display("M %o, MD %o, mem %o, mds %o", m, ~md_n, mem, ~mds_n);
+  end
+
 
 // end if read, start of write
 always @(negedge TPCLK)
   begin
     #10 $display("--wr--");
     $display("A %o M %o, AEQM %d, -MD %o, alu %o", a, m, AEQM, md_n, alu);
-    $display("mskL %o, mskR %o, msk %o", mskl, mskr, msk);
-    $display("S %o SA %o R %o", {S3B,S2B,S1,S0}, sa, r );
-    $display("aadr %o, madr %o", aadr, madr);
+
+//    $display("mskL %o, mskR %o, msk %o", mskl, mskr, msk);
+//    $display("S %o SA %o R %o", {S3B,S2B,S1,S0}, sa, r );
+//    $display("aadr %o, madr %o", ~aadr_n, madr);
+
 //    $display("amem %o mmem %o", amem, mmem);
 //    $display("ob %o, iob %o", ob, iob);
 
@@ -712,30 +702,30 @@ always @(negedge TPCLK)
 
 always @(negedge \-AWPA )
   begin
-    $display("amem: write %o @ %o (%o)", l, aadr, aadr_n);
+    $display("amem: write %o @ %o (%o)", l, ~aadr_n, aadr_n);
   end
 
-always @(amem or \-AWPA )
-  begin
-    if (\-AWPA != 0)
-      $display("amem: read %o @ %o (%o)", amem, aadr, aadr_n);
-  end
+//always @(amem or \-AWPA )
+//  begin
+//    if (\-AWPA != 0)
+//      $display("amem: read %o @ %o (%o)", amem, ~aadr_n, aadr_n);
+//  end
 
 always @(negedge \-MWPA )
   begin
     $display("mmem: write %o @ %o (%o)", l, madr, madr_n);
   end
 
-always @(mmem or \-MWPA )
-  begin
-    if (\-MWPA != 0)
-    $display("mmem: read %o @ %o (%o)", mmem, madr, madr_n);
-  end
+//always @(mmem or \-MWPA )
+//  begin
+//    if (\-MWPA != 0)
+//      $display("mmem: read %o @ %o (%o)", mmem, madr, madr_n);
+//  end
 
 always @(pdla_n or \-PWPC )
   begin
-    if (\-PWPC == 1)
-      $display("pdl: read %o @ %o (%o)", l, pdla, pdla_n);
+//    if (\-PWPC == 1)
+//      $display("pdl: read %o @ %o (%o)", l, pdla, pdla_n);
 
     if (\-PWPC == 0)
       $display("pdl: write %o @ %o (%o)", pdl, pdla, pdla_n);
@@ -780,4 +770,5 @@ always @(negedge \-VM1WPB )
       $display("vm2: write %o @ %o", vma_n, vm2_ram_adr);
   end
 
-
+always @(negedge \-MEMRQ )
+  $display("xbus addr %o", ~busint_vma_n);

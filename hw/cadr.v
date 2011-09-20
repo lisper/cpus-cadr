@@ -49,7 +49,7 @@
 // signals with only one node: 61
 // nets without models: 0
 // signals without drivers:
-// signals without drivers: 77
+// signals without drivers: 75
 module cpu;
   wire \-A31 , \-AADR0A , \-AADR0B , \-AADR1A , \-AADR1B , \-AADR2A ;
   wire \-AADR2B , \-AADR3A , \-AADR3B , \-AADR4A , \-AADR4B , \-AADR5A ;
@@ -6684,24 +6684,24 @@ assign \-WP4  = ! (TPWP | GND);
 
 // 1C11:
 assign \-WP5  = ! (TPWPIRAM | GND);
-assign CLK5 = ! (\-CLK0  | GND);
+assign #1 CLK5 = ! (\-CLK0  | GND);
 assign MCLK5 = ! (\-MCLK0  | GND);
 
 
 // 1C01:
-assign CLK4 = ! (\-CLK0  | GND);
+assign #1 CLK4 = ! (\-CLK0  | GND);
 assign MCLK7 = ! (\-MCLK0  | GND);
 
 
 
 // 1D05:
-assign CLK1 = ! (\-CLK0  | GND);
-assign CLK2 = ! (\-CLK0  | GND);
-assign CLK3 = ! (\-CLK0  | GND);
+assign #1 CLK1 = ! (\-CLK0  | GND);
+assign #1 CLK2 = ! (\-CLK0  | GND);
+assign #1 CLK3 = ! (\-CLK0  | GND);
 assign MCLK1 = ! (\-MCLK0  | GND);
 
 // 1D10:
-assign \-CLK0  = \-TPCLK  & MACHRUN;
+assign #1 \-CLK0  = \-TPCLK  & MACHRUN;
 
 assign \-MCLK0  = \-TPCLK  & HI1;
 
@@ -6765,6 +6765,7 @@ part_TD25  i_CLOCK1_1C15 (
 part_TD50  i_CLOCK1_1C12 (
   .INPUT(\-TPREND ),
   .O_20ns(\-TPW20 ),
+  .O_40ns(\-TPW40 ),
   .O_50ns(\-TPW50 ),
   .O_30ns(\-TPW30 ),
   .O_10ns(\-TPW10 )
@@ -8557,6 +8558,7 @@ assign \-MFINISH  = \-MEMACK  & \-RESET ;
 part_TD50  i_VCTL1_1D23 (
   .INPUT(\-MFINISH ),
   .O_20ns(nc136),
+  .O_40ns(internal16),
   .O_50ns(nc137),
   .O_30ns(\-MFINISHD ),
   .O_10ns(nc138)
@@ -8604,7 +8606,7 @@ part_9S42_1  i_VCTL1_1E25 (
 // 1D27:
 
 
-assign MEMPREPARE = ! (\-MEMOP  | CLK2C);
+assign #2 MEMPREPARE = ! (\-MEMOP  | CLK2C);
 
 
 // 1E20:
@@ -14159,12 +14161,12 @@ part_74S258  i_MDS_2B02 (
 // (no code to express 74S258)
 part_74S258  i_MDS_1C29 (
   .SEL(MDSELB),
-  .D0(MEM0),
-  .D1(OB0),
-  .DY(\-MDS0 ),
-  .C0(MEM1),
-  .C1(OB1),
-  .CY(\-MDS1 ),
+//  .D0(MEM0),
+//  .D1(OB0),
+//  .DY(\-MDS0 ),
+//  .C0(MEM1),
+//  .C1(OB1),
+//  .CY(\-MDS1 ),
   .BY(\-MDS2 ),
   .B1(OB2),
   .B0(MEM2),
@@ -14173,6 +14175,8 @@ part_74S258  i_MDS_1C29 (
   .A0(MEM3),
   .ENB_N(GND)
 );
+assign \-MDS0 = MDSELB ? !OB0 : !MEM0;
+assign \-MDS1 = MDSELB ? !OB1 : !MEM1;
 
 
 // 1A11:
@@ -14733,7 +14737,7 @@ assign internal23 = IRDISP & IR25;
 // 4E09:
 // (no code to express 74S157)
 part_74S157  i_LPC_4E09 (
-  .SEL(internal23),
+  .SEL(internal23/*24*/),
   .A4(PC0),
   .B4(LPC0),
   .Y4(WPC0),
@@ -14753,7 +14757,7 @@ part_74S157  i_LPC_4E09 (
 // 4E08:
 // (no code to express 74S157)
 part_74S157  i_LPC_4E08 (
-  .SEL(internal23),
+  .SEL(internal23/*24*/),
   .A4(PC4),
   .B4(LPC4),
   .Y4(WPC4),
@@ -14773,7 +14777,7 @@ part_74S157  i_LPC_4E08 (
 // 4E07:
 // (no code to express 74S157)
 part_74S157  i_LPC_4E07 (
-  .SEL(internal23),
+  .SEL(internal23/*24*/),
   .A4(PC8),
   .B4(LPC8),
   .Y4(WPC8),
@@ -17222,15 +17226,15 @@ assign SRCPDLPTR = ! \-SRCPDLPTR ;
 assign SRCPDLIDX = ! \-SRCPDLIDX ;
 
 // 4C07:
-assign CLK4D = ! (\-CLK4D  & HI2);
-assign CLK4E = ! (\-CLK4D  & HI2);
-assign CLK4F = ! (HI2 & \-CLK4D );
+assign #1 CLK4D = ! (\-CLK4D  & HI2);
+assign #1 CLK4E = ! (\-CLK4D  & HI2);
+assign #1 CLK4F = ! (HI2 & \-CLK4D );
 
 
 // 4C02:
-assign CLK4A = ! (\-CLK4A  & HI5);
-assign CLK4B = ! (\-CLK4A  & HI5);
-assign CLK4C = ! (HI5 & \-CLK4A );
+assign #1 CLK4A = ! (\-CLK4A  & HI5);
+assign #1 CLK4B = ! (\-CLK4A  & HI5);
+assign #1 CLK4C = ! (HI5 & \-CLK4A );
 
 
 // 4C06:
@@ -17242,15 +17246,15 @@ assign WP4B = ! \-WP4 ;
 assign WP4A = ! \-WP4 ;
 
 // 3C13:
-assign CLK3D = ! (\-CLK3D  & HI5);
-assign CLK3E = ! (\-CLK3D  & HI5);
-assign CLK3F = ! (HI5 & \-CLK3D );
+assign #1 CLK3D = ! (\-CLK3D  & HI5);
+assign #1 CLK3E = ! (\-CLK3D  & HI5);
+assign #1 CLK3F = ! (HI5 & \-CLK3D );
 
 
 // 3C11:
-assign CLK3A = ! (\-CLK3A  & HI5);
-assign CLK3B = ! (\-CLK3A  & HI5);
-assign CLK3C = ! (HI5 & \-CLK3A );
+assign #1 CLK3A = ! (\-CLK3A  & HI5);
+assign #1 CLK3B = ! (\-CLK3A  & HI5);
+assign #1 CLK3C = ! (HI5 & \-CLK3A );
 
 
 // 3C12:
@@ -17262,9 +17266,9 @@ assign WP3A = ! \-WP3 ;
 assign TSE3A = ! \-TSE3 ;
 
 // 2C03:
-assign CLK2A = ! (\-CLK2A  & HI7);
-assign CLK2B = ! (\-CLK2A  & HI7);
-assign CLK2C = ! (HI7 & \-CLK2C );
+assign #1 CLK2A = ! (\-CLK2A  & HI7);
+assign #1 CLK2B = ! (\-CLK2A  & HI7);
+assign #1 CLK2C = ! (HI7 & \-CLK2C );
 
 
 // 2C02:
@@ -17276,7 +17280,7 @@ assign WP2 = ! \-WP2 ;
 assign TSE2 = ! \-TSE2 ;
 
 // 1B18:
-assign CLK1A = ! (\-CLK1  & HI12);
+assign #1 CLK1A = ! (\-CLK1  & HI12);
 assign \-RESET  = ! (RESET & HI12);
 assign MCLK1A = ! (HI12 & \-MCLK1 );
 

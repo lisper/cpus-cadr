@@ -12,49 +12,26 @@ module part_74S373 (
   input I0, I1, I2, I3, I4, I5, I6, I7;
   input HOLD_N, OENB_N;
   output O0, O1, O2, O3, O4, O5, O6, O7;
-  reg O0, O1, O2, O3, O4, O5, O6, O7;
   reg q0, q1, q2, q3, q4, q5, q6, q7;
 
   initial
     begin
-	{ q0, q1, q2, q3, q4, q5, q6, q7} <= 8'b00000000;
+	{q0, q1, q2, q3, q4, q5, q6, q7} <= 8'b0;
     end
 
-  always @(OENB_N)
-    if (OENB_N)
-      begin
-        assign O0 = 1'bz;
-        assign O1 = 1'bz;
-        assign O2 = 1'bz;
-        assign O3 = 1'bz;
-        assign O4 = 1'bz;
-        assign O5 = 1'bz;
-        assign O6 = 1'bz;
-        assign O7 = 1'bz;
-      end
-    else
-      begin
-        assign O0 = q0;
-        assign O1 = q1;
-        assign O2 = q2;
-        assign O3 = q3;
-        assign O4 = q4;
-        assign O5 = q5;
-        assign O6 = q6;
-        assign O7 = q7;
-
-	if (HOLD_N)
-	  begin
-	    { q0, q1, q2, q3, q4, q5, q6, q7 } <= 
-		{ I0, I1, I2, I3, I4, I5, I6, I7 };
-          end
-      end
-
-  always @(I0 or I1 or I2 or I3 or I4 or I5 or I6 or I7 or HOLD_N or OENB_N)
+  always @(I0 or I1 or I2 or I3 or I4 or I5 or I6 or I7 or HOLD_N)
     if (HOLD_N)
       begin
-	    { q0, q1, q2, q3, q4, q5, q6, q7 } <= 
-		{ I0, I1, I2, I3, I4, I5, I6, I7 };
+	    {q0,q1,q2,q3,q4,q5,q6,q7} <= {I0,I1,I2,I3,I4,I5,I6,I7};
       end
+
+  assign O0 = OENB_N ? 1'bz : q0;
+  assign O1 = OENB_N ? 1'bz : q1;
+  assign O2 = OENB_N ? 1'bz : q2;
+  assign O3 = OENB_N ? 1'bz : q3;
+  assign O4 = OENB_N ? 1'bz : q4;
+  assign O5 = OENB_N ? 1'bz : q5;
+  assign O6 = OENB_N ? 1'bz : q6;
+  assign O7 = OENB_N ? 1'bz : q7;
 
 endmodule
